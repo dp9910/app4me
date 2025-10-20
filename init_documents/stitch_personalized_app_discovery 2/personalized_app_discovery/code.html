@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+
+<html class="" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>AppFinder</title>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            "primary": "#13a4ec",
+            "background-light": "#f6f7f8",
+            "background-dark": "#101c22",
+          },
+          fontFamily: {
+            "display": ["Inter"]
+          },
+          borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+        },
+      },
+    }
+  </script>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display">
+<div class="relative flex min-h-screen w-full flex-col overflow-x-hidden">
+<div class="flex h-full grow flex-col">
+<header class="flex items-center justify-between whitespace-nowrap border-b border-primary/20 dark:border-primary/30 px-10 py-4">
+<div class="flex items-center gap-3 text-gray-800 dark:text-white">
+<div class="size-6 text-primary">
+<svg fill="none" viewbox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+<path d="M44 11.2727C44 14.0109 39.8386 16.3957 33.69 17.6364C39.8386 18.877 44 21.2618 44 24C44 26.7382 39.8386 29.123 33.69 30.3636C39.8386 31.6043 44 33.9891 44 36.7273C44 40.7439 35.0457 44 24 44C12.9543 44 4 40.7439 4 36.7273C4 33.9891 8.16144 31.6043 14.31 30.3636C8.16144 29.123 4 26.7382 4 24C4 21.2618 8.16144 18.877 14.31 17.6364C8.16144 16.3957 4 14.0109 4 11.2727C4 7.25611 12.9543 4 24 4C35.0457 4 44 7.25611 44 11.2727Z" fill="currentColor"></path>
+</svg>
+</div>
+<h2 class="text-xl font-bold">AppFinder</h2>
+</div>
+<div class="flex flex-1 items-center justify-end gap-6">
+<nav class="hidden md:flex items-center gap-6">
+<a class="text-sm font-medium text-gray-600 dark:text-gray-300 hover:text-primary dark:hover:text-primary transition-colors" href="#">For Business</a>
+<a class="text-sm font-medium text-gray-600 dark:text-gray-300 hover:text-primary dark:hover:text-primary transition-colors" href="#">For Developers</a>
+<a class="text-sm font-medium text-gray-600 dark:text-gray-300 hover:text-primary dark:hover:text-primary transition-colors" href="#">Resources</a>
+</nav>
+<button class="flex items-center justify-center rounded-lg h-10 px-5 bg-primary text-white text-sm font-bold shadow-sm hover:bg-primary/90 transition-colors">
+            Get Started
+          </button>
+</div>
+</header>
+<main class="flex flex-1 flex-col items-center">
+<div class="w-full max-w-7xl flex-1 px-4 sm:px-6 lg:px-8">
+<div class="py-20 sm:py-28">
+<div class="flex min-h-[520px] flex-col items-center justify-center gap-8 rounded-xl bg-cover bg-center p-6 text-center" style='background-image: linear-gradient(rgba(0, 0, 0, 0.3) 0%, rgba(0, 0, 0, 0.6) 100%), url("https://lh3.googleusercontent.com/aida-public/AB6AXuBxH6h79KJENk8QEkhlTdDJNHY2zS_cKIJEh_4CcYdem4aoYako4xvWXo_v3mNl4IPKQzWpFpGti_ye3BzBph3Z1iNAPMy-Mkkq3tT5qC060ddZDcGLkomDeFBhhRvg8_c7eV2gK-p5F_Us1dEdh1sx7NpDUWHOtWCsHWeEYSleT1xkbZHtGJlaCu1eQslEN0bejnwl4mU1QHbIau7kyP88FJ0sHeKW38cc2MYfQDctRtJERlO4CosuwWvoyaKeSeh-_-NYX6bLEXfR");'>
+<div class="flex flex-col gap-4 max-w-3xl">
+<h1 class="text-white text-4xl sm:text-5xl md:text-6xl font-black tracking-tighter">
+                      Find the perfect apps for your life
+                    </h1>
+<p class="text-gray-200 text-base sm:text-lg max-w-2xl mx-auto">
+                      Discover apps tailored to your unique lifestyle and goals. Whether you're looking to boost productivity, enhance your well-being, or simply have fun, we've got you covered.
+                    </p>
+</div>
+<div class="flex flex-wrap gap-4 justify-center">
+<button class="flex h-12 items-center justify-center rounded-lg bg-primary px-6 text-base font-bold text-white shadow-lg hover:bg-primary/90 transition-colors">
+                      Take the Quiz
+                    </button>
+<button class="flex h-12 items-center justify-center rounded-lg bg-white/10 px-6 text-base font-bold text-white backdrop-blur-sm hover:bg-white/20 transition-colors">
+                      Browse Apps
+                    </button>
+</div>
+</div>
+</div>
+<div class="py-16 sm:py-24 px-4 @container">
+<div class="mx-auto max-w-4xl text-center">
+<h2 class="text-3xl font-bold tracking-tight text-gray-900 dark:text-white sm:text-4xl">
+                  How it works
+                </h2>
+<p class="mt-4 text-lg text-gray-600 dark:text-gray-400">
+                  Our app discovery process is simple and effective, designed to help you find the apps you'll love.
+                </p>
+</div>
+<div class="mt-12 grid grid-cols-1 gap-8 md:grid-cols-3">
+<div class="flex flex-col gap-4 rounded-xl border border-primary/20 dark:border-primary/30 bg-background-light/50 dark:bg-background-dark/50 p-6 text-center items-center">
+<div class="flex items-center justify-center size-12 rounded-lg bg-primary/10 text-primary">
+<svg fill="currentColor" height="28" viewbox="0 0 256 256" width="28" xmlns="http://www.w3.org/2000/svg">
+<path d="M229.66,218.34l-50.07-50.06a88.11,88.11,0,1,0-11.31,11.31l50.06,50.07a8,8,0,0,0,11.32-11.32ZM40,112a72,72,0,1,1,72,72A72.08,72.08,0,0,1,40,112Z"></path>
+</svg>
+</div>
+<div class="flex flex-col gap-1">
+<h3 class="text-lg font-bold text-gray-900 dark:text-white">Personalized Recommendations</h3>
+<p class="text-sm text-gray-600 dark:text-gray-400">
+                      Answer a few questions about your lifestyle and interests, and we'll suggest apps that match your needs.
+                    </p>
+</div>
+</div>
+<div class="flex flex-col gap-4 rounded-xl border border-primary/20 dark:border-primary/30 bg-background-light/50 dark:bg-background-dark/50 p-6 text-center items-center">
+<div class="flex items-center justify-center size-12 rounded-lg bg-primary/10 text-primary">
+<svg fill="currentColor" height="28" viewbox="0 0 256 256" width="28" xmlns="http://www.w3.org/2000/svg">
+<path d="M220.27,158.54a8,8,0,0,0-7.7-.46,20,20,0,1,1,0-36.16A8,8,0,0,0,224,114.69V72a16,16,0,0,0-16-16H171.78a35.36,35.36,0,0,0,.22-4,36.11,36.11,0,0,0-11.36-26.24,36,36,0,0,0-60.55,23.62,36.56,36.56,0,0,0,.14,6.62H64A16,16,0,0,0,48,72v32.22a35.36,35.36,0,0,0-4-.22,36.12,36.12,0,0,0-26.24,11.36,35.7,35.7,0,0,0-9.69,27,36.08,36.08,0,0,0,33.31,33.6,35.68,35.68,0,0,0,6.62-.14V208a16,16,0,0,0,16,16H208a16,16,0,0,0,16-16V165.31A8,8,0,0,0,220.27,158.54ZM208,208H64V165.31a8,8,0,0,0-11.43-7.23,20,20,0,1,1,0-36.16A8,8,0,0,0,64,114.69V72h46.69a8,8,0,0,0,7.23-11.43,20,20,0,1,1,36.16,0A8,8,0,0,0,161.31,72H208v32.23a35.68,35.68,0,0,0-6.62-.14A36,36,0,0,0,204,176a35.36,35.36,0,0,0,4-.22Z"></path>
+</svg>
+</div>
+<div class="flex flex-col gap-1">
+<h3 class="text-lg font-bold text-gray-900 dark:text-white">Curated Collections</h3>
+<p class="text-sm text-gray-600 dark:text-gray-400">Explore hand-picked collections of apps for specific activities, interests, and goals.</p>
+</div>
+</div>
+<div class="flex flex-col gap-4 rounded-xl border border-primary/20 dark:border-primary/30 bg-background-light/50 dark:bg-background-dark/50 p-6 text-center items-center">
+<div class="flex items-center justify-center size-12 rounded-lg bg-primary/10 text-primary">
+<svg fill="currentColor" height="28" viewbox="0 0 256 256" width="28" xmlns="http://www.w3.org/2000/svg">
+<path d="M244.8,150.4a8,8,0,0,1-11.2-1.6A51.6,51.6,0,0,0,192,128a8,8,0,0,1-7.37-4.89,8,8,0,0,1,0-6.22A8,8,0,0,1,192,112a24,24,0,1,0-23.24-30,8,8,0,1,1-15.5-4A40,40,0,1,1,219,117.51a67.94,67.94,0,0,1,27.43,21.68A8,8,0,0,1,244.8,150.4ZM190.92,212a8,8,0,1,1-13.84,8,57,57,0,0,0-98.16,0,8,8,0,1,1-13.84-8,72.06,72.06,0,0,1,33.74-29.92,48,48,0,1,1,58.36,0A72.06,72.06,0,0,1,190.92,212ZM128,176a32,32,0,1,0-32-32A32,32,0,0,0,128,176ZM72,120a8,8,0,0,0-8-8A24,24,0,1,1,87.24,82a8,8,0,1,0,15.5-4A40,40,0,1,0,37,117.51,67.94,67.94,0,0,0,9.6,139.19a8,8,0,1,0,12.8,9.61A51.6,51.6,0,0,1,64,128,8,8,0,0,0,72,120Z"></path>
+</svg>
+</div>
+<div class="flex flex-col gap-1">
+<h3 class="text-lg font-bold text-gray-900 dark:text-white">Community Insights</h3>
+<p class="text-sm text-gray-600 dark:text-gray-400">See what other users are saying about their favorite apps and discover hidden gems.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+<footer class="w-full border-t border-primary/20 dark:border-primary/30">
+<div class="mx-auto max-w-7xl px-6 py-12 lg:px-8">
+<div class="flex items-center justify-center space-x-6">
+<a class="text-sm leading-6 text-gray-600 dark:text-gray-400 hover:text-primary dark:hover:text-primary" href="#">About</a>
+<a class="text-sm leading-6 text-gray-600 dark:text-gray-400 hover:text-primary dark:hover:text-primary" href="#">Contact</a>
+<a class="text-sm leading-6 text-gray-600 dark:text-gray-400 hover:text-primary dark:hover:text-primary" href="#">Privacy Policy</a>
+<a class="text-sm leading-6 text-gray-600 dark:text-gray-400 hover:text-primary dark:hover:text-primary" href="#">Terms of Service</a>
+</div>
+<p class="mt-8 text-center text-sm leading-5 text-gray-500 dark:text-gray-400">© 2024 AppFinder. All rights reserved.</p>
+</div>
+</footer>
+</div>
+</div>
+</body></html>
