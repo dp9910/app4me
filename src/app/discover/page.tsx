@@ -19,59 +19,68 @@ export default function DiscoverPage() {
   const [apps, setApps] = useState<App[]>([]);
 
   useEffect(() => {
-    // Get user profile from localStorage
-    const profile = localStorage.getItem('userProfile');
-    if (profile) {
-      setUserProfile(JSON.parse(profile));
-    } else {
-      // Redirect back to home if no profile
-      router.push('/');
-      return;
-    }
+    const fetchApps = async () => {
+      // Get user profile from localStorage
+      const profileData = localStorage.getItem('userProfile');
+      if (profileData) {
+        const profile = JSON.parse(profileData);
+        setUserProfile(profile);
 
-    // Mock app data for now (later will be from API)
-    const mockApps: App[] = [
-      {
-        id: '1',
-        name: 'FitTrack Pro',
-        category: 'Fitness Tracking',
-        icon: 'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=200&h=200&fit=crop&crop=center'
-      },
-      {
-        id: '2',
-        name: 'Mindful Moments',
-        category: 'Meditation & Mindfulness',
-        icon: 'https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?w=200&h=200&fit=crop&crop=center'
-      },
-      {
-        id: '3',
-        name: 'TaskMaster',
-        category: 'Task Management',
-        icon: 'https://images.unsplash.com/photo-1611224923853-80b023f02d71?w=200&h=200&fit=crop&crop=center'
-      },
-      {
-        id: '4',
-        name: 'Healthy Eats',
-        category: 'Healthy Recipes',
-        icon: 'https://images.unsplash.com/photo-1490645935967-10de6ba17061?w=200&h=200&fit=crop&crop=center'
-      },
-      {
-        id: '5',
-        name: 'Active Life',
-        category: 'Outdoor Activities',
-        icon: 'https://images.unsplash.com/photo-1551698618-1dfe5d97d256?w=200&h=200&fit=crop&crop=center'
-      },
-      {
-        id: '6',
-        name: 'FocusFlow',
-        category: 'Productivity Booster',
-        icon: 'https://images.unsplash.com/photo-1611224923853-80b023f02d71?w=200&h=200&fit=crop&crop=center'
+        // Fetch apps from API
+        try {
+          const response = await fetch('/api/search', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              lifestyle: profile.lifestyle,
+              intent: profile.intent,
+              wishText: profile.wishText,
+              sessionId: generateSessionId()
+            }),
+          });
+
+          const data = await response.json();
+          
+          if (data.success && data.apps) {
+            const formattedApps: App[] = data.apps.map((app: any) => ({
+              id: app.id,
+              name: app.name,
+              category: app.primary_category || 'General',
+              icon: app.icon_url_512 || 'https://images.unsplash.com/photo-1611224923853-80b023f02d71?w=200&h=200&fit=crop&crop=center'
+            }));
+            setApps(formattedApps);
+          } else {
+            console.error('Search failed:', data.error);
+            // Fallback to empty array
+            setApps([]);
+          }
+        } catch (error) {
+          console.error('Search error:', error);
+          // Fallback to empty array
+          setApps([]);
+        }
+      } else {
+        // Redirect back to home if no profile
+        router.push('/');
+        return;
       }
-    ];
+      
+      setLoading(false);
+    };
 
-    setApps(mockApps);
-    setLoading(false);
+    fetchApps();
   }, [router]);
+
+  const generateSessionId = () => {
+    let sessionId = localStorage.getItem('sessionId');
+    if (!sessionId) {
+      sessionId = Math.random().toString(36).substring(7) + Date.now().toString(36);
+      localStorage.setItem('sessionId', sessionId);
+    }
+    return sessionId;
+  };
 
   if (loading) {
     return (
