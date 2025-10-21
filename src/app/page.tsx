@@ -2,16 +2,21 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 import Button from '@/components/ui/Button';
 import { Textarea } from '@/components/ui/Input';
+import { useAuth } from '@/lib/auth/auth-context';
 
 export default function HomePage() {
   const router = useRouter();
+  const { user, signOut } = useAuth();
   const [formData, setFormData] = useState({
     lifestyle: [] as string[],
     intent: '',
     wishText: ''
   });
+  const [isLoading, setIsLoading] = useState(false);
+  const [fetchResult, setFetchResult] = useState<any>(null);
 
   const lifestyleOptions = [
     { id: 'active', label: 'Active', emoji: '🏃‍♂️' },
@@ -41,9 +46,34 @@ export default function HomePage() {
   };
 
   const handleTakeQuiz = () => {
-    // Store form data in localStorage for now
-    localStorage.setItem('userProfile', JSON.stringify(formData));
-    router.push('/discover');
+    // Redirect to the new questionnaire
+    router.push('/questionnaire');
+  };
+
+  const handleFetchDailyApps = async () => {
+    setIsLoading(true);
+    setFetchResult(null);
+    
+    try {
+      const response = await fetch('/api/fetch-daily-apps', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' }
+      });
+      
+      const data = await response.json();
+      setFetchResult(data);
+      
+      if (data.success) {
+        console.log('✅ Daily apps fetched successfully:', data);
+      } else {
+        console.error('❌ Failed to fetch apps:', data.error);
+      }
+    } catch (error) {
+      console.error('❌ Error:', error);
+      setFetchResult({ success: false, error: 'Network error' });
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const isFormValid = formData.lifestyle.length > 0 || formData.intent || formData.wishText;
@@ -68,9 +98,31 @@ export default function HomePage() {
                 <a className="text-sm font-medium text-gray-600 dark:text-gray-300 hover:text-primary dark:hover:text-primary transition-colors" href="#">For Developers</a>
                 <a className="text-sm font-medium text-gray-600 dark:text-gray-300 hover:text-primary dark:hover:text-primary transition-colors" href="#">Resources</a>
               </nav>
-              <button className="flex items-center justify-center rounded-lg h-10 px-5 bg-primary text-white text-sm font-bold shadow-sm hover:bg-primary/90 transition-colors">
-                Get Started
-              </button>
+              
+              {user ? (
+                <div className="flex items-center gap-4">
+                  <span className="text-sm text-gray-600">Welcome, {user.user_metadata?.first_name || user.email}</span>
+                  <button 
+                    onClick={() => signOut()}
+                    className="flex items-center justify-center rounded-lg h-10 px-5 bg-gray-200 text-gray-700 text-sm font-medium hover:bg-gray-300 transition-colors"
+                  >
+                    Sign Out
+                  </button>
+                </div>
+              ) : (
+                <div className="flex items-center gap-3">
+                  <Link href="/auth/signin">
+                    <button className="flex items-center justify-center rounded-lg h-10 px-5 bg-gray-200 text-gray-700 text-sm font-medium hover:bg-gray-300 transition-colors">
+                      Sign In
+                    </button>
+                  </Link>
+                  <Link href="/auth/signup">
+                    <button className="flex items-center justify-center rounded-lg h-10 px-5 bg-primary text-white text-sm font-bold shadow-sm hover:bg-primary/90 transition-colors">
+                      Get Started
+                    </button>
+                  </Link>
+                </div>
+              )}
             </div>
           </header>
 
@@ -93,10 +145,16 @@ export default function HomePage() {
                   </div>
                   <div className="flex flex-wrap gap-4 justify-center">
                     <button 
-                      onClick={() => document.getElementById('quiz-section')?.scrollIntoView({ behavior: 'smooth' })}
+                      onClick={handleTakeQuiz}
                       className="flex h-12 items-center justify-center rounded-lg bg-primary px-6 text-base font-bold text-white shadow-lg hover:bg-primary/90 transition-colors"
                     >
                       Take the Quiz
+                    </button>
+                    <button 
+                      onClick={() => router.push('/data-analysis')}
+                      className="flex h-12 items-center justify-center rounded-lg bg-green-600 px-6 text-base font-bold text-white shadow-lg hover:bg-green-700 transition-colors"
+                    >
+                      📊 Data Analysis
                     </button>
                     <button className="flex h-12 items-center justify-center rounded-lg bg-white/10 px-6 text-base font-bold text-white backdrop-blur-sm hover:bg-white/20 transition-colors">
                       Browse Apps
@@ -175,7 +233,6 @@ export default function HomePage() {
                     <div className="text-center">
                       <Button
                         onClick={handleTakeQuiz}
-                        disabled={!isFormValid}
                         size="lg"
                         className="px-8"
                       >
@@ -185,6 +242,68 @@ export default function HomePage() {
                   </div>
                 </div>
               </div>
+
+              {/* Fetch Results Section */}
+              {fetchResult && (
+                <div className="py-8 px-4">
+                  <div className="mx-auto max-w-4xl">
+                    <div className="bg-white dark:bg-gray-800 rounded-xl border border-primary/20 dark:border-primary/30 p-8">
+                      {fetchResult.success ? (
+                        <div>
+                          <h3 className="text-xl font-bold text-green-600 mb-4">
+                            ✅ Daily Apps Fetched Successfully!
+                          </h3>
+                          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+                            <div className="bg-blue-50 dark:bg-blue-900/20 p-4 rounded-lg">
+                              <div className="text-2xl font-bold text-blue-600">{fetchResult.stats?.fetchedFromiTunes}</div>
+                              <div className="text-sm text-gray-600 dark:text-gray-400">Apps from iTunes</div>
+                            </div>
+                            <div className="bg-green-50 dark:bg-green-900/20 p-4 rounded-lg">
+                              <div className="text-2xl font-bold text-green-600">{fetchResult.stats?.storedInDatabase}</div>
+                              <div className="text-sm text-gray-600 dark:text-gray-400">Stored in Database</div>
+                            </div>
+                            <div className="bg-purple-50 dark:bg-purple-900/20 p-4 rounded-lg">
+                              <div className="text-2xl font-bold text-purple-600">{fetchResult.stats?.totalAppsInDatabase}</div>
+                              <div className="text-sm text-gray-600 dark:text-gray-400">Total Apps</div>
+                            </div>
+                          </div>
+                          
+                          {fetchResult.apps && fetchResult.apps.length > 0 && (
+                            <div>
+                              <h4 className="font-semibold text-gray-900 dark:text-white mb-3">Sample Apps Fetched:</h4>
+                              <div className="space-y-2">
+                                {fetchResult.apps.slice(0, 5).map((app: any, index: number) => (
+                                  <div key={index} className="flex justify-between items-center p-3 bg-gray-50 dark:bg-gray-700 rounded-lg">
+                                    <div>
+                                      <div className="font-medium text-gray-900 dark:text-white">{app.trackName}</div>
+                                      <div className="text-sm text-gray-600 dark:text-gray-400">by {app.artistName}</div>
+                                    </div>
+                                    <div className="text-right">
+                                      <div className="text-sm font-medium text-gray-900 dark:text-white">
+                                        {app.isFree ? 'Free' : `$${app.price}`}
+                                      </div>
+                                      <div className="text-xs text-gray-600 dark:text-gray-400">{app.primaryGenre}</div>
+                                    </div>
+                                  </div>
+                                ))}
+                              </div>
+                            </div>
+                          )}
+                        </div>
+                      ) : (
+                        <div>
+                          <h3 className="text-xl font-bold text-red-600 mb-4">
+                            ❌ Error Fetching Apps
+                          </h3>
+                          <p className="text-gray-600 dark:text-gray-400">
+                            {fetchResult.error}
+                          </p>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              )}
             </div>
           </main>
 
