@@ -2,8 +2,10 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 import { Search, Bell, ChevronLeft, ChevronRight } from 'lucide-react';
 import AppCard from '@/components/ui/AppCard';
+import { useAuth } from '@/lib/auth/auth-context';
 
 interface App {
   id: string;
@@ -14,6 +16,7 @@ interface App {
 
 export default function DiscoverPage() {
   const router = useRouter();
+  const { user, signOut } = useAuth();
   const [userProfile, setUserProfile] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [apps, setApps] = useState<App[]>([]);
@@ -119,10 +122,37 @@ export default function DiscoverPage() {
                 placeholder="Search apps..." 
               />
             </div>
-            <button className="flex h-10 w-10 cursor-pointer items-center justify-center overflow-hidden rounded-lg bg-background-light dark:bg-background-dark text-gray-500 dark:text-gray-400 hover:bg-primary/10 hover:text-primary dark:hover:bg-primary/20">
-              <Bell size={20} />
-            </button>
-            <div className="h-10 w-10 rounded-full bg-cover bg-center bg-no-repeat bg-primary"></div>
+            {user ? (
+              <>
+                <button className="flex h-10 w-10 cursor-pointer items-center justify-center overflow-hidden rounded-lg bg-background-light dark:bg-background-dark text-gray-500 dark:text-gray-400 hover:bg-primary/10 hover:text-primary dark:hover:bg-primary/20">
+                  <Bell size={20} />
+                </button>
+                <div className="flex items-center gap-3">
+                  <span className="text-sm text-gray-600 hidden sm:block">
+                    {user.user_metadata?.first_name || user.email}
+                  </span>
+                  <button 
+                    onClick={() => signOut()}
+                    className="text-sm text-gray-600 hover:text-primary"
+                  >
+                    Sign Out
+                  </button>
+                </div>
+              </>
+            ) : (
+              <div className="flex items-center gap-3">
+                <Link href="/auth/signin">
+                  <button className="text-sm font-medium text-gray-600 hover:text-primary">
+                    Sign In
+                  </button>
+                </Link>
+                <Link href="/auth/signup">
+                  <button className="flex h-10 items-center justify-center rounded-lg px-4 bg-primary text-white text-sm font-bold hover:bg-primary/90">
+                    Sign Up
+                  </button>
+                </Link>
+              </div>
+            )}
           </div>
         </div>
       </header>

@@ -162,6 +162,12 @@ export default function HomePage() {
                     >
                       🍎 Apple RSS
                     </button>
+                    <button 
+                      onClick={() => router.push('/serp-analysis')}
+                      className="flex h-12 items-center justify-center rounded-lg bg-purple-600 px-6 text-base font-bold text-white shadow-lg hover:bg-purple-700 transition-colors"
+                    >
+                      🔍 SERP API
+                    </button>
                     <button className="flex h-12 items-center justify-center rounded-lg bg-white/10 px-6 text-base font-bold text-white backdrop-blur-sm hover:bg-white/20 transition-colors">
                       Browse Apps
                     </button>
