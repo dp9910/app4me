@@ -154,7 +154,13 @@ export default function HomePage() {
                       onClick={() => router.push('/data-analysis')}
                       className="flex h-12 items-center justify-center rounded-lg bg-green-600 px-6 text-base font-bold text-white shadow-lg hover:bg-green-700 transition-colors"
                     >
-                      📊 Data Analysis
+                      📊 iTunes Data
+                    </button>
+                    <button 
+                      onClick={() => router.push('/apple-rss-analysis')}
+                      className="flex h-12 items-center justify-center rounded-lg bg-orange-600 px-6 text-base font-bold text-white shadow-lg hover:bg-orange-700 transition-colors"
+                    >
+                      🍎 Apple RSS
                     </button>
                     <button className="flex h-12 items-center justify-center rounded-lg bg-white/10 px-6 text-base font-bold text-white backdrop-blur-sm hover:bg-white/20 transition-colors">
                       Browse Apps
