@@ -168,6 +168,12 @@ export default function HomePage() {
                     >
                       🔍 SERP API
                     </button>
+                    <button 
+                      onClick={() => router.push('/trigger')}
+                      className="flex h-12 items-center justify-center rounded-lg bg-red-600 px-6 text-base font-bold text-white shadow-lg hover:bg-red-700 transition-colors"
+                    >
+                      ⚡ Trigger Pipeline
+                    </button>
                     <button className="flex h-12 items-center justify-center rounded-lg bg-white/10 px-6 text-base font-bold text-white backdrop-blur-sm hover:bg-white/20 transition-colors">
                       Browse Apps
                     </button>
