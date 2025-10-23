@@ -1,0 +1,46 @@
+{
+  "iTunes": {
+    "attempts": 36,
+    "successes": 36,
+    "failures": 0,
+    "totalApps": 6191
+  },
+  "appleRSS": {
+    "attempts": 4,
+    "successes": 4,
+    "failures": 0,
+    "totalApps": 185
+  },
+  "serp": {
+    "attempts": 36,
+    "successes": 32,
+    "failures": 4,
+    "totalApps": 2807
+  },
+  "errors": [
+    {
+      "source": "serp",
+      "identifier": "food",
+      "error": "fetch failed",
+      "timestamp": "2025-10-23T16:17:37.531Z"
+    },
+    {
+      "source": "serp",
+      "identifier": "education",
+      "error": "fetch failed",
+      "timestamp": "2025-10-23T16:33:29.047Z"
+    },
+    {
+      "source": "serp",
+      "identifier": "books",
+      "error": "fetch failed",
+      "timestamp": "2025-10-23T17:22:28.159Z"
+    },
+    {
+      "source": "serp",
+      "identifier": "transportation",
+      "error": "fetch failed",
+      "timestamp": "2025-10-23T18:02:55.653Z"
+    }
+  ]
+}

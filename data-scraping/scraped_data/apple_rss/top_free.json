@@ -1,0 +1,2594 @@
+{
+  "metadata": {
+    "source": "apple_rss",
+    "feed_type": "top_free",
+    "feed_url": "https://itunes.apple.com/us/rss/topfreeapplications/limit=25/json",
+    "description": "Top 25 Free iPhone Apps",
+    "scraped_at": "2025-10-23T15:58:57.577Z",
+    "total_apps": 25
+  },
+  "apps": [
+    {
+      "source": "apple_rss",
+      "feed_type": "top_free",
+      "bundle_id": "6744034028",
+      "title": "Sora by OpenAI",
+      "developer": "OpenAI",
+      "icon_url": "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/ee/1d/fd/ee1dfd1a-9170-86ee-3683-14a4e163eca7/AppIcon-0-0-1x_U007ephone-0-1-85-220.png/100x100bb.png",
+      "category": "Photo & Video",
+      "release_date": "September 30, 2025",
+      "age_rating": "Application",
+      "description": "Turn your ideas into videos and drop yourself into the action.\n\nSora is a new kind of creative app that turns text prompts and images into hyperreal videos with sound using the latest advancements from OpenAI. A single sentence can unfold into a cinematic scene, an anime short, or remix of a friend's video. If you can write it, you can see it, remix it, and share it. Turn your words into worlds with Sora.\n\nExplore, play, and share your imagination in a community built for experimentation.\n\nWhat’s possible with Sora\n\nCreate Videos in Seconds\nStart with a prompt or image and Sora generates a complete video with audio inspired by your imagination.\n\nCollaborate & Play\nCast yourself or your friends in videos. Remix challenges and trends as they evolve.\n\nChoose Your Style\nMake it cinematic, animated, photorealistic, cartoon, or entirely surreal.\n\nRemix & Make It Yours\nTake someone else’s creation and put your spin on it - swap characters, change the vibe, add new scenes, or extend the story.\n\nFind Your Community\nCommunity features make it easy to share your creations and see what others are making.\n\nTerms of use & privacy policy:\nhttps://openai.com/policies/terms-of-use\nhttps://openai.com/policies/privacy-policy",
+      "formatted_price": "Get",
+      "rank": 1,
+      "scraped_at": "2025-10-23T15:58:57.578Z",
+      "raw_data": {
+        "im:name": {
+          "label": "Sora by OpenAI"
+        },
+        "im:image": [
+          {
+            "label": "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/ee/1d/fd/ee1dfd1a-9170-86ee-3683-14a4e163eca7/AppIcon-0-0-1x_U007ephone-0-1-85-220.png/53x53bb.png",
+            "attributes": {
+              "height": "53"
+            }
+          },
+          {
+            "label": "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/ee/1d/fd/ee1dfd1a-9170-86ee-3683-14a4e163eca7/AppIcon-0-0-1x_U007ephone-0-1-85-220.png/75x75bb.png",
+            "attributes": {
+              "height": "75"
+            }
+          },
+          {
+            "label": "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/ee/1d/fd/ee1dfd1a-9170-86ee-3683-14a4e163eca7/AppIcon-0-0-1x_U007ephone-0-1-85-220.png/100x100bb.png",
+            "attributes": {
+              "height": "100"
+            }
+          }
+        ],
+        "summary": {
+          "label": "Turn your ideas into videos and drop yourself into the action.\n\nSora is a new kind of creative app that turns text prompts and images into hyperreal videos with sound using the latest advancements from OpenAI. A single sentence can unfold into a cinematic scene, an anime short, or remix of a friend's video. If you can write it, you can see it, remix it, and share it. Turn your words into worlds with Sora.\n\nExplore, play, and share your imagination in a community built for experimentation.\n\nWhat’s possible with Sora\n\nCreate Videos in Seconds\nStart with a prompt or image and Sora generates a complete video with audio inspired by your imagination.\n\nCollaborate & Play\nCast yourself or your friends in videos. Remix challenges and trends as they evolve.\n\nChoose Your Style\nMake it cinematic, animated, photorealistic, cartoon, or entirely surreal.\n\nRemix & Make It Yours\nTake someone else’s creation and put your spin on it - swap characters, change the vibe, add new scenes, or extend the story.\n\nFind Your Community\nCommunity features make it easy to share your creations and see what others are making.\n\nTerms of use & privacy policy:\nhttps://openai.com/policies/terms-of-use\nhttps://openai.com/policies/privacy-policy"
+        },
+        "im:price": {
+          "label": "Get",
+          "attributes": {
+            "amount": "0.00",
+            "currency": "USD"
+          }
+        },
+        "im:contentType": {
+          "attributes": {
+            "term": "Application",
+            "label": "Application"
+          }
+        },
+        "rights": {
+          "label": "© 2025 OpenAI OpCo L.L.C."
+        },
+        "title": {
+          "label": "Sora by OpenAI - OpenAI"
+        },
+        "link": {
+          "attributes": {
+            "rel": "alternate",
+            "type": "text/html",
+            "href": "https://apps.apple.com/us/app/sora-by-openai/id6744034028?uo=2"
+          }
+        },
+        "id": {
+          "label": "https://apps.apple.com/us/app/sora-by-openai/id6744034028?uo=2",
+          "attributes": {
+            "im:id": "6744034028",
+            "im:bundleId": "com.openai.noface"
+          }
+        },
+        "im:artist": {
+          "label": "OpenAI",
+          "attributes": {
+            "href": "https://apps.apple.com/us/developer/openai/id1684349733?uo=2"
+          }
+        },
+        "category": {
+          "attributes": {
+            "im:id": "6008",
+            "term": "Photo & Video",
+            "scheme": "https://apps.apple.com/us/genre/ios-photo-video/id6008?uo=2",
+            "label": "Photo & Video"
+          }
+        },
+        "im:releaseDate": {
+          "label": "2025-09-30T00:00:00-07:00",
+          "attributes": {
+            "label": "September 30, 2025"
+          }
+        }
+      }
+    },
+    {
+      "source": "apple_rss",
+      "feed_type": "top_free",
+      "bundle_id": "6448311069",
+      "title": "ChatGPT",
+      "developer": "OpenAI",
+      "icon_url": "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/9e/bf/7b/9ebf7bda-edbe-c34c-e47d-fb8155a3c920/AppIcon-0-0-1x_U007epad-0-0-0-1-0-85-220.png/100x100bb.png",
+      "category": "Productivity",
+      "release_date": "May 18, 2023",
+      "age_rating": "Application",
+      "description": "Introducing ChatGPT for iOS: OpenAI’s latest advancements at your fingertips.\n\nThis official app is free, syncs your history across devices, and brings you the latest from OpenAI, including the new image generator.\n\nWith ChatGPT in your pocket, you’ll find:\n\n· Image generation–Generate original images from a description, or transform existing ones with a few simple words. \n· Advanced Voice Mode–Tap the soundwave icon to have a real-time convo on the go. Settle a dinner table debate, or practice a new language. \n· Photo upload—Snap or upload a picture to transcribe a handwritten recipe or get info about a landmark. \n· Creative inspiration—Find custom birthday gift ideas or create a personalized greeting card.\n· Tailored advice—Talk through a tough situation, ask for a detailed travel itinerary, or get help crafting the perfect response. \n· Personalized learning—Explain electricity to a dinosaur-loving kid or easily brush up yourself on a historic event.\n· Professional input—Brainstorm marketing copy or map out a business plan.\n· Instant answers—Get recipe suggestions when you only have a few ingredients.\n\nJoin hundreds of millions of users and try the app captivating the world. Download ChatGPT today.\n\nTerms of service & privacy policy:\nhttps://openai.com/policies/terms-of-use\nhttps://openai.com/policies/privacy-policy",
+      "formatted_price": "Get",
+      "rank": 2,
+      "scraped_at": "2025-10-23T15:58:57.578Z",
+      "raw_data": {
+        "im:name": {
+          "label": "ChatGPT"
+        },
+        "im:image": [
+          {
+            "label": "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/9e/bf/7b/9ebf7bda-edbe-c34c-e47d-fb8155a3c920/AppIcon-0-0-1x_U007epad-0-0-0-1-0-85-220.png/53x53bb.png",
+            "attributes": {
+              "height": "53"
+            }
+          },
+          {
+            "label": "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/9e/bf/7b/9ebf7bda-edbe-c34c-e47d-fb8155a3c920/AppIcon-0-0-1x_U007epad-0-0-0-1-0-85-220.png/75x75bb.png",
+            "attributes": {
+              "height": "75"
+            }
+          },
+          {
+            "label": "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/9e/bf/7b/9ebf7bda-edbe-c34c-e47d-fb8155a3c920/AppIcon-0-0-1x_U007epad-0-0-0-1-0-85-220.png/100x100bb.png",
+            "attributes": {
+              "height": "100"
+            }
+          }
+        ],
+        "summary": {
+          "label": "Introducing ChatGPT for iOS: OpenAI’s latest advancements at your fingertips.\n\nThis official app is free, syncs your history across devices, and brings you the latest from OpenAI, including the new image generator.\n\nWith ChatGPT in your pocket, you’ll find:\n\n· Image generation–Generate original images from a description, or transform existing ones with a few simple words. \n· Advanced Voice Mode–Tap the soundwave icon to have a real-time convo on the go. Settle a dinner table debate, or practice a new language. \n· Photo upload—Snap or upload a picture to transcribe a handwritten recipe or get info about a landmark. \n· Creative inspiration—Find custom birthday gift ideas or create a personalized greeting card.\n· Tailored advice—Talk through a tough situation, ask for a detailed travel itinerary, or get help crafting the perfect response. \n· Personalized learning—Explain electricity to a dinosaur-loving kid or easily brush up yourself on a historic event.\n· Professional input—Brainstorm marketing copy or map out a business plan.\n· Instant answers—Get recipe suggestions when you only have a few ingredients.\n\nJoin hundreds of millions of users and try the app captivating the world. Download ChatGPT today.\n\nTerms of service & privacy policy:\nhttps://openai.com/policies/terms-of-use\nhttps://openai.com/policies/privacy-policy"
+        },
+        "im:price": {
+          "label": "Get",
+          "attributes": {
+            "amount": "0.00",
+            "currency": "USD"
+          }
+        },
+        "im:contentType": {
+          "attributes": {
+            "term": "Application",
+            "label": "Application"
+          }
+        },
+        "rights": {
+          "label": "© 2025 OpenAI OpCo L.L.C."
+        },
+        "title": {
+          "label": "ChatGPT - OpenAI"
+        },
+        "link": {
+          "attributes": {
+            "rel": "alternate",
+            "type": "text/html",
+            "href": "https://apps.apple.com/us/app/chatgpt/id6448311069?uo=2"
+          }
+        },
+        "id": {
+          "label": "https://apps.apple.com/us/app/chatgpt/id6448311069?uo=2",
+          "attributes": {
+            "im:id": "6448311069",
+            "im:bundleId": "com.openai.chat"
+          }
+        },
+        "im:artist": {
+          "label": "OpenAI",
+          "attributes": {
+            "href": "https://apps.apple.com/us/developer/openai/id1684349733?uo=2"
+          }
+        },
+        "category": {
+          "attributes": {
+            "im:id": "6007",
+            "term": "Productivity",
+            "scheme": "https://apps.apple.com/us/genre/ios-productivity/id6007?uo=2",
+            "label": "Productivity"
+          }
+        },
+        "im:releaseDate": {
+          "label": "2023-05-18T00:00:00-07:00",
+          "attributes": {
+            "label": "May 18, 2023"
+          }
+        }
+      }
+    },
+    {
+      "source": "apple_rss",
+      "feed_type": "top_free",
+      "bundle_id": "6446901002",
+      "title": "Threads",
+      "developer": "Instagram, Inc.",
+      "icon_url": "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/b2/18/5e/b2185e08-5c0c-6bc0-6dbe-413175ba6b2c/Prod-0-0-1x_U007ephone-0-0-0-1-0-0-85-220.png/100x100bb.png",
+      "category": "Social Networking",
+      "release_date": "July 5, 2023",
+      "age_rating": "Application",
+      "description": "Say more with Threads — Instagram’s text-based conversation app.\n\nThreads is where communities come together to discuss everything from the topics you care about today to what’ll be trending tomorrow. Whatever it is you’re interested in, you can follow and connect directly with your favorite creators and others who love the same things — or build a loyal following of your own to share your ideas, opinions and creativity with the world!\n\nA few things you can do on Threads…\n\n■ Access your Instagram followers\nYour Instagram username and verification badge are reserved for you. Automatically follow the same accounts you follow on Instagram in a few taps, and discover new accounts too.\n\n■ Share your point of view\nSpin up a new thread to express what's on your mind. This is your space to be yourself, and you control who can reply.\n\n■ Connect with friends and your favorite creators\nJump to the replies to get in on the action and react to commentary, humor and insight from the creators you know and love. Find your community and connect with people who care about whatever it is you’re interested in.\n\n■ Control the conversation\nCustomize your settings and use controls to manage who can see your content, reply to your threads, or mention you. Accounts you’ve blocked will carry over from Instagram, and we’re enforcing the same Community Guidelines to help ensure everyone interacts safely and authentically. \n\n■ Find ideas and inspiration\nFrom TV recommendations to career advice, get answers to your questions or learn something new from crowd-sourced conversations, thought leaders and industry experts.\n\n■ Never miss a moment\nStay on top of the latest trends and live events. Whether it’s about new music, movie premieres, sports, games, TV shows, fashion, or the latest product releases, find discussions and receive notifications any time your favorite profiles start a new thread.\n\n■ Leap into the fediverse\nThreads is part of the fediverse, a global, open, social network of independent servers operated by third parties around the world. Servers share information with each other to enable people to connect and discover new things across the fediverse.\n\n\nMeta Terms: https://www.facebook.com/terms.php\nMeta Privacy Policy: https://privacycenter.instagram.com/policy\nThreads Supplemental Privacy Policy: https://help.instagram.com/515230437301944\nThreads Supplemental Terms: https://help.instagram.com/769983657850450\nInstagram Community Guidelines: https://help.instagram.com/477434105621119\nConsumer Health Privacy Policy: https://privacycenter.instagram.com/policies/health\n\nLearn how we're working to help keep our communities safe across Meta technologies at the Meta Safety Center: https://about.meta.com/actions/safety",
+      "formatted_price": "Get",
+      "rank": 3,
+      "scraped_at": "2025-10-23T15:58:57.578Z",
+      "raw_data": {
+        "im:name": {
+          "label": "Threads"
+        },
+        "im:image": [
+          {
+            "label": "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/b2/18/5e/b2185e08-5c0c-6bc0-6dbe-413175ba6b2c/Prod-0-0-1x_U007ephone-0-0-0-1-0-0-85-220.png/53x53bb.png",
+            "attributes": {
+              "height": "53"
+            }
+          },
+          {
+            "label": "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/b2/18/5e/b2185e08-5c0c-6bc0-6dbe-413175ba6b2c/Prod-0-0-1x_U007ephone-0-0-0-1-0-0-85-220.png/75x75bb.png",
+            "attributes": {
+              "height": "75"
+            }
+          },
+          {
+            "label": "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/b2/18/5e/b2185e08-5c0c-6bc0-6dbe-413175ba6b2c/Prod-0-0-1x_U007ephone-0-0-0-1-0-0-85-220.png/100x100bb.png",
+            "attributes": {
+              "height": "100"
+            }
+          }
+        ],
+        "summary": {
+          "label": "Say more with Threads — Instagram’s text-based conversation app.\n\nThreads is where communities come together to discuss everything from the topics you care about today to what’ll be trending tomorrow. Whatever it is you’re interested in, you can follow and connect directly with your favorite creators and others who love the same things — or build a loyal following of your own to share your ideas, opinions and creativity with the world!\n\nA few things you can do on Threads…\n\n■ Access your Instagram followers\nYour Instagram username and verification badge are reserved for you. Automatically follow the same accounts you follow on Instagram in a few taps, and discover new accounts too.\n\n■ Share your point of view\nSpin up a new thread to express what's on your mind. This is your space to be yourself, and you control who can reply.\n\n■ Connect with friends and your favorite creators\nJump to the replies to get in on the action and react to commentary, humor and insight from the creators you know and love. Find your community and connect with people who care about whatever it is you’re interested in.\n\n■ Control the conversation\nCustomize your settings and use controls to manage who can see your content, reply to your threads, or mention you. Accounts you’ve blocked will carry over from Instagram, and we’re enforcing the same Community Guidelines to help ensure everyone interacts safely and authentically. \n\n■ Find ideas and inspiration\nFrom TV recommendations to career advice, get answers to your questions or learn something new from crowd-sourced conversations, thought leaders and industry experts.\n\n■ Never miss a moment\nStay on top of the latest trends and live events. Whether it’s about new music, movie premieres, sports, games, TV shows, fashion, or the latest product releases, find discussions and receive notifications any time your favorite profiles start a new thread.\n\n■ Leap into the fediverse\nThreads is part of the fediverse, a global, open, social network of independent servers operated by third parties around the world. Servers share information with each other to enable people to connect and discover new things across the fediverse.\n\n\nMeta Terms: https://www.facebook.com/terms.php\nMeta Privacy Policy: https://privacycenter.instagram.com/policy\nThreads Supplemental Privacy Policy: https://help.instagram.com/515230437301944\nThreads Supplemental Terms: https://help.instagram.com/769983657850450\nInstagram Community Guidelines: https://help.instagram.com/477434105621119\nConsumer Health Privacy Policy: https://privacycenter.instagram.com/policies/health\n\nLearn how we're working to help keep our communities safe across Meta technologies at the Meta Safety Center: https://about.meta.com/actions/safety"
+        },
+        "im:price": {
+          "label": "Get",
+          "attributes": {
+            "amount": "0.00",
+            "currency": "USD"
+          }
+        },
+        "im:contentType": {
+          "attributes": {
+            "term": "Application",
+            "label": "Application"
+          }
+        },
+        "rights": {
+          "label": "© 2024 Instagram, LLC."
+        },
+        "title": {
+          "label": "Threads - Instagram, Inc."
+        },
+        "link": {
+          "attributes": {
+            "rel": "alternate",
+            "type": "text/html",
+            "href": "https://apps.apple.com/us/app/threads/id6446901002?uo=2"
+          }
+        },
+        "id": {
+          "label": "https://apps.apple.com/us/app/threads/id6446901002?uo=2",
+          "attributes": {
+            "im:id": "6446901002",
+            "im:bundleId": "com.burbn.barcelona"
+          }
+        },
+        "im:artist": {
+          "label": "Instagram, Inc.",
+          "attributes": {
+            "href": "https://apps.apple.com/us/developer/instagram-inc/id389801255?uo=2"
+          }
+        },
+        "category": {
+          "attributes": {
+            "im:id": "6005",
+            "term": "Social Networking",
+            "scheme": "https://apps.apple.com/us/genre/ios-social-networking/id6005?uo=2",
+            "label": "Social Networking"
+          }
+        },
+        "im:releaseDate": {
+          "label": "2023-07-05T00:00:00-07:00",
+          "attributes": {
+            "label": "July 5, 2023"
+          }
+        }
+      }
+    },
+    {
+      "source": "apple_rss",
+      "feed_type": "top_free",
+      "bundle_id": "6477489729",
+      "title": "Google Gemini",
+      "developer": "Google",
+      "icon_url": "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/36/0f/20/360f2041-5647-a021-ca56-d2fa3830b416/AppIcon-0-1x_U007epad-0-0-0-1-0-0-0-0-85-220-0.png/100x100bb.png",
+      "category": "Productivity",
+      "release_date": "November 13, 2024",
+      "age_rating": "Application",
+      "description": "Google Gemini app is your personal, proactive and powerful AI Assistant.\n\nWith Gemini on your iPhone or iPad, you can:\n\n- Go Live with Gemini to brainstorm ideas, simplify complex topics, and rehearse for important moments. Just click on the Gemini Live button in your Gemini app\n- Connect with your favorite Google apps like Search, YouTube, Google Maps, Gmail, and more\n- Study smarter and explore any topic with interactive visuals and real-world examples\n- Turn any file into a podcast that you can listen to anytime, anywhere\n- Create stunning images from just a few words\n- Plan trips better and faster\n- Get summaries, deep dives, and source links, all in one place\n- Brainstorm new ideas, or improve existing ones\n\nTry Nano Banana: state of the art image generation and editing built on Gemini 2.5 Flash\n\nLevel-up your Gemini app experience by upgrading to the Pro plan–unlock new and powerful features to tackle complex tasks and projects and enjoy industry-leading 1M token context window (enabling Gemini to process up to 1,500 pages of text or 30k lines of code), and:\n- Get more access our most powerful model, like 2.5 Pro\n- Generate and dive into detailed reports on any topic with Deep Research powered by 2.5 Pro\n- Turn words into high-quality, 8 second video clips with video generation with Veo 3.1, and more.\n\nGoogle AI Pro is available in 150 countries and territories, and includes additional benefits. Gemini app, as part of Google AI Pro, will continue to be available to qualifying Google Workspace business and education plans. Learn more: https://gemini.google/subscriptions/\n\nGet the best of Gemini app by upgrading to the Ultra plan–unlock the highest level of access and exclusive features to turn anything into anything. Get the highest access to Google’s most powerful model, like 2.5 Pro, features like video generation with Veo 3.1, Deep Research on 2.5 Pro, and unlock Gemini 2.5 Deep Think. You’ll also get early access to try our newest AI innovations as they become available, including Agent Mode.\n\nGemini in Google AI Ultra is available in the US and includes additional benefits as part of a Google AI Ultra subscription. Google AI Ultra is not currently available to Google Workspace business and education customers. Learn more: https://gemini.google/subscriptions/\n\nThe Google Gemini mobile app is available in select languages and countries. Learn more:\ng.co/gemini/iosrequirements\n\nGemini Live feature availability varies based on language.\ng.co/gemini/ioslanguages\n\nWhile Gemini can help you with many tasks like checking the weather, giving directions, finding and summarizing information across the web and apps, Gemini does not yet support device actions like setting an alarm, sending a text message, and others on iOS.\n\nReview the Gemini Apps Privacy Notice:\ng.co/gemini/privacynotice",
+      "formatted_price": "Get",
+      "rank": 4,
+      "scraped_at": "2025-10-23T15:58:57.578Z",
+      "raw_data": {
+        "im:name": {
+          "label": "Google Gemini"
+        },
+        "im:image": [
+          {
+            "label": "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/36/0f/20/360f2041-5647-a021-ca56-d2fa3830b416/AppIcon-0-1x_U007epad-0-0-0-1-0-0-0-0-85-220-0.png/53x53bb.png",
+            "attributes": {
+              "height": "53"
+            }
+          },
+          {
+            "label": "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/36/0f/20/360f2041-5647-a021-ca56-d2fa3830b416/AppIcon-0-1x_U007epad-0-0-0-1-0-0-0-0-85-220-0.png/75x75bb.png",
+            "attributes": {
+              "height": "75"
+            }
+          },
+          {
+            "label": "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/36/0f/20/360f2041-5647-a021-ca56-d2fa3830b416/AppIcon-0-1x_U007epad-0-0-0-1-0-0-0-0-85-220-0.png/100x100bb.png",
+            "attributes": {
+              "height": "100"
+            }
+          }
+        ],
+        "summary": {
+          "label": "Google Gemini app is your personal, proactive and powerful AI Assistant.\n\nWith Gemini on your iPhone or iPad, you can:\n\n- Go Live with Gemini to brainstorm ideas, simplify complex topics, and rehearse for important moments. Just click on the Gemini Live button in your Gemini app\n- Connect with your favorite Google apps like Search, YouTube, Google Maps, Gmail, and more\n- Study smarter and explore any topic with interactive visuals and real-world examples\n- Turn any file into a podcast that you can listen to anytime, anywhere\n- Create stunning images from just a few words\n- Plan trips better and faster\n- Get summaries, deep dives, and source links, all in one place\n- Brainstorm new ideas, or improve existing ones\n\nTry Nano Banana: state of the art image generation and editing built on Gemini 2.5 Flash\n\nLevel-up your Gemini app experience by upgrading to the Pro plan–unlock new and powerful features to tackle complex tasks and projects and enjoy industry-leading 1M token context window (enabling Gemini to process up to 1,500 pages of text or 30k lines of code), and:\n- Get more access our most powerful model, like 2.5 Pro\n- Generate and dive into detailed reports on any topic with Deep Research powered by 2.5 Pro\n- Turn words into high-quality, 8 second video clips with video generation with Veo 3.1, and more.\n\nGoogle AI Pro is available in 150 countries and territories, and includes additional benefits. Gemini app, as part of Google AI Pro, will continue to be available to qualifying Google Workspace business and education plans. Learn more: https://gemini.google/subscriptions/\n\nGet the best of Gemini app by upgrading to the Ultra plan–unlock the highest level of access and exclusive features to turn anything into anything. Get the highest access to Google’s most powerful model, like 2.5 Pro, features like video generation with Veo 3.1, Deep Research on 2.5 Pro, and unlock Gemini 2.5 Deep Think. You’ll also get early access to try our newest AI innovations as they become available, including Agent Mode.\n\nGemini in Google AI Ultra is available in the US and includes additional benefits as part of a Google AI Ultra subscription. Google AI Ultra is not currently available to Google Workspace business and education customers. Learn more: https://gemini.google/subscriptions/\n\nThe Google Gemini mobile app is available in select languages and countries. Learn more:\ng.co/gemini/iosrequirements\n\nGemini Live feature availability varies based on language.\ng.co/gemini/ioslanguages\n\nWhile Gemini can help you with many tasks like checking the weather, giving directions, finding and summarizing information across the web and apps, Gemini does not yet support device actions like setting an alarm, sending a text message, and others on iOS.\n\nReview the Gemini Apps Privacy Notice:\ng.co/gemini/privacynotice"
+        },
+        "im:price": {
+          "label": "Get",
+          "attributes": {
+            "amount": "0.00",
+            "currency": "USD"
+          }
+        },
+        "im:contentType": {
+          "attributes": {
+            "term": "Application",
+            "label": "Application"
+          }
+        },
+        "rights": {
+          "label": "© 2025 Google Inc."
+        },
+        "title": {
+          "label": "Google Gemini - Google"
+        },
+        "link": {
+          "attributes": {
+            "rel": "alternate",
+            "type": "text/html",
+            "href": "https://apps.apple.com/us/app/google-gemini/id6477489729?uo=2"
+          }
+        },
+        "id": {
+          "label": "https://apps.apple.com/us/app/google-gemini/id6477489729?uo=2",
+          "attributes": {
+            "im:id": "6477489729",
+            "im:bundleId": "com.google.gemini"
+          }
+        },
+        "im:artist": {
+          "label": "Google",
+          "attributes": {
+            "href": "https://apps.apple.com/us/developer/google/id281956209?uo=2"
+          }
+        },
+        "category": {
+          "attributes": {
+            "im:id": "6007",
+            "term": "Productivity",
+            "scheme": "https://apps.apple.com/us/genre/ios-productivity/id6007?uo=2",
+            "label": "Productivity"
+          }
+        },
+        "im:releaseDate": {
+          "label": "2024-11-13T00:00:00-07:00",
+          "attributes": {
+            "label": "November 13, 2024"
+          }
+        }
+      }
+    },
+    {
+      "source": "apple_rss",
+      "feed_type": "top_free",
+      "bundle_id": "922103212",
+      "title": "McDonald's",
+      "developer": "McDonald's USA",
+      "icon_url": "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/5e/0e/84/5e0e8494-4fe4-d684-924e-659b0598d5f2/AppIcon-US-0-0-1x_U007emarketing-0-8-0-0-0-85-220.png/100x100bb.png",
+      "category": "Food & Drink",
+      "release_date": "October 24, 2014",
+      "age_rating": "Application",
+      "description": "Get the app now to join MyMcDonald's Rewards and start earning points on your faves for free McDonald's. Plus, get exclusive deals and save time by ordering ahead in the app.*  \n\nMobile Order & Pay \nGet your faves fast with Mobile Order and Pay. Place your order and select your pickup option.*\n\nMyMcDonald’s Rewards\nJoin MyMcDonald's Rewards in the app to start earning points on every purchase and redeem for free McDonald’s.*\n\nExclusive Deals and App Offers \nGet exclusive deals on your McDonald’s favorites in the app with contactless Mobile Order & Pay* and convenient Drive Thru or Curbside pickup.\n\nMcDelivery \nNow get your faves delivered, earn MyMcDonald’s Rewards points and track your order all with McDelivery in the app. \n\nSave Your Favorites \nNo pickles? No problem. Customize and save your favorites to quickly reorder for your next visit.\n\nRestaurant Locator \nOpen the map and find the nearest McDonald’s, along with store hours, and restaurant information. \n\nDownload the McDonald’s app today and enjoy access to exclusive deals, MyMcDonald’s Rewards and much more. \n\n*McDelivery prices may be higher than at restaurants. Download and registration required. Data rates may apply. The McDonald's App is not currently compatible with smartwatches. Check https://www.mcdonalds.com/us/en-us/terms-and-conditions.html for Terms and Conditions and more information. © 2023 McDonald’s",
+      "formatted_price": "Get",
+      "rank": 5,
+      "scraped_at": "2025-10-23T15:58:57.578Z",
+      "raw_data": {
+        "im:name": {
+          "label": "McDonald's"
+        },
+        "im:image": [
+          {
+            "label": "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/5e/0e/84/5e0e8494-4fe4-d684-924e-659b0598d5f2/AppIcon-US-0-0-1x_U007emarketing-0-8-0-0-0-85-220.png/53x53bb.png",
+            "attributes": {
+              "height": "53"
+            }
+          },
+          {
+            "label": "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/5e/0e/84/5e0e8494-4fe4-d684-924e-659b0598d5f2/AppIcon-US-0-0-1x_U007emarketing-0-8-0-0-0-85-220.png/75x75bb.png",
+            "attributes": {
+              "height": "75"
+            }
+          },
+          {
+            "label": "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/5e/0e/84/5e0e8494-4fe4-d684-924e-659b0598d5f2/AppIcon-US-0-0-1x_U007emarketing-0-8-0-0-0-85-220.png/100x100bb.png",
+            "attributes": {
+              "height": "100"
+            }
+          }
+        ],
+        "summary": {
+          "label": "Get the app now to join MyMcDonald's Rewards and start earning points on your faves for free McDonald's. Plus, get exclusive deals and save time by ordering ahead in the app.*  \n\nMobile Order & Pay \nGet your faves fast with Mobile Order and Pay. Place your order and select your pickup option.*\n\nMyMcDonald’s Rewards\nJoin MyMcDonald's Rewards in the app to start earning points on every purchase and redeem for free McDonald’s.*\n\nExclusive Deals and App Offers \nGet exclusive deals on your McDonald’s favorites in the app with contactless Mobile Order & Pay* and convenient Drive Thru or Curbside pickup.\n\nMcDelivery \nNow get your faves delivered, earn MyMcDonald’s Rewards points and track your order all with McDelivery in the app. \n\nSave Your Favorites \nNo pickles? No problem. Customize and save your favorites to quickly reorder for your next visit.\n\nRestaurant Locator \nOpen the map and find the nearest McDonald’s, along with store hours, and restaurant information. \n\nDownload the McDonald’s app today and enjoy access to exclusive deals, MyMcDonald’s Rewards and much more. \n\n*McDelivery prices may be higher than at restaurants. Download and registration required. Data rates may apply. The McDonald's App is not currently compatible with smartwatches. Check https://www.mcdonalds.com/us/en-us/terms-and-conditions.html for Terms and Conditions and more information. © 2023 McDonald’s"
+        },
+        "im:price": {
+          "label": "Get",
+          "attributes": {
+            "amount": "0.00",
+            "currency": "USD"
+          }
+        },
+        "im:contentType": {
+          "attributes": {
+            "term": "Application",
+            "label": "Application"
+          }
+        },
+        "rights": {
+          "label": "© 2025 McDonald's"
+        },
+        "title": {
+          "label": "McDonald's - McDonald's USA"
+        },
+        "link": [
+          {
+            "attributes": {
+              "rel": "alternate",
+              "type": "text/html",
+              "href": "https://apps.apple.com/us/app/mcdonalds/id922103212?uo=2"
+            }
+          },
+          {
+            "im:duration": {
+              "label": "0"
+            },
+            "attributes": {
+              "title": "Preview",
+              "rel": "enclosure",
+              "type": "image/jpeg",
+              "href": "https://is1-ssl.mzstatic.com/image/thumb/PurpleSource116/v4/6f/8e/30/6f8e30d2-9fc1-59c1-fa35-50cb0d8e9a7b/b28364fe-bb62-4368-9378-2153c033c2b4_Image1_ios5.5.png/480x480bb.png",
+              "im:assetType": "preview"
+            }
+          }
+        ],
+        "id": {
+          "label": "https://apps.apple.com/us/app/mcdonalds/id922103212?uo=2",
+          "attributes": {
+            "im:id": "922103212",
+            "im:bundleId": "com.mcdonalds.gma"
+          }
+        },
+        "im:artist": {
+          "label": "McDonald's USA",
+          "attributes": {
+            "href": "https://apps.apple.com/us/developer/mcdonalds-usa/id703260918?uo=2"
+          }
+        },
+        "category": {
+          "attributes": {
+            "im:id": "6023",
+            "term": "Food & Drink",
+            "scheme": "https://apps.apple.com/us/genre/ios-food-drink/id6023?uo=2",
+            "label": "Food & Drink"
+          }
+        },
+        "im:releaseDate": {
+          "label": "2014-10-24T19:15:04-07:00",
+          "attributes": {
+            "label": "October 24, 2014"
+          }
+        }
+      }
+    },
+    {
+      "source": "apple_rss",
+      "feed_type": "top_free",
+      "bundle_id": "284815942",
+      "title": "Google",
+      "developer": "Google",
+      "icon_url": "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/ce/85/00/ce8500d6-1f5e-5cb1-bcc8-d4d835f62e8b/logo_gsa_gradient_ios_color-0-1x_U007epad-0-0-0-1-0-0-sRGB-0-0-85-220-0.png/100x100bb.png",
+      "category": "Utilities",
+      "release_date": "February 12, 2019",
+      "age_rating": "Application",
+      "description": "Download the Google app to stay in the know about things that matter to you. Try AI Overviews, find quick answers, explore your interests, and stay up to date with Discover. The more you use the Google app, the more it’s tailored to you.\n\nFeature highlights:\n\n• Image Search: See something you like? Snap a photo and discover where to shop for it, find related images, and more. Refine your camera searches by adding words – whether you want those shoes but in ‘blue’, or want to learn how to ‘repair’ that broken bit on your bicycle.\n• Hum to Search: Can't remember the name of that song? Hum the tune and the Google app will identify it for you.\n• Discover: Stay up-to-date on topics that matter to you. Get personalized news, articles, and videos based on your interests and search history.\n• Try AI Overviews: We’re making search smarter and simpler with generative AI. Try searching things like ‘how to cut onions without crying’ or ‘how to fix a broken zipper’ and AI Overviews will find what you’re looking for in faster, easier ways.\n• Google Search Widget: Search from your home screen or lock screen with the new Google widget. Choose from 2 widgets, giving you a quick search bar in both sizes, and shortcuts to choose how you Search with Lens, Voice, and Incognito in the medium size widget.\n\nSearch what you see with Google Lens:\n\n• Use your camera to identify what you’re looking at. Identify plants and animals, translate text in real-time, find similar products to buy, and even solve math problems with step-by-step guides.\n• Translate over 100 languages on things like road signs when you travel, menus, and more by pointing your camera at text.\n• Reverse image search: Find the source, similar photos, and related information for any image.\n• Socratic app functionalities like step-by-step homework help on math, physics and word problems, and testing your knowledge with Questions and Answers are now fully supported within the Google app.\n\n\nGet personalized updates in Discover:\n\n• Stay in the know about topics that interest you.\n• Start your morning with weather and top news.\n• Get real-time updates on sports, movies, and events.\n• Know as soon as your favorite artists drop new albums.\n• Get stories about your interests and hobbies.\n• Follow interesting topics, right from Search results.\n\nSearch safely and securely:\n\n• All searches in the Google app are protected by encrypting the connection between your device and Google.\n• Privacy controls are easy to find and use. Tap your profile picture to access your menu and delete recent search history from your account with one click.\n• Search proactively filters webspam to help ensure that you see safe, high-quality results.\n\n\nLearn more about what the Google app can do for you: https://search.google/\n\nPrivacy policy: https://www.google.com/policies/privacy\n\nYour feedback helps us create products you'll love. Join a user research study here:\nhttps://goo.gl/kKQn99",
+      "formatted_price": "Get",
+      "rank": 6,
+      "scraped_at": "2025-10-23T15:58:57.578Z",
+      "raw_data": {
+        "im:name": {
+          "label": "Google"
+        },
+        "im:image": [
+          {
+            "label": "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/ce/85/00/ce8500d6-1f5e-5cb1-bcc8-d4d835f62e8b/logo_gsa_gradient_ios_color-0-1x_U007epad-0-0-0-1-0-0-sRGB-0-0-85-220-0.png/53x53bb.png",
+            "attributes": {
+              "height": "53"
+            }
+          },
+          {
+            "label": "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/ce/85/00/ce8500d6-1f5e-5cb1-bcc8-d4d835f62e8b/logo_gsa_gradient_ios_color-0-1x_U007epad-0-0-0-1-0-0-sRGB-0-0-85-220-0.png/75x75bb.png",
+            "attributes": {
+              "height": "75"
+            }
+          },
+          {
+            "label": "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/ce/85/00/ce8500d6-1f5e-5cb1-bcc8-d4d835f62e8b/logo_gsa_gradient_ios_color-0-1x_U007epad-0-0-0-1-0-0-sRGB-0-0-85-220-0.png/100x100bb.png",
+            "attributes": {
+              "height": "100"
+            }
+          }
+        ],
+        "summary": {
+          "label": "Download the Google app to stay in the know about things that matter to you. Try AI Overviews, find quick answers, explore your interests, and stay up to date with Discover. The more you use the Google app, the more it’s tailored to you.\n\nFeature highlights:\n\n• Image Search: See something you like? Snap a photo and discover where to shop for it, find related images, and more. Refine your camera searches by adding words – whether you want those shoes but in ‘blue’, or want to learn how to ‘repair’ that broken bit on your bicycle.\n• Hum to Search: Can't remember the name of that song? Hum the tune and the Google app will identify it for you.\n• Discover: Stay up-to-date on topics that matter to you. Get personalized news, articles, and videos based on your interests and search history.\n• Try AI Overviews: We’re making search smarter and simpler with generative AI. Try searching things like ‘how to cut onions without crying’ or ‘how to fix a broken zipper’ and AI Overviews will find what you’re looking for in faster, easier ways.\n• Google Search Widget: Search from your home screen or lock screen with the new Google widget. Choose from 2 widgets, giving you a quick search bar in both sizes, and shortcuts to choose how you Search with Lens, Voice, and Incognito in the medium size widget.\n\nSearch what you see with Google Lens:\n\n• Use your camera to identify what you’re looking at. Identify plants and animals, translate text in real-time, find similar products to buy, and even solve math problems with step-by-step guides.\n• Translate over 100 languages on things like road signs when you travel, menus, and more by pointing your camera at text.\n• Reverse image search: Find the source, similar photos, and related information for any image.\n• Socratic app functionalities like step-by-step homework help on math, physics and word problems, and testing your knowledge with Questions and Answers are now fully supported within the Google app.\n\n\nGet personalized updates in Discover:\n\n• Stay in the know about topics that interest you.\n• Start your morning with weather and top news.\n• Get real-time updates on sports, movies, and events.\n• Know as soon as your favorite artists drop new albums.\n• Get stories about your interests and hobbies.\n• Follow interesting topics, right from Search results.\n\nSearch safely and securely:\n\n• All searches in the Google app are protected by encrypting the connection between your device and Google.\n• Privacy controls are easy to find and use. Tap your profile picture to access your menu and delete recent search history from your account with one click.\n• Search proactively filters webspam to help ensure that you see safe, high-quality results.\n\n\nLearn more about what the Google app can do for you: https://search.google/\n\nPrivacy policy: https://www.google.com/policies/privacy\n\nYour feedback helps us create products you'll love. Join a user research study here:\nhttps://goo.gl/kKQn99"
+        },
+        "im:price": {
+          "label": "Get",
+          "attributes": {
+            "amount": "0.00",
+            "currency": "USD"
+          }
+        },
+        "im:contentType": {
+          "attributes": {
+            "term": "Application",
+            "label": "Application"
+          }
+        },
+        "rights": {
+          "label": "© 2024 Google Inc."
+        },
+        "title": {
+          "label": "Google - Google"
+        },
+        "link": [
+          {
+            "attributes": {
+              "rel": "alternate",
+              "type": "text/html",
+              "href": "https://apps.apple.com/us/app/google/id284815942?uo=2"
+            }
+          },
+          {
+            "im:duration": {
+              "label": "0"
+            },
+            "attributes": {
+              "title": "Preview",
+              "rel": "enclosure",
+              "type": "image/jpeg",
+              "href": "https://is1-ssl.mzstatic.com/image/thumb/PurpleSource211/v4/7b/aa/54/7baa541f-a025-ed85-6f19-f295c19d05cc/a02b8c5f-06e2-4b98-87d9-fb013850b35c_01.jpg/1024x1024bb.jpg",
+              "im:assetType": "preview"
+            }
+          }
+        ],
+        "id": {
+          "label": "https://apps.apple.com/us/app/google/id284815942?uo=2",
+          "attributes": {
+            "im:id": "284815942",
+            "im:bundleId": "com.google.GoogleMobile"
+          }
+        },
+        "im:artist": {
+          "label": "Google",
+          "attributes": {
+            "href": "https://apps.apple.com/us/developer/google/id281956209?uo=2"
+          }
+        },
+        "category": {
+          "attributes": {
+            "im:id": "6002",
+            "term": "Utilities",
+            "scheme": "https://apps.apple.com/us/genre/ios-utilities/id6002?uo=2",
+            "label": "Utilities"
+          }
+        },
+        "im:releaseDate": {
+          "label": "2019-02-12T00:00:00-07:00",
+          "attributes": {
+            "label": "February 12, 2019"
+          }
+        }
+      }
+    },
+    {
+      "source": "apple_rss",
+      "feed_type": "top_free",
+      "bundle_id": "1641486558",
+      "title": "Temu: Shop Like a Billionaire",
+      "developer": "Temu",
+      "icon_url": "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/09/4d/ee/094deef1-8996-7473-baa7-0a37b9c1e5cc/AppIcon-1x_U007emarketing-0-8-0-0-85-220-0.png/100x100bb.png",
+      "category": "Shopping",
+      "release_date": "August 31, 2022",
+      "age_rating": "Application",
+      "description": "Shop on Temu for exclusive offers. \n\nNo matter what you're looking for, Temu has you covered, including fashion, home decor, handmade crafts, beauty & cosmetics, clothing, shoes, and more.\n\nDownload Temu today and enjoy incredible deals daily.\n\nWIDE SELECTION\nDiscover thousands of new products and shops.\n\nCONVENIENCE\nFast and secure checkout.\nFree shipping & returns within 90 days.\n*Other conditions may apply\n\nVisit temu.com or follow us on:\nInstagram: https://www.instagram.com/temu/\nTikTok: https://www.tiktok.com/@temu \nFacebook: https://www.facebook.com/shoptemu\nYoutube: https://www.youtube.com/@temu",
+      "formatted_price": "Get",
+      "rank": 7,
+      "scraped_at": "2025-10-23T15:58:57.578Z",
+      "raw_data": {
+        "im:name": {
+          "label": "Temu: Shop Like a Billionaire"
+        },
+        "im:image": [
+          {
+            "label": "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/09/4d/ee/094deef1-8996-7473-baa7-0a37b9c1e5cc/AppIcon-1x_U007emarketing-0-8-0-0-85-220-0.png/53x53bb.png",
+            "attributes": {
+              "height": "53"
+            }
+          },
+          {
+            "label": "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/09/4d/ee/094deef1-8996-7473-baa7-0a37b9c1e5cc/AppIcon-1x_U007emarketing-0-8-0-0-85-220-0.png/75x75bb.png",
+            "attributes": {
+              "height": "75"
+            }
+          },
+          {
+            "label": "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/09/4d/ee/094deef1-8996-7473-baa7-0a37b9c1e5cc/AppIcon-1x_U007emarketing-0-8-0-0-85-220-0.png/100x100bb.png",
+            "attributes": {
+              "height": "100"
+            }
+          }
+        ],
+        "summary": {
+          "label": "Shop on Temu for exclusive offers. \n\nNo matter what you're looking for, Temu has you covered, including fashion, home decor, handmade crafts, beauty & cosmetics, clothing, shoes, and more.\n\nDownload Temu today and enjoy incredible deals daily.\n\nWIDE SELECTION\nDiscover thousands of new products and shops.\n\nCONVENIENCE\nFast and secure checkout.\nFree shipping & returns within 90 days.\n*Other conditions may apply\n\nVisit temu.com or follow us on:\nInstagram: https://www.instagram.com/temu/\nTikTok: https://www.tiktok.com/@temu \nFacebook: https://www.facebook.com/shoptemu\nYoutube: https://www.youtube.com/@temu"
+        },
+        "im:price": {
+          "label": "Get",
+          "attributes": {
+            "amount": "0.00",
+            "currency": "USD"
+          }
+        },
+        "im:contentType": {
+          "attributes": {
+            "term": "Application",
+            "label": "Application"
+          }
+        },
+        "rights": {
+          "label": "© Whaleco Inc."
+        },
+        "title": {
+          "label": "Temu: Shop Like a Billionaire - Temu"
+        },
+        "link": [
+          {
+            "attributes": {
+              "rel": "alternate",
+              "type": "text/html",
+              "href": "https://apps.apple.com/us/app/temu-shop-like-a-billionaire/id1641486558?uo=2"
+            }
+          },
+          {
+            "im:duration": {
+              "label": "0"
+            },
+            "attributes": {
+              "title": "Preview",
+              "rel": "enclosure",
+              "type": "image/jpeg",
+              "href": "https://is1-ssl.mzstatic.com/image/thumb/PurpleSource211/v4/79/59/18/795918dc-be03-741e-0faa-257fbe994464/de7f078b-0787-4fe0-bfc9-89ad423ec36e.png/1024x1024bb.png",
+              "im:assetType": "preview"
+            }
+          }
+        ],
+        "id": {
+          "label": "https://apps.apple.com/us/app/temu-shop-like-a-billionaire/id1641486558?uo=2",
+          "attributes": {
+            "im:id": "1641486558",
+            "im:bundleId": "com.einnovation.temu"
+          }
+        },
+        "im:artist": {
+          "label": "Temu",
+          "attributes": {
+            "href": "https://apps.apple.com/us/developer/temu/id1641486560?uo=2"
+          }
+        },
+        "category": {
+          "attributes": {
+            "im:id": "6024",
+            "term": "Shopping",
+            "scheme": "https://apps.apple.com/us/genre/ios-shopping/id6024?uo=2",
+            "label": "Shopping"
+          }
+        },
+        "im:releaseDate": {
+          "label": "2022-08-31T00:00:00-07:00",
+          "attributes": {
+            "label": "August 31, 2022"
+          }
+        }
+      }
+    },
+    {
+      "source": "apple_rss",
+      "feed_type": "top_free",
+      "bundle_id": "1668228991",
+      "title": "Dave’s Hot Chicken®",
+      "developer": "Dave's Hot Chicken",
+      "icon_url": "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/e3/27/de/e327de35-7e49-f4e9-342d-ac1c2e176155/AppIcon-0-0-1x_U007emarketing-0-11-0-0-85-220.png/100x100bb.png",
+      "category": "Food & Drink",
+      "release_date": "April 18, 2023",
+      "age_rating": "Application",
+      "description": "Dave’s Hot Chicken® app provides a convenient way to order & earn or redeem Dave’s Frequent Fryer Points. You eat and you earn.\n\nFEATURES\n+ Find stores near you, get directions/hours, and view store amenities.\n+ A personalized menu - made just for you! With the Dave’s Hot Chicken® app you can easily re-order your favorites & recent orders.\n+ Customize & place your order using the app then pick up from a nearby participating store without waiting in line.\n+ Earn & Redeem Dave’s Frequent Fryer Points! Whether you order Dave’s online, in-app, or in-store, our app records all your points. You get 10 Dave’s Frequent Fryer Points for every dollar you spend*. Watch how fast those points add up!\n+ Unlock app-only offers & early access to new items + collabs.\n+ Get your order delivered right to your door (at participating locations.)\n\n*At participating stores. Restrictions apply. See daveshotchicken.com for details.\n\n\nABOUT DAVE'S HOT CHICKEN® • THE REAL STORY\nDave’s Hot Chicken was created by best friends Dave Kopushyan, Arman Oganesyan, and Tommy and Gary Rubenyan. Dave, a chef trained in Thomas Keller’s (French Laundry) organization set out to create the perfect Hot Chicken by searching, tasting, and frying. The four friends scrounged up $900 to put a tiny stand in an East Hollywood parking lot. The menu was simple, and the chicken was the star. Sourced and prepared to be the juiciest and most tender chicken imaginable, each piece is topped with Dave’s signature mix of spices ranging from No Spice to “The Reaper.”",
+      "formatted_price": "Get",
+      "rank": 8,
+      "scraped_at": "2025-10-23T15:58:57.578Z",
+      "raw_data": {
+        "im:name": {
+          "label": "Dave’s Hot Chicken®"
+        },
+        "im:image": [
+          {
+            "label": "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/e3/27/de/e327de35-7e49-f4e9-342d-ac1c2e176155/AppIcon-0-0-1x_U007emarketing-0-11-0-0-85-220.png/53x53bb.png",
+            "attributes": {
+              "height": "53"
+            }
+          },
+          {
+            "label": "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/e3/27/de/e327de35-7e49-f4e9-342d-ac1c2e176155/AppIcon-0-0-1x_U007emarketing-0-11-0-0-85-220.png/75x75bb.png",
+            "attributes": {
+              "height": "75"
+            }
+          },
+          {
+            "label": "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/e3/27/de/e327de35-7e49-f4e9-342d-ac1c2e176155/AppIcon-0-0-1x_U007emarketing-0-11-0-0-85-220.png/100x100bb.png",
+            "attributes": {
+              "height": "100"
+            }
+          }
+        ],
+        "summary": {
+          "label": "Dave’s Hot Chicken® app provides a convenient way to order & earn or redeem Dave’s Frequent Fryer Points. You eat and you earn.\n\nFEATURES\n+ Find stores near you, get directions/hours, and view store amenities.\n+ A personalized menu - made just for you! With the Dave’s Hot Chicken® app you can easily re-order your favorites & recent orders.\n+ Customize & place your order using the app then pick up from a nearby participating store without waiting in line.\n+ Earn & Redeem Dave’s Frequent Fryer Points! Whether you order Dave’s online, in-app, or in-store, our app records all your points. You get 10 Dave’s Frequent Fryer Points for every dollar you spend*. Watch how fast those points add up!\n+ Unlock app-only offers & early access to new items + collabs.\n+ Get your order delivered right to your door (at participating locations.)\n\n*At participating stores. Restrictions apply. See daveshotchicken.com for details.\n\n\nABOUT DAVE'S HOT CHICKEN® • THE REAL STORY\nDave’s Hot Chicken was created by best friends Dave Kopushyan, Arman Oganesyan, and Tommy and Gary Rubenyan. Dave, a chef trained in Thomas Keller’s (French Laundry) organization set out to create the perfect Hot Chicken by searching, tasting, and frying. The four friends scrounged up $900 to put a tiny stand in an East Hollywood parking lot. The menu was simple, and the chicken was the star. Sourced and prepared to be the juiciest and most tender chicken imaginable, each piece is topped with Dave’s signature mix of spices ranging from No Spice to “The Reaper.”"
+        },
+        "im:price": {
+          "label": "Get",
+          "attributes": {
+            "amount": "0.00",
+            "currency": "USD"
+          }
+        },
+        "im:contentType": {
+          "attributes": {
+            "term": "Application",
+            "label": "Application"
+          }
+        },
+        "rights": {
+          "label": "© 2024 DAVE’S HOT CHICKEN. ALL RIGHTS RESERVED."
+        },
+        "title": {
+          "label": "Dave’s Hot Chicken® - Dave's Hot Chicken"
+        },
+        "link": [
+          {
+            "attributes": {
+              "rel": "alternate",
+              "type": "text/html",
+              "href": "https://apps.apple.com/us/app/daves-hot-chicken/id1668228991?uo=2"
+            }
+          },
+          {
+            "im:duration": {
+              "label": "0"
+            },
+            "attributes": {
+              "title": "Preview",
+              "rel": "enclosure",
+              "type": "image/jpeg",
+              "href": "https://is1-ssl.mzstatic.com/image/thumb/PurpleSource221/v4/8e/d1/a9/8ed1a966-8527-6425-3730-0b8b5dafaebd/af9ff0cd-bd3b-4774-bcbf-ad80ef067988_1242x2208_1.jpg/480x480bb.jpg",
+              "im:assetType": "preview"
+            }
+          }
+        ],
+        "id": {
+          "label": "https://apps.apple.com/us/app/daves-hot-chicken/id1668228991?uo=2",
+          "attributes": {
+            "im:id": "1668228991",
+            "im:bundleId": "com.daveshotchicken.prod.iosapp"
+          }
+        },
+        "im:artist": {
+          "label": "Dave's Hot Chicken",
+          "attributes": {
+            "href": "https://apps.apple.com/us/developer/daves-hot-chicken/id1663959687?uo=2"
+          }
+        },
+        "category": {
+          "attributes": {
+            "im:id": "6023",
+            "term": "Food & Drink",
+            "scheme": "https://apps.apple.com/us/genre/ios-food-drink/id6023?uo=2",
+            "label": "Food & Drink"
+          }
+        },
+        "im:releaseDate": {
+          "label": "2023-04-18T00:00:00-07:00",
+          "attributes": {
+            "label": "April 18, 2023"
+          }
+        }
+      }
+    },
+    {
+      "source": "apple_rss",
+      "feed_type": "top_free",
+      "bundle_id": "1500855883",
+      "title": "CapCut - Video Editor",
+      "developer": "Bytedance Pte. Ltd",
+      "icon_url": "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/f9/0a/7d/f90a7d6a-1d2c-b7c7-6c43-a85427e6122c/AppIcon-0-0-1x_U007emarketing-0-8-0-85-220.png/100x100bb.png",
+      "category": "Photo & Video",
+      "release_date": "April 14, 2020",
+      "age_rating": "Application",
+      "description": "CapCut offers easy-to-use video editing functions, in-APP fonts and effects, advanced features such as keyframe animation, smooth slow-motion, chroma key, and stabilization, to help you capture and snip moments.\n\nCreate fancy videos with other unique features: auto captions, text-to-speech, motion tracking, and background removal. Show your personality and go viral on TikTok, YouTube, Instagram, WhatsApp, and Facebook!\n\nFEATURES\nBasic video editing\n• Trim and shorten clips and split or merge videos.\n• Adjust video speed from 0.1x to 100x, and apply speed curves to clips.\n• Animate video clips with incredible zoom in/out effects.\n• Highlight the best moments with the freeze feature.\n• Explore transition options with awesome effects on and between clips.\n\nAdvanced video editor\n• Keyframe video animation is available for all settings.\n• Edit videos to create smooth slow-motion with the optical flow feature and speed curve tool.\n• Use the chroma key to remove specific colors from videos.\n• Easy to arrange and preview clips on multi-track timeline.\n• The stabilizing feature keeps video footage steady.\n\nIntelligent features\n• Auto captions: automate speech recognition and subtitles in videos.\n• Text-to-speech: apply text-to-speech in multiple languages and voices.\n• Background removal: automatically remove backgrounds.\n\nText & Stickers\n• Add text to videos with different fonts and styles, choose unique text templates. Fonts can be imported locally.\n• Subtitles can be added to the timeline of video tracks and can be moved and adjusted in one step.\n\nTrending Effects & Filters\n• Match video content with diverse filters that are updated weekly with the latest trends.\n• Edit videos with hundreds of trending effects, including Glitch, Blur, 3D, etc.\n• Add movie-style video filters or adjust video brightness, contrast, etc.\n\nMusic & Sound Effects\n• Add millions of music clips and sound effects to videos.\n• Extract audio, clips, and recordings from videos.\n\nEasy to Share\n• Custom video export resolution, HD video editor supports 4K 60fps exports and smart HDR.\n• Adjust the format and share with your friends on social media platforms.\n\nCapCut is an all-in-one video editor and video maker application with everything you need to create stunning, high-quality videos. Beginners can get started with CapCut in a matter of seconds, while advanced users can enjoy all the functions they need to edit videos. \n\nTerms of Service —\nhttps://www.capcut.com/clause/terms-of-service\n\nPrivacy Policy —\nhttps://www.capcut.net/clause/privacy\n\nContact Us\nAny questions about CapCut? Please contact us at capcut.support@bytedance.com.\nFacebook: https://www.facebook.com/capcutapp\nInstagram: https://www.instagram.com/capcutapp\nYouTube: https://www.youtube.com/capcutofficial\nTikTok: https://www.tiktok.com/@capcut",
+      "formatted_price": "Get",
+      "rank": 9,
+      "scraped_at": "2025-10-23T15:58:57.578Z",
+      "raw_data": {
+        "im:name": {
+          "label": "CapCut - Video Editor"
+        },
+        "im:image": [
+          {
+            "label": "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/f9/0a/7d/f90a7d6a-1d2c-b7c7-6c43-a85427e6122c/AppIcon-0-0-1x_U007emarketing-0-8-0-85-220.png/53x53bb.png",
+            "attributes": {
+              "height": "53"
+            }
+          },
+          {
+            "label": "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/f9/0a/7d/f90a7d6a-1d2c-b7c7-6c43-a85427e6122c/AppIcon-0-0-1x_U007emarketing-0-8-0-85-220.png/75x75bb.png",
+            "attributes": {
+              "height": "75"
+            }
+          },
+          {
+            "label": "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/f9/0a/7d/f90a7d6a-1d2c-b7c7-6c43-a85427e6122c/AppIcon-0-0-1x_U007emarketing-0-8-0-85-220.png/100x100bb.png",
+            "attributes": {
+              "height": "100"
+            }
+          }
+        ],
+        "summary": {
+          "label": "CapCut offers easy-to-use video editing functions, in-APP fonts and effects, advanced features such as keyframe animation, smooth slow-motion, chroma key, and stabilization, to help you capture and snip moments.\n\nCreate fancy videos with other unique features: auto captions, text-to-speech, motion tracking, and background removal. Show your personality and go viral on TikTok, YouTube, Instagram, WhatsApp, and Facebook!\n\nFEATURES\nBasic video editing\n• Trim and shorten clips and split or merge videos.\n• Adjust video speed from 0.1x to 100x, and apply speed curves to clips.\n• Animate video clips with incredible zoom in/out effects.\n• Highlight the best moments with the freeze feature.\n• Explore transition options with awesome effects on and between clips.\n\nAdvanced video editor\n• Keyframe video animation is available for all settings.\n• Edit videos to create smooth slow-motion with the optical flow feature and speed curve tool.\n• Use the chroma key to remove specific colors from videos.\n• Easy to arrange and preview clips on multi-track timeline.\n• The stabilizing feature keeps video footage steady.\n\nIntelligent features\n• Auto captions: automate speech recognition and subtitles in videos.\n• Text-to-speech: apply text-to-speech in multiple languages and voices.\n• Background removal: automatically remove backgrounds.\n\nText & Stickers\n• Add text to videos with different fonts and styles, choose unique text templates. Fonts can be imported locally.\n• Subtitles can be added to the timeline of video tracks and can be moved and adjusted in one step.\n\nTrending Effects & Filters\n• Match video content with diverse filters that are updated weekly with the latest trends.\n• Edit videos with hundreds of trending effects, including Glitch, Blur, 3D, etc.\n• Add movie-style video filters or adjust video brightness, contrast, etc.\n\nMusic & Sound Effects\n• Add millions of music clips and sound effects to videos.\n• Extract audio, clips, and recordings from videos.\n\nEasy to Share\n• Custom video export resolution, HD video editor supports 4K 60fps exports and smart HDR.\n• Adjust the format and share with your friends on social media platforms.\n\nCapCut is an all-in-one video editor and video maker application with everything you need to create stunning, high-quality videos. Beginners can get started with CapCut in a matter of seconds, while advanced users can enjoy all the functions they need to edit videos. \n\nTerms of Service —\nhttps://www.capcut.com/clause/terms-of-service\n\nPrivacy Policy —\nhttps://www.capcut.net/clause/privacy\n\nContact Us\nAny questions about CapCut? Please contact us at capcut.support@bytedance.com.\nFacebook: https://www.facebook.com/capcutapp\nInstagram: https://www.instagram.com/capcutapp\nYouTube: https://www.youtube.com/capcutofficial\nTikTok: https://www.tiktok.com/@capcut"
+        },
+        "im:price": {
+          "label": "Get",
+          "attributes": {
+            "amount": "0.00",
+            "currency": "USD"
+          }
+        },
+        "im:contentType": {
+          "attributes": {
+            "term": "Application",
+            "label": "Application"
+          }
+        },
+        "rights": {
+          "label": "© CapCut"
+        },
+        "title": {
+          "label": "CapCut - Video Editor - Bytedance Pte. Ltd"
+        },
+        "link": [
+          {
+            "attributes": {
+              "rel": "alternate",
+              "type": "text/html",
+              "href": "https://apps.apple.com/us/app/capcut-video-editor/id1500855883?uo=2"
+            }
+          },
+          {
+            "im:duration": {
+              "label": "0"
+            },
+            "attributes": {
+              "title": "Preview",
+              "rel": "enclosure",
+              "type": "image/jpeg",
+              "href": "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/55/0b/43/550b43f3-fc3c-629a-c42d-adf0472b5db6/8e75a2dd-7d2e-437a-af9a-74450119792e_img12_92_0_en-US.jpg/1024x1024bb.jpg",
+              "im:assetType": "preview"
+            }
+          }
+        ],
+        "id": {
+          "label": "https://apps.apple.com/us/app/capcut-video-editor/id1500855883?uo=2",
+          "attributes": {
+            "im:id": "1500855883",
+            "im:bundleId": "com.lemon.lvoverseas"
+          }
+        },
+        "im:artist": {
+          "label": "Bytedance Pte. Ltd",
+          "attributes": {
+            "href": "https://apps.apple.com/us/developer/bytedance-pte-ltd/id1497663561?uo=2"
+          }
+        },
+        "category": {
+          "attributes": {
+            "im:id": "6008",
+            "term": "Photo & Video",
+            "scheme": "https://apps.apple.com/us/genre/ios-photo-video/id6008?uo=2",
+            "label": "Photo & Video"
+          }
+        },
+        "im:releaseDate": {
+          "label": "2020-04-14T00:00:00-07:00",
+          "attributes": {
+            "label": "April 14, 2020"
+          }
+        }
+      }
+    },
+    {
+      "source": "apple_rss",
+      "feed_type": "top_free",
+      "bundle_id": "310633997",
+      "title": "WhatsApp Messenger",
+      "developer": "WhatsApp Inc.",
+      "icon_url": "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/0b/50/4b/0b504b50-c30c-80c8-3b6e-73735880b273/AppIcon-0-0-1x_U007epad-0-0-0-1-0-0-sRGB-0-85-220.png/100x100bb.png",
+      "category": "Social Networking",
+      "release_date": "May 3, 2009",
+      "age_rating": "Application",
+      "description": "WhatsApp from Meta is a free messaging and calling app used by over 2 billion people across 180+ countries. It's super simple, reliable and private, making it perfect for staying in touch with your friends and family worldwide. WhatsApp works across mobile, tablet, and desktop even on slow connections, with no subscription fees*.\n\nPrivate messaging and calls across the world\n\nYour privacy is our priority. With end-to-end encryption, you can be sure that your personal messages and calls stay between you and who you send them to. And no one, not even WhatsApp, can read or listen to them.\n\nSimple and secure connections, right away\n\nAll you need is your phone number - no usernames or logins needed. Easily view your contacts on WhatsApp and start messaging. And what's more, you can easily  link your other devices, including iPads, for seamless connectivity.\n\nHigh quality voice and video calls\n\nEnjoy free, secure video and voice calls with up to 32 people for free. Your calls work across devices, even on slower connections, using your phone or tablet’s Internet service.\n\nGroup chats to keep you in contact\n\nStay close to friends and family through end-to-end encrypted group chats and calls. Share messages, photos, videos and documents across mobile, tablet, and desktop. You can also use call links and screen-sharing to make group calls and collaboration easy.\n\nStay connected in real time\n\nYou can share your location with those in your individual or group chats while using WhatsApp on your mobile phone. Or record a voice message for those moments when just text isn't good enough.\n\nShare daily moments through Status\n\nShare your everyday life with those who matter. With Status you can share text, photos, video, and GIF updates that disappear after 24 hours. You're always in control of who sees your status. Just choose who you want to share it with - all your contacts or selected ones. And bring your everyday to life.\n\n*Data charges may apply. Contact your provider for details.\n\n\n---------------------------------------------------------------------------\n\nIf you have any feedback or questions, please go to WhatsApp > Settings > Help > Contact Us\n\nTerms of Service: https://www.whatsapp.com/legal/terms-of-service \n\nLearn more about messaging privately: https://www.whatsapp.com/privacy \n\nLearn more about WhatsApp safety: https://www.whatsapp.com/security",
+      "formatted_price": "Get",
+      "rank": 10,
+      "scraped_at": "2025-10-23T15:58:57.578Z",
+      "raw_data": {
+        "im:name": {
+          "label": "WhatsApp Messenger"
+        },
+        "im:image": [
+          {
+            "label": "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/0b/50/4b/0b504b50-c30c-80c8-3b6e-73735880b273/AppIcon-0-0-1x_U007epad-0-0-0-1-0-0-sRGB-0-85-220.png/53x53bb.png",
+            "attributes": {
+              "height": "53"
+            }
+          },
+          {
+            "label": "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/0b/50/4b/0b504b50-c30c-80c8-3b6e-73735880b273/AppIcon-0-0-1x_U007epad-0-0-0-1-0-0-sRGB-0-85-220.png/75x75bb.png",
+            "attributes": {
+              "height": "75"
+            }
+          },
+          {
+            "label": "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/0b/50/4b/0b504b50-c30c-80c8-3b6e-73735880b273/AppIcon-0-0-1x_U007epad-0-0-0-1-0-0-sRGB-0-85-220.png/100x100bb.png",
+            "attributes": {
+              "height": "100"
+            }
+          }
+        ],
+        "summary": {
+          "label": "WhatsApp from Meta is a free messaging and calling app used by over 2 billion people across 180+ countries. It's super simple, reliable and private, making it perfect for staying in touch with your friends and family worldwide. WhatsApp works across mobile, tablet, and desktop even on slow connections, with no subscription fees*.\n\nPrivate messaging and calls across the world\n\nYour privacy is our priority. With end-to-end encryption, you can be sure that your personal messages and calls stay between you and who you send them to. And no one, not even WhatsApp, can read or listen to them.\n\nSimple and secure connections, right away\n\nAll you need is your phone number - no usernames or logins needed. Easily view your contacts on WhatsApp and start messaging. And what's more, you can easily  link your other devices, including iPads, for seamless connectivity.\n\nHigh quality voice and video calls\n\nEnjoy free, secure video and voice calls with up to 32 people for free. Your calls work across devices, even on slower connections, using your phone or tablet’s Internet service.\n\nGroup chats to keep you in contact\n\nStay close to friends and family through end-to-end encrypted group chats and calls. Share messages, photos, videos and documents across mobile, tablet, and desktop. You can also use call links and screen-sharing to make group calls and collaboration easy.\n\nStay connected in real time\n\nYou can share your location with those in your individual or group chats while using WhatsApp on your mobile phone. Or record a voice message for those moments when just text isn't good enough.\n\nShare daily moments through Status\n\nShare your everyday life with those who matter. With Status you can share text, photos, video, and GIF updates that disappear after 24 hours. You're always in control of who sees your status. Just choose who you want to share it with - all your contacts or selected ones. And bring your everyday to life.\n\n*Data charges may apply. Contact your provider for details.\n\n\n---------------------------------------------------------------------------\n\nIf you have any feedback or questions, please go to WhatsApp > Settings > Help > Contact Us\n\nTerms of Service: https://www.whatsapp.com/legal/terms-of-service \n\nLearn more about messaging privately: https://www.whatsapp.com/privacy \n\nLearn more about WhatsApp safety: https://www.whatsapp.com/security"
+        },
+        "im:price": {
+          "label": "Get",
+          "attributes": {
+            "amount": "0.00",
+            "currency": "USD"
+          }
+        },
+        "im:contentType": {
+          "attributes": {
+            "term": "Application",
+            "label": "Application"
+          }
+        },
+        "rights": {
+          "label": "© 2025 WhatsApp LLC"
+        },
+        "title": {
+          "label": "WhatsApp Messenger - WhatsApp Inc."
+        },
+        "link": {
+          "attributes": {
+            "rel": "alternate",
+            "type": "text/html",
+            "href": "https://apps.apple.com/us/app/whatsapp-messenger/id310633997?uo=2"
+          }
+        },
+        "id": {
+          "label": "https://apps.apple.com/us/app/whatsapp-messenger/id310633997?uo=2",
+          "attributes": {
+            "im:id": "310633997",
+            "im:bundleId": "net.whatsapp.WhatsApp"
+          }
+        },
+        "im:artist": {
+          "label": "WhatsApp Inc.",
+          "attributes": {
+            "href": "https://apps.apple.com/us/developer/whatsapp-inc/id310634000?uo=2"
+          }
+        },
+        "category": {
+          "attributes": {
+            "im:id": "6005",
+            "term": "Social Networking",
+            "scheme": "https://apps.apple.com/us/genre/ios-social-networking/id6005?uo=2",
+            "label": "Social Networking"
+          }
+        },
+        "im:releaseDate": {
+          "label": "2009-05-03T19:43:49-07:00",
+          "attributes": {
+            "label": "May 3, 2009"
+          }
+        }
+      }
+    },
+    {
+      "source": "apple_rss",
+      "feed_type": "top_free",
+      "bundle_id": "1542571008",
+      "title": "Gauth: AI Study Companion",
+      "developer": "GAUTHTECH PTE. LTD.",
+      "icon_url": "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/8e/ab/86/8eab862b-5632-8cf7-01cb-da9fcc5fd0c5/AppIcon-0-0-1x_U007emarketing-0-8-0-85-220.png/100x100bb.png",
+      "category": "Education",
+      "release_date": "March 31, 2021",
+      "age_rating": "Application",
+      "description": "Gauth is the #1 AI study companion powered by newest AI model! Trusted by millions of users, Gauth offers unlimited answers for all subjects. Try Gauth for all your learning needs!\n\nKey Features:\n► ACCURATE ANSWERS, STEP-BY-STEP\nCompared to other homework helpers, Gauth is faster and more accurate at solving homework problems, especially with the support of Gauth AI Pro. Problems could be solved quickly within a few seconds, and all answers are accompanied by animated instructions and detailed explanations.\n\n► AI LIVE TUTOR, VOICE & WHITEBOARD\nStuck on a question? With AI Live Tutor, ask by voice anytime and see problems explained clearly on a live whiteboard—just like having a personal tutor by your side.\n\n► DEEPTHINKING, INSPIRE YOUR LEARNING\nPowered by Gauth AI, integrates the advantages of multiple AI models and solves your problems smarter and more deeply. With Gauth AI, we hope you can get inspired and learn efficiently.\n\n► MASTER ALL SUBJECTS, ALL GRADES\nNot only Math questions, Gauth could now solve all different levels of problems in Physics, Chemistry, Biology and more.\n\n► REAL EXPERTS READY TO HELP 24/7\nAs a strong and resourceful homework solver, we have professional experts and dedicated experts ready to help you 24/7 with multiple subjects, including Math, Physics, Chemistry, and Biology. All experts are available to solve your problems anytime and anywhere, offering clear step-by-step explanations. With Gauth, you can easily understand and master different subjects.\n\n► EASY TO USE, HOMEWORK IS COOL\nSimply take a photo of your problem, and Gauth will recognize it and crop your question automatically. After uploading, our experts will provide solutions in a few seconds with well-formatted answers and explanations. With Gauth, we hope you can find homework is also fun and easy to understand!\n\n► STUDY TOOLBOX, ALL-IN-ONE APP\nPacked with essential tools like Reading, Writing, Focus Mode, and Calculator. Whether you are struggling with tough books, writing, distraction or calculation, get text simplification, grammar check and math calculation in one app. Gauth helps you to supercharge your academic performance.\n\n► SUBJECTS COVERED\n- Math\n- Biology\n- Physics\n- Chemistry\n- Others\n► MATH TOPICS COVERED\n- Math Word problems\n- Algebra (Real Number; Arithmetic; Set theory; Expression; Logarithm; Complex Number)\n- Function (Linear; Quadratic; Polynomial; Exponential; Rational; Logarithmic; Inverse Function)\n- Geometry (Plane & Solid Geometry; Algebra & lines; Lines & Planes in Space; Transformation)\n- Trigonometry (Trigonometric Ratios; Law of Sines; Law of Cosines; Reciprocal Properties)\n- Calculus (Derivatives; Integrals; Limits; the Tangent/Area Math problem)\n- Statistics and Data Analysis (Probability; Data Representation; Poisson/Normal Distribution)\n- Matrix (Matrix Algebra; System of Linear Equations & Matrices)\n- Logic (Reasoning & Proof)\n► Want to level up your learning? With Gauth Plus, you will get:\n- Unlimited answers and explanations\n- High accuracy in answers\n- Advanced AI tutor with clearer live explanations\n- Access to 20M+ tutorial videos\n- A question bank of 100M+\n- 24/7 tutor help\nTerms of Service https://h5.gauthmath.com/terms\nPrivacy Policy https://h5.gauthmath.com/policy\n\nSTAY CONNECTED\n- Tiktok: www.tiktok.com/@gauthofficial\n- Website: www.gauthmath.com\n- Email: support@gauthmath.com",
+      "formatted_price": "Get",
+      "rank": 11,
+      "scraped_at": "2025-10-23T15:58:57.578Z",
+      "raw_data": {
+        "im:name": {
+          "label": "Gauth: AI Study Companion"
+        },
+        "im:image": [
+          {
+            "label": "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/8e/ab/86/8eab862b-5632-8cf7-01cb-da9fcc5fd0c5/AppIcon-0-0-1x_U007emarketing-0-8-0-85-220.png/53x53bb.png",
+            "attributes": {
+              "height": "53"
+            }
+          },
+          {
+            "label": "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/8e/ab/86/8eab862b-5632-8cf7-01cb-da9fcc5fd0c5/AppIcon-0-0-1x_U007emarketing-0-8-0-85-220.png/75x75bb.png",
+            "attributes": {
+              "height": "75"
+            }
+          },
+          {
+            "label": "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/8e/ab/86/8eab862b-5632-8cf7-01cb-da9fcc5fd0c5/AppIcon-0-0-1x_U007emarketing-0-8-0-85-220.png/100x100bb.png",
+            "attributes": {
+              "height": "100"
+            }
+          }
+        ],
+        "summary": {
+          "label": "Gauth is the #1 AI study companion powered by newest AI model! Trusted by millions of users, Gauth offers unlimited answers for all subjects. Try Gauth for all your learning needs!\n\nKey Features:\n► ACCURATE ANSWERS, STEP-BY-STEP\nCompared to other homework helpers, Gauth is faster and more accurate at solving homework problems, especially with the support of Gauth AI Pro. Problems could be solved quickly within a few seconds, and all answers are accompanied by animated instructions and detailed explanations.\n\n► AI LIVE TUTOR, VOICE & WHITEBOARD\nStuck on a question? With AI Live Tutor, ask by voice anytime and see problems explained clearly on a live whiteboard—just like having a personal tutor by your side.\n\n► DEEPTHINKING, INSPIRE YOUR LEARNING\nPowered by Gauth AI, integrates the advantages of multiple AI models and solves your problems smarter and more deeply. With Gauth AI, we hope you can get inspired and learn efficiently.\n\n► MASTER ALL SUBJECTS, ALL GRADES\nNot only Math questions, Gauth could now solve all different levels of problems in Physics, Chemistry, Biology and more.\n\n► REAL EXPERTS READY TO HELP 24/7\nAs a strong and resourceful homework solver, we have professional experts and dedicated experts ready to help you 24/7 with multiple subjects, including Math, Physics, Chemistry, and Biology. All experts are available to solve your problems anytime and anywhere, offering clear step-by-step explanations. With Gauth, you can easily understand and master different subjects.\n\n► EASY TO USE, HOMEWORK IS COOL\nSimply take a photo of your problem, and Gauth will recognize it and crop your question automatically. After uploading, our experts will provide solutions in a few seconds with well-formatted answers and explanations. With Gauth, we hope you can find homework is also fun and easy to understand!\n\n► STUDY TOOLBOX, ALL-IN-ONE APP\nPacked with essential tools like Reading, Writing, Focus Mode, and Calculator. Whether you are struggling with tough books, writing, distraction or calculation, get text simplification, grammar check and math calculation in one app. Gauth helps you to supercharge your academic performance.\n\n► SUBJECTS COVERED\n- Math\n- Biology\n- Physics\n- Chemistry\n- Others\n► MATH TOPICS COVERED\n- Math Word problems\n- Algebra (Real Number; Arithmetic; Set theory; Expression; Logarithm; Complex Number)\n- Function (Linear; Quadratic; Polynomial; Exponential; Rational; Logarithmic; Inverse Function)\n- Geometry (Plane & Solid Geometry; Algebra & lines; Lines & Planes in Space; Transformation)\n- Trigonometry (Trigonometric Ratios; Law of Sines; Law of Cosines; Reciprocal Properties)\n- Calculus (Derivatives; Integrals; Limits; the Tangent/Area Math problem)\n- Statistics and Data Analysis (Probability; Data Representation; Poisson/Normal Distribution)\n- Matrix (Matrix Algebra; System of Linear Equations & Matrices)\n- Logic (Reasoning & Proof)\n► Want to level up your learning? With Gauth Plus, you will get:\n- Unlimited answers and explanations\n- High accuracy in answers\n- Advanced AI tutor with clearer live explanations\n- Access to 20M+ tutorial videos\n- A question bank of 100M+\n- 24/7 tutor help\nTerms of Service https://h5.gauthmath.com/terms\nPrivacy Policy https://h5.gauthmath.com/policy\n\nSTAY CONNECTED\n- Tiktok: www.tiktok.com/@gauthofficial\n- Website: www.gauthmath.com\n- Email: support@gauthmath.com"
+        },
+        "im:price": {
+          "label": "Get",
+          "attributes": {
+            "amount": "0.00",
+            "currency": "USD"
+          }
+        },
+        "im:contentType": {
+          "attributes": {
+            "term": "Application",
+            "label": "Application"
+          }
+        },
+        "rights": {
+          "label": "© Gauthtech Pte. Ltd."
+        },
+        "title": {
+          "label": "Gauth: AI Study Companion - GAUTHTECH PTE. LTD."
+        },
+        "link": [
+          {
+            "attributes": {
+              "rel": "alternate",
+              "type": "text/html",
+              "href": "https://apps.apple.com/us/app/gauth-ai-study-companion/id1542571008?uo=2"
+            }
+          },
+          {
+            "im:duration": {
+              "label": "0"
+            },
+            "attributes": {
+              "title": "Preview",
+              "rel": "enclosure",
+              "type": "image/jpeg",
+              "href": "https://is1-ssl.mzstatic.com/image/thumb/PurpleSource221/v4/90/7f/10/907f1008-fabd-7538-e3b8-0179cabad368/o8f4TMwxRIGAmABazEOLSEyIA2GAHxFu9AefLF.jpg/1024x1024bb.jpg",
+              "im:assetType": "preview"
+            }
+          }
+        ],
+        "id": {
+          "label": "https://apps.apple.com/us/app/gauth-ai-study-companion/id1542571008?uo=2",
+          "attributes": {
+            "im:id": "1542571008",
+            "im:bundleId": "com.gauthmath.intelligence"
+          }
+        },
+        "im:artist": {
+          "label": "GAUTHTECH PTE. LTD.",
+          "attributes": {
+            "href": "https://apps.apple.com/us/developer/gauthtech-pte-ltd/id1542306983?uo=2"
+          }
+        },
+        "category": {
+          "attributes": {
+            "im:id": "6017",
+            "term": "Education",
+            "scheme": "https://apps.apple.com/us/genre/ios-education/id6017?uo=2",
+            "label": "Education"
+          }
+        },
+        "im:releaseDate": {
+          "label": "2021-03-31T00:00:00-07:00",
+          "attributes": {
+            "label": "March 31, 2021"
+          }
+        }
+      }
+    },
+    {
+      "source": "apple_rss",
+      "feed_type": "top_free",
+      "bundle_id": "585027354",
+      "title": "Google Maps",
+      "developer": "Google",
+      "icon_url": "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/e2/77/0b/e2770b30-a067-5543-956c-b07ab379ac0a/logo_maps_ios_color-0-1x_U007emarketing-0-0-0-7-0-0-0-0-85-220-0.png/100x100bb.png",
+      "category": "Navigation",
+      "release_date": "December 12, 2012",
+      "age_rating": "Application",
+      "description": "Explore and navigate the world with confidence using Google Maps. Find the best routes with live traffic data and real-time GPS navigation for driving, walking, cycling, and public transport. Discover over 250 million businesses and places - from restaurants and shops to everyday essentials – with photos, reviews, and helpful information.\n\nNavigate the world, the way you want:\n• Get to where you need to go with fuel-efficient route options\n• Find the best route with real-time, turn-by-turn voice, and on screen navigation\n• Save time with automatic rerouting based on live traffic, incidents, and road closures\n• Catch the bus, train, and ride-share effortlessly, with real-time updates\n• Find bike or scooter rentals to get around more easily\n\nPlan trips and experiences effortlessly:\n• Preview an area before you go (e.g. parking, entrances) with Street View\n• Use Immersive View to experience what landmarks, parks and routes look like, and even check the weather so you can be ready in advance\n• Create custom lists of your favorite saved places and share with others\n• Order delivery and takeout, make reservations, and book hotels\n• Don't get lost with offline maps in an area with bad signal\n• Search for local places and things to do, and decide based on user reviews and photos\n\nDiscover and explore like a local:\n• Explore with confidence knowing 500 million users contribute and keep the map up to date each year\n• Avoid the crowds by seeing how busy a place is before you get there\n• Use Lens in Maps to see walking directions overlaid on the real world\n• Filter restaurants by cuisine, hours, price, rating and more\n• Ask questions about a place, from dishes to parking, and get quick answers\n\nSome features not available in all countries or cities\nNavigation isn't intended to be used by oversized or emergency vehicles",
+      "formatted_price": "Get",
+      "rank": 12,
+      "scraped_at": "2025-10-23T15:58:57.578Z",
+      "raw_data": {
+        "im:name": {
+          "label": "Google Maps"
+        },
+        "im:image": [
+          {
+            "label": "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/e2/77/0b/e2770b30-a067-5543-956c-b07ab379ac0a/logo_maps_ios_color-0-1x_U007emarketing-0-0-0-7-0-0-0-0-85-220-0.png/53x53bb.png",
+            "attributes": {
+              "height": "53"
+            }
+          },
+          {
+            "label": "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/e2/77/0b/e2770b30-a067-5543-956c-b07ab379ac0a/logo_maps_ios_color-0-1x_U007emarketing-0-0-0-7-0-0-0-0-85-220-0.png/75x75bb.png",
+            "attributes": {
+              "height": "75"
+            }
+          },
+          {
+            "label": "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/e2/77/0b/e2770b30-a067-5543-956c-b07ab379ac0a/logo_maps_ios_color-0-1x_U007emarketing-0-0-0-7-0-0-0-0-85-220-0.png/100x100bb.png",
+            "attributes": {
+              "height": "100"
+            }
+          }
+        ],
+        "summary": {
+          "label": "Explore and navigate the world with confidence using Google Maps. Find the best routes with live traffic data and real-time GPS navigation for driving, walking, cycling, and public transport. Discover over 250 million businesses and places - from restaurants and shops to everyday essentials – with photos, reviews, and helpful information.\n\nNavigate the world, the way you want:\n• Get to where you need to go with fuel-efficient route options\n• Find the best route with real-time, turn-by-turn voice, and on screen navigation\n• Save time with automatic rerouting based on live traffic, incidents, and road closures\n• Catch the bus, train, and ride-share effortlessly, with real-time updates\n• Find bike or scooter rentals to get around more easily\n\nPlan trips and experiences effortlessly:\n• Preview an area before you go (e.g. parking, entrances) with Street View\n• Use Immersive View to experience what landmarks, parks and routes look like, and even check the weather so you can be ready in advance\n• Create custom lists of your favorite saved places and share with others\n• Order delivery and takeout, make reservations, and book hotels\n• Don't get lost with offline maps in an area with bad signal\n• Search for local places and things to do, and decide based on user reviews and photos\n\nDiscover and explore like a local:\n• Explore with confidence knowing 500 million users contribute and keep the map up to date each year\n• Avoid the crowds by seeing how busy a place is before you get there\n• Use Lens in Maps to see walking directions overlaid on the real world\n• Filter restaurants by cuisine, hours, price, rating and more\n• Ask questions about a place, from dishes to parking, and get quick answers\n\nSome features not available in all countries or cities\nNavigation isn't intended to be used by oversized or emergency vehicles"
+        },
+        "im:price": {
+          "label": "Get",
+          "attributes": {
+            "amount": "0.00",
+            "currency": "USD"
+          }
+        },
+        "im:contentType": {
+          "attributes": {
+            "term": "Application",
+            "label": "Application"
+          }
+        },
+        "rights": {
+          "label": "© Google Inc."
+        },
+        "title": {
+          "label": "Google Maps - Google"
+        },
+        "link": {
+          "attributes": {
+            "rel": "alternate",
+            "type": "text/html",
+            "href": "https://apps.apple.com/us/app/google-maps/id585027354?uo=2"
+          }
+        },
+        "id": {
+          "label": "https://apps.apple.com/us/app/google-maps/id585027354?uo=2",
+          "attributes": {
+            "im:id": "585027354",
+            "im:bundleId": "com.google.Maps"
+          }
+        },
+        "im:artist": {
+          "label": "Google",
+          "attributes": {
+            "href": "https://apps.apple.com/us/developer/google/id281956209?uo=2"
+          }
+        },
+        "category": {
+          "attributes": {
+            "im:id": "6010",
+            "term": "Navigation",
+            "scheme": "https://apps.apple.com/us/genre/ios-navigation/id6010?uo=2",
+            "label": "Navigation"
+          }
+        },
+        "im:releaseDate": {
+          "label": "2012-12-12T20:21:00-07:00",
+          "attributes": {
+            "label": "December 12, 2012"
+          }
+        }
+      }
+    },
+    {
+      "source": "apple_rss",
+      "feed_type": "top_free",
+      "bundle_id": "835599320",
+      "title": "TikTok - Videos, Shop & LIVE",
+      "developer": "TikTok Ltd.",
+      "icon_url": "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/d0/39/4f/d0394f6b-acc2-6935-e007-360b0cce4a4a/AppIcon_TikTok-0-0-1x_U007epad-0-1-0-0-85-220.png/100x100bb.png",
+      "category": "Entertainment",
+      "release_date": "April 2, 2014",
+      "age_rating": "Application",
+      "description": "TikTok is THE destination for mobile videos. On TikTok, short-form videos are exciting, spontaneous, and genuine. Whether you’re a sports fanatic, a pet enthusiast, or just looking for a laugh, there’s something for everyone on TikTok. All you have to do is watch, engage with what you like, skip what you don’t, and you’ll find an endless stream of short videos that feel personalized just for you. From your morning coffee to your afternoon errands, TikTok has the videos that are guaranteed to make your day.\n\nWe make it easy for you to discover and create your own original videos by providing easy-to-use tools to view and capture your daily moments. Take your videos to the next level with special effects, filters, music, and more. \n\n■ Watch endless amount of videos customized specifically for you\nA personalized video feed based on what you watch, like, and share. TikTok offers you real, interesting, and fun videos that will make your day.\n \n■ Explore videos, just one scroll away\nWatch all types of videos, from Comedy, Gaming, DIY, Food, Sports, Memes, and Pets, to Oddly Satisfying, ASMR, and everything in between.\n \n■ Pause recording multiple times in one video\nPause and resume your video with just a tap. Shoot as many times as you need.\n \n■ Be entertained and inspired by a global community of creators\nMillions of creators are on TikTok showcasing their incredible skills and everyday life. Let yourself be inspired.\n\n■ Add your favorite music or sound to your videos for free\nEasily edit your videos with millions of free music clips and sounds. We curate music and sound playlists for you with the hottest tracks in every genre, including Hip Hop, Edm, Pop, Rock, Rap, and Country, and the most viral original sounds.\n\n■ Express yourself with creative effects\nUnlock tons of filters, effects, and AR objects to take your videos to the next level.\n\n■ Edit your own videos \nOur integrated editing tools allow you to easily trim, cut, merge and duplicate video clips without leaving the app.\n\n■ Discover and Shop with TikTok Shop\nExplore trending products, exclusive deals, and seamless shopping experiences inspired by creators and brands you love—all in one place. Shop right from shoptab, videos or LIVEs without leaving the app, track your orders with ease, and enjoy a safe, secure shopping and transaction process.\n\n■ Obtain access to LIVE benefits to better interact with hosts!\nChoose from one-month subscription or auto-renewal subscription to enjoy special LIVE benefits (currently only available in limited regions)\n\nNote: \nIf you subscribe via Apple, payment will be charged to App Store Account at confirmation of purchase. Subscription automatically renews unless auto-renew is turned off at least 24 hours before the end of the current period. Account will be charged for renewal within 24 hours prior to the end of the current period at the rate of the selected plan. Subscriptions and auto-renewal may be managed by going to Account Settings after purchase.\n\nTerms of Service —\nhttps://www.tiktok.com/legal/terms-of-service\n\nPrivacy Policy —\nhttps://www.tiktok.com/legal/privacy-policy\n\n* Any feedback? Contact us at https://www.tiktok.com/legal/report/feedback or tweet us @tiktok_us",
+      "formatted_price": "Get",
+      "rank": 13,
+      "scraped_at": "2025-10-23T15:58:57.578Z",
+      "raw_data": {
+        "im:name": {
+          "label": "TikTok - Videos, Shop & LIVE"
+        },
+        "im:image": [
+          {
+            "label": "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/d0/39/4f/d0394f6b-acc2-6935-e007-360b0cce4a4a/AppIcon_TikTok-0-0-1x_U007epad-0-1-0-0-85-220.png/53x53bb.png",
+            "attributes": {
+              "height": "53"
+            }
+          },
+          {
+            "label": "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/d0/39/4f/d0394f6b-acc2-6935-e007-360b0cce4a4a/AppIcon_TikTok-0-0-1x_U007epad-0-1-0-0-85-220.png/75x75bb.png",
+            "attributes": {
+              "height": "75"
+            }
+          },
+          {
+            "label": "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/d0/39/4f/d0394f6b-acc2-6935-e007-360b0cce4a4a/AppIcon_TikTok-0-0-1x_U007epad-0-1-0-0-85-220.png/100x100bb.png",
+            "attributes": {
+              "height": "100"
+            }
+          }
+        ],
+        "summary": {
+          "label": "TikTok is THE destination for mobile videos. On TikTok, short-form videos are exciting, spontaneous, and genuine. Whether you’re a sports fanatic, a pet enthusiast, or just looking for a laugh, there’s something for everyone on TikTok. All you have to do is watch, engage with what you like, skip what you don’t, and you’ll find an endless stream of short videos that feel personalized just for you. From your morning coffee to your afternoon errands, TikTok has the videos that are guaranteed to make your day.\n\nWe make it easy for you to discover and create your own original videos by providing easy-to-use tools to view and capture your daily moments. Take your videos to the next level with special effects, filters, music, and more. \n\n■ Watch endless amount of videos customized specifically for you\nA personalized video feed based on what you watch, like, and share. TikTok offers you real, interesting, and fun videos that will make your day.\n \n■ Explore videos, just one scroll away\nWatch all types of videos, from Comedy, Gaming, DIY, Food, Sports, Memes, and Pets, to Oddly Satisfying, ASMR, and everything in between.\n \n■ Pause recording multiple times in one video\nPause and resume your video with just a tap. Shoot as many times as you need.\n \n■ Be entertained and inspired by a global community of creators\nMillions of creators are on TikTok showcasing their incredible skills and everyday life. Let yourself be inspired.\n\n■ Add your favorite music or sound to your videos for free\nEasily edit your videos with millions of free music clips and sounds. We curate music and sound playlists for you with the hottest tracks in every genre, including Hip Hop, Edm, Pop, Rock, Rap, and Country, and the most viral original sounds.\n\n■ Express yourself with creative effects\nUnlock tons of filters, effects, and AR objects to take your videos to the next level.\n\n■ Edit your own videos \nOur integrated editing tools allow you to easily trim, cut, merge and duplicate video clips without leaving the app.\n\n■ Discover and Shop with TikTok Shop\nExplore trending products, exclusive deals, and seamless shopping experiences inspired by creators and brands you love—all in one place. Shop right from shoptab, videos or LIVEs without leaving the app, track your orders with ease, and enjoy a safe, secure shopping and transaction process.\n\n■ Obtain access to LIVE benefits to better interact with hosts!\nChoose from one-month subscription or auto-renewal subscription to enjoy special LIVE benefits (currently only available in limited regions)\n\nNote: \nIf you subscribe via Apple, payment will be charged to App Store Account at confirmation of purchase. Subscription automatically renews unless auto-renew is turned off at least 24 hours before the end of the current period. Account will be charged for renewal within 24 hours prior to the end of the current period at the rate of the selected plan. Subscriptions and auto-renewal may be managed by going to Account Settings after purchase.\n\nTerms of Service —\nhttps://www.tiktok.com/legal/terms-of-service\n\nPrivacy Policy —\nhttps://www.tiktok.com/legal/privacy-policy\n\n* Any feedback? Contact us at https://www.tiktok.com/legal/report/feedback or tweet us @tiktok_us"
+        },
+        "im:price": {
+          "label": "Get",
+          "attributes": {
+            "amount": "0.00",
+            "currency": "USD"
+          }
+        },
+        "im:contentType": {
+          "attributes": {
+            "term": "Application",
+            "label": "Application"
+          }
+        },
+        "rights": {
+          "label": "© 2020 TikTok"
+        },
+        "title": {
+          "label": "TikTok - Videos, Shop & LIVE - TikTok Ltd."
+        },
+        "link": [
+          {
+            "attributes": {
+              "rel": "alternate",
+              "type": "text/html",
+              "href": "https://apps.apple.com/us/app/tiktok-videos-shop-live/id835599320?uo=2"
+            }
+          },
+          {
+            "im:duration": {
+              "label": "0"
+            },
+            "attributes": {
+              "title": "Preview",
+              "rel": "enclosure",
+              "type": "image/jpeg",
+              "href": "https://is1-ssl.mzstatic.com/image/thumb/PurpleSource211/v4/fd/56/a6/fd56a634-ac12-ed70-e74d-360162f72cb2/db2f0a01-028f-4159-bb7f-8719b149c071_1.-cake-white.jpg/1024x1024bb.jpg",
+              "im:assetType": "preview"
+            }
+          }
+        ],
+        "id": {
+          "label": "https://apps.apple.com/us/app/tiktok-videos-shop-live/id835599320?uo=2",
+          "attributes": {
+            "im:id": "835599320",
+            "im:bundleId": "com.zhiliaoapp.musically"
+          }
+        },
+        "im:artist": {
+          "label": "TikTok Ltd.",
+          "attributes": {
+            "href": "https://apps.apple.com/us/developer/tiktok-ltd/id1322881000?uo=2"
+          }
+        },
+        "category": {
+          "attributes": {
+            "im:id": "6016",
+            "term": "Entertainment",
+            "scheme": "https://apps.apple.com/us/genre/ios-entertainment/id6016?uo=2",
+            "label": "Entertainment"
+          }
+        },
+        "im:releaseDate": {
+          "label": "2014-04-02T15:44:45-07:00",
+          "attributes": {
+            "label": "April 2, 2014"
+          }
+        }
+      }
+    },
+    {
+      "source": "apple_rss",
+      "feed_type": "top_free",
+      "bundle_id": "1488269261",
+      "title": "Whatnot: Shop, Sell, Connect",
+      "developer": "Whatnot Inc.",
+      "icon_url": "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/55/3c/16/553c16f6-ef81-7447-b59b-caee562a4620/AppIcon-0-0-1x_U007ephone-0-1-0-85-220.png/100x100bb.png",
+      "category": "Shopping",
+      "release_date": "December 6, 2019",
+      "age_rating": "Application",
+      "description": "Whatnot is the largest live shopping platform in the US, UK, and Europe - we’re a marketplace bringing millions together to shop, sell, and connect around the things they love. From bags to beauty, comics to coins, sneakers to streetwear, and vintage to vinyl—we’ve got it all. Explore 250+ categories, including electronics, sports and Pokémon cards, fashion, plants, jewelry, and more. \n\nFIND INCREDIBLE DEALS ON NAME BRANDS - Join hundreds of thousands of sellers to shop deep discounts from your fashion favorites and everyday essentials.  From brands you know and love, to emerging and hard-to-find specialty products. Whatnot has a deal on whatever you’re looking for.\n\nSHOPPING HAS NEVER BEEN MORE FUN - Whether you’re getting in on fast-paced auctions, incredible flash sales, live show giveaways, searching through the marketplace, or jumping into the chat—you’ve never had this much fun shopping. Whatnot has brought the best of shopping in-person online. \n\nINTERESTED IN SELLING ON WHATNOT? Last year, small businesses generated more than $3 billion in sales on Whatnot. Make more by selling live, join Whatnot today.",
+      "formatted_price": "Get",
+      "rank": 14,
+      "scraped_at": "2025-10-23T15:58:57.578Z",
+      "raw_data": {
+        "im:name": {
+          "label": "Whatnot: Shop, Sell, Connect"
+        },
+        "im:image": [
+          {
+            "label": "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/55/3c/16/553c16f6-ef81-7447-b59b-caee562a4620/AppIcon-0-0-1x_U007ephone-0-1-0-85-220.png/53x53bb.png",
+            "attributes": {
+              "height": "53"
+            }
+          },
+          {
+            "label": "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/55/3c/16/553c16f6-ef81-7447-b59b-caee562a4620/AppIcon-0-0-1x_U007ephone-0-1-0-85-220.png/75x75bb.png",
+            "attributes": {
+              "height": "75"
+            }
+          },
+          {
+            "label": "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/55/3c/16/553c16f6-ef81-7447-b59b-caee562a4620/AppIcon-0-0-1x_U007ephone-0-1-0-85-220.png/100x100bb.png",
+            "attributes": {
+              "height": "100"
+            }
+          }
+        ],
+        "summary": {
+          "label": "Whatnot is the largest live shopping platform in the US, UK, and Europe - we’re a marketplace bringing millions together to shop, sell, and connect around the things they love. From bags to beauty, comics to coins, sneakers to streetwear, and vintage to vinyl—we’ve got it all. Explore 250+ categories, including electronics, sports and Pokémon cards, fashion, plants, jewelry, and more. \n\nFIND INCREDIBLE DEALS ON NAME BRANDS - Join hundreds of thousands of sellers to shop deep discounts from your fashion favorites and everyday essentials.  From brands you know and love, to emerging and hard-to-find specialty products. Whatnot has a deal on whatever you’re looking for.\n\nSHOPPING HAS NEVER BEEN MORE FUN - Whether you’re getting in on fast-paced auctions, incredible flash sales, live show giveaways, searching through the marketplace, or jumping into the chat—you’ve never had this much fun shopping. Whatnot has brought the best of shopping in-person online. \n\nINTERESTED IN SELLING ON WHATNOT? Last year, small businesses generated more than $3 billion in sales on Whatnot. Make more by selling live, join Whatnot today."
+        },
+        "im:price": {
+          "label": "Get",
+          "attributes": {
+            "amount": "0.00",
+            "currency": "USD"
+          }
+        },
+        "im:contentType": {
+          "attributes": {
+            "term": "Application",
+            "label": "Application"
+          }
+        },
+        "rights": {
+          "label": "© 2020 Whatnot Inc."
+        },
+        "title": {
+          "label": "Whatnot: Shop, Sell, Connect - Whatnot Inc."
+        },
+        "link": {
+          "attributes": {
+            "rel": "alternate",
+            "type": "text/html",
+            "href": "https://apps.apple.com/us/app/whatnot-shop-sell-connect/id1488269261?uo=2"
+          }
+        },
+        "id": {
+          "label": "https://apps.apple.com/us/app/whatnot-shop-sell-connect/id1488269261?uo=2",
+          "attributes": {
+            "im:id": "1488269261",
+            "im:bundleId": "com.whatnot"
+          }
+        },
+        "im:artist": {
+          "label": "Whatnot Inc.",
+          "attributes": {
+            "href": "https://apps.apple.com/us/developer/whatnot-inc/id1068389819?uo=2"
+          }
+        },
+        "category": {
+          "attributes": {
+            "im:id": "6024",
+            "term": "Shopping",
+            "scheme": "https://apps.apple.com/us/genre/ios-shopping/id6024?uo=2",
+            "label": "Shopping"
+          }
+        },
+        "im:releaseDate": {
+          "label": "2019-12-06T00:00:00-07:00",
+          "attributes": {
+            "label": "December 6, 2019"
+          }
+        }
+      }
+    },
+    {
+      "source": "apple_rss",
+      "feed_type": "top_free",
+      "bundle_id": "1498607143",
+      "title": "Lemon8 - Lifestyle Community",
+      "developer": "TikTok Ltd.",
+      "icon_url": "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/cd/6d/85/cd6d85fa-64ec-197d-9b9a-05acc4d9f137/AppIconOriginal-0-0-1x_U007emarketing-0-8-0-85-220.png/100x100bb.png",
+      "category": "Lifestyle",
+      "release_date": "March 12, 2020",
+      "age_rating": "Application",
+      "description": "Lemon8 is a lifestyle community focused app powered by TikTok, where you can discover and share authentic content on a variety of topics such as beauty, fashion, travel, food, and more. You can edit and share photos with great ease and engage in discussion with like-minded people. Lemon8 offers a space where you can connect, inspire, and support one another.\n\n[Find Your Community]\n- Lemon8's customized content is specifically made for you. Our \"For You\" section recommends a personalized feed to you based on your interests. \n-Lemon8 is also a great place for you to express and engage in a free space with other like-minded creatives within the community.\n\n[Create with Ease]\n- Fed up of the faff of creating on one app, editing on another, posting on yet one more? With Lemon8, our in-app suite allows you to compose texts, edit photos and videos with ease.\n- You'll find a whole library of intuitive templates, stickers, filters and fonts for your photos and videos.\n- Say 'goodbye' to jumping between apps to make a single post and, say 'hello' to Lemon8!\n\n[Explore and Discover]\n- Use hashtags! Our hashtags not only help your posts get discovered, but also help you easily discover content you like.\n- Our campaign features and intuitive search helps you find trending content, top-performing creators and whatever answer you're browsing for.\n\n[Contact Us]\n- We want to build Lemon8 into the app you need and desire. Your suggestions make Lemon8 better.\n- If you have any feedback, questions or concerns, contact us at any time using the following email: contact@lemon8-app.com",
+      "formatted_price": "Get",
+      "rank": 15,
+      "scraped_at": "2025-10-23T15:58:57.578Z",
+      "raw_data": {
+        "im:name": {
+          "label": "Lemon8 - Lifestyle Community"
+        },
+        "im:image": [
+          {
+            "label": "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/cd/6d/85/cd6d85fa-64ec-197d-9b9a-05acc4d9f137/AppIconOriginal-0-0-1x_U007emarketing-0-8-0-85-220.png/53x53bb.png",
+            "attributes": {
+              "height": "53"
+            }
+          },
+          {
+            "label": "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/cd/6d/85/cd6d85fa-64ec-197d-9b9a-05acc4d9f137/AppIconOriginal-0-0-1x_U007emarketing-0-8-0-85-220.png/75x75bb.png",
+            "attributes": {
+              "height": "75"
+            }
+          },
+          {
+            "label": "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/cd/6d/85/cd6d85fa-64ec-197d-9b9a-05acc4d9f137/AppIconOriginal-0-0-1x_U007emarketing-0-8-0-85-220.png/100x100bb.png",
+            "attributes": {
+              "height": "100"
+            }
+          }
+        ],
+        "summary": {
+          "label": "Lemon8 is a lifestyle community focused app powered by TikTok, where you can discover and share authentic content on a variety of topics such as beauty, fashion, travel, food, and more. You can edit and share photos with great ease and engage in discussion with like-minded people. Lemon8 offers a space where you can connect, inspire, and support one another.\n\n[Find Your Community]\n- Lemon8's customized content is specifically made for you. Our \"For You\" section recommends a personalized feed to you based on your interests. \n-Lemon8 is also a great place for you to express and engage in a free space with other like-minded creatives within the community.\n\n[Create with Ease]\n- Fed up of the faff of creating on one app, editing on another, posting on yet one more? With Lemon8, our in-app suite allows you to compose texts, edit photos and videos with ease.\n- You'll find a whole library of intuitive templates, stickers, filters and fonts for your photos and videos.\n- Say 'goodbye' to jumping between apps to make a single post and, say 'hello' to Lemon8!\n\n[Explore and Discover]\n- Use hashtags! Our hashtags not only help your posts get discovered, but also help you easily discover content you like.\n- Our campaign features and intuitive search helps you find trending content, top-performing creators and whatever answer you're browsing for.\n\n[Contact Us]\n- We want to build Lemon8 into the app you need and desire. Your suggestions make Lemon8 better.\n- If you have any feedback, questions or concerns, contact us at any time using the following email: contact@lemon8-app.com"
+        },
+        "im:price": {
+          "label": "Get",
+          "attributes": {
+            "amount": "0.00",
+            "currency": "USD"
+          }
+        },
+        "im:contentType": {
+          "attributes": {
+            "term": "Application",
+            "label": "Application"
+          }
+        },
+        "rights": {
+          "label": "© Lemon8"
+        },
+        "title": {
+          "label": "Lemon8 - Lifestyle Community - TikTok Ltd."
+        },
+        "link": {
+          "attributes": {
+            "rel": "alternate",
+            "type": "text/html",
+            "href": "https://apps.apple.com/us/app/lemon8-lifestyle-community/id1498607143?uo=2"
+          }
+        },
+        "id": {
+          "label": "https://apps.apple.com/us/app/lemon8-lifestyle-community/id1498607143?uo=2",
+          "attributes": {
+            "im:id": "1498607143",
+            "im:bundleId": "com.bd.nproject"
+          }
+        },
+        "im:artist": {
+          "label": "TikTok Ltd.",
+          "attributes": {
+            "href": "https://apps.apple.com/us/developer/tiktok-ltd/id1322881000?uo=2"
+          }
+        },
+        "category": {
+          "attributes": {
+            "im:id": "6012",
+            "term": "Lifestyle",
+            "scheme": "https://apps.apple.com/us/genre/ios-lifestyle/id6012?uo=2",
+            "label": "Lifestyle"
+          }
+        },
+        "im:releaseDate": {
+          "label": "2020-03-12T00:00:00-07:00",
+          "attributes": {
+            "label": "March 12, 2020"
+          }
+        }
+      }
+    },
+    {
+      "source": "apple_rss",
+      "feed_type": "top_free",
+      "bundle_id": "535886823",
+      "title": "Google Chrome",
+      "developer": "Google",
+      "icon_url": "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/e1/fe/0a/e1fe0a49-447f-30ff-b70c-7eec50ed5cd1/AppIcon-0-0-1x_U007epad-0-0-0-1-0-0-sRGB-85-220.png/100x100bb.png",
+      "category": "Utilities",
+      "release_date": "June 28, 2012",
+      "age_rating": "Application",
+      "description": "Chrome helps you do what’s possible on the web. Download the fast, secure browser by Google.\n\nGET THE BEST OF GOOGLE IN CHROME\n\n• SEARCH WITH GOOGLE - Search and get answers on Google fast. Use your voice to search hands-free.\n• GOOGLE LENS - Search what you see on your screen or with your camera.\n• GOOGLE TRANSLATE - Explore the web in 130+ languages. Translate entire sites in one click.\n\nBROWSE WITH BEST-IN-CLASS SECURITY\n\n• ENHANCED PROTECTION MODE - Browse confidently with the highest level of Chrome’s security.\n• SAFETY CHECK - Get peace of mind with proactive safety alerts.\n• GOOGLE PASSWORD MANAGER - Securely generate and save passwords for fast sign-in, and get alerts if your passwords are at risk.\n\nACCESS YOUR CHROME ACROSS DEVICES\n\n• SYNC ACROSS DEVICES - Save your things (like bookmarks, tabs, and passwords) and easily access them when you sign in to Chrome on your phone, computer or tablet.\n• TAB GROUPS - Create tab groups to stay organized across devices.\n• AUTOFILL - Save time typing by autofilling your saved payments, addresses and passwords.",
+      "formatted_price": "Get",
+      "rank": 16,
+      "scraped_at": "2025-10-23T15:58:57.578Z",
+      "raw_data": {
+        "im:name": {
+          "label": "Google Chrome"
+        },
+        "im:image": [
+          {
+            "label": "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/e1/fe/0a/e1fe0a49-447f-30ff-b70c-7eec50ed5cd1/AppIcon-0-0-1x_U007epad-0-0-0-1-0-0-sRGB-85-220.png/53x53bb.png",
+            "attributes": {
+              "height": "53"
+            }
+          },
+          {
+            "label": "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/e1/fe/0a/e1fe0a49-447f-30ff-b70c-7eec50ed5cd1/AppIcon-0-0-1x_U007epad-0-0-0-1-0-0-sRGB-85-220.png/75x75bb.png",
+            "attributes": {
+              "height": "75"
+            }
+          },
+          {
+            "label": "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/e1/fe/0a/e1fe0a49-447f-30ff-b70c-7eec50ed5cd1/AppIcon-0-0-1x_U007epad-0-0-0-1-0-0-sRGB-85-220.png/100x100bb.png",
+            "attributes": {
+              "height": "100"
+            }
+          }
+        ],
+        "summary": {
+          "label": "Chrome helps you do what’s possible on the web. Download the fast, secure browser by Google.\n\nGET THE BEST OF GOOGLE IN CHROME\n\n• SEARCH WITH GOOGLE - Search and get answers on Google fast. Use your voice to search hands-free.\n• GOOGLE LENS - Search what you see on your screen or with your camera.\n• GOOGLE TRANSLATE - Explore the web in 130+ languages. Translate entire sites in one click.\n\nBROWSE WITH BEST-IN-CLASS SECURITY\n\n• ENHANCED PROTECTION MODE - Browse confidently with the highest level of Chrome’s security.\n• SAFETY CHECK - Get peace of mind with proactive safety alerts.\n• GOOGLE PASSWORD MANAGER - Securely generate and save passwords for fast sign-in, and get alerts if your passwords are at risk.\n\nACCESS YOUR CHROME ACROSS DEVICES\n\n• SYNC ACROSS DEVICES - Save your things (like bookmarks, tabs, and passwords) and easily access them when you sign in to Chrome on your phone, computer or tablet.\n• TAB GROUPS - Create tab groups to stay organized across devices.\n• AUTOFILL - Save time typing by autofilling your saved payments, addresses and passwords."
+        },
+        "im:price": {
+          "label": "Get",
+          "attributes": {
+            "amount": "0.00",
+            "currency": "USD"
+          }
+        },
+        "im:contentType": {
+          "attributes": {
+            "term": "Application",
+            "label": "Application"
+          }
+        },
+        "rights": {
+          "label": "© Google Inc."
+        },
+        "title": {
+          "label": "Google Chrome - Google"
+        },
+        "link": [
+          {
+            "attributes": {
+              "rel": "alternate",
+              "type": "text/html",
+              "href": "https://apps.apple.com/us/app/google-chrome/id535886823?uo=2"
+            }
+          },
+          {
+            "im:duration": {
+              "label": "0"
+            },
+            "attributes": {
+              "title": "Preview",
+              "rel": "enclosure",
+              "type": "image/jpeg",
+              "href": "https://is1-ssl.mzstatic.com/image/thumb/PurpleSource211/v4/8f/b7/90/8fb79027-ecc9-8845-34d4-d9be10a974e0/APP_IPAD_PRO_129-0.png/1024x1024bb.png",
+              "im:assetType": "preview"
+            }
+          }
+        ],
+        "id": {
+          "label": "https://apps.apple.com/us/app/google-chrome/id535886823?uo=2",
+          "attributes": {
+            "im:id": "535886823",
+            "im:bundleId": "com.google.chrome.ios"
+          }
+        },
+        "im:artist": {
+          "label": "Google",
+          "attributes": {
+            "href": "https://apps.apple.com/us/developer/google/id281956209?uo=2"
+          }
+        },
+        "category": {
+          "attributes": {
+            "im:id": "6002",
+            "term": "Utilities",
+            "scheme": "https://apps.apple.com/us/genre/ios-utilities/id6002?uo=2",
+            "label": "Utilities"
+          }
+        },
+        "im:releaseDate": {
+          "label": "2012-06-28T12:57:38-07:00",
+          "attributes": {
+            "label": "June 28, 2012"
+          }
+        }
+      }
+    },
+    {
+      "source": "apple_rss",
+      "feed_type": "top_free",
+      "bundle_id": "686449807",
+      "title": "Telegram Messenger",
+      "developer": "Telegram FZ-LLC",
+      "icon_url": "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/48/0f/f3/480ff3b9-cae0-7fc9-f917-19892541ffaa/Telegram-0-0-1x_U007epad-0-1-0-P3-85-220.png/100x100bb.png",
+      "category": "Social Networking",
+      "release_date": "August 14, 2013",
+      "age_rating": "Application",
+      "description": "Pure instant messaging — simple, fast, secure, and synced across all your devices. One of the top 5 most downloaded apps in the world with over 1 billion active users.\n\nFAST: Telegram is the fastest messaging app on the market, connecting people via a unique, distributed network of data centers around the globe.\n\nSYNCED: You can access your messages from all your phones, tablets and computers at once. Telegram apps are standalone, so you don’t need to keep your phone connected. Start typing on one device and finish the message from another. Never lose your data again.\n\nUNLIMITED: You can send media and files, without any limits on their type and size. Your entire chat history will require no disk space on your device, and will be securely stored in the Telegram cloud for as long as you need it. \n\nSECURE: We made it our mission to provide the best security combined with ease of use. Everything on Telegram, including chats, groups, media, etc. is encrypted using a combination of 256-bit symmetric AES encryption, 2048-bit RSA encryption, and Diffie–Hellman secure key exchange. \n\n100% FREE & OPEN: Telegram has a fully documented and free API for developers, open source apps and verifiable builds to prove the app you download is built from the exact same source code that is published. \n\nPOWERFUL: You can create group chats with up to 200,000 members, share large videos, documents of any type (.DOCX, .MP3, .ZIP, etc.) up to 2 GB each, and even set up bots for specific tasks. Telegram is the perfect tool for hosting online communities and coordinating teamwork.\n\nRELIABLE: Built to deliver your messages using as little data as possible, Telegram is the most reliable messaging system ever made. It works even on the weakest mobile connections. \n\nFUN: Telegram has powerful photo and video editing tools, animated stickers and emoji, fully customizable themes to change the appearance of your app, and an open sticker/GIF platform to cater to all your expressive needs.\n\nSIMPLE: While providing an unprecedented array of features, we take great care to keep the interface clean. Telegram is so simple you already know how to use it.\n\nPRIVATE: We take your privacy seriously and will never give any third parties access to your data. You can delete any message you ever sent or received for both sides, at any time and without a trace. Telegram will never use your data to show you ads.\n\nFor those interested in maximum privacy, Telegram offers Secret Chats. Secret Chat messages can be programmed to self-destruct automatically from both participating devices. This way you can send all types of disappearing content — messages, photos, videos, and even files. Secret Chats use End-to-End Encryption to ensure that a message can only be read by its intended recipient.\n\nWe keep expanding the boundaries of what you can do with a messaging app. Don’t wait years for older messengers to catch up with Telegram — join the revolution today.\n\nTerms of Use: https://www.apple.com/legal/internet-services/itunes/dev/stdeula/",
+      "formatted_price": "Get",
+      "rank": 17,
+      "scraped_at": "2025-10-23T15:58:57.578Z",
+      "raw_data": {
+        "im:name": {
+          "label": "Telegram Messenger"
+        },
+        "im:image": [
+          {
+            "label": "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/48/0f/f3/480ff3b9-cae0-7fc9-f917-19892541ffaa/Telegram-0-0-1x_U007epad-0-1-0-P3-85-220.png/53x53bb.png",
+            "attributes": {
+              "height": "53"
+            }
+          },
+          {
+            "label": "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/48/0f/f3/480ff3b9-cae0-7fc9-f917-19892541ffaa/Telegram-0-0-1x_U007epad-0-1-0-P3-85-220.png/75x75bb.png",
+            "attributes": {
+              "height": "75"
+            }
+          },
+          {
+            "label": "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/48/0f/f3/480ff3b9-cae0-7fc9-f917-19892541ffaa/Telegram-0-0-1x_U007epad-0-1-0-P3-85-220.png/100x100bb.png",
+            "attributes": {
+              "height": "100"
+            }
+          }
+        ],
+        "summary": {
+          "label": "Pure instant messaging — simple, fast, secure, and synced across all your devices. One of the top 5 most downloaded apps in the world with over 1 billion active users.\n\nFAST: Telegram is the fastest messaging app on the market, connecting people via a unique, distributed network of data centers around the globe.\n\nSYNCED: You can access your messages from all your phones, tablets and computers at once. Telegram apps are standalone, so you don’t need to keep your phone connected. Start typing on one device and finish the message from another. Never lose your data again.\n\nUNLIMITED: You can send media and files, without any limits on their type and size. Your entire chat history will require no disk space on your device, and will be securely stored in the Telegram cloud for as long as you need it. \n\nSECURE: We made it our mission to provide the best security combined with ease of use. Everything on Telegram, including chats, groups, media, etc. is encrypted using a combination of 256-bit symmetric AES encryption, 2048-bit RSA encryption, and Diffie–Hellman secure key exchange. \n\n100% FREE & OPEN: Telegram has a fully documented and free API for developers, open source apps and verifiable builds to prove the app you download is built from the exact same source code that is published. \n\nPOWERFUL: You can create group chats with up to 200,000 members, share large videos, documents of any type (.DOCX, .MP3, .ZIP, etc.) up to 2 GB each, and even set up bots for specific tasks. Telegram is the perfect tool for hosting online communities and coordinating teamwork.\n\nRELIABLE: Built to deliver your messages using as little data as possible, Telegram is the most reliable messaging system ever made. It works even on the weakest mobile connections. \n\nFUN: Telegram has powerful photo and video editing tools, animated stickers and emoji, fully customizable themes to change the appearance of your app, and an open sticker/GIF platform to cater to all your expressive needs.\n\nSIMPLE: While providing an unprecedented array of features, we take great care to keep the interface clean. Telegram is so simple you already know how to use it.\n\nPRIVATE: We take your privacy seriously and will never give any third parties access to your data. You can delete any message you ever sent or received for both sides, at any time and without a trace. Telegram will never use your data to show you ads.\n\nFor those interested in maximum privacy, Telegram offers Secret Chats. Secret Chat messages can be programmed to self-destruct automatically from both participating devices. This way you can send all types of disappearing content — messages, photos, videos, and even files. Secret Chats use End-to-End Encryption to ensure that a message can only be read by its intended recipient.\n\nWe keep expanding the boundaries of what you can do with a messaging app. Don’t wait years for older messengers to catch up with Telegram — join the revolution today.\n\nTerms of Use: https://www.apple.com/legal/internet-services/itunes/dev/stdeula/"
+        },
+        "im:price": {
+          "label": "Get",
+          "attributes": {
+            "amount": "0.00",
+            "currency": "USD"
+          }
+        },
+        "im:contentType": {
+          "attributes": {
+            "term": "Application",
+            "label": "Application"
+          }
+        },
+        "rights": {
+          "label": "© 2025 Telegram FZ-LLC"
+        },
+        "title": {
+          "label": "Telegram Messenger - Telegram FZ-LLC"
+        },
+        "link": [
+          {
+            "attributes": {
+              "rel": "alternate",
+              "type": "text/html",
+              "href": "https://apps.apple.com/us/app/telegram-messenger/id686449807?uo=2"
+            }
+          },
+          {
+            "im:duration": {
+              "label": "0"
+            },
+            "attributes": {
+              "title": "Preview",
+              "rel": "enclosure",
+              "type": "image/jpeg",
+              "href": "https://is1-ssl.mzstatic.com/image/thumb/PurpleSource221/v4/9f/50/2b/9f502b3f-d48b-d401-e513-27c5cea80a2f/9e9511d6-943a-4fb8-91a9-6bc5c801f966_EN_1.png/1024x1024bb.png",
+              "im:assetType": "preview"
+            }
+          }
+        ],
+        "id": {
+          "label": "https://apps.apple.com/us/app/telegram-messenger/id686449807?uo=2",
+          "attributes": {
+            "im:id": "686449807",
+            "im:bundleId": "ph.telegra.Telegraph"
+          }
+        },
+        "im:artist": {
+          "label": "Telegram FZ-LLC",
+          "attributes": {
+            "href": "https://apps.apple.com/us/developer/telegram-fz-llc/id686450210?uo=2"
+          }
+        },
+        "category": {
+          "attributes": {
+            "im:id": "6005",
+            "term": "Social Networking",
+            "scheme": "https://apps.apple.com/us/genre/ios-social-networking/id6005?uo=2",
+            "label": "Social Networking"
+          }
+        },
+        "im:releaseDate": {
+          "label": "2013-08-14T00:00:00-07:00",
+          "attributes": {
+            "label": "August 14, 2013"
+          }
+        }
+      }
+    },
+    {
+      "source": "apple_rss",
+      "feed_type": "top_free",
+      "bundle_id": "422689480",
+      "title": "Gmail - Email by Google",
+      "developer": "Google",
+      "icon_url": "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/e5/59/fb/e559fb18-4b74-29c6-1f6f-21ba224c5182/logo_gmail_2020q4_color-0-1x_U007emarketing-0-0-0-7-0-0-0-0-85-220-0.png/100x100bb.png",
+      "category": "Productivity",
+      "release_date": "November 2, 2011",
+      "age_rating": "Application",
+      "description": "The official Gmail app brings the best of Gmail to your iPhone or iPad with robust security, real-time notifications, multiple account support, and search that works across all your mail.\n\nWith the Gmail app, you can:\n• Make Gmail your default email app on iOS\n• Use Gemini* in Gmail to summarize emails, craft or refine responses, or search your inbox to find what you’re looking for\n• Automatically block more than 99.9 percent of spam, phishing, malware, and dangerous links from ever reaching your inbox\n• Undo send, to prevent embarrassing mistakes\n• Turn on Google Chat to connect, create and collaborate with others\n• Get more done as a group in Spaces - a dedicated place for organizing people, topics, and projects\n• Enjoy high quality video calling with Google Meet\n• Respond to emails quickly with Smart Reply suggestions\n• Switch between multiple accounts\n• Get notified of new mail fast, with notification center, badge, and lock screen options\n• Search your mail faster with instant results, predictions as you type, and spelling suggestions\n• Organize your mail by labeling, starring, deleting, and reporting spam\n• Swipe to archive/delete, to quickly clear out your inbox\n• Read your mail with threaded conversations\n• Auto-complete contact names as you type from your Google contacts or your phone\n• Respond to Google Calendar invites right from the app\n\nGmail is part of Google Workspace, allowing you and your team to easily connect, create, and collaborate. You can:\n• Connect with coworkers via Google Meet or Google Chat, send an invite in Calendar, add an action to your task list, and more without leaving Gmail\n• Use suggested actions — like Smart Reply, Smart Compose, grammar suggestions, and nudges — to help you stay on top of work and take care of simple tasks, so you can be more efficient with your time\n• Stay safe. Our machine learning models block more than 99.9% of spam, phishing, and malware from reaching our users\n\n*Google One AI Premium subscription and internet connection required. Language and country availability may vary. Check responses for accuracy",
+      "formatted_price": "Get",
+      "rank": 18,
+      "scraped_at": "2025-10-23T15:58:57.578Z",
+      "raw_data": {
+        "im:name": {
+          "label": "Gmail - Email by Google"
+        },
+        "im:image": [
+          {
+            "label": "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/e5/59/fb/e559fb18-4b74-29c6-1f6f-21ba224c5182/logo_gmail_2020q4_color-0-1x_U007emarketing-0-0-0-7-0-0-0-0-85-220-0.png/53x53bb.png",
+            "attributes": {
+              "height": "53"
+            }
+          },
+          {
+            "label": "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/e5/59/fb/e559fb18-4b74-29c6-1f6f-21ba224c5182/logo_gmail_2020q4_color-0-1x_U007emarketing-0-0-0-7-0-0-0-0-85-220-0.png/75x75bb.png",
+            "attributes": {
+              "height": "75"
+            }
+          },
+          {
+            "label": "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/e5/59/fb/e559fb18-4b74-29c6-1f6f-21ba224c5182/logo_gmail_2020q4_color-0-1x_U007emarketing-0-0-0-7-0-0-0-0-85-220-0.png/100x100bb.png",
+            "attributes": {
+              "height": "100"
+            }
+          }
+        ],
+        "summary": {
+          "label": "The official Gmail app brings the best of Gmail to your iPhone or iPad with robust security, real-time notifications, multiple account support, and search that works across all your mail.\n\nWith the Gmail app, you can:\n• Make Gmail your default email app on iOS\n• Use Gemini* in Gmail to summarize emails, craft or refine responses, or search your inbox to find what you’re looking for\n• Automatically block more than 99.9 percent of spam, phishing, malware, and dangerous links from ever reaching your inbox\n• Undo send, to prevent embarrassing mistakes\n• Turn on Google Chat to connect, create and collaborate with others\n• Get more done as a group in Spaces - a dedicated place for organizing people, topics, and projects\n• Enjoy high quality video calling with Google Meet\n• Respond to emails quickly with Smart Reply suggestions\n• Switch between multiple accounts\n• Get notified of new mail fast, with notification center, badge, and lock screen options\n• Search your mail faster with instant results, predictions as you type, and spelling suggestions\n• Organize your mail by labeling, starring, deleting, and reporting spam\n• Swipe to archive/delete, to quickly clear out your inbox\n• Read your mail with threaded conversations\n• Auto-complete contact names as you type from your Google contacts or your phone\n• Respond to Google Calendar invites right from the app\n\nGmail is part of Google Workspace, allowing you and your team to easily connect, create, and collaborate. You can:\n• Connect with coworkers via Google Meet or Google Chat, send an invite in Calendar, add an action to your task list, and more without leaving Gmail\n• Use suggested actions — like Smart Reply, Smart Compose, grammar suggestions, and nudges — to help you stay on top of work and take care of simple tasks, so you can be more efficient with your time\n• Stay safe. Our machine learning models block more than 99.9% of spam, phishing, and malware from reaching our users\n\n*Google One AI Premium subscription and internet connection required. Language and country availability may vary. Check responses for accuracy"
+        },
+        "im:price": {
+          "label": "Get",
+          "attributes": {
+            "amount": "0.00",
+            "currency": "USD"
+          }
+        },
+        "im:contentType": {
+          "attributes": {
+            "term": "Application",
+            "label": "Application"
+          }
+        },
+        "rights": {
+          "label": "© Google LLC"
+        },
+        "title": {
+          "label": "Gmail - Email by Google - Google"
+        },
+        "link": [
+          {
+            "attributes": {
+              "rel": "alternate",
+              "type": "text/html",
+              "href": "https://apps.apple.com/us/app/gmail-email-by-google/id422689480?uo=2"
+            }
+          },
+          {
+            "im:duration": {
+              "label": "0"
+            },
+            "attributes": {
+              "title": "Preview",
+              "rel": "enclosure",
+              "type": "image/jpeg",
+              "href": "https://is1-ssl.mzstatic.com/image/thumb/PurpleSource211/v4/78/85/2d/78852da0-b418-3fcb-ca2b-302a52a7d1f4/APP_IPAD_PRO_129-0.png/1024x1024bb.png",
+              "im:assetType": "preview"
+            }
+          }
+        ],
+        "id": {
+          "label": "https://apps.apple.com/us/app/gmail-email-by-google/id422689480?uo=2",
+          "attributes": {
+            "im:id": "422689480",
+            "im:bundleId": "com.google.Gmail"
+          }
+        },
+        "im:artist": {
+          "label": "Google",
+          "attributes": {
+            "href": "https://apps.apple.com/us/developer/google/id281956209?uo=2"
+          }
+        },
+        "category": {
+          "attributes": {
+            "im:id": "6007",
+            "term": "Productivity",
+            "scheme": "https://apps.apple.com/us/genre/ios-productivity/id6007?uo=2",
+            "label": "Productivity"
+          }
+        },
+        "im:releaseDate": {
+          "label": "2011-11-02T10:13:30-07:00",
+          "attributes": {
+            "label": "November 2, 2011"
+          }
+        }
+      }
+    },
+    {
+      "source": "apple_rss",
+      "feed_type": "top_free",
+      "bundle_id": "6670324846",
+      "title": "Grok",
+      "developer": "xAI",
+      "icon_url": "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/08/2b/4f/082b4fb7-920b-5462-8f6a-1c04198e0c9c/AppIcon-0-1x_U007epad-0-0-0-1-0-0-85-220-0.png/100x100bb.png",
+      "category": "Productivity",
+      "release_date": "January 8, 2025",
+      "age_rating": "Application",
+      "description": "Grok is an AI-powered assistant, developed by xAI, designed to be maximally truthful, useful, and curious. Get answers to any question, generate striking images and videos, and let Grok search the web and X for you to gain a deeper understanding of the world. With Grok, the universe is in your hands!\n\nAI assistant\n- Ask anything and get fast replies, have Grok do deep research on the web for you, or solve the hardest problems in math, science, and coding with Grok 4.\n- Upload documents and photos, or paste links in the chat to have Grok analyze or help you understand the content.\n\nGrok Imagine\n- Imagine is a new, super fast, groundbreaking AI image and video generation experience. \n- Generate 6-second videos with sound from text prompts, and turn static photos into videos.\n- Generate AI images using only your voice.\n\nGrok Voice Mode\n- Talk to Grok using your voice and get natural sounding replies as if you’re having a conversation with a human.\n- Live Camera: If you want Grok to see what you see, you can use Voice Mode with Live Camera to share your view in real-time.\n- Personalize your AI Assistant and choose between different personalities, like Assistant, Romantic, Storyteller, and more.\n\nGrok AI Companions\n- Have a chat with Ani, Rudi, or Valentine, our animated AI characters, each bursting with personality,\n- Rudi is a cheeky red panda with a sense of humor that you can banter with.\n- Valentine is a romantic male with poetic charm, perfect for deep and soulful conversations. \n- Ani is a charmer who blushes and sends hearts as your bond grows.\n\nReal-time info from X\n- With access to X (previously Twitter) and web data, Grok is the AI assistant with the most up-to-date information, keeping you informed about the latest news and trends in the world, for any given topic.\n- You can also ask Grok to do advanced searches for you on X, letting you dive even deeper into what’s happening and what people are saying.\n\nCreate and edit images\n- Generate striking images from simple text prompts, or upload images and ask Grok to edit them.\n- Remove objects, change the scenery, or apply any art style, like Ghibli or Anime.\n\nWith Grok as your copilot and personal AI assistant, navigating the vast expanse of knowledge becomes exciting! Tap into X’s live trends, fire off bold questions, have fun conversations with AI Companions, or use the new AI image and video generation tool Imagine to explore your boundless creativity.\n\n\nTerms of Service: https://x.ai/legal/terms-of-service\nPrivacy Policy: https://x.ai/legal/privacy-policy\n\nGrok by xAI",
+      "formatted_price": "Get",
+      "rank": 19,
+      "scraped_at": "2025-10-23T15:58:57.578Z",
+      "raw_data": {
+        "im:name": {
+          "label": "Grok"
+        },
+        "im:image": [
+          {
+            "label": "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/08/2b/4f/082b4fb7-920b-5462-8f6a-1c04198e0c9c/AppIcon-0-1x_U007epad-0-0-0-1-0-0-85-220-0.png/53x53bb.png",
+            "attributes": {
+              "height": "53"
+            }
+          },
+          {
+            "label": "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/08/2b/4f/082b4fb7-920b-5462-8f6a-1c04198e0c9c/AppIcon-0-1x_U007epad-0-0-0-1-0-0-85-220-0.png/75x75bb.png",
+            "attributes": {
+              "height": "75"
+            }
+          },
+          {
+            "label": "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/08/2b/4f/082b4fb7-920b-5462-8f6a-1c04198e0c9c/AppIcon-0-1x_U007epad-0-0-0-1-0-0-85-220-0.png/100x100bb.png",
+            "attributes": {
+              "height": "100"
+            }
+          }
+        ],
+        "summary": {
+          "label": "Grok is an AI-powered assistant, developed by xAI, designed to be maximally truthful, useful, and curious. Get answers to any question, generate striking images and videos, and let Grok search the web and X for you to gain a deeper understanding of the world. With Grok, the universe is in your hands!\n\nAI assistant\n- Ask anything and get fast replies, have Grok do deep research on the web for you, or solve the hardest problems in math, science, and coding with Grok 4.\n- Upload documents and photos, or paste links in the chat to have Grok analyze or help you understand the content.\n\nGrok Imagine\n- Imagine is a new, super fast, groundbreaking AI image and video generation experience. \n- Generate 6-second videos with sound from text prompts, and turn static photos into videos.\n- Generate AI images using only your voice.\n\nGrok Voice Mode\n- Talk to Grok using your voice and get natural sounding replies as if you’re having a conversation with a human.\n- Live Camera: If you want Grok to see what you see, you can use Voice Mode with Live Camera to share your view in real-time.\n- Personalize your AI Assistant and choose between different personalities, like Assistant, Romantic, Storyteller, and more.\n\nGrok AI Companions\n- Have a chat with Ani, Rudi, or Valentine, our animated AI characters, each bursting with personality,\n- Rudi is a cheeky red panda with a sense of humor that you can banter with.\n- Valentine is a romantic male with poetic charm, perfect for deep and soulful conversations. \n- Ani is a charmer who blushes and sends hearts as your bond grows.\n\nReal-time info from X\n- With access to X (previously Twitter) and web data, Grok is the AI assistant with the most up-to-date information, keeping you informed about the latest news and trends in the world, for any given topic.\n- You can also ask Grok to do advanced searches for you on X, letting you dive even deeper into what’s happening and what people are saying.\n\nCreate and edit images\n- Generate striking images from simple text prompts, or upload images and ask Grok to edit them.\n- Remove objects, change the scenery, or apply any art style, like Ghibli or Anime.\n\nWith Grok as your copilot and personal AI assistant, navigating the vast expanse of knowledge becomes exciting! Tap into X’s live trends, fire off bold questions, have fun conversations with AI Companions, or use the new AI image and video generation tool Imagine to explore your boundless creativity.\n\n\nTerms of Service: https://x.ai/legal/terms-of-service\nPrivacy Policy: https://x.ai/legal/privacy-policy\n\nGrok by xAI"
+        },
+        "im:price": {
+          "label": "Get",
+          "attributes": {
+            "amount": "0.00",
+            "currency": "USD"
+          }
+        },
+        "im:contentType": {
+          "attributes": {
+            "term": "Application",
+            "label": "Application"
+          }
+        },
+        "rights": {
+          "label": "© xAI Inc."
+        },
+        "title": {
+          "label": "Grok - xAI"
+        },
+        "link": {
+          "attributes": {
+            "rel": "alternate",
+            "type": "text/html",
+            "href": "https://apps.apple.com/us/app/grok/id6670324846?uo=2"
+          }
+        },
+        "id": {
+          "label": "https://apps.apple.com/us/app/grok/id6670324846?uo=2",
+          "attributes": {
+            "im:id": "6670324846",
+            "im:bundleId": "ai.x.GrokApp"
+          }
+        },
+        "im:artist": {
+          "label": "xAI",
+          "attributes": {
+            "href": "https://apps.apple.com/us/developer/xai/id1734543547?uo=2"
+          }
+        },
+        "category": {
+          "attributes": {
+            "im:id": "6007",
+            "term": "Productivity",
+            "scheme": "https://apps.apple.com/us/genre/ios-productivity/id6007?uo=2",
+            "label": "Productivity"
+          }
+        },
+        "im:releaseDate": {
+          "label": "2025-01-08T00:00:00-07:00",
+          "attributes": {
+            "label": "January 8, 2025"
+          }
+        }
+      }
+    },
+    {
+      "source": "apple_rss",
+      "feed_type": "top_free",
+      "bundle_id": "333903271",
+      "title": "X",
+      "developer": "X Corp.",
+      "icon_url": "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/89/a1/97/89a19788-76f9-c054-815f-67dfaa1987a1/ProductionAppIcon-0-0-1x_U007emarketing-0-8-0-0-0-85-220.png/100x100bb.png",
+      "category": "News",
+      "release_date": "October 9, 2009",
+      "age_rating": "Application",
+      "description": "Welcome to X (formerly known as Twitter), your trusted digital town square where conversations unfold in real time, and the world connects through breaking news, live events, podcasts, and everything in between.\n\nWhether you're passionate about sports, tech, music, or politics, X is your front-row seat to what’s happening across the globe.\n\nX isn’t just another social media app, it’s the ultimate destination for staying well informed, sharing ideas, and building communities. With X, you’re always in the loop with relevant trending topics and breaking news, delivered instantly to your screen, raw and unfiltered.\n\nWhat You Can Do on X:\n• Follow breaking news from around the world before it hits the headlines, and stay ahead of the curve with real-time updates on trending topics and viral conversations.\n\n• Post your thoughts, photos, and videos with a global community. Join millions of users in shaping public dialogue across social, cultural, and political conversations.\n\n• Discover Grok, the AI assistant powered by X’s real-time data. You can ask Grok to summarize trending news, explain videos, or give you more context about posts.\n\n• Stream live video or go live with Spaces, our audio feature that enables you to host discussions, hold interviews, or start your next live podcast. Whether you're streaming a concert, a live game, or your thoughts on a hot topic, X keeps your audience engaged.\n\n• Watch videos: from live breaking news and sports clips to podcasts and gaming sessions that last up to 3 hours long. Many of the world’s leading voices, in comedy, gaming, podcasting, and politics, all share their content on X.\n\n• Connect and chat privately with friends, followers, customers, or collaborators through Direct Messages.\n\n• Join and build communities tailored to your interests: from sports news, gaming, entertainment, crypto, entrepreneurship, tech, and more.\n\n• Subscribe to X Premium to unlock exclusive features like a blue checkmark, boosted visibility, prioritized replies, fewer ads, longer videos, and post editing. X Premium also gives you access to creator revenue sharing and the ability to offer exclusive content to subscribers.\n\nWhy X?\nIn a world of constant change, X is your real-time source to stay ahead of the curve, connect with people, and explore diverse perspectives. From breaking live news and trending memes to top podcasts and live streams from your favorite creators, X brings it all together in one powerful social experience.\n\nPrivacy Policy: https://x.com/privacy\nTerms and Conditions: https://x.com/tos",
+      "formatted_price": "Get",
+      "rank": 20,
+      "scraped_at": "2025-10-23T15:58:57.578Z",
+      "raw_data": {
+        "im:name": {
+          "label": "X"
+        },
+        "im:image": [
+          {
+            "label": "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/89/a1/97/89a19788-76f9-c054-815f-67dfaa1987a1/ProductionAppIcon-0-0-1x_U007emarketing-0-8-0-0-0-85-220.png/53x53bb.png",
+            "attributes": {
+              "height": "53"
+            }
+          },
+          {
+            "label": "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/89/a1/97/89a19788-76f9-c054-815f-67dfaa1987a1/ProductionAppIcon-0-0-1x_U007emarketing-0-8-0-0-0-85-220.png/75x75bb.png",
+            "attributes": {
+              "height": "75"
+            }
+          },
+          {
+            "label": "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/89/a1/97/89a19788-76f9-c054-815f-67dfaa1987a1/ProductionAppIcon-0-0-1x_U007emarketing-0-8-0-0-0-85-220.png/100x100bb.png",
+            "attributes": {
+              "height": "100"
+            }
+          }
+        ],
+        "summary": {
+          "label": "Welcome to X (formerly known as Twitter), your trusted digital town square where conversations unfold in real time, and the world connects through breaking news, live events, podcasts, and everything in between.\n\nWhether you're passionate about sports, tech, music, or politics, X is your front-row seat to what’s happening across the globe.\n\nX isn’t just another social media app, it’s the ultimate destination for staying well informed, sharing ideas, and building communities. With X, you’re always in the loop with relevant trending topics and breaking news, delivered instantly to your screen, raw and unfiltered.\n\nWhat You Can Do on X:\n• Follow breaking news from around the world before it hits the headlines, and stay ahead of the curve with real-time updates on trending topics and viral conversations.\n\n• Post your thoughts, photos, and videos with a global community. Join millions of users in shaping public dialogue across social, cultural, and political conversations.\n\n• Discover Grok, the AI assistant powered by X’s real-time data. You can ask Grok to summarize trending news, explain videos, or give you more context about posts.\n\n• Stream live video or go live with Spaces, our audio feature that enables you to host discussions, hold interviews, or start your next live podcast. Whether you're streaming a concert, a live game, or your thoughts on a hot topic, X keeps your audience engaged.\n\n• Watch videos: from live breaking news and sports clips to podcasts and gaming sessions that last up to 3 hours long. Many of the world’s leading voices, in comedy, gaming, podcasting, and politics, all share their content on X.\n\n• Connect and chat privately with friends, followers, customers, or collaborators through Direct Messages.\n\n• Join and build communities tailored to your interests: from sports news, gaming, entertainment, crypto, entrepreneurship, tech, and more.\n\n• Subscribe to X Premium to unlock exclusive features like a blue checkmark, boosted visibility, prioritized replies, fewer ads, longer videos, and post editing. X Premium also gives you access to creator revenue sharing and the ability to offer exclusive content to subscribers.\n\nWhy X?\nIn a world of constant change, X is your real-time source to stay ahead of the curve, connect with people, and explore diverse perspectives. From breaking live news and trending memes to top podcasts and live streams from your favorite creators, X brings it all together in one powerful social experience.\n\nPrivacy Policy: https://x.com/privacy\nTerms and Conditions: https://x.com/tos"
+        },
+        "im:price": {
+          "label": "Get",
+          "attributes": {
+            "amount": "0.00",
+            "currency": "USD"
+          }
+        },
+        "im:contentType": {
+          "attributes": {
+            "term": "Application",
+            "label": "Application"
+          }
+        },
+        "rights": {
+          "label": "© X Corp."
+        },
+        "title": {
+          "label": "X - X Corp."
+        },
+        "link": [
+          {
+            "attributes": {
+              "rel": "alternate",
+              "type": "text/html",
+              "href": "https://apps.apple.com/us/app/x/id333903271?uo=2"
+            }
+          },
+          {
+            "im:duration": {
+              "label": "0"
+            },
+            "attributes": {
+              "title": "Preview",
+              "rel": "enclosure",
+              "type": "image/jpeg",
+              "href": "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/81/e2/29/81e229e0-4a3e-eaaf-2faf-78303457ef9a/770e6822-f28e-4e4b-be51-8bfbe36f4307_iPad_12.9_-_1.png/1024x1024bb.png",
+              "im:assetType": "preview"
+            }
+          }
+        ],
+        "id": {
+          "label": "https://apps.apple.com/us/app/x/id333903271?uo=2",
+          "attributes": {
+            "im:id": "333903271",
+            "im:bundleId": "com.atebits.Tweetie2"
+          }
+        },
+        "im:artist": {
+          "label": "X Corp.",
+          "attributes": {
+            "href": "https://apps.apple.com/us/developer/x-corp/id296415947?uo=2"
+          }
+        },
+        "category": {
+          "attributes": {
+            "im:id": "6009",
+            "term": "News",
+            "scheme": "https://apps.apple.com/us/genre/ios-news/id6009?uo=2",
+            "label": "News"
+          }
+        },
+        "im:releaseDate": {
+          "label": "2009-10-09T12:50:00-07:00",
+          "attributes": {
+            "label": "October 9, 2009"
+          }
+        }
+      }
+    },
+    {
+      "source": "apple_rss",
+      "feed_type": "top_free",
+      "bundle_id": "389801252",
+      "title": "Instagram",
+      "developer": "Instagram, Inc.",
+      "icon_url": "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/c5/4e/e2/c54ee2e0-1519-380f-e7a8-cd1797efb4eb/Prod-0-0-1x_U007epad-0-1-0-sRGB-85-220.png/100x100bb.png",
+      "category": "Photo & Video",
+      "release_date": "October 6, 2010",
+      "age_rating": "Application",
+      "description": "Little moments lead to big friendships. Share yours on Instagram. \n— From Meta\n\nConnect with friends, find other fans, and see what people around you are up to and into. Explore your interests and post what's going on, from your daily moments to life's highlights.\n\nShare what you’re up to and into:\n- Turn your life into a movie and discover short, entertaining videos on Instagram with Reels.\n- Keep up with friends on the fly with Stories and Notes that disappear after 24 hours.\n- Start group chats and share unfiltered moments with your Close Friends.\n- Share memories from recent events or trips in Feed.\n- Customize your posts with exclusive templates, music, stickers and filters.\n\nDive into your interests.\n- Watch videos from your favorite creators and discover new content that’s personalized to your interests.\n- Get inspired by photos and videos from new accounts in Explore.\n- Discover brands and small businesses, and shop products that are relevant to your personal style.\n\nSome Instagram features may not be available in your country or region.\n\nTerms and Policies: https://help.instagram.com/581066165581870\n\nConsumer Health Privacy Policy: https://privacycenter.instagram.com/policies/health\n\nLearn how we're working to help keep our communities safe across Meta technologies at the Instagram Safety Center: https://about.instagram.com/safety",
+      "formatted_price": "Get",
+      "rank": 21,
+      "scraped_at": "2025-10-23T15:58:57.578Z",
+      "raw_data": {
+        "im:name": {
+          "label": "Instagram"
+        },
+        "im:image": [
+          {
+            "label": "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/c5/4e/e2/c54ee2e0-1519-380f-e7a8-cd1797efb4eb/Prod-0-0-1x_U007epad-0-1-0-sRGB-85-220.png/53x53bb.png",
+            "attributes": {
+              "height": "53"
+            }
+          },
+          {
+            "label": "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/c5/4e/e2/c54ee2e0-1519-380f-e7a8-cd1797efb4eb/Prod-0-0-1x_U007epad-0-1-0-sRGB-85-220.png/75x75bb.png",
+            "attributes": {
+              "height": "75"
+            }
+          },
+          {
+            "label": "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/c5/4e/e2/c54ee2e0-1519-380f-e7a8-cd1797efb4eb/Prod-0-0-1x_U007epad-0-1-0-sRGB-85-220.png/100x100bb.png",
+            "attributes": {
+              "height": "100"
+            }
+          }
+        ],
+        "summary": {
+          "label": "Little moments lead to big friendships. Share yours on Instagram. \n— From Meta\n\nConnect with friends, find other fans, and see what people around you are up to and into. Explore your interests and post what's going on, from your daily moments to life's highlights.\n\nShare what you’re up to and into:\n- Turn your life into a movie and discover short, entertaining videos on Instagram with Reels.\n- Keep up with friends on the fly with Stories and Notes that disappear after 24 hours.\n- Start group chats and share unfiltered moments with your Close Friends.\n- Share memories from recent events or trips in Feed.\n- Customize your posts with exclusive templates, music, stickers and filters.\n\nDive into your interests.\n- Watch videos from your favorite creators and discover new content that’s personalized to your interests.\n- Get inspired by photos and videos from new accounts in Explore.\n- Discover brands and small businesses, and shop products that are relevant to your personal style.\n\nSome Instagram features may not be available in your country or region.\n\nTerms and Policies: https://help.instagram.com/581066165581870\n\nConsumer Health Privacy Policy: https://privacycenter.instagram.com/policies/health\n\nLearn how we're working to help keep our communities safe across Meta technologies at the Instagram Safety Center: https://about.instagram.com/safety"
+        },
+        "im:price": {
+          "label": "Get",
+          "attributes": {
+            "amount": "0.00",
+            "currency": "USD"
+          }
+        },
+        "im:contentType": {
+          "attributes": {
+            "term": "Application",
+            "label": "Application"
+          }
+        },
+        "rights": {
+          "label": "© 2018 Instagram, LLC."
+        },
+        "title": {
+          "label": "Instagram - Instagram, Inc."
+        },
+        "link": [
+          {
+            "attributes": {
+              "rel": "alternate",
+              "type": "text/html",
+              "href": "https://apps.apple.com/us/app/instagram/id389801252?uo=2"
+            }
+          },
+          {
+            "im:duration": {
+              "label": "0"
+            },
+            "attributes": {
+              "title": "Preview",
+              "rel": "enclosure",
+              "type": "image/jpeg",
+              "href": "https://is1-ssl.mzstatic.com/image/thumb/PurpleSource211/v4/a0/8e/41/a08e41d3-f192-c756-1d13-3fd9207daac6/10.5__Home.png/1024x1024bb.png",
+              "im:assetType": "preview"
+            }
+          }
+        ],
+        "id": {
+          "label": "https://apps.apple.com/us/app/instagram/id389801252?uo=2",
+          "attributes": {
+            "im:id": "389801252",
+            "im:bundleId": "com.burbn.instagram"
+          }
+        },
+        "im:artist": {
+          "label": "Instagram, Inc.",
+          "attributes": {
+            "href": "https://apps.apple.com/us/developer/instagram-inc/id389801255?uo=2"
+          }
+        },
+        "category": {
+          "attributes": {
+            "im:id": "6008",
+            "term": "Photo & Video",
+            "scheme": "https://apps.apple.com/us/genre/ios-photo-video/id6008?uo=2",
+            "label": "Photo & Video"
+          }
+        },
+        "im:releaseDate": {
+          "label": "2010-10-06T01:12:41-07:00",
+          "attributes": {
+            "label": "October 6, 2010"
+          }
+        }
+      }
+    },
+    {
+      "source": "apple_rss",
+      "feed_type": "top_free",
+      "bundle_id": "1508186374",
+      "title": "Peacock TV: Stream TV & Movies",
+      "developer": "Peacock TV LLC",
+      "icon_url": "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/1e/c4/3b/1ec43b36-9752-92eb-47e1-ee1685c2282b/AppIcon-0-0-1x_U007epad-0-1-0-85-220.png/100x100bb.png",
+      "category": "Entertainment",
+      "release_date": "July 14, 2020",
+      "age_rating": "Application",
+      "description": "Download Peacock, NBCUniversal’s streaming service. Peacock has all your favorite culture-defining entertainment, all in one place. \r\n\r\nWith Peacock, stream exclusive Originals, new movies from theaters, thousands of TV shows, and current programming from Bravo and NBC. \r\n\r\nStay up to date with the news and stream all your favorite live sports and events including Sunday Night Football, Premier League, Big Ten Football, NBA games (starting 10/21/25), The Winter Olympics, and so much more. \r\n \r\nWith PEACOCK PREMIUM, stream the full library of movies, episodes, and seasons — plus live sports and events.\r\n•\tStream new movies from theaters, plus full seasons of exclusive premium TV like Yellowstone and The Office: Superfan Episodes. \r\n•\tExclusive Peacock Originals, including The Paper, Love Island USA, The Traitors, Twisted Metal, The Day of the Jackal, Ted, and more. \r\n•\tLive sports, including Sunday Night Football, Premier League, Big Ten football, and LIVE NBA Games starting 10/21/25. \r\n•\tThe streaming home for your Bravo faves, including Below Deck, The Real Housewives, Top Chef, and Vanderpump Rules. \r\n•\tCurrent-season NBC hits like The Voice, Law & Order, St. Denis Medical, One Chicago, and Saturday Night Live.\r\n•\tPeacock Channels – playing your favorite entertainment and news. Scroll less and watch more with SNL Vault, Dateline, NBC Sports on Peacock, NBC News NOW, TODAY All Day, and True Crime. \r\n•\tHit Spanish-language TV shows and news from Telemundo. \r\n•\tFull library of Kids and Family entertainment. \r\n \r\nWith PEACOCK PREMIUM PLUS, get everything included in Peacock Premium as well as: \r\n•\tStream Peacock ad-free.* \r\n•\tStream your local NBC channel, 24/7. \r\n•\tDownload available titles to your mobile device and watch later, anywhere. \r\n\r\n*Due to streaming rights, a small amount of programming will still contain ads (Peacock Channels, events, a few shows and movies, and local content). \r\n\r\nWith PEACOCK SELECT, you get:\r\n•\tNext-day TV from NBC and Bravo.\r\n•\tA selection of full seasons (excludes Peacock Originals) and 24/7 streaming channels of TV shows.\r\n\r\nContent availability may vary over time.\r\n\r\nPlease note: Use of the Peacock app is limited to the United States and its territories. Video is accessible via 3G, 4G, 5G, LTE and Wi-Fi networks. Data charges may apply.  \r\nIf applicable, subscription charges begin after any promotional period of Peacock Premium/Peacock Premium Plus concludes. You will be charged on a recurring basis as described above, minus applied offers plus applicable taxes. Your subscription will auto-renew until you cancel. Cancel at any time by visiting your account in the Peacock App. By subscribing, you agree to the preceding subscription terms and our Terms of Use and Privacy Policy below.\r\nLearn more at www.peacocktv.com\r\nTerms of Use: www.peacocktv.com/terms\r\nPrivacy Policy: www.peacocktv.com/privacy\r\nCustomer Help: www.peacocktv.com/help\r\nYour Privacy Choices: https://www.nbcuniversal.com/privacy/notrtoo\r\nCA Notice: https://www.peacocktv.com/ca-notice\r\nThis app features Nielsen proprietary measurement software, which will allow you to contribute to market research, like Nielsen’s TV Ratings. To learn more about our digital measurement products and your choices in regard to them, please visit http://www.nielsen.com/digitalprivacy for more information.",
+      "formatted_price": "Get",
+      "rank": 22,
+      "scraped_at": "2025-10-23T15:58:57.578Z",
+      "raw_data": {
+        "im:name": {
+          "label": "Peacock TV: Stream TV & Movies"
+        },
+        "im:image": [
+          {
+            "label": "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/1e/c4/3b/1ec43b36-9752-92eb-47e1-ee1685c2282b/AppIcon-0-0-1x_U007epad-0-1-0-85-220.png/53x53bb.png",
+            "attributes": {
+              "height": "53"
+            }
+          },
+          {
+            "label": "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/1e/c4/3b/1ec43b36-9752-92eb-47e1-ee1685c2282b/AppIcon-0-0-1x_U007epad-0-1-0-85-220.png/75x75bb.png",
+            "attributes": {
+              "height": "75"
+            }
+          },
+          {
+            "label": "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/1e/c4/3b/1ec43b36-9752-92eb-47e1-ee1685c2282b/AppIcon-0-0-1x_U007epad-0-1-0-85-220.png/100x100bb.png",
+            "attributes": {
+              "height": "100"
+            }
+          }
+        ],
+        "summary": {
+          "label": "Download Peacock, NBCUniversal’s streaming service. Peacock has all your favorite culture-defining entertainment, all in one place. \r\n\r\nWith Peacock, stream exclusive Originals, new movies from theaters, thousands of TV shows, and current programming from Bravo and NBC. \r\n\r\nStay up to date with the news and stream all your favorite live sports and events including Sunday Night Football, Premier League, Big Ten Football, NBA games (starting 10/21/25), The Winter Olympics, and so much more. \r\n \r\nWith PEACOCK PREMIUM, stream the full library of movies, episodes, and seasons — plus live sports and events.\r\n•\tStream new movies from theaters, plus full seasons of exclusive premium TV like Yellowstone and The Office: Superfan Episodes. \r\n•\tExclusive Peacock Originals, including The Paper, Love Island USA, The Traitors, Twisted Metal, The Day of the Jackal, Ted, and more. \r\n•\tLive sports, including Sunday Night Football, Premier League, Big Ten football, and LIVE NBA Games starting 10/21/25. \r\n•\tThe streaming home for your Bravo faves, including Below Deck, The Real Housewives, Top Chef, and Vanderpump Rules. \r\n•\tCurrent-season NBC hits like The Voice, Law & Order, St. Denis Medical, One Chicago, and Saturday Night Live.\r\n•\tPeacock Channels – playing your favorite entertainment and news. Scroll less and watch more with SNL Vault, Dateline, NBC Sports on Peacock, NBC News NOW, TODAY All Day, and True Crime. \r\n•\tHit Spanish-language TV shows and news from Telemundo. \r\n•\tFull library of Kids and Family entertainment. \r\n \r\nWith PEACOCK PREMIUM PLUS, get everything included in Peacock Premium as well as: \r\n•\tStream Peacock ad-free.* \r\n•\tStream your local NBC channel, 24/7. \r\n•\tDownload available titles to your mobile device and watch later, anywhere. \r\n\r\n*Due to streaming rights, a small amount of programming will still contain ads (Peacock Channels, events, a few shows and movies, and local content). \r\n\r\nWith PEACOCK SELECT, you get:\r\n•\tNext-day TV from NBC and Bravo.\r\n•\tA selection of full seasons (excludes Peacock Originals) and 24/7 streaming channels of TV shows.\r\n\r\nContent availability may vary over time.\r\n\r\nPlease note: Use of the Peacock app is limited to the United States and its territories. Video is accessible via 3G, 4G, 5G, LTE and Wi-Fi networks. Data charges may apply.  \r\nIf applicable, subscription charges begin after any promotional period of Peacock Premium/Peacock Premium Plus concludes. You will be charged on a recurring basis as described above, minus applied offers plus applicable taxes. Your subscription will auto-renew until you cancel. Cancel at any time by visiting your account in the Peacock App. By subscribing, you agree to the preceding subscription terms and our Terms of Use and Privacy Policy below.\r\nLearn more at www.peacocktv.com\r\nTerms of Use: www.peacocktv.com/terms\r\nPrivacy Policy: www.peacocktv.com/privacy\r\nCustomer Help: www.peacocktv.com/help\r\nYour Privacy Choices: https://www.nbcuniversal.com/privacy/notrtoo\r\nCA Notice: https://www.peacocktv.com/ca-notice\r\nThis app features Nielsen proprietary measurement software, which will allow you to contribute to market research, like Nielsen’s TV Ratings. To learn more about our digital measurement products and your choices in regard to them, please visit http://www.nielsen.com/digitalprivacy for more information."
+        },
+        "im:price": {
+          "label": "Get",
+          "attributes": {
+            "amount": "0.00",
+            "currency": "USD"
+          }
+        },
+        "im:contentType": {
+          "attributes": {
+            "term": "Application",
+            "label": "Application"
+          }
+        },
+        "rights": {
+          "label": "Peacock © Peacock TV LLC.  All other programs and/or marks are the property of their respective owners. All rights reserved."
+        },
+        "title": {
+          "label": "Peacock TV: Stream TV & Movies - Peacock TV LLC"
+        },
+        "link": {
+          "attributes": {
+            "rel": "alternate",
+            "type": "text/html",
+            "href": "https://apps.apple.com/us/app/peacock-tv-stream-tv-movies/id1508186374?uo=2"
+          }
+        },
+        "id": {
+          "label": "https://apps.apple.com/us/app/peacock-tv-stream-tv-movies/id1508186374?uo=2",
+          "attributes": {
+            "im:id": "1508186374",
+            "im:bundleId": "com.peacocktv.peacock"
+          }
+        },
+        "im:artist": {
+          "label": "Peacock TV LLC",
+          "attributes": {
+            "href": "https://apps.apple.com/us/developer/peacock-tv-llc/id1508186373?uo=2"
+          }
+        },
+        "category": {
+          "attributes": {
+            "im:id": "6016",
+            "term": "Entertainment",
+            "scheme": "https://apps.apple.com/us/genre/ios-entertainment/id6016?uo=2",
+            "label": "Entertainment"
+          }
+        },
+        "im:releaseDate": {
+          "label": "2020-07-14T00:00:00-07:00",
+          "attributes": {
+            "label": "July 14, 2020"
+          }
+        }
+      }
+    },
+    {
+      "source": "apple_rss",
+      "feed_type": "top_free",
+      "bundle_id": "309735670",
+      "title": "Indeed Job Search",
+      "developer": "Indeed Inc.",
+      "icon_url": "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/8d/16/24/8d162424-87d6-0ff0-4a44-ee1573350656/AppIcon-0-0-1x_U007emarketing-0-11-0-85-220.png/100x100bb.png",
+      "category": "Business",
+      "release_date": "June 7, 2009",
+      "age_rating": "Application",
+      "description": "Discover your next job opportunity on Indeed, the free job search app designed to connect you with better work anytime, anywhere.\n\nForget the other job search apps. With 12 jobs added every second and smart search filters to quickly narrow in on your ideal role, your next job is at your fingertips.\n\nWhether casually browsing or urgently applying, Indeed has the jobs you want, all in one place, with advanced functionality to help you find work that meet your needs and easily apply from your device. \n\n\n• Search the comprehensive database to find jobs, which includes employment opportunities posted on other job search sites, and explore recommended roles based on your preferences and work experience.\n\n• Upload your resume or use Indeed’s resume builder to show your best self to employers and let your next job find you.\n\n• Apply with your saved resume to avoid rewriting the same information for each job application during your job search.\n\n• Keep track of applications during your job search and get notified when an employer has read and responded to your application on Indeed.\n\n• Understand what employees think about their workplace with more than 700 million company ratings and reviews.\n\n• Uncover what a job pays before you apply with more than 1.1 billion salaries searchable by job title, company, and location.\n\n• Find jobs with flexible work options using our smart search filters, including: remote jobs, side jobs, freelance jobs, government jobs, part time jobs, and jobs that allow you to work from home or work from anywhere.\n\n\nNo matter where you are in your career, our job search app lets you show your best self, from application to interview. At Indeed, we help people get jobs.\n\n\n\nBy downloading this app, you agree to Indeed's Cookie Policy, Privacy Policy and Terms of Service found at www.indeed.com/legal, where you may avail of your rights at any time, including the right to object to the legitimate interest use of your personal data for marketing purposes. You further agree that by downloading this app, Indeed may process, analyze, and record any and all activities you take while using the app and any and all interactions and communications you have with, on, or through the app. We do so in order to optimize user experience and achieve the proper functioning of the app. In order to provide you with certain services and support ad attribution, user data, such as your IP address or other unique identifier and event data related to the installation of the Indeed App, may be shared with certain service providers when you download or install this app.\n\nThis is performed for the legitimate interest of allowing Indeed to understand and optimize our users' complete customer journey by:\n\n• helping us understand how users arrive to Indeed\n• better measure the performance of our ads;\n• facilitating user logins through third party accounts in certain cases; and\n• helping us understand where a user accesses Indeed through different devices\n\nPlease send your feedback to ios@indeed.com\n\nDo Not Sell My Personal Information: https://www.indeed.com/legal/ccpa-dns\nTerms of Use: https://www.indeed.com/legal#tos\nPrivacy Policy: https://www.indeed.com/legal#PP",
+      "formatted_price": "Get",
+      "rank": 23,
+      "scraped_at": "2025-10-23T15:58:57.578Z",
+      "raw_data": {
+        "im:name": {
+          "label": "Indeed Job Search"
+        },
+        "im:image": [
+          {
+            "label": "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/8d/16/24/8d162424-87d6-0ff0-4a44-ee1573350656/AppIcon-0-0-1x_U007emarketing-0-11-0-85-220.png/53x53bb.png",
+            "attributes": {
+              "height": "53"
+            }
+          },
+          {
+            "label": "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/8d/16/24/8d162424-87d6-0ff0-4a44-ee1573350656/AppIcon-0-0-1x_U007emarketing-0-11-0-85-220.png/75x75bb.png",
+            "attributes": {
+              "height": "75"
+            }
+          },
+          {
+            "label": "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/8d/16/24/8d162424-87d6-0ff0-4a44-ee1573350656/AppIcon-0-0-1x_U007emarketing-0-11-0-85-220.png/100x100bb.png",
+            "attributes": {
+              "height": "100"
+            }
+          }
+        ],
+        "summary": {
+          "label": "Discover your next job opportunity on Indeed, the free job search app designed to connect you with better work anytime, anywhere.\n\nForget the other job search apps. With 12 jobs added every second and smart search filters to quickly narrow in on your ideal role, your next job is at your fingertips.\n\nWhether casually browsing or urgently applying, Indeed has the jobs you want, all in one place, with advanced functionality to help you find work that meet your needs and easily apply from your device. \n\n\n• Search the comprehensive database to find jobs, which includes employment opportunities posted on other job search sites, and explore recommended roles based on your preferences and work experience.\n\n• Upload your resume or use Indeed’s resume builder to show your best self to employers and let your next job find you.\n\n• Apply with your saved resume to avoid rewriting the same information for each job application during your job search.\n\n• Keep track of applications during your job search and get notified when an employer has read and responded to your application on Indeed.\n\n• Understand what employees think about their workplace with more than 700 million company ratings and reviews.\n\n• Uncover what a job pays before you apply with more than 1.1 billion salaries searchable by job title, company, and location.\n\n• Find jobs with flexible work options using our smart search filters, including: remote jobs, side jobs, freelance jobs, government jobs, part time jobs, and jobs that allow you to work from home or work from anywhere.\n\n\nNo matter where you are in your career, our job search app lets you show your best self, from application to interview. At Indeed, we help people get jobs.\n\n\n\nBy downloading this app, you agree to Indeed's Cookie Policy, Privacy Policy and Terms of Service found at www.indeed.com/legal, where you may avail of your rights at any time, including the right to object to the legitimate interest use of your personal data for marketing purposes. You further agree that by downloading this app, Indeed may process, analyze, and record any and all activities you take while using the app and any and all interactions and communications you have with, on, or through the app. We do so in order to optimize user experience and achieve the proper functioning of the app. In order to provide you with certain services and support ad attribution, user data, such as your IP address or other unique identifier and event data related to the installation of the Indeed App, may be shared with certain service providers when you download or install this app.\n\nThis is performed for the legitimate interest of allowing Indeed to understand and optimize our users' complete customer journey by:\n\n• helping us understand how users arrive to Indeed\n• better measure the performance of our ads;\n• facilitating user logins through third party accounts in certain cases; and\n• helping us understand where a user accesses Indeed through different devices\n\nPlease send your feedback to ios@indeed.com\n\nDo Not Sell My Personal Information: https://www.indeed.com/legal/ccpa-dns\nTerms of Use: https://www.indeed.com/legal#tos\nPrivacy Policy: https://www.indeed.com/legal#PP"
+        },
+        "im:price": {
+          "label": "Get",
+          "attributes": {
+            "amount": "0.00",
+            "currency": "USD"
+          }
+        },
+        "im:contentType": {
+          "attributes": {
+            "term": "Application",
+            "label": "Application"
+          }
+        },
+        "rights": {
+          "label": "© 2025 Indeed"
+        },
+        "title": {
+          "label": "Indeed Job Search - Indeed Inc."
+        },
+        "link": {
+          "attributes": {
+            "rel": "alternate",
+            "type": "text/html",
+            "href": "https://apps.apple.com/us/app/indeed-job-search/id309735670?uo=2"
+          }
+        },
+        "id": {
+          "label": "https://apps.apple.com/us/app/indeed-job-search/id309735670?uo=2",
+          "attributes": {
+            "im:id": "309735670",
+            "im:bundleId": "com.indeed.JobSearch"
+          }
+        },
+        "im:artist": {
+          "label": "Indeed Inc.",
+          "attributes": {
+            "href": "https://apps.apple.com/us/developer/indeed-inc/id309735673?uo=2"
+          }
+        },
+        "category": {
+          "attributes": {
+            "im:id": "6000",
+            "term": "Business",
+            "scheme": "https://apps.apple.com/us/genre/ios-business/id6000?uo=2",
+            "label": "Business"
+          }
+        },
+        "im:releaseDate": {
+          "label": "2009-06-07T21:59:49-07:00",
+          "attributes": {
+            "label": "June 7, 2009"
+          }
+        }
+      }
+    },
+    {
+      "source": "apple_rss",
+      "feed_type": "top_free",
+      "bundle_id": "297606951",
+      "title": "Amazon Shopping",
+      "developer": "AMZN Mobile LLC",
+      "icon_url": "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/63/e1/31/63e13191-5d3d-f488-75c6-64531f1e61b2/AppIcon-0-0-1x_U007epad-0-1-0-0-85-220.png/100x100bb.png",
+      "category": "Shopping",
+      "release_date": "December 3, 2008",
+      "age_rating": "Application",
+      "description": "Amazon Shopping offers app-only benefits to help make shopping on Amazon faster and easier. Browse, view product details, read reviews, and purchase millions of products. Amazon delivers to 100+ countries in as quickly as 3-5 days. Whether you’re buying gifts, reading reviews, tracking orders, scanning products, or just shopping, the Amazon Shopping app offers more benefits than shopping on Amazon via your desktop.   \n\nNever miss a delivery\nGet real-time tracking and delivery notifications so you know where your package is and when it arrives. \n\nKnow exactly what you’re purchasing\nFull 360° product view lets you see items from every angle. “View in you room” makes sure it fits by using your phone’s camera and VR so you can see it in your space. \n\nWe’ll notify you when items go on sale\nJust tap the heart icon to save items to Your Lists and we’ll alert you of price drops so you don’t miss a deal. \n\nNever forget your password\nSave time by staying securely signed in. If you prefer to sign out, use facial or fingerprint identification to sign back in. \n\nConnect with us when it works best for you\nLive chat support is open 24 hours, 7 days a week. Once you’ve started a chat, it stays that way for 24 hours so you don’t have to start your support session from the beginning. \n\nWe’ll find that item for you\nNot sure of an item’s brand or where to but it? Just tap the scan icon in the search bar, take a picture of the item or its barcode, and we’ll find it for you. \n\nIn order to provide a rich experience and enable features such as voice shopping, notifications, visual search, customer reviews, and authentication this app may request permission to access contacts, camera, microphone, notification, touch id, photos and Bluetooth.\n\nAmazon Shopping is available in English, Spanish, German, and Simplified Chinese. In addition to International Shopping, you can change your settings in this single app to shop Amazon.ca, Amazon.co.uk, Amazon.de, Amazon.fr, Amazon.com, Amazon.it, Amazon.es, Amazon.cn, Amazon.co.jp or Amazon.in.\n\nFor customers located within the European Union, United Kingdom or Brazil: By using this app, you agree to Amazon’s Conditions of Use applicable for your country. Please also see the applicable Privacy Notice, Cookies Notice and Interest-Based Ads Notice for your country. Links to these terms and notices can be found in the footer of your local Amazon homepage.\n\nFor all other customers: By using this app, you agree to the applicable Amazon Conditions of Use (e.g. www.amazon.com/conditionsofuse) and Privacy Notice (e.g. www.amazon.com/privacy) for your country. Links to these terms and notices can be found in the footer of your local Amazon homepage.\n\nIf your device supports TrueDepth technology, the app will use your device camera to detect your facial movements only while using certain features such as virtually try-on products like sunglasses. All information processed using this technology remains on your device and is not otherwise stored, processed or shared by Amazon.",
+      "formatted_price": "Get",
+      "rank": 24,
+      "scraped_at": "2025-10-23T15:58:57.578Z",
+      "raw_data": {
+        "im:name": {
+          "label": "Amazon Shopping"
+        },
+        "im:image": [
+          {
+            "label": "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/63/e1/31/63e13191-5d3d-f488-75c6-64531f1e61b2/AppIcon-0-0-1x_U007epad-0-1-0-0-85-220.png/53x53bb.png",
+            "attributes": {
+              "height": "53"
+            }
+          },
+          {
+            "label": "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/63/e1/31/63e13191-5d3d-f488-75c6-64531f1e61b2/AppIcon-0-0-1x_U007epad-0-1-0-0-85-220.png/75x75bb.png",
+            "attributes": {
+              "height": "75"
+            }
+          },
+          {
+            "label": "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/63/e1/31/63e13191-5d3d-f488-75c6-64531f1e61b2/AppIcon-0-0-1x_U007epad-0-1-0-0-85-220.png/100x100bb.png",
+            "attributes": {
+              "height": "100"
+            }
+          }
+        ],
+        "summary": {
+          "label": "Amazon Shopping offers app-only benefits to help make shopping on Amazon faster and easier. Browse, view product details, read reviews, and purchase millions of products. Amazon delivers to 100+ countries in as quickly as 3-5 days. Whether you’re buying gifts, reading reviews, tracking orders, scanning products, or just shopping, the Amazon Shopping app offers more benefits than shopping on Amazon via your desktop.   \n\nNever miss a delivery\nGet real-time tracking and delivery notifications so you know where your package is and when it arrives. \n\nKnow exactly what you’re purchasing\nFull 360° product view lets you see items from every angle. “View in you room” makes sure it fits by using your phone’s camera and VR so you can see it in your space. \n\nWe’ll notify you when items go on sale\nJust tap the heart icon to save items to Your Lists and we’ll alert you of price drops so you don’t miss a deal. \n\nNever forget your password\nSave time by staying securely signed in. If you prefer to sign out, use facial or fingerprint identification to sign back in. \n\nConnect with us when it works best for you\nLive chat support is open 24 hours, 7 days a week. Once you’ve started a chat, it stays that way for 24 hours so you don’t have to start your support session from the beginning. \n\nWe’ll find that item for you\nNot sure of an item’s brand or where to but it? Just tap the scan icon in the search bar, take a picture of the item or its barcode, and we’ll find it for you. \n\nIn order to provide a rich experience and enable features such as voice shopping, notifications, visual search, customer reviews, and authentication this app may request permission to access contacts, camera, microphone, notification, touch id, photos and Bluetooth.\n\nAmazon Shopping is available in English, Spanish, German, and Simplified Chinese. In addition to International Shopping, you can change your settings in this single app to shop Amazon.ca, Amazon.co.uk, Amazon.de, Amazon.fr, Amazon.com, Amazon.it, Amazon.es, Amazon.cn, Amazon.co.jp or Amazon.in.\n\nFor customers located within the European Union, United Kingdom or Brazil: By using this app, you agree to Amazon’s Conditions of Use applicable for your country. Please also see the applicable Privacy Notice, Cookies Notice and Interest-Based Ads Notice for your country. Links to these terms and notices can be found in the footer of your local Amazon homepage.\n\nFor all other customers: By using this app, you agree to the applicable Amazon Conditions of Use (e.g. www.amazon.com/conditionsofuse) and Privacy Notice (e.g. www.amazon.com/privacy) for your country. Links to these terms and notices can be found in the footer of your local Amazon homepage.\n\nIf your device supports TrueDepth technology, the app will use your device camera to detect your facial movements only while using certain features such as virtually try-on products like sunglasses. All information processed using this technology remains on your device and is not otherwise stored, processed or shared by Amazon."
+        },
+        "im:price": {
+          "label": "Get",
+          "attributes": {
+            "amount": "0.00",
+            "currency": "USD"
+          }
+        },
+        "im:contentType": {
+          "attributes": {
+            "term": "Application",
+            "label": "Application"
+          }
+        },
+        "rights": {
+          "label": "© 2025 AMZN Mobile LLC"
+        },
+        "title": {
+          "label": "Amazon Shopping - AMZN Mobile LLC"
+        },
+        "link": [
+          {
+            "attributes": {
+              "rel": "alternate",
+              "type": "text/html",
+              "href": "https://apps.apple.com/us/app/amazon-shopping/id297606951?uo=2"
+            }
+          },
+          {
+            "im:duration": {
+              "label": "0"
+            },
+            "attributes": {
+              "title": "Preview",
+              "rel": "enclosure",
+              "type": "image/jpeg",
+              "href": "https://is1-ssl.mzstatic.com/image/thumb/PurpleSource211/v4/d6/e2/fc/d6e2fc85-7de8-d385-262e-ade29c3c509d/2ce9a88d-0ae1-4a3c-bf9e-a981d609a768_1_iPad.jpg/1024x1024bb.jpg",
+              "im:assetType": "preview"
+            }
+          }
+        ],
+        "id": {
+          "label": "https://apps.apple.com/us/app/amazon-shopping/id297606951?uo=2",
+          "attributes": {
+            "im:id": "297606951",
+            "im:bundleId": "com.amazon.Amazon"
+          }
+        },
+        "im:artist": {
+          "label": "AMZN Mobile LLC",
+          "attributes": {
+            "href": "https://apps.apple.com/us/developer/amzn-mobile-llc/id297606954?uo=2"
+          }
+        },
+        "category": {
+          "attributes": {
+            "im:id": "6024",
+            "term": "Shopping",
+            "scheme": "https://apps.apple.com/us/genre/ios-shopping/id6024?uo=2",
+            "label": "Shopping"
+          }
+        },
+        "im:releaseDate": {
+          "label": "2008-12-03T00:00:00-07:00",
+          "attributes": {
+            "label": "December 3, 2008"
+          }
+        }
+      }
+    },
+    {
+      "source": "apple_rss",
+      "feed_type": "top_free",
+      "bundle_id": "1223471316",
+      "title": "Shop: All your favorite brands",
+      "developer": "Shopify Inc.",
+      "icon_url": "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/6e/0f/70/6e0f70ba-9a1d-1510-8bd6-a2bc8353471a/AppIcon-0-0-1x_U007ephone-0-11-0-85-220.png/100x100bb.png",
+      "category": "Shopping",
+      "release_date": "November 15, 2017",
+      "age_rating": "Application",
+      "description": "Elevate every shopping moment\n\n- Shop, track, and explore the latest trends in an all-in-one shopping app\n- Never miss a sale, restock, or order update with push notifications from brands you follow\n- Get personalized shopping recommendations and discover new brands to shop\n\nExperience the most rewarding way to shop\n\n- Earn Shop Cash rewards on purchases made in the Shop app*\n- Keep your billing info secure with Shop Pay for rapid one-tap shopping checkouts\n- Experience hassle-free shopping with flexible payment options when you want it*\n\nShop with confidence\n\n- Manage your online shopping orders in one app\n- Stay informed on your package's journey from delivery to doorstep with real-time tracking\n\n \n---\n\nContact information:\n\nHave a question or just want to say hello? Contact us by visiting help.shop.app\n\nShop secure and worry free: Our servers meet strict PCI compliance standards for vaulting credit card info.\n\nPowered by Shopify: Shop was created by the commerce platform trusted by millions of businesses worldwide.\n\n*Available only in the US and Canada. Payment options are offered by Affirm and are subject to an eligibility check. Not available in New Mexico. CA residents: Loans by Affirm Loan Services, LLC are made or arranged pursuant to a California Finance Lender license.",
+      "formatted_price": "Get",
+      "rank": 25,
+      "scraped_at": "2025-10-23T15:58:57.578Z",
+      "raw_data": {
+        "im:name": {
+          "label": "Shop: All your favorite brands"
+        },
+        "im:image": [
+          {
+            "label": "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/6e/0f/70/6e0f70ba-9a1d-1510-8bd6-a2bc8353471a/AppIcon-0-0-1x_U007ephone-0-11-0-85-220.png/53x53bb.png",
+            "attributes": {
+              "height": "53"
+            }
+          },
+          {
+            "label": "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/6e/0f/70/6e0f70ba-9a1d-1510-8bd6-a2bc8353471a/AppIcon-0-0-1x_U007ephone-0-11-0-85-220.png/75x75bb.png",
+            "attributes": {
+              "height": "75"
+            }
+          },
+          {
+            "label": "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/6e/0f/70/6e0f70ba-9a1d-1510-8bd6-a2bc8353471a/AppIcon-0-0-1x_U007ephone-0-11-0-85-220.png/100x100bb.png",
+            "attributes": {
+              "height": "100"
+            }
+          }
+        ],
+        "summary": {
+          "label": "Elevate every shopping moment\n\n- Shop, track, and explore the latest trends in an all-in-one shopping app\n- Never miss a sale, restock, or order update with push notifications from brands you follow\n- Get personalized shopping recommendations and discover new brands to shop\n\nExperience the most rewarding way to shop\n\n- Earn Shop Cash rewards on purchases made in the Shop app*\n- Keep your billing info secure with Shop Pay for rapid one-tap shopping checkouts\n- Experience hassle-free shopping with flexible payment options when you want it*\n\nShop with confidence\n\n- Manage your online shopping orders in one app\n- Stay informed on your package's journey from delivery to doorstep with real-time tracking\n\n \n---\n\nContact information:\n\nHave a question or just want to say hello? Contact us by visiting help.shop.app\n\nShop secure and worry free: Our servers meet strict PCI compliance standards for vaulting credit card info.\n\nPowered by Shopify: Shop was created by the commerce platform trusted by millions of businesses worldwide.\n\n*Available only in the US and Canada. Payment options are offered by Affirm and are subject to an eligibility check. Not available in New Mexico. CA residents: Loans by Affirm Loan Services, LLC are made or arranged pursuant to a California Finance Lender license."
+        },
+        "im:price": {
+          "label": "Get",
+          "attributes": {
+            "amount": "0.00",
+            "currency": "USD"
+          }
+        },
+        "im:contentType": {
+          "attributes": {
+            "term": "Application",
+            "label": "Application"
+          }
+        },
+        "rights": {
+          "label": "© 2025 Shopify Inc"
+        },
+        "title": {
+          "label": "Shop: All your favorite brands - Shopify Inc."
+        },
+        "link": {
+          "attributes": {
+            "rel": "alternate",
+            "type": "text/html",
+            "href": "https://apps.apple.com/us/app/shop-all-your-favorite-brands/id1223471316?uo=2"
+          }
+        },
+        "id": {
+          "label": "https://apps.apple.com/us/app/shop-all-your-favorite-brands/id1223471316?uo=2",
+          "attributes": {
+            "im:id": "1223471316",
+            "im:bundleId": "com.jadedlabs.arrive"
+          }
+        },
+        "im:artist": {
+          "label": "Shopify Inc.",
+          "attributes": {
+            "href": "https://apps.apple.com/us/developer/shopify-inc/id371294475?uo=2"
+          }
+        },
+        "category": {
+          "attributes": {
+            "im:id": "6024",
+            "term": "Shopping",
+            "scheme": "https://apps.apple.com/us/genre/ios-shopping/id6024?uo=2",
+            "label": "Shopping"
+          }
+        },
+        "im:releaseDate": {
+          "label": "2017-11-15T20:26:51-07:00",
+          "attributes": {
+            "label": "November 15, 2017"
+          }
+        }
+      }
+    }
+  ]
+}

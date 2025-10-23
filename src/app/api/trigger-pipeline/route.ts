@@ -147,7 +147,7 @@ async function fetchSerpData(query: string = 'social media') {
   console.log(`🔍 Fetching SERP data for: ${query}`);
   
   try {
-    const serpApiKey = process.env.SERP_API_KEY;
+    const serpApiKey = process.env.SERPAPI_KEY;
     if (!serpApiKey) {
       return { success: false, error: 'SERP API key not configured', count: 0 };
     }
@@ -170,7 +170,7 @@ async function fetchSerpData(query: string = 'social media') {
       version: String(app.version || ''),
       price_value: app.price?.value || 0,
       price: String(app.price?.extracted_value || app.price?.value || '0'),
-      currency: String(app.price?.currency || 'USD'),
+      formatted_price: String(app.price?.currency ? `${app.price.currency} ${app.price.value || 0}` : ''),
       rating: app.rating?.[0]?.rating || null,
       rating_count: app.rating?.[0]?.count || null,
       icon_url: app.logos?.find((logo: any) => logo.size === '100x100')?.link || '',
@@ -180,7 +180,6 @@ async function fetchSerpData(query: string = 'social media') {
       description: String(app.description || ''),
       category: String(app.genre || ''),
       position: app.position || index + 1,
-      serp_link: String(app.link || ''),
       raw_data: app
     }));
 
