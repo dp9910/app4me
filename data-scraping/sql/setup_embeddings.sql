@@ -1,10 +1,13 @@
+DROP TABLE IF EXISTS app_embeddings CASCADE;
+DROP TABLE IF EXISTS search_quality_logs CASCADE;
+
 -- Enable pgvector extension for vector similarity search
 CREATE EXTENSION IF NOT EXISTS vector;
 
 -- Create embeddings table for semantic search
 CREATE TABLE app_embeddings (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-  app_id UUID REFERENCES apps_unified(id) ON DELETE CASCADE UNIQUE,
+  app_id BIGINT REFERENCES apps_unified(id) ON DELETE CASCADE UNIQUE,
   
   -- The embedding vector (Gemini text-embedding-004 = 768 dimensions)
   embedding VECTOR(768) NOT NULL,
@@ -33,7 +36,7 @@ CREATE OR REPLACE FUNCTION search_apps_by_embedding(
   match_count INT DEFAULT 20
 )
 RETURNS TABLE (
-  app_id UUID,
+  app_id BIGINT,
   similarity FLOAT,
   app_name TEXT,
   app_category TEXT,
