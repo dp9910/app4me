@@ -1,0 +1,65 @@
+{
+  "app": {
+    "bundle_id": "com.google.ios.youtube",
+    "title": "YouTube",
+    "category": "Photo & Video"
+  },
+  "keywords": {
+    "keywords": {
+      "video": 0.042,
+      "youtub": 0.035,
+      "your": 0.035,
+      "learn": 0.028,
+      "you": 0.024,
+      "watch": 0.021,
+      "music": 0.021,
+      "select": 0.021,
+      "what": 0.017,
+      "from": 0.017,
+      "channel": 0.017,
+      "avail": 0.017,
+      "countri": 0.017,
+      "game": 0.014,
+      "creator": 0.014,
+      "renew": 0.014,
+      "get": 0.01,
+      "see": 0.01,
+      "popular": 0.01,
+      "new": 0.01
+    },
+    "categories": {
+      "video": [
+        "entertainment"
+      ],
+      "youtub": [],
+      "your": [],
+      "learn": [
+        "education"
+      ],
+      "you": [],
+      "watch": [
+        "entertainment"
+      ],
+      "music": [
+        "entertainment"
+      ],
+      "select": [],
+      "what": [],
+      "from": [],
+      "channel": [],
+      "avail": [],
+      "countri": [],
+      "game": [
+        "entertainment"
+      ],
+      "creator": [],
+      "renew": [],
+      "get": [],
+      "see": [],
+      "popular": [],
+      "new": []
+    }
+  },
+  "processing_time_ms": 5,
+  "tested_at": "2025-10-24T04:49:19.217Z"
+}

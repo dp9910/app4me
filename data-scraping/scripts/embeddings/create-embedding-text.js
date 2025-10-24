@@ -7,13 +7,13 @@ export function createEmbeddingText(app) {
   const parts = [];
   
   // 1. App name (most important for matching)
-  if (app.name) {
-    parts.push(`App: ${app.name}`);
+  if (app.title || app.name) {
+    parts.push(`App: ${app.title || app.name}`);
   }
   
   // 2. Primary category (helps with classification)
-  if (app.primary_category) {
-    parts.push(`Category: ${app.primary_category}`);
+  if (app.category || app.primary_category) {
+    parts.push(`Category: ${app.category || app.primary_category}`);
   }
   
   // 3. Short description (concise overview)
@@ -47,8 +47,9 @@ export function createEmbeddingText(app) {
   }
   
   // 6. Developer name (can indicate app type/quality)
-  if (app.developer_name && app.developer_name.trim()) {
-    parts.push(`Developer: ${app.developer_name.trim()}`);
+  if (app.developer || app.developer_name) {
+    const dev = (app.developer || app.developer_name).trim();
+    if (dev) parts.push(`Developer: ${dev}`);
   }
   
   // 7. Key features (if extracted)
@@ -58,8 +59,8 @@ export function createEmbeddingText(app) {
   }
   
   // 8. Rating context (helps with quality indication)
-  if (app.rating_average && app.rating_count) {
-    const rating = parseFloat(app.rating_average);
+  if ((app.rating || app.rating_average) && app.rating_count) {
+    const rating = parseFloat(app.rating || app.rating_average);
     const count = parseInt(app.rating_count);
     
     if (rating > 0 && count > 0) {

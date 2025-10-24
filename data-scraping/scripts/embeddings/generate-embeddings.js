@@ -9,6 +9,10 @@ import { createEmbeddingText, validateEmbeddingText } from './create-embedding-t
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import dotenv from 'dotenv';
+
+// Load environment variables
+dotenv.config({ path: '.env.local' });
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -59,9 +63,9 @@ export async function generateAllEmbeddings(options = {}) {
   console.log(`   Skip existing: ${skipExisting}`);
   console.log(`   Start offset: ${startOffset}\n`);
   
-  // Get total count
+  // Get total count from iTunes apps (our primary data source)
   const { count, error: countError } = await supabase
-    .from('apps_unified')
+    .from('itunes_apps')
     .select('*', { count: 'exact', head: true });
   
   if (countError) {
@@ -85,22 +89,22 @@ export async function generateAllEmbeddings(options = {}) {
     console.log(`\n📦 Processing batch ${Math.floor(offset/batchSize) + 1}/${Math.ceil(count/batchSize)} (apps ${offset + 1}-${Math.min(offset + batchSize, count)})...`);
     
     try {
-      // Get batch of apps
+      // Get batch of apps from iTunes (rich data source)
       const { data: apps, error: fetchError } = await supabase
-        .from('apps_unified')
+        .from('itunes_apps')
         .select(`
-          id, 
-          name, 
-          primary_category, 
+          bundle_id, 
+          title, 
+          category, 
           description, 
-          developer_name,
-          rating_average,
+          developer,
+          rating,
           rating_count,
           formatted_price,
-          icon_url_512
+          icon_url
         `)
         .range(offset, offset + batchSize - 1)
-        .order('created_at', { ascending: true });
+        .order('id', { ascending: true });
       
       if (fetchError) {
         console.error('❌ Error fetching apps:', fetchError);
@@ -150,7 +154,7 @@ async function processApp(app, embeddingModel, skipExisting = true) {
       const { data: existing } = await supabase
         .from('app_embeddings')
         .select('id')
-        .eq('app_id', app.id)
+        .eq('app_id', app.bundle_id)
         .single();
       
       if (existing) {
@@ -205,7 +209,7 @@ async function processApp(app, embeddingModel, skipExisting = true) {
     const { error: insertError } = await supabase
       .from('app_embeddings')
       .insert({
-        app_id: app.id,
+        app_id: app.bundle_id,
         embedding: embedding,
         embedding_model: 'text-embedding-004',
         text_used: embeddingText.substring(0, 500), // Store sample for debugging
@@ -235,7 +239,7 @@ async function processApp(app, embeddingModel, skipExisting = true) {
 
 async function getEmbeddingCoverage() {
   const { count: total } = await supabase
-    .from('apps_unified')
+    .from('itunes_apps')
     .select('*', { count: 'exact', head: true });
   
   const { count: embedded } = await supabase

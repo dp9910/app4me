@@ -1,0 +1,608 @@
+{
+  "batch_number": 2,
+  "total_batches": 2,
+  "results": [
+    {
+      "app_id": "com.google.ios.youtube",
+      "app_title": "YouTube",
+      "app_category": "music",
+      "features": {
+        "metadata": {
+          "category_primary": "music",
+          "category_all": [],
+          "price_tier": "free",
+          "rating_tier": "excellent",
+          "popularity_score": 1,
+          "recency_score": 0.2,
+          "developer_info": {
+            "name": "Google"
+          }
+        },
+        "keywords_tfidf": {
+          "keywords": {
+            "video": 0.042,
+            "youtub": 0.035,
+            "your": 0.035,
+            "learn": 0.028,
+            "you": 0.024,
+            "watch": 0.021,
+            "music": 0.021,
+            "select": 0.021,
+            "what": 0.017,
+            "from": 0.017,
+            "channel": 0.017,
+            "avail": 0.017,
+            "countri": 0.017,
+            "game": 0.014,
+            "creator": 0.014,
+            "renew": 0.014,
+            "get": 0.01,
+            "see": 0.01,
+            "popular": 0.01,
+            "new": 0.01
+          },
+          "categories": {
+            "video": [
+              "entertainment"
+            ],
+            "youtub": [],
+            "your": [],
+            "learn": [
+              "education"
+            ],
+            "you": [],
+            "watch": [
+              "entertainment"
+            ],
+            "music": [
+              "entertainment"
+            ],
+            "select": [],
+            "what": [],
+            "from": [],
+            "channel": [],
+            "avail": [],
+            "countri": [],
+            "game": [
+              "entertainment"
+            ],
+            "creator": [],
+            "renew": [],
+            "get": [],
+            "see": [],
+            "popular": [],
+            "new": []
+          }
+        },
+        "llm_features": {
+          "primary_use_case": "Watch and discover video content",
+          "use_cases": [
+            "Browse personalized video recommendations",
+            "Stay updated with subscribed channels",
+            "Explore trending topics and creators",
+            "Interact with the YouTube community",
+            "Create and share personal video content"
+          ],
+          "target_personas": [
+            "Video consumers",
+            "Content creators",
+            "Trend followers (music, gaming, news)"
+          ],
+          "problem_solved": "Provides a global platform for users to easily discover, consume, create, and share a vast array of video content across diverse interests.",
+          "key_features": [
+            "Personalized video recommendations (Home feed)",
+            "Subscription management for favorite channels",
+            "Explore tab for trending topics and creators",
+            "Watch history, liked videos, and 'Watch Later' library",
+            "Community interaction via comments, posts, stories, live streams"
+          ],
+          "limitations": [
+            "Certain exploration features are geo-restricted to select countries",
+            "Requires active internet connection for most functionalities"
+          ],
+          "best_for_keywords": [
+            "Video streaming",
+            "Content discovery",
+            "Online learning",
+            "Music videos",
+            "Gaming content"
+          ],
+          "not_good_for": [
+            "Users seeking purely text-based news consumption",
+            "Completely private, peer-to-peer media sharing"
+          ],
+          "emotional_tone": "professional",
+          "complexity_level": "beginner",
+          "time_commitment": "moderate"
+        },
+        "category_classification": {
+          "productivity": 7.5,
+          "finance": 3,
+          "health": 0,
+          "entertainment": 9.5,
+          "education": 2
+        },
+        "quality_signals": 1
+      },
+      "processing_time_ms": 14180,
+      "success": true
+    },
+    {
+      "app_id": "com.spotify.client",
+      "app_title": "Spotify: Music and Podcasts",
+      "app_category": "Music",
+      "features": {
+        "metadata": {
+          "category_primary": "Music",
+          "category_all": [],
+          "price_tier": "free",
+          "rating_tier": "excellent",
+          "popularity_score": 1,
+          "recency_score": 0.2,
+          "developer_info": {
+            "name": "Spotify"
+          }
+        },
+        "keywords_tfidf": {
+          "keywords": {
+            "music": 0.092,
+            "your": 0.061,
+            "podcast": 0.056,
+            "spotifi": 0.037,
+            "you": 0.035,
+            "listen": 0.035,
+            "playlist": 0.029,
+            "song": 0.026,
+            "free": 0.02,
+            "audiobook": 0.02,
+            "enjoi": 0.02,
+            "favorit": 0.017,
+            "discov": 0.017,
+            "stream": 0.014,
+            "person": 0.014,
+            "million": 0.012,
+            "premium": 0.012,
+            "offlin": 0.012,
+            "artist": 0.012,
+            "new": 0.012
+          },
+          "categories": {
+            "music": [
+              "entertainment"
+            ],
+            "your": [],
+            "podcast": [
+              "entertainment"
+            ],
+            "spotifi": [],
+            "you": [],
+            "listen": [
+              "entertainment"
+            ],
+            "playlist": [],
+            "song": [],
+            "free": [],
+            "audiobook": [],
+            "enjoi": [],
+            "favorit": [],
+            "discov": [],
+            "stream": [],
+            "person": [],
+            "million": [],
+            "premium": [],
+            "offlin": [],
+            "artist": [],
+            "new": []
+          }
+        },
+        "llm_features": {
+          "primary_use_case": "Stream music and podcasts",
+          "use_cases": [
+            "Stream millions of free songs and podcasts",
+            "Curate and share personalized playlists",
+            "Discover new music and podcast recommendations",
+            "Download and listen offline (Premium)",
+            "Access an extensive catalog of audiobooks (Premium)"
+          ],
+          "target_personas": [
+            "Music and podcast enthusiasts",
+            "Users seeking personalized audio content",
+            "Individuals looking for free streaming entertainment"
+          ],
+          "problem_solved": "Spotify provides a comprehensive platform to access a vast and diverse library of music, podcasts, and audiobooks, solving the need for convenient and personalized audio entertainment on-the-go.",
+          "key_features": [
+            "Access to over 100 million songs and 6 million podcast titles",
+            "Personalized music and podcast recommendations",
+            "Ability to curate and share playlists",
+            "Offline listening (Premium subscription)",
+            "Audiobook catalog (Premium subscription)"
+          ],
+          "limitations": [
+            "Offline listening requires a Premium subscription",
+            "Access to audiobooks requires a Premium subscription",
+            "Some features may be limited on the free tier (e.g., ad-supported)"
+          ],
+          "best_for_keywords": [
+            "Music streaming",
+            "Podcast listening",
+            "Audio discovery",
+            "Playlist creation",
+            "Personalized audio"
+          ],
+          "not_good_for": [
+            "Users unwilling to pay for offline listening or audiobooks",
+            "Creating original audio content",
+            "Storing personal music files locally (not a local music player)"
+          ],
+          "emotional_tone": "professional",
+          "complexity_level": "beginner",
+          "time_commitment": "quick"
+        },
+        "category_classification": {
+          "productivity": 5,
+          "finance": 1,
+          "health": 0,
+          "entertainment": 11.5,
+          "education": 1
+        },
+        "quality_signals": 1
+      },
+      "processing_time_ms": 16291,
+      "success": true
+    },
+    {
+      "app_id": "com.facebook.Facebook",
+      "app_title": "Facebook",
+      "app_category": "Social Networking",
+      "features": {
+        "metadata": {
+          "category_primary": "Social Networking",
+          "category_all": [],
+          "price_tier": "free",
+          "rating_tier": "excellent",
+          "popularity_score": 1,
+          "recency_score": 0.2,
+          "developer_info": {
+            "name": "Meta Platforms, Inc."
+          }
+        },
+        "keywords_tfidf": {
+          "keywords": {
+            "your": 0.059,
+            "you": 0.032,
+            "get": 0.027,
+            "reel": 0.022,
+            "facebook": 0.022,
+            "meta": 0.022,
+            "learn": 0.022,
+            "peopl": 0.016,
+            "who": 0.016,
+            "friend": 0.016,
+            "http": 0.016,
+            "com": 0.016,
+            "real": 0.011,
+            "show": 0.011,
+            "group": 0.011,
+            "share": 0.011,
+            "fun": 0.011,
+            "imag": 0.011,
+            "help": 0.011,
+            "thing": 0.011
+          },
+          "categories": {
+            "your": [],
+            "you": [],
+            "get": [],
+            "reel": [],
+            "facebook": [],
+            "meta": [],
+            "learn": [
+              "education"
+            ],
+            "peopl": [],
+            "who": [],
+            "friend": [],
+            "http": [],
+            "com": [],
+            "real": [],
+            "show": [],
+            "group": [],
+            "share": [],
+            "fun": [
+              "entertainment"
+            ],
+            "imag": [],
+            "help": [],
+            "thing": []
+          }
+        },
+        "llm_features": {
+          "primary_use_case": "Connect, share, and explore interests",
+          "use_cases": [
+            "Discovering products on Marketplace",
+            "Watching and sharing short videos (Reels)",
+            "Engaging with interest-based groups",
+            "Connecting and interacting with friends",
+            "Utilizing AI for content and information"
+          ],
+          "target_personas": [
+            "Individuals seeking social connection",
+            "Hobbyists and shoppers",
+            "Content creators and sharers"
+          ],
+          "problem_solved": "Helps individuals connect with people and communities, explore interests, and share their experiences and content in a dynamic way.",
+          "key_features": [
+            "Marketplace for shopping",
+            "Personalized Feed",
+            "Meta AI integration for information",
+            "Reels content discovery",
+            "Interest-based Groups"
+          ],
+          "limitations": [
+            "Not specified in description"
+          ],
+          "best_for_keywords": [
+            "Social networking",
+            "Community engagement",
+            "Content sharing",
+            "Online shopping",
+            "AI interaction"
+          ],
+          "not_good_for": [
+            "Not specified in description"
+          ],
+          "emotional_tone": "professional",
+          "complexity_level": "beginner",
+          "time_commitment": "quick"
+        },
+        "category_classification": {
+          "productivity": 0.5,
+          "finance": 0.5,
+          "health": 0,
+          "entertainment": 3.5,
+          "education": 5
+        },
+        "quality_signals": 1
+      },
+      "processing_time_ms": 8347,
+      "success": true
+    },
+    {
+      "app_id": "doordash.DoorDashConsumer",
+      "app_title": "DoorDash - Food Delivery",
+      "app_category": "delivery",
+      "features": {
+        "metadata": {
+          "category_primary": "delivery",
+          "category_all": [],
+          "price_tier": "free",
+          "rating_tier": "excellent",
+          "popularity_score": 1,
+          "recency_score": 0.2,
+          "developer_info": {
+            "name": "DoorDash, Inc."
+          }
+        },
+        "keywords_tfidf": {
+          "keywords": {
+            "deliveri": 0.028,
+            "groceri": 0.017,
+            "restaur": 0.017,
+            "order": 0.017,
+            "conveni": 0.014,
+            "store": 0.014,
+            "citi": 0.014,
+            "doordash": 0.014,
+            "your": 0.014,
+            "retail": 0.01,
+            "fee": 0.01,
+            "suppli": 0.01,
+            "credit": 0.01,
+            "dashpass": 0.01,
+            "partner": 0.01,
+            "across": 0.007,
+            "canada": 0.007,
+            "australia": 0.007,
+            "offer": 0.007,
+            "favorit": 0.007
+          },
+          "categories": {
+            "deliveri": [],
+            "groceri": [],
+            "restaur": [],
+            "order": [],
+            "conveni": [],
+            "store": [],
+            "citi": [],
+            "doordash": [],
+            "your": [],
+            "retail": [],
+            "fee": [],
+            "suppli": [],
+            "credit": [
+              "finance"
+            ],
+            "dashpass": [],
+            "partner": [],
+            "across": [],
+            "canada": [],
+            "australia": [],
+            "offer": [],
+            "favorit": []
+          }
+        },
+        "llm_features": {
+          "primary_use_case": "On-demand multi-category delivery service",
+          "use_cases": [
+            "Restaurant food delivery",
+            "Grocery and convenience item delivery",
+            "Retail and pet supplies delivery"
+          ],
+          "target_personas": [
+            "Busy individuals",
+            "Convenience seekers"
+          ],
+          "problem_solved": "DoorDash solves the problem of needing various items delivered quickly and conveniently from local businesses to your doorstep.",
+          "key_features": [
+            "On-demand, same-day delivery",
+            "Advanced delivery scheduling",
+            "Real-time order tracking",
+            "No order minimums",
+            "No-contact delivery by request"
+          ],
+          "limitations": [
+            "Geographical restrictions (U.S., Canada, Australia only)",
+            "SNAP/EBT only at participating merchants"
+          ],
+          "best_for_keywords": [
+            "Convenience",
+            "On-demand delivery",
+            "Variety of goods"
+          ],
+          "not_good_for": [
+            "Customers outside supported regions",
+            "People who prefer to shop in person"
+          ],
+          "emotional_tone": "professional",
+          "complexity_level": "beginner",
+          "time_commitment": "quick"
+        },
+        "category_classification": {
+          "productivity": 3,
+          "finance": 3.5,
+          "health": 0.5,
+          "entertainment": 0.5,
+          "education": 2
+        },
+        "quality_signals": 1
+      },
+      "processing_time_ms": 8876,
+      "success": true
+    },
+    {
+      "app_id": "doordash.DoorDashConsumer",
+      "app_title": "DoorDash - Food Delivery",
+      "app_category": "Food & Drink",
+      "features": {
+        "metadata": {
+          "category_primary": "Food & Drink",
+          "category_all": [],
+          "price_tier": "free",
+          "rating_tier": "excellent",
+          "popularity_score": 1,
+          "recency_score": 0.2,
+          "developer_info": {
+            "name": "DoorDash, Inc."
+          }
+        },
+        "keywords_tfidf": {
+          "keywords": {
+            "deliveri": 0.028,
+            "groceri": 0.017,
+            "restaur": 0.017,
+            "order": 0.017,
+            "conveni": 0.014,
+            "store": 0.014,
+            "citi": 0.014,
+            "doordash": 0.014,
+            "your": 0.014,
+            "retail": 0.01,
+            "fee": 0.01,
+            "suppli": 0.01,
+            "credit": 0.01,
+            "dashpass": 0.01,
+            "partner": 0.01,
+            "across": 0.007,
+            "canada": 0.007,
+            "australia": 0.007,
+            "offer": 0.007,
+            "favorit": 0.007
+          },
+          "categories": {
+            "deliveri": [],
+            "groceri": [],
+            "restaur": [],
+            "order": [],
+            "conveni": [],
+            "store": [],
+            "citi": [],
+            "doordash": [],
+            "your": [],
+            "retail": [],
+            "fee": [],
+            "suppli": [],
+            "credit": [
+              "finance"
+            ],
+            "dashpass": [],
+            "partner": [],
+            "across": [],
+            "canada": [],
+            "australia": [],
+            "offer": [],
+            "favorit": []
+          }
+        },
+        "llm_features": {
+          "primary_use_case": "On-demand food and store delivery",
+          "use_cases": [
+            "Restaurant food delivery",
+            "Grocery shopping delivery",
+            "Convenience store item delivery",
+            "Retail product delivery",
+            "Pet supply delivery"
+          ],
+          "target_personas": [
+            "Busy individuals",
+            "People seeking convenience",
+            "Customers needing on-demand goods"
+          ],
+          "problem_solved": "It solves the problem of needing various goods and meals delivered conveniently to your location without leaving home.",
+          "key_features": [
+            "On-demand, same-day delivery",
+            "Advanced delivery scheduling",
+            "Real-time order tracking",
+            "No order minimums",
+            "No-contact delivery by request"
+          ],
+          "limitations": [
+            "Restrictions apply to initial $0 delivery fee offer",
+            "SNAP/EBT payment limited to participating merchants",
+            "Service availability depends on location (US, Canada, Australia cities)"
+          ],
+          "best_for_keywords": [
+            "Convenience",
+            "On-demand delivery",
+            "Variety of stores",
+            "Quick meals",
+            "Grocery delivery"
+          ],
+          "not_good_for": [
+            "Customers preferring in-person shopping",
+            "Locations outside supported cities",
+            "Items not available from partnered merchants"
+          ],
+          "emotional_tone": "professional",
+          "complexity_level": "beginner",
+          "time_commitment": "quick"
+        },
+        "category_classification": {
+          "productivity": 3,
+          "finance": 3.5,
+          "health": 0.5,
+          "entertainment": 0.5,
+          "education": 2
+        },
+        "quality_signals": 1
+      },
+      "processing_time_ms": 6644,
+      "success": true
+    }
+  ],
+  "summary": {
+    "total": 5,
+    "successful": 5,
+    "failed": 0,
+    "processing_time_ms": 69346
+  }
+}

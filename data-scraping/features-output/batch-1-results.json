@@ -1,0 +1,636 @@
+{
+  "batch_number": 1,
+  "total_batches": 2,
+  "results": [
+    {
+      "app_id": "com.google.ios.youtube",
+      "app_title": "YouTube",
+      "app_category": "Photo & Video",
+      "features": {
+        "metadata": {
+          "category_primary": "Photo & Video",
+          "category_all": [],
+          "price_tier": "free",
+          "rating_tier": "excellent",
+          "popularity_score": 1,
+          "recency_score": 0.2,
+          "developer_info": {
+            "name": "Google"
+          }
+        },
+        "keywords_tfidf": {
+          "keywords": {
+            "video": 0.042,
+            "youtub": 0.035,
+            "your": 0.035,
+            "learn": 0.028,
+            "you": 0.024,
+            "watch": 0.021,
+            "music": 0.021,
+            "select": 0.021,
+            "what": 0.017,
+            "from": 0.017,
+            "channel": 0.017,
+            "avail": 0.017,
+            "countri": 0.017,
+            "game": 0.014,
+            "creator": 0.014,
+            "renew": 0.014,
+            "get": 0.01,
+            "see": 0.01,
+            "popular": 0.01,
+            "new": 0.01
+          },
+          "categories": {
+            "video": [
+              "entertainment"
+            ],
+            "youtub": [],
+            "your": [],
+            "learn": [
+              "education"
+            ],
+            "you": [],
+            "watch": [
+              "entertainment"
+            ],
+            "music": [
+              "entertainment"
+            ],
+            "select": [],
+            "what": [],
+            "from": [],
+            "channel": [],
+            "avail": [],
+            "countri": [],
+            "game": [
+              "entertainment"
+            ],
+            "creator": [],
+            "renew": [],
+            "get": [],
+            "see": [],
+            "popular": [],
+            "new": []
+          }
+        },
+        "llm_features": {
+          "primary_use_case": "Watching and discovering video content",
+          "use_cases": [
+            "Watching personalized video recommendations",
+            "Subscribing to and following favorite channels",
+            "Exploring trending topics and creators",
+            "Interacting with the video community",
+            "Creating and sharing basic video content"
+          ],
+          "target_personas": [
+            "Video viewers",
+            "Content creators",
+            "Community interactors"
+          ],
+          "problem_solved": "It provides a comprehensive platform for individuals to discover, watch, create, and share a vast array of video content and engage with a global community.",
+          "key_features": [
+            "Personalized video recommendations",
+            "Subscription feed for favorite channels",
+            "Trending and popular content exploration",
+            "Creator updates (posts, stories, live streams)",
+            "Community interaction (comments, sharing)"
+          ],
+          "limitations": [
+            "Certain exploration features (e.g., Creators on the Rise) are geographically restricted",
+            "Limited explicit detail on in-app advanced content creation tools"
+          ],
+          "best_for_keywords": [
+            "Video streaming",
+            "Content discovery",
+            "Online entertainment",
+            "Community engagement",
+            "Mobile video"
+          ],
+          "not_good_for": [
+            "Real-time text-only communication",
+            "Professional video editing",
+            "Strictly offline content consumption without prior downloads"
+          ],
+          "emotional_tone": "professional",
+          "complexity_level": "beginner",
+          "time_commitment": "moderate"
+        },
+        "category_classification": {
+          "productivity": 7.5,
+          "finance": 3,
+          "health": 0,
+          "entertainment": 9.5,
+          "education": 2
+        },
+        "quality_signals": 1
+      },
+      "processing_time_ms": 21459,
+      "success": true
+    },
+    {
+      "app_id": "com.google.ios.youtube",
+      "app_title": "YouTube",
+      "app_category": "video",
+      "features": {
+        "metadata": {
+          "category_primary": "video",
+          "category_all": [],
+          "price_tier": "free",
+          "rating_tier": "excellent",
+          "popularity_score": 1,
+          "recency_score": 0.2,
+          "developer_info": {
+            "name": "Google"
+          }
+        },
+        "keywords_tfidf": {
+          "keywords": {
+            "video": 0.042,
+            "youtub": 0.035,
+            "your": 0.035,
+            "learn": 0.028,
+            "you": 0.024,
+            "watch": 0.021,
+            "music": 0.021,
+            "select": 0.021,
+            "what": 0.017,
+            "from": 0.017,
+            "channel": 0.017,
+            "avail": 0.017,
+            "countri": 0.017,
+            "game": 0.014,
+            "creator": 0.014,
+            "renew": 0.014,
+            "get": 0.01,
+            "see": 0.01,
+            "popular": 0.01,
+            "new": 0.01
+          },
+          "categories": {
+            "video": [
+              "entertainment"
+            ],
+            "youtub": [],
+            "your": [],
+            "learn": [
+              "education"
+            ],
+            "you": [],
+            "watch": [
+              "entertainment"
+            ],
+            "music": [
+              "entertainment"
+            ],
+            "select": [],
+            "what": [],
+            "from": [],
+            "channel": [],
+            "avail": [],
+            "countri": [],
+            "game": [
+              "entertainment"
+            ],
+            "creator": [],
+            "renew": [],
+            "get": [],
+            "see": [],
+            "popular": [],
+            "new": []
+          }
+        },
+        "llm_features": {
+          "primary_use_case": "Watching and discovering video content",
+          "use_cases": [
+            "Watch personalized video recommendations",
+            "Subscribe to favorite channels",
+            "Explore trending videos and topics",
+            "Connect with creators and community",
+            "Create and share own video content"
+          ],
+          "target_personas": [
+            "Video viewers",
+            "Content creators",
+            "Community engagers"
+          ],
+          "problem_solved": "Helps users discover, watch, and interact with a vast array of video content and creators globally.",
+          "key_features": [
+            "Personalized video recommendations (Home)",
+            "Channel subscriptions",
+            "Explore trending and popular content by topic",
+            "Video library (watched, liked, saved)",
+            "Community interaction (comments, posts, live streams)"
+          ],
+          "limitations": [
+            "Certain discovery features (Explore, Creators on the Rise) are available only in select countries."
+          ],
+          "best_for_keywords": [
+            "Video streaming",
+            "Content discovery",
+            "Community engagement",
+            "Creator content",
+            "Online learning and entertainment"
+          ],
+          "not_good_for": [
+            "Users in geo-restricted regions for key discovery features",
+            "Exclusively private or ephemeral content sharing"
+          ],
+          "emotional_tone": "professional",
+          "complexity_level": "beginner",
+          "time_commitment": "quick"
+        },
+        "category_classification": {
+          "productivity": 7.5,
+          "finance": 3,
+          "health": 0,
+          "entertainment": 9.5,
+          "education": 2
+        },
+        "quality_signals": 1
+      },
+      "processing_time_ms": 13136,
+      "success": true
+    },
+    {
+      "app_id": "com.google.ios.youtube",
+      "app_title": "YouTube",
+      "app_category": "entertainment",
+      "features": {
+        "metadata": {
+          "category_primary": "entertainment",
+          "category_all": [],
+          "price_tier": "free",
+          "rating_tier": "excellent",
+          "popularity_score": 1,
+          "recency_score": 0.2,
+          "developer_info": {
+            "name": "Google"
+          }
+        },
+        "keywords_tfidf": {
+          "keywords": {
+            "video": 0.042,
+            "youtub": 0.035,
+            "your": 0.035,
+            "learn": 0.028,
+            "you": 0.024,
+            "watch": 0.021,
+            "music": 0.021,
+            "select": 0.021,
+            "what": 0.017,
+            "from": 0.017,
+            "channel": 0.017,
+            "avail": 0.017,
+            "countri": 0.017,
+            "game": 0.014,
+            "creator": 0.014,
+            "renew": 0.014,
+            "get": 0.01,
+            "see": 0.01,
+            "popular": 0.01,
+            "new": 0.01
+          },
+          "categories": {
+            "video": [
+              "entertainment"
+            ],
+            "youtub": [],
+            "your": [],
+            "learn": [
+              "education"
+            ],
+            "you": [],
+            "watch": [
+              "entertainment"
+            ],
+            "music": [
+              "entertainment"
+            ],
+            "select": [],
+            "what": [],
+            "from": [],
+            "channel": [],
+            "avail": [],
+            "countri": [],
+            "game": [
+              "entertainment"
+            ],
+            "creator": [],
+            "renew": [],
+            "get": [],
+            "see": [],
+            "popular": [],
+            "new": []
+          }
+        },
+        "llm_features": {
+          "primary_use_case": "Watch and discover video content",
+          "use_cases": [
+            "Browse personalized video recommendations",
+            "Follow and watch content from favorite channels",
+            "Explore trending topics and popular content",
+            "Create and share own video content",
+            "Engage with creators and the community"
+          ],
+          "target_personas": [
+            "Video viewers",
+            "Content creators",
+            "Community members"
+          ],
+          "problem_solved": "Provides a centralized platform for discovering, watching, sharing, and creating diverse video content globally, catering to various interests and fostering community interaction.",
+          "key_features": [
+            "Personalized Home feed recommendations",
+            "Subscriptions feed for favorite channels",
+            "Library for watched, liked, and saved videos",
+            "Explore section for trending content and topics",
+            "Creator Posts, Stories, Premieres, and Live streams"
+          ],
+          "limitations": [
+            "Certain explore and on the rise features are available only in select countries"
+          ],
+          "best_for_keywords": [
+            "video entertainment",
+            "online learning",
+            "music videos",
+            "gaming content",
+            "creator community"
+          ],
+          "not_good_for": [
+            "Strictly private and secure file sharing",
+            "Primary platform for text-based long-form reading",
+            "Offline-only content creation without prior download"
+          ],
+          "emotional_tone": "professional",
+          "complexity_level": "beginner",
+          "time_commitment": "quick"
+        },
+        "category_classification": {
+          "productivity": 7.5,
+          "finance": 3,
+          "health": 0,
+          "entertainment": 14.5,
+          "education": 2
+        },
+        "quality_signals": 1
+      },
+      "processing_time_ms": 10862,
+      "success": true
+    },
+    {
+      "app_id": "com.google.ios.youtube",
+      "app_title": "YouTube",
+      "app_category": "streaming",
+      "features": {
+        "metadata": {
+          "category_primary": "streaming",
+          "category_all": [],
+          "price_tier": "free",
+          "rating_tier": "excellent",
+          "popularity_score": 1,
+          "recency_score": 0.2,
+          "developer_info": {
+            "name": "Google"
+          }
+        },
+        "keywords_tfidf": {
+          "keywords": {
+            "video": 0.042,
+            "youtub": 0.035,
+            "your": 0.035,
+            "learn": 0.028,
+            "you": 0.024,
+            "watch": 0.021,
+            "music": 0.021,
+            "select": 0.021,
+            "what": 0.017,
+            "from": 0.017,
+            "channel": 0.017,
+            "avail": 0.017,
+            "countri": 0.017,
+            "game": 0.014,
+            "creator": 0.014,
+            "renew": 0.014,
+            "get": 0.01,
+            "see": 0.01,
+            "popular": 0.01,
+            "new": 0.01
+          },
+          "categories": {
+            "video": [
+              "entertainment"
+            ],
+            "youtub": [],
+            "your": [],
+            "learn": [
+              "education"
+            ],
+            "you": [],
+            "watch": [
+              "entertainment"
+            ],
+            "music": [
+              "entertainment"
+            ],
+            "select": [],
+            "what": [],
+            "from": [],
+            "channel": [],
+            "avail": [],
+            "countri": [],
+            "game": [
+              "entertainment"
+            ],
+            "creator": [],
+            "renew": [],
+            "get": [],
+            "see": [],
+            "popular": [],
+            "new": []
+          }
+        },
+        "llm_features": {
+          "primary_use_case": "Watching and discovering video content",
+          "use_cases": [
+            "Browsing personalized video recommendations",
+            "Following subscribed channels for new content",
+            "Exploring trending topics and creators",
+            "Creating and sharing original video content",
+            "Engaging with the YouTube community"
+          ],
+          "target_personas": [
+            "General video viewers",
+            "Fans of specific creators or genres",
+            "Aspiring content creators"
+          ],
+          "problem_solved": "Provides a comprehensive platform for users to access, discover, and share a vast array of video content while fostering community interaction.",
+          "key_features": [
+            "Personalized Home feed recommendations",
+            "Subscriptions feed for favorite channels",
+            "Library to manage watched, liked, and saved videos",
+            "Explore section for popular and trending content",
+            "Creator interaction tools (Posts, Stories, Premieres, Live streams, comments)"
+          ],
+          "limitations": [
+            "Certain Explore features (e.g., 'On the Rise') are available only in select countries."
+          ],
+          "best_for_keywords": [
+            "Video streaming",
+            "Content discovery",
+            "Online community",
+            "Entertainment",
+            "Learning"
+          ],
+          "not_good_for": [
+            "Highly private video sharing (default is public)",
+            "Offline-only content consumption (requires initial connection)",
+            "Professional video editing software replacement"
+          ],
+          "emotional_tone": "professional",
+          "complexity_level": "beginner",
+          "time_commitment": "quick"
+        },
+        "category_classification": {
+          "productivity": 7.5,
+          "finance": 3,
+          "health": 0,
+          "entertainment": 9.5,
+          "education": 2
+        },
+        "quality_signals": 1
+      },
+      "processing_time_ms": 14333,
+      "success": true
+    },
+    {
+      "app_id": "com.google.ios.youtube",
+      "app_title": "YouTube",
+      "app_category": "social media",
+      "features": {
+        "metadata": {
+          "category_primary": "social media",
+          "category_all": [],
+          "price_tier": "free",
+          "rating_tier": "excellent",
+          "popularity_score": 1,
+          "recency_score": 0.2,
+          "developer_info": {
+            "name": "Google"
+          }
+        },
+        "keywords_tfidf": {
+          "keywords": {
+            "video": 0.042,
+            "youtub": 0.035,
+            "your": 0.035,
+            "learn": 0.028,
+            "you": 0.024,
+            "watch": 0.021,
+            "music": 0.021,
+            "select": 0.021,
+            "what": 0.017,
+            "from": 0.017,
+            "channel": 0.017,
+            "avail": 0.017,
+            "countri": 0.017,
+            "game": 0.014,
+            "creator": 0.014,
+            "renew": 0.014,
+            "get": 0.01,
+            "see": 0.01,
+            "popular": 0.01,
+            "new": 0.01
+          },
+          "categories": {
+            "video": [
+              "entertainment"
+            ],
+            "youtub": [],
+            "your": [],
+            "learn": [
+              "education"
+            ],
+            "you": [],
+            "watch": [
+              "entertainment"
+            ],
+            "music": [
+              "entertainment"
+            ],
+            "select": [],
+            "what": [],
+            "from": [],
+            "channel": [],
+            "avail": [],
+            "countri": [],
+            "game": [
+              "entertainment"
+            ],
+            "creator": [],
+            "renew": [],
+            "get": [],
+            "see": [],
+            "popular": [],
+            "new": []
+          }
+        },
+        "llm_features": {
+          "primary_use_case": "Watch and discover video content",
+          "use_cases": [
+            "Watching recommended videos",
+            "Subscribing to favorite channels",
+            "Exploring trending topics and creators",
+            "Connecting with the YouTube community",
+            "Creating and sharing original content"
+          ],
+          "target_personas": [
+            "Video viewers",
+            "Content creators",
+            "Community engagers"
+          ],
+          "problem_solved": "Provides a centralized platform for discovering, watching, and sharing a vast array of video content globally.",
+          "key_features": [
+            "Personalized Home recommendations",
+            "Subscriptions feed for channels",
+            "Library for watched, liked, and saved videos",
+            "Explore page for trending topics",
+            "Creator posts, stories, premieres, and live streams"
+          ],
+          "limitations": [
+            "Some exploration features and creator spotlights are available only in select countries"
+          ],
+          "best_for_keywords": [
+            "Video streaming",
+            "Content discovery",
+            "Community engagement",
+            "Entertainment",
+            "Learning"
+          ],
+          "not_good_for": [
+            "Offline-only media consumption (without prior download)",
+            "Professional video editing workflows"
+          ],
+          "emotional_tone": "professional",
+          "complexity_level": "beginner",
+          "time_commitment": "quick"
+        },
+        "category_classification": {
+          "productivity": 7.5,
+          "finance": 3,
+          "health": 0,
+          "entertainment": 9.5,
+          "education": 2
+        },
+        "quality_signals": 1
+      },
+      "processing_time_ms": 7965,
+      "success": true
+    }
+  ],
+  "summary": {
+    "total": 5,
+    "successful": 5,
+    "failed": 0,
+    "processing_time_ms": 82764
+  }
+}

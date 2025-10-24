@@ -20,8 +20,8 @@ const supabase = createClient(
 
 class MergeAndUploader {
   constructor() {
-    this.scrapedDir = './scraped_data';
-    this.mergedDir = './merged_data';
+    this.scrapedDir = './data-scraping/scraped_data';
+    this.mergedDir = './data-scraping/merged_data';
     this.stats = {
       startTime: new Date(),
       merging: { iTunes: 0, appleRSS: 0, serp: 0, totalRaw: 0, totalUnique: 0 },
