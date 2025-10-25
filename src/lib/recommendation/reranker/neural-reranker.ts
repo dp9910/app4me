@@ -64,9 +64,11 @@ export async function neuralRerank(
 
   const results: RerankedResult[] = [];
   
-  // Process candidates in batches for optimal LLM performance
-  for (let i = 0; i < Math.min(candidates.length, 30); i += batch_size) {
-    const batch = candidates.slice(i, i + batch_size);
+  // Process candidates in smaller batches for DeepSeek performance (7s per batch)
+  // Reduced from 8 to 3 apps per batch due to 7+ second response times
+  const optimized_batch_size = Math.min(batch_size, 3);
+  for (let i = 0; i < Math.min(candidates.length, 15); i += optimized_batch_size) {
+    const batch = candidates.slice(i, i + optimized_batch_size);
     
     try {
       const batchResults = await processLLMBatch(batch, userContext);
@@ -163,28 +165,33 @@ Consider:
 - App quality and user ratings
 - Uniqueness of the solution
 
-Return JSON array:
+Return JSON array with EXACT app_ids:
 [
-  {
-    "app_id": "${batch[0]?.app_id}",
+${batch.map(app => `  {
+    "app_id": "${app.app_id}",
     "relevance_score": 8.5,
-    "personalized_oneliner": "Perfect for busy professionals - streamlines daily task management with AI-powered prioritization",
-    "match_explanation": "Combines productivity features with intelligent automation for efficient workflow management",
+    "personalized_oneliner": "Perfect for [user type] - [specific benefit]",
+    "match_explanation": "Brief explanation why this matches user needs",
     "confidence": 0.9
-  }
+  }`).join(',\n')}
 ]
 
-Return ONLY the JSON array with ${batch.length} objects:`;
+CRITICAL: Use the EXACT app_id values provided above. Return ONLY the JSON array:`;
 
-  const completion = await openai.chat.completions.create({
-    messages: [
-      { role: "system", content: "You are an expert app recommendation AI. Respond only with valid JSON arrays." },
-      { role: "user", content: prompt }
-    ],
-    model: "deepseek-chat",
-    temperature: 0.3,
-    max_tokens: 2000
-  });
+  const completion = await Promise.race([
+    openai.chat.completions.create({
+      messages: [
+        { role: "system", content: "You are an expert app recommendation AI. Respond only with valid JSON arrays." },
+        { role: "user", content: prompt }
+      ],
+      model: "deepseek-chat",
+      temperature: 0.3,
+      max_tokens: 1500 // Reduced token limit for faster responses
+    }),
+    new Promise((_, reject) => 
+      setTimeout(() => reject(new Error('DeepSeek request timeout (15s)')), 15000)
+    )
+  ]) as any;
 
   const text = completion.choices[0].message.content?.trim() || '';
   

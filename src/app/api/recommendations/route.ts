@@ -51,22 +51,36 @@ export async function POST(request: NextRequest) {
 
     console.log(`✅ Found ${candidates.length} candidates from hybrid retrieval`);
 
-    // Step 2: Neural re-ranking temporarily disabled for stability
-    console.log('📊 Using smart retrieval results directly for better performance...');
+    // Step 2: Neural re-ranking with optimized DeepSeek performance
+    console.log('🧠 Starting neural re-ranking with DeepSeek...');
     
-    // Format candidates as reranked results  
-    const rerankedResults = candidates.map(result => ({
-      ...result,
-      llm_relevance_score: 7.0 + (result.final_score * 3), // Scale to 0-10
-      personalized_oneliner: generatePersonalizedOneliner(result, userContext),
-      match_explanation: result.explanation || generateMatchExplanation(result, userContext),
-      llm_confidence: Math.min(0.9, 0.6 + result.final_score * 0.3),
-      score_breakdown: {
-        retrieval_score: result.final_score,
-        llm_score: 0.7,
-        confidence_boost: result.final_score > 0.8 ? 0.1 : 0
-      }
-    }));
+    let rerankedResults;
+    try {
+      rerankedResults = await neuralRerank(candidates, userContext, {
+        batch_size: 3, // Optimized for DeepSeek 7s response time
+        llm_weight: 0.6,
+        retrieval_weight: 0.4,
+        confidence_threshold: 0.3
+      });
+      
+      console.log(`✅ Neural re-ranking completed: ${rerankedResults.length} results`);
+    } catch (error) {
+      console.error('⚠️ Neural re-ranking failed, using fallback:', error.message);
+      
+      // Fallback to smart retrieval with generated content
+      rerankedResults = candidates.map(result => ({
+        ...result,
+        llm_relevance_score: 7.0 + (result.final_score * 3), // Scale to 0-10
+        personalized_oneliner: generatePersonalizedOneliner(result, userContext),
+        match_explanation: result.explanation || generateMatchExplanation(result, userContext),
+        llm_confidence: Math.min(0.9, 0.6 + result.final_score * 0.3),
+        score_breakdown: {
+          retrieval_score: result.final_score,
+          llm_score: 0.7,
+          confidence_boost: result.final_score > 0.8 ? 0.1 : 0
+        }
+      }));
+    }
     
     // Step 3: Format results for frontend
     const formattedResults = rerankedResults.map((result, index) => ({
