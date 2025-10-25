@@ -258,8 +258,13 @@ async function performFocusedKeywordSearch(
   limit: number
 ): Promise<any[]> {
   try {
-    // First, try to find apps that mention the main topic in title/description
-    const topicQuery = `title.ilike.%${mainTopic}%,description.ilike.%${mainTopic}%`;
+    // Build comprehensive search for main topic and related terms
+    const searchTerms = [mainTopic, ...searchFocus];
+    const searchQueries = searchTerms.map(term => 
+      `title.ilike.%${term}%,description.ilike.%${term}%`
+    ).join(',');
+    
+    console.log(`🔍 Searching for keywords: ${searchTerms.join(', ')}`);
     
     const { data: topicApps, error: topicError } = await supabase
       .from('apps_unified')
@@ -271,10 +276,12 @@ async function performFocusedKeywordSearch(
         icon_url,
         description
       `)
-      .or(topicQuery)
-      .limit(20);
+      .or(searchQueries)
+      .limit(50); // Increased limit to catch more relevant apps
     
     if (topicError) throw topicError;
+    
+    console.log(`📱 Found ${topicApps.length} apps from direct keyword search`);
     
     // Then, search with TF-IDF for broader matches
     const { data: tfidfApps, error: tfidfError } = await supabase
@@ -500,23 +507,43 @@ function calculateIntentRelevance(app: any, intent: QueryIntent): number {
 }
 
 function calculateTopicRelevance(app: any, mainTopic: string, searchFocus: string[]): number {
-  const text = `${app.title} ${app.description}`.toLowerCase();
+  const title = app.title.toLowerCase();
+  const description = (app.description || '').toLowerCase();
+  const text = `${title} ${description}`;
   let score = 0;
   
-  // High score for main topic in title
-  if (app.title.toLowerCase().includes(mainTopic.toLowerCase())) {
-    score += 0.8;
+  // Very high score for exact topic match in title
+  if (title.includes(mainTopic.toLowerCase())) {
+    score += 1.0;
   }
   
-  // Medium score for main topic in description
-  if (app.description && app.description.toLowerCase().includes(mainTopic.toLowerCase())) {
-    score += 0.4;
+  // High score for topic in description
+  if (description.includes(mainTopic.toLowerCase())) {
+    score += 0.6;
   }
   
-  // Small scores for focus keywords
+  // Score for focus keywords with priority weighting
   for (const keyword of searchFocus) {
-    if (text.includes(keyword.toLowerCase())) {
-      score += 0.1;
+    const keywordLower = keyword.toLowerCase();
+    if (title.includes(keywordLower)) {
+      score += 0.8; // Higher weight for title matches
+    } else if (description.includes(keywordLower)) {
+      score += 0.3; // Medium weight for description matches
+    }
+  }
+  
+  // Boost for apps that are clearly about the main topic
+  const topicBoosts = {
+    'plant': ['planta', 'garden', 'flora', 'botanical', 'everyscan'],
+    'meditation': ['calm', 'headspace', 'insight', 'mindfulness', 'zen'],
+    'fitness': ['nike', 'adidas', 'fitbit', 'strava', 'myfitnesspal'],
+    'finance': ['chase', 'bank', 'invest', 'mint', 'robinhood']
+  };
+  
+  const boostWords = topicBoosts[mainTopic.toLowerCase()] || [];
+  for (const boostWord of boostWords) {
+    if (title.includes(boostWord)) {
+      score += 0.5;
     }
   }
   
