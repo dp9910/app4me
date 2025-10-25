@@ -50,6 +50,23 @@ export default function HomePage() {
     router.push('/questionnaire');
   };
 
+  const handleFindApps = () => {
+    // Navigate to results page with form data
+    const searchParams = new URLSearchParams();
+    
+    if (formData.lifestyle.length > 0) {
+      searchParams.set('lifestyle', formData.lifestyle.join(','));
+    }
+    if (formData.intent) {
+      searchParams.set('intent', formData.intent);
+    }
+    if (formData.wishText) {
+      searchParams.set('query', formData.wishText);
+    }
+    
+    router.push(`/search-results?${searchParams.toString()}`);
+  };
+
   const handleFetchDailyApps = async () => {
     setIsLoading(true);
     setFetchResult(null);
@@ -250,12 +267,18 @@ export default function HomePage() {
                     {/* Submit Button */}
                     <div className="text-center">
                       <Button
-                        onClick={handleTakeQuiz}
+                        onClick={handleFindApps}
                         size="lg"
                         className="px-8"
+                        disabled={!isFormValid}
                       >
                         Find My Apps ✨
                       </Button>
+                      {!isFormValid && (
+                        <p className="mt-2 text-sm text-gray-500">
+                          Please fill out at least one section above
+                        </p>
+                      )}
                     </div>
                   </div>
                 </div>
