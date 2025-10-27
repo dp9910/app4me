@@ -702,8 +702,22 @@ async function finalRankingAndSelection(
   intent: UserIntent,
   limit: number
 ): Promise<IntentDrivenResult[]> {
-  // Sort by final relevance score
-  const sortedResults = refinedResults
+  // Deduplicate by app title (keep highest scoring version of each app)
+  const deduplicatedMap = new Map();
+  refinedResults.forEach(result => {
+    const title = result.title?.toLowerCase().trim();
+    if (!title) return;
+    
+    const existing = deduplicatedMap.get(title);
+    const currentScore = result.final_relevance_score || result.relevance_score || 0;
+    
+    if (!existing || currentScore > (existing.final_relevance_score || existing.relevance_score || 0)) {
+      deduplicatedMap.set(title, result);
+    }
+  });
+  
+  // Sort by final relevance score and limit results
+  const sortedResults = Array.from(deduplicatedMap.values())
     .sort((a, b) => (b.final_relevance_score || b.relevance_score) - (a.final_relevance_score || a.relevance_score))
     .slice(0, limit);
   
