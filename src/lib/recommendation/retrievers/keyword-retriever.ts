@@ -373,18 +373,19 @@ async function performTFIDFSearch(
         }
         
         // Boost score based on app quality
-        const qualityBoost = (app.apps_unified.rating || 0) / 5.0 * 0.1;
+        const appData = Array.isArray(app.apps_unified) ? app.apps_unified[0] : app.apps_unified;
+        const qualityBoost = (appData?.rating || 0) / 5.0 * 0.1;
         totalScore += qualityBoost;
         
         return {
           app_id: app.app_id,
           keyword_score: totalScore,
-          matched_keywords: [...new Set(matchedKeywords)], // Remove duplicates
-          app_name: app.apps_unified.title,
-          app_category: app.apps_unified.primary_category,
-          app_rating: app.apps_unified.rating || 0,
-          app_icon: app.apps_unified.icon_url,
-          app_description: app.apps_unified.description || '',
+          matched_keywords: Array.from(new Set(matchedKeywords)), // Remove duplicates
+          app_name: appData?.title || '',
+          app_category: appData?.primary_category || '',
+          app_rating: appData?.rating || 0,
+          app_icon: appData?.icon_url || null,
+          app_description: appData?.description || '',
           primary_use_case: app.primary_use_case,
           target_user: app.target_user,
           key_benefit: app.key_benefit

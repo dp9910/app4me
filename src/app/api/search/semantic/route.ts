@@ -131,6 +131,7 @@ export async function GET(request: NextRequest) {
     const results = await semanticSearch(query, {
       limit: Math.min(limit, 20), // Lower limit for GET
       threshold: Math.max(threshold, 0.6), // Higher threshold for quality
+      userContext: {}, // Empty context for GET requests
       includeInsights: false // No insights for quick searches
     });
     

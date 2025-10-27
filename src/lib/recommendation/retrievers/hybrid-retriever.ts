@@ -135,7 +135,7 @@ function applyRRF(
   // Calculate RRF scores for each app
   const fusedResults: HybridSearchResult[] = [];
   
-  for (const appId of allAppIds) {
+  for (const appId of Array.from(allAppIds)) {
     const semanticResult = semanticMap.get(appId);
     const keywordResult = keywordMap.get(appId);
     
@@ -340,7 +340,7 @@ export function getHybridAnalytics(results: HybridSearchResult[]) {
     keyword_only: results.filter(r => r.retrieval_methods.includes('keyword') && r.retrieval_methods.length === 1).length,
     both_methods: results.filter(r => r.retrieval_methods.length > 1).length,
     avg_final_score: results.reduce((sum, r) => sum + r.final_score, 0) / results.length,
-    categories: [...new Set(results.map(r => r.app_data.category))],
+    categories: Array.from(new Set(results.map(r => r.app_data.category))),
     top_categories: getTopCategories(results, 5)
   };
   

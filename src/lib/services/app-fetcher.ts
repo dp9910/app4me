@@ -190,7 +190,7 @@ export class AppFetcher {
     }
 
     // Remove duplicates and return
-    return [...new Set(keywords)]
+    return Array.from(new Set(keywords))
   }
 
   // Predefined categories for systematic fetching
