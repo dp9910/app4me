@@ -39,6 +39,8 @@ export default function SearchResultsPage() {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [userProfile, setUserProfile] = useState<UserProfile | null>(null);
+  const [isPlantQuery, setIsPlantQuery] = useState(false);
+  const [showComparison, setShowComparison] = useState(false);
 
   useEffect(() => {
     const fetchRecommendations = async () => {
@@ -66,6 +68,13 @@ export default function SearchResultsPage() {
         };
 
         setUserProfile(profile);
+        
+        // Check if this is a plant-related query
+        const queryLower = (query || '').toLowerCase();
+        const isPlantRelated = queryLower.includes('plant') || queryLower.includes('garden') || 
+                              queryLower.includes('flower') || queryLower.includes('botanical') ||
+                              queryLower.includes('nature') || queryLower.includes('care');
+        setIsPlantQuery(isPlantRelated);
 
         // Call our recommendation API
         const response = await fetch('/api/recommendations', {
@@ -201,6 +210,21 @@ export default function SearchResultsPage() {
           <div className="mt-4 text-sm text-gray-500">
             Showing {currentIndex + 1} of {apps.length} recommendations
           </div>
+          
+          {/* Plant Query Special Button */}
+          {isPlantQuery && (
+            <div className="mt-6">
+              <button
+                onClick={() => router.push(`/test-plant-search?query=${encodeURIComponent(userProfile?.query || '')}`)}
+                className="inline-flex items-center gap-2 px-6 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors font-medium"
+              >
+                🌱 See How Algorithm Picked These from 374 Plant Apps
+              </button>
+              <p className="text-xs text-gray-500 mt-2">
+                Compare our top picks vs all plant-related apps in database
+              </p>
+            </div>
+          )}
         </div>
 
         {/* App Card */}

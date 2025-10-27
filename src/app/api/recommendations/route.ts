@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { geminiService, UserPreferences } from '@/lib/ai/gemini-client'
-import { smartHybridRetrieval } from '@/lib/recommendation/retrievers/smart-hybrid-retriever'
+import { intentDrivenSearch } from '@/lib/recommendation/intent-driven-search'
 import { neuralRerank } from '@/lib/recommendation/reranker/neural-reranker'
 
 export async function POST(request: NextRequest) {
@@ -37,9 +37,9 @@ export async function POST(request: NextRequest) {
       }, { status: 400 });
     }
 
-    // Step 1: Get initial candidates using smart hybrid retrieval
-    console.log('📊 Starting smart hybrid retrieval...');
-    const candidates = await smartHybridRetrieval(searchQuery, 20);
+    // Step 1: Use intent-driven search with LLM-first approach
+    console.log('🚀 Starting intent-driven search with LLM-first approach...');
+    const candidates = await intentDrivenSearch(searchQuery, 20);
     
     if (candidates.length === 0) {
       return NextResponse.json({
@@ -49,38 +49,26 @@ export async function POST(request: NextRequest) {
       });
     }
 
-    console.log(`✅ Found ${candidates.length} candidates from hybrid retrieval`);
+    console.log(`✅ Found ${candidates.length} candidates from intent-driven search`);
 
-    // Step 2: Neural re-ranking with optimized DeepSeek performance
-    console.log('🧠 Starting neural re-ranking with DeepSeek...');
+    // Step 2: For now, skip neural re-ranking and use intent-driven search results directly
+    console.log('✅ Using intent-driven search results directly (skipping neural re-ranking for now)');
     
-    let rerankedResults;
-    try {
-      rerankedResults = await neuralRerank(candidates, userContext, {
-        batch_size: 3, // Optimized for DeepSeek 7s response time
-        llm_weight: 0.6,
-        retrieval_weight: 0.4,
-        confidence_threshold: 0.3
-      });
-      
-      console.log(`✅ Neural re-ranking completed: ${rerankedResults.length} results`);
-    } catch (error) {
-      console.error('⚠️ Neural re-ranking failed, using fallback:', error.message);
-      
-      // Fallback to smart retrieval with generated content
-      rerankedResults = candidates.map(result => ({
-        ...result,
-        llm_relevance_score: 7.0 + (result.final_score * 3), // Scale to 0-10
-        personalized_oneliner: generatePersonalizedOneliner(result, userContext),
-        match_explanation: result.explanation || generateMatchExplanation(result, userContext),
-        llm_confidence: Math.min(0.9, 0.6 + result.final_score * 0.3),
-        score_breakdown: {
-          retrieval_score: result.final_score,
-          llm_score: 0.7,
-          confidence_boost: result.final_score > 0.8 ? 0.1 : 0
-        }
-      }));
-    }
+    const rerankedResults = candidates.map(result => ({
+      app_id: result.app_id,
+      app_data: result.app_data,
+      final_score: result.relevance_score,
+      personalized_oneliner: generatePersonalizedOneliner(result, userContext),
+      match_explanation: result.match_reason,
+      llm_confidence: Math.min(0.9, 0.6 + result.relevance_score * 0.3),
+      matched_concepts: result.matched_keywords,
+      search_method: result.search_method,
+      score_breakdown: {
+        retrieval_score: result.relevance_score,
+        llm_score: 0.8, // High confidence in streamlined search
+        confidence_boost: result.relevance_score > 2.0 ? 0.1 : 0
+      }
+    }));
     
     // Step 3: Format results for frontend
     const formattedResults = rerankedResults.map((result, index) => ({

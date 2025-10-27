@@ -11,58 +11,20 @@ export default function HomePage() {
   const router = useRouter();
   const { user, signOut } = useAuth();
   const [formData, setFormData] = useState({
-    lifestyle: [] as string[],
-    intent: '',
     wishText: ''
   });
   const [isLoading, setIsLoading] = useState(false);
   const [fetchResult, setFetchResult] = useState<any>(null);
 
-  const lifestyleOptions = [
-    { id: 'active', label: 'Active', emoji: '🏃‍♂️' },
-    { id: 'creative', label: 'Creative', emoji: '🎨' },
-    { id: 'student', label: 'Student', emoji: '📚' },
-    { id: 'professional', label: 'Professional', emoji: '💼' },
-    { id: 'foodie', label: 'Foodie', emoji: '🍔' },
-    { id: 'traveler', label: 'Traveler', emoji: '✈️' },
-  ];
+  // Removed complex form options - keeping it simple!
 
-  const intentOptions = [
-    'Productivity',
-    'Health & Fitness',
-    'Entertainment',
-    'Learning',
-    'Finance',
-    'Social'
-  ];
-
-  const handleLifestyleToggle = (lifestyle: string) => {
-    setFormData(prev => ({
-      ...prev,
-      lifestyle: prev.lifestyle.includes(lifestyle)
-        ? prev.lifestyle.filter(l => l !== lifestyle)
-        : [...prev.lifestyle, lifestyle]
-    }));
-  };
-
-  const handleTakeQuiz = () => {
-    // Redirect to the new questionnaire
-    router.push('/questionnaire');
-  };
 
   const handleFindApps = () => {
-    // Navigate to results page with form data
-    const searchParams = new URLSearchParams();
+    if (!formData.wishText.trim()) return;
     
-    if (formData.lifestyle.length > 0) {
-      searchParams.set('lifestyle', formData.lifestyle.join(','));
-    }
-    if (formData.intent) {
-      searchParams.set('intent', formData.intent);
-    }
-    if (formData.wishText) {
-      searchParams.set('query', formData.wishText);
-    }
+    // Navigate to results page with just the search query
+    const searchParams = new URLSearchParams();
+    searchParams.set('query', formData.wishText);
     
     router.push(`/search-results?${searchParams.toString()}`);
   };
@@ -93,7 +55,7 @@ export default function HomePage() {
     }
   };
 
-  const isFormValid = formData.lifestyle.length > 0 || formData.intent || formData.wishText;
+  const isFormValid = formData.wishText.trim().length > 0;
 
   return (
     <div className="bg-background-light dark:bg-background-dark font-display">
@@ -162,10 +124,10 @@ export default function HomePage() {
                   </div>
                   <div className="flex flex-wrap gap-4 justify-center">
                     <button 
-                      onClick={handleTakeQuiz}
+                      onClick={() => document.getElementById('search-section')?.scrollIntoView({ behavior: 'smooth' })}
                       className="flex h-12 items-center justify-center rounded-lg bg-primary px-6 text-base font-bold text-white shadow-lg hover:bg-primary/90 transition-colors"
                     >
-                      Take the Quiz
+                      Find Apps Now
                     </button>
                     <button 
                       onClick={() => router.push('/data-analysis')}
@@ -191,6 +153,12 @@ export default function HomePage() {
                     >
                       ⚡ Trigger Pipeline
                     </button>
+                    <button 
+                      onClick={() => router.push('/test-plant-search')}
+                      className="flex h-12 items-center justify-center rounded-lg bg-green-600 px-6 text-base font-bold text-white shadow-lg hover:bg-green-700 transition-colors"
+                    >
+                      🌱 Test Plant Search
+                    </button>
                     <button className="flex h-12 items-center justify-center rounded-lg bg-white/10 px-6 text-base font-bold text-white backdrop-blur-sm hover:bg-white/20 transition-colors">
                       Browse Apps
                     </button>
@@ -198,85 +166,74 @@ export default function HomePage() {
                 </div>
               </div>
 
-              {/* Quiz Section */}
-              <div id="quiz-section" className="py-16 sm:py-24 px-4">
-                <div className="mx-auto max-w-4xl">
-                  <div className="text-center mb-12">
+              {/* Simple Search Section */}
+              <div id="search-section" className="py-16 sm:py-24 px-4">
+                <div className="mx-auto max-w-2xl">
+                  <div className="text-center mb-8">
                     <h2 className="text-3xl font-bold tracking-tight text-gray-900 dark:text-white sm:text-4xl">
-                      Tell us about yourself
+                      What do you need?
                     </h2>
                     <p className="mt-4 text-lg text-gray-600 dark:text-gray-400">
-                      Answer a few questions to get personalized app recommendations
+                      Just tell us what you're looking for and we'll find the perfect apps for you.
                     </p>
                   </div>
 
-                  <div className="space-y-8">
-                    {/* Lifestyle Question */}
-                    <div className="bg-white dark:bg-gray-800 rounded-xl border border-primary/20 dark:border-primary/30 p-8">
-                      <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-6">
-                        What describes your lifestyle?
-                      </h3>
-                      <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-                        {lifestyleOptions.map(option => (
+                  <div className="bg-white dark:bg-gray-800 rounded-xl border border-primary/20 dark:border-primary/30 p-8">
+                    <div className="mb-6">
+                      <label htmlFor="search-input" className="block text-lg font-medium text-gray-900 dark:text-white mb-3">
+                        Describe what you're looking for
+                      </label>
+                      <Textarea
+                        id="search-input"
+                        value={formData.wishText}
+                        onChange={(e) => setFormData(prev => ({ ...prev, wishText: e.target.value }))}
+                        placeholder="Examples:
+• I wish there was an app to help me take care of plants
+• I need something to track my daily expenses
+• Help me learn meditation and relaxation
+• I want to stay organized with my tasks
+• Find me apps to learn a new language"
+                        rows={4}
+                        className="text-base"
+                      />
+                    </div>
+                    
+                    <div className="mb-6">
+                      <p className="text-sm text-gray-500 mb-3">Or try one of these:</p>
+                      <div className="flex flex-wrap gap-2">
+                        {[
+                          "help me relax and sleep better",
+                          "track my daily habits",
+                          "learn to take care of plants",
+                          "manage my money better",
+                          "stay focused while working",
+                          "learn a new language",
+                          "workout at home",
+                          "organize my photos"
+                        ].map((suggestion, i) => (
                           <button
-                            key={option.id}
-                            onClick={() => handleLifestyleToggle(option.id)}
-                            className={`p-4 rounded-lg border-2 transition-all text-left ${
-                              formData.lifestyle.includes(option.id)
-                                ? 'border-primary bg-primary/10 text-primary'
-                                : 'border-gray-200 dark:border-gray-600 hover:border-primary/50 text-gray-700 dark:text-gray-300'
-                            }`}
+                            key={i}
+                            onClick={() => setFormData(prev => ({ ...prev, wishText: suggestion }))}
+                            className="px-4 py-2 text-sm bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-primary/10 hover:text-primary transition-colors"
                           >
-                            <span className="text-2xl mr-3">{option.emoji}</span>
-                            <span className="font-medium">{option.label}</span>
+                            {suggestion}
                           </button>
                         ))}
                       </div>
                     </div>
 
-                    {/* Intent Question */}
-                    <div className="bg-white dark:bg-gray-800 rounded-xl border border-primary/20 dark:border-primary/30 p-8">
-                      <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-6">
-                        What are you looking to improve?
-                      </h3>
-                      <select
-                        value={formData.intent}
-                        onChange={(e) => setFormData(prev => ({ ...prev, intent: e.target.value }))}
-                        className="w-full p-4 rounded-lg border-2 border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:border-primary focus:outline-none"
-                      >
-                        <option value="">Select an area...</option>
-                        {intentOptions.map(option => (
-                          <option key={option} value={option}>{option}</option>
-                        ))}
-                      </select>
-                    </div>
-
-                    {/* Wish Text */}
-                    <div className="bg-white dark:bg-gray-800 rounded-xl border border-primary/20 dark:border-primary/30 p-8">
-                      <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-6">
-                        Tell us what you're looking for
-                      </h3>
-                      <Textarea
-                        value={formData.wishText}
-                        onChange={(e) => setFormData(prev => ({ ...prev, wishText: e.target.value }))}
-                        placeholder="I wish there was an app that helps me..."
-                        rows={4}
-                      />
-                    </div>
-
-                    {/* Submit Button */}
                     <div className="text-center">
                       <Button
                         onClick={handleFindApps}
                         size="lg"
-                        className="px-8"
+                        className="px-12 py-4 text-lg"
                         disabled={!isFormValid}
                       >
                         Find My Apps ✨
                       </Button>
                       {!isFormValid && (
-                        <p className="mt-2 text-sm text-gray-500">
-                          Please fill out at least one section above
+                        <p className="mt-3 text-sm text-gray-500">
+                          Please describe what you're looking for
                         </p>
                       )}
                     </div>

@@ -63,9 +63,9 @@ export async function generateAllEmbeddings(options = {}) {
   console.log(`   Skip existing: ${skipExisting}`);
   console.log(`   Start offset: ${startOffset}\n`);
   
-  // Get total count from iTunes apps (our primary data source)
+  // Get total count from apps_unified
   const { count, error: countError } = await supabase
-    .from('itunes_apps')
+    .from('apps_unified')
     .select('*', { count: 'exact', head: true });
   
   if (countError) {
@@ -80,8 +80,8 @@ export async function generateAllEmbeddings(options = {}) {
   const coverage = await getEmbeddingCoverage();
   console.log(`📈 Current embedding coverage: ${coverage.embedded}/${coverage.total} (${coverage.percentage}%)\n`);
   
-  const embeddingModel = genAI.getGenerativeModel({ 
-    model: 'text-embedding-004' 
+  const embeddingModel = genAI.getGenerativeModel({
+    model: 'text-embedding-004'
   });
   
   // Process in batches
@@ -89,13 +89,13 @@ export async function generateAllEmbeddings(options = {}) {
     console.log(`\n📦 Processing batch ${Math.floor(offset/batchSize) + 1}/${Math.ceil(count/batchSize)} (apps ${offset + 1}-${Math.min(offset + batchSize, count)})...`);
     
     try {
-      // Get batch of apps from iTunes (rich data source)
+      // Get batch of apps from apps_unified (rich data source)
       const { data: apps, error: fetchError } = await supabase
-        .from('itunes_apps')
+        .from('apps_unified')
         .select(`
-          bundle_id, 
+          id, 
           title, 
-          category, 
+          primary_category, 
           description, 
           developer,
           rating,
@@ -154,7 +154,7 @@ async function processApp(app, embeddingModel, skipExisting = true) {
       const { data: existing } = await supabase
         .from('app_embeddings')
         .select('id')
-        .eq('app_id', app.bundle_id)
+        .eq('app_id', app.id)
         .single();
       
       if (existing) {
@@ -209,7 +209,7 @@ async function processApp(app, embeddingModel, skipExisting = true) {
     const { error: insertError } = await supabase
       .from('app_embeddings')
       .insert({
-        app_id: app.bundle_id,
+        app_id: app.id,
         embedding: embedding,
         embedding_model: 'text-embedding-004',
         text_used: embeddingText.substring(0, 500), // Store sample for debugging
@@ -239,7 +239,7 @@ async function processApp(app, embeddingModel, skipExisting = true) {
 
 async function getEmbeddingCoverage() {
   const { count: total } = await supabase
-    .from('itunes_apps')
+    .from('apps_unified')
     .select('*', { count: 'exact', head: true });
   
   const { count: embedded } = await supabase
