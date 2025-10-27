@@ -29,6 +29,16 @@ export default function HomePage() {
     router.push(`/search-results?${searchParams.toString()}`);
   };
 
+  const handleSwipeApps = () => {
+    if (!formData.wishText.trim()) return;
+    
+    // Navigate to swipe interface with the search query
+    const searchParams = new URLSearchParams();
+    searchParams.set('query', formData.wishText);
+    
+    router.push(`/swipe-results?${searchParams.toString()}`);
+  };
+
   const handleFetchDailyApps = async () => {
     setIsLoading(true);
     setFetchResult(null);
@@ -223,19 +233,31 @@ export default function HomePage() {
                     </div>
 
                     <div className="text-center">
-                      <Button
-                        onClick={handleFindApps}
-                        size="lg"
-                        className="px-12 py-4 text-lg"
-                        disabled={!isFormValid}
-                      >
-                        Find My Apps ✨
-                      </Button>
-                      {!isFormValid && (
-                        <p className="mt-3 text-sm text-gray-500">
-                          Please describe what you're looking for
-                        </p>
-                      )}
+                      <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                        <Button
+                          onClick={handleFindApps}
+                          size="lg"
+                          className="px-8 py-4 text-lg"
+                          disabled={!isFormValid}
+                          variant="outline"
+                        >
+                          📋 List View
+                        </Button>
+                        <Button
+                          onClick={handleSwipeApps}
+                          size="lg"
+                          className="px-8 py-4 text-lg"
+                          disabled={!isFormValid}
+                        >
+                          💕 Swipe to Discover
+                        </Button>
+                      </div>
+                      <p className="mt-3 text-sm text-gray-500">
+                        {!isFormValid 
+                          ? "Please describe what you're looking for"
+                          : "Choose your preferred way to discover apps"
+                        }
+                      </p>
                     </div>
                   </div>
                 </div>

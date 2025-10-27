@@ -164,10 +164,10 @@ OUTPUT the optimal search strategy as JSON:
     return {
       search_focus: 'hybrid',
       exact_app_names: [],
-      title_keywords: extractBasicKeywords(query),
-      description_keywords: extractBasicKeywords(query),
+      title_keywords: extractKeywords(query),
+      description_keywords: extractKeywords(query),
       feature_filters: {
-        use_case_keywords: extractBasicKeywords(query),
+        use_case_keywords: extractKeywords(query),
         target_user_keywords: [],
         benefit_keywords: []
       },

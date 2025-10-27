@@ -52,6 +52,8 @@ function mapItunesApp(app) {
     available_in_sources: ['itunes'],
     rating_source: 'itunes',
     description_source: 'itunes',
+    icon_url: app.icon_url,
+    icon_url_hd: app.icon_url, // Use same URL for HD
   };
 }
 
@@ -71,6 +73,8 @@ function mapSerpApp(app) {
     available_in_sources: ['serp'],
     rating_source: 'serp',
     description_source: 'serp',
+    icon_url: app.icon_url,
+    icon_url_hd: app.icon_url_512 || app.icon_url, // Prefer 512px for HD
   };
 }
 
@@ -101,6 +105,10 @@ function mergeApps(existingApp, newApp) {
   // Take non-null values for version and price
   merged.version = existingApp.version || newApp.version;
   merged.price = existingApp.price !== null ? existingApp.price : newApp.price;
+
+  // Merge icon URLs (prefer higher quality when available)
+  merged.icon_url = existingApp.icon_url || newApp.icon_url;
+  merged.icon_url_hd = existingApp.icon_url_hd || newApp.icon_url_hd;
 
   return merged;
 }
