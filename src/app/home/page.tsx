@@ -23,8 +23,11 @@ export default function HomePage() {
   const router = useRouter();
   const [userName, setUserName] = useState('');
   const [apps, setApps] = useState<App[]>([]);
+  const [topWeeklyApps, setTopWeeklyApps] = useState<App[]>([]);
   const [appsLoading, setAppsLoading] = useState(true);
+  const [topWeeklyAppsLoading, setTopWeeklyAppsLoading] = useState(true);
   const [appsError, setAppsError] = useState<string | null>(null);
+  const [topWeeklyAppsError, setTopWeeklyAppsError] = useState<string | null>(null);
 
   useEffect(() => {
     if (!loading && !user) {
@@ -71,6 +74,7 @@ export default function HomePage() {
 
         if (!session) {
           setAppsError("You must be logged in to see personalized apps.");
+          setAppsLoading(false);
           return;
         }
 
@@ -97,6 +101,40 @@ export default function HomePage() {
 
     fetchTopApps();
   }, [user]);
+
+  // Fetch top weekly apps data
+  useEffect(() => {
+    const fetchTopWeeklyApps = async () => {
+      try {
+        const cachedApps = sessionStorage.getItem('cachedTopWeeklyApps');
+        if (cachedApps) {
+          setTopWeeklyApps(JSON.parse(cachedApps));
+          setTopWeeklyAppsLoading(false);
+          return;
+        }
+
+        setTopWeeklyAppsLoading(true);
+        setTopWeeklyAppsError(null);
+        
+        const response = await fetch('/api/top-weekly-apps');
+        const result = await response.json();
+        
+        if (result.success) {
+          setTopWeeklyApps(result.data);
+          sessionStorage.setItem('cachedTopWeeklyApps', JSON.stringify(result.data));
+        } else {
+          setTopWeeklyAppsError(result.error || 'Failed to load top weekly apps');
+        }
+      } catch (error) {
+        console.error('Error fetching top weekly apps:', error);
+        setTopWeeklyAppsError('Failed to load top weekly apps');
+      } finally {
+        setTopWeeklyAppsLoading(false);
+      }
+    };
+
+    fetchTopWeeklyApps();
+  }, []);
 
   if (loading || checkingPersonalization) {
     return (
@@ -369,6 +407,66 @@ export default function HomePage() {
                             <h3 className="text-gray-900 dark:text-white text-base font-medium leading-normal truncate">{app.name}</h3>
                             <p className="text-gray-500 dark:text-gray-400 text-sm font-normal leading-normal">{app.category}</p>
                             <p className="text-xs font-mono leading-normal text-gray-400 dark:text-gray-500 pt-1">Sourced from iTunes</p>
+                          </div>
+                          <div className="flex items-center justify-between mt-auto">
+                            <span className="text-xs font-medium text-green-600 dark:text-green-400">{app.price}</span>
+                          </div>
+                        </a>
+                      ))
+                    )}
+                  </div>
+                </section>
+
+                {/* Top Apps This Week */}
+                <section>
+                  <div className="flex justify-between items-center px-4 pb-3 pt-5">
+                    <h2 className="text-gray-900 dark:text-white text-[22px] font-bold leading-tight tracking-[-0.015em]">
+                      Top Apps This Week
+                    </h2>
+                  </div>
+                  
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                    {topWeeklyAppsLoading ? (
+                      // Loading state
+                      Array.from({ length: 8 }).map((_, index) => (
+                        <div key={index} className="flex flex-col gap-4 rounded-xl border border-gray-200/80 dark:border-white/10 bg-background-light dark:bg-[#111c22] p-4 animate-pulse">
+                          <div className="flex items-start justify-between">
+                            <div className="bg-gray-300 dark:bg-gray-600 rounded-lg size-12"></div>
+                            <div className="bg-gray-300 dark:bg-gray-600 rounded h-4 w-12"></div>
+                          </div>
+                          <div className="flex flex-col gap-2">
+                            <div className="bg-gray-300 dark:bg-gray-600 rounded h-4 w-24"></div>
+                            <div className="bg-gray-300 dark:bg-gray-600 rounded h-3 w-32"></div>
+                          </div>
+                        </div>
+                      ))
+                    ) : topWeeklyAppsError ? (
+                      // Error state
+                      <div className="col-span-full flex flex-col items-center justify-center py-12 text-center">
+                        <div className="text-red-500 mb-2">
+                          <svg className="w-12 h-12 mx-auto" fill="currentColor" viewBox="0 0 20 20">
+                            <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clipRule="evenodd"/>
+                          </svg>
+                        </div>
+                        <h3 className="text-gray-900 dark:text-white text-lg font-medium mb-1">Failed to load apps</h3>
+                        <p className="text-gray-500 dark:text-gray-400 text-sm">{topWeeklyAppsError}</p>
+                      </div>
+                    ) : (
+                      // Real app data
+                      topWeeklyApps.slice(0, 8).map((app) => (
+                        <a href={app.url} target="_blank" rel="noopener noreferrer" key={app.id} className="group flex flex-col gap-4 rounded-xl border border-gray-200/80 dark:border-white/10 bg-background-light dark:bg-[#111c22] p-4 transition-all hover:shadow-lg hover:-translate-y-1">
+                          <div className="flex items-start justify-between">
+                            <div className="bg-center bg-no-repeat aspect-square bg-cover rounded-xl w-20 h-20" style={{backgroundImage: `url("${app.icon}")`}}></div>
+                            <div className="flex items-center gap-1 text-gray-600 dark:text-gray-300">
+                              <svg className="w-4 h-4 text-yellow-500" fill="currentColor" viewBox="0 0 20 20">
+                                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
+                              </svg>
+                              <span className="text-sm font-medium">{app.rating}</span>
+                            </div>
+                          </div>
+                          <div className="flex flex-col gap-1">
+                            <h3 className="text-gray-900 dark:text-white text-base font-medium leading-normal truncate">{app.name}</h3>
+                            <p className="text-gray-500 dark:text-gray-400 text-sm font-normal leading-normal">{app.category}</p>
                           </div>
                           <div className="flex items-center justify-between mt-auto">
                             <span className="text-xs font-medium text-green-600 dark:text-green-400">{app.price}</span>

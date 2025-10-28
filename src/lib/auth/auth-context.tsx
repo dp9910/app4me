@@ -30,24 +30,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [checkingPersonalization, setCheckingPersonalization] = useState(false)
 
   useEffect(() => {
-    // Get initial session
-    const initializeAuth = async () => {
-      try {
-        const { session } = await auth.getCurrentSession()
-        setSession(session)
-        setUser(session?.user ?? null)
-
-        if (session?.user) {
-          await checkPersonalizationStatusInternal()
-        }
-      } catch (error) {
-        console.error('Auth initialization error:', error)
-      } finally {
-        setLoading(false)
-      }
-    }
-
-    initializeAuth()
+    console.log('Auth context mounted. loading = true');
 
     // Listen for auth changes
     let subscription: any = null
@@ -59,17 +42,21 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
           setSession(session)
           setUser(session?.user ?? null)
 
-          if (event === 'SIGNED_IN' && session?.user) {
-            await checkPersonalizationStatusInternal()
+          if ((event === 'SIGNED_IN' || event === 'INITIAL_SESSION') && session?.user) {
+            await checkPersonalizationStatusInternal(session)
           } else if (event === 'SIGNED_OUT') {
             setUserProfileData(null)
             setHasCompletedPersonalization(null)
           }
 
           setLoading(false)
+          console.log('onAuthStateChange finished. loading = false');
         }
       )
       subscription = data.subscription
+    } else {
+      setLoading(false);
+      console.log('Supabase not initialized. loading = false');
     }
 
     return () => {
@@ -80,10 +67,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }, [])
 
 
-  const checkPersonalizationStatusInternal = async () => {
+  const checkPersonalizationStatusInternal = async (session: Session | null) => {
     try {
-      // Get the current session to include auth token
-      const { data: { session } } = await supabase.auth.getSession()
       if (!session?.access_token) {
         console.log('No session token, setting personalization to false')
         setHasCompletedPersonalization(false)
@@ -115,7 +100,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const checkPersonalizationStatus = async () => {
     setCheckingPersonalization(true)
     try {
-      await checkPersonalizationStatusInternal()
+      const { data: { session } } = await supabase.auth.getSession();
+      await checkPersonalizationStatusInternal(session)
     } finally {
       setCheckingPersonalization(false)
     }
