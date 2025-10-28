@@ -1,346 +1,74 @@
-'use client';
-
-import { useState } from 'react';
-import { useRouter } from 'next/navigation';
-import Link from 'next/link';
-import Button from '@/components/ui/Button';
-import { Textarea } from '@/components/ui/Input';
-import { useAuth } from '@/lib/auth/auth-context';
 
 export default function HomePage() {
-  const router = useRouter();
-  const { user, signOut } = useAuth();
-  const [formData, setFormData] = useState({
-    wishText: ''
-  });
-  const [isLoading, setIsLoading] = useState(false);
-  const [fetchResult, setFetchResult] = useState<any>(null);
-
-  // Removed complex form options - keeping it simple!
-
-
-  const handleFindApps = () => {
-    if (!formData.wishText.trim()) return;
-    
-    // Navigate to results page with just the search query
-    const searchParams = new URLSearchParams();
-    searchParams.set('query', formData.wishText);
-    
-    router.push(`/search-results?${searchParams.toString()}`);
-  };
-
-  const handleSwipeApps = () => {
-    if (!formData.wishText.trim()) return;
-    
-    // Navigate to swipe interface with the search query
-    const searchParams = new URLSearchParams();
-    searchParams.set('query', formData.wishText);
-    
-    router.push(`/swipe-results?${searchParams.toString()}`);
-  };
-
-  const handleFetchDailyApps = async () => {
-    setIsLoading(true);
-    setFetchResult(null);
-    
-    try {
-      const response = await fetch('/api/fetch-daily-apps', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' }
-      });
-      
-      const data = await response.json();
-      setFetchResult(data);
-      
-      if (data.success) {
-        console.log('✅ Daily apps fetched successfully:', data);
-      } else {
-        console.error('❌ Failed to fetch apps:', data.error);
-      }
-    } catch (error) {
-      console.error('❌ Error:', error);
-      setFetchResult({ success: false, error: 'Network error' });
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  const isFormValid = formData.wishText.trim().length > 0;
-
   return (
-    <div className="bg-background-light dark:bg-background-dark font-display">
-      <div className="relative flex min-h-screen w-full flex-col overflow-x-hidden">
-        <div className="flex h-full grow flex-col">
-          {/* Header */}
-          <header className="flex items-center justify-between whitespace-nowrap border-b border-primary/20 dark:border-primary/30 px-10 py-4">
-            <div className="flex items-center gap-3 text-gray-800 dark:text-white">
-              <div className="size-6 text-primary">
-                <svg fill="none" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M44 11.2727C44 14.0109 39.8386 16.3957 33.69 17.6364C39.8386 18.877 44 21.2618 44 24C44 26.7382 39.8386 29.123 33.69 30.3636C39.8386 31.6043 44 33.9891 44 36.7273C44 40.7439 35.0457 44 24 44C12.9543 44 4 40.7439 4 36.7273C4 33.9891 8.16144 31.6043 14.31 30.3636C8.16144 29.123 4 26.7382 4 24C4 21.2618 8.16144 18.877 14.31 17.6364C8.16144 16.3957 4 14.0109 4 11.2727C4 7.25611 12.9543 4 24 4C35.0457 4 44 7.25611 44 11.2727Z" fill="currentColor"></path>
-                </svg>
-              </div>
-              <h2 className="text-xl font-bold">App4Me</h2>
-            </div>
-            <div className="flex flex-1 items-center justify-end gap-6">
-              <nav className="hidden md:flex items-center gap-6">
-                <a className="text-sm font-medium text-gray-600 dark:text-gray-300 hover:text-primary dark:hover:text-primary transition-colors" href="#">For Business</a>
-                <a className="text-sm font-medium text-gray-600 dark:text-gray-300 hover:text-primary dark:hover:text-primary transition-colors" href="#">For Developers</a>
-                <a className="text-sm font-medium text-gray-600 dark:text-gray-300 hover:text-primary dark:hover:text-primary transition-colors" href="#">Resources</a>
-              </nav>
-              
-              {user ? (
+    <div className="relative flex min-h-screen w-full flex-col items-center overflow-x-hidden p-4 sm:p-6 md:p-8">
+      {/* Subtle Background Element */}
+      <div className="absolute inset-0 z-0 opacity-20">
+        <div className="absolute bottom-0 left-[-20%] top-[-10%] h-[500px] w-[500px] rounded-full bg-primary/20 blur-[120px]"></div>
+        <div className="absolute right-[-20%] top-[-10%] h-[500px] w-[500px] rounded-full bg-purple-500/20 blur-[120px]"></div>
+        <div className="absolute bottom-[-10%] right-[10%] h-[400px] w-[600px] rounded-full bg-teal-500/10 blur-[100px]"></div>
+      </div>
+      
+      <div className="relative z-10 flex w-full max-w-6xl flex-col items-center">
+        <main className="flex w-full flex-1 flex-col items-center justify-center py-12 sm:py-16 md:py-20">
+          {/* Hero/Headline Section */}
+          <div className="flex flex-col gap-3 text-center mb-10 max-w-3xl">
+            <h1 className="text-4xl font-black leading-tight tracking-tighter text-gray-900 dark:text-white sm:text-5xl md:text-6xl">
+              The Future of App Discovery
+            </h1>
+            <p className="text-base font-normal leading-normal text-gray-600 dark:text-gray-400 sm:text-lg">
+              Our AI curates personalized app recommendations for you. Swipe to discover your next favorite app, instantly.
+            </p>
+          </div>
+          
+          {/* Interactive App Card Section */}
+          <div className="flex flex-col items-center gap-6 w-full max-w-sm">
+            {/* App Card */}
+            <div className="w-full rounded-xl bg-gray-50 dark:bg-[#192b33] shadow-2xl shadow-black/20 backdrop-blur-sm transition-all duration-300 ease-out hover:-translate-y-2 hover:shadow-primary/30">
+              <div className="w-full bg-center bg-no-repeat aspect-video bg-cover rounded-t-xl" style={{backgroundImage: 'url("https://lh3.googleusercontent.com/aida-public/AB6AXuBpQVcm3RZvprgUOP7bAlmw3YUdh152UG2o6iOkdxpv5KCpqQDuowbTEEzZcBpR_WsPbMhp3sxVehbnJ5jynBoUQjNoSmxhCrBEiSctLU5RHGn6jMJJUt_Ljyv-8LOYKoWwrIYis88S2SNaTaYTe50xJPXwgmuEARZ_cEZnB4F6hSLYvn7fhN6HPUgN3I4BQQhRHkPNZMW_lsqSjqpPVPVxlSqb7MDb_iBegqApe0yHApnRaCt7xRR29G7xM6yTSKE2hT_fX02wFujo")'}}></div>
+              <div className="flex w-full flex-col items-stretch justify-center gap-2 p-6">
                 <div className="flex items-center gap-4">
-                  <span className="text-sm text-gray-600">Welcome, {user.user_metadata?.first_name || user.email}</span>
-                  <button 
-                    onClick={() => signOut()}
-                    className="flex items-center justify-center rounded-lg h-10 px-5 bg-gray-200 text-gray-700 text-sm font-medium hover:bg-gray-300 transition-colors"
-                  >
-                    Sign Out
-                  </button>
-                </div>
-              ) : (
-                <div className="flex items-center gap-3">
-                  <Link href="/auth/signin">
-                    <button className="flex items-center justify-center rounded-lg h-10 px-5 bg-gray-200 text-gray-700 text-sm font-medium hover:bg-gray-300 transition-colors">
-                      Sign In
-                    </button>
-                  </Link>
-                  <Link href="/auth/signup">
-                    <button className="flex items-center justify-center rounded-lg h-10 px-5 bg-primary text-white text-sm font-bold shadow-sm hover:bg-primary/90 transition-colors">
-                      Get Started
-                    </button>
-                  </Link>
-                </div>
-              )}
-            </div>
-          </header>
-
-          {/* Main Content */}
-          <main className="flex flex-1 flex-col items-center">
-            <div className="w-full max-w-7xl flex-1 px-4 sm:px-6 lg:px-8">
-              <div className="py-20 sm:py-28">
-                {/* Hero Section */}
-                <div className="flex min-h-[520px] flex-col items-center justify-center gap-8 rounded-xl bg-cover bg-center p-6 text-center" 
-                     style={{
-                       backgroundImage: 'linear-gradient(rgba(0, 0, 0, 0.3) 0%, rgba(0, 0, 0, 0.6) 100%), url("https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?q=80&w=2070")'
-                     }}>
-                  <div className="flex flex-col gap-4 max-w-3xl">
-                    <h1 className="text-white text-4xl sm:text-5xl md:text-6xl font-black tracking-tighter">
-                      Find the perfect apps for your life
-                    </h1>
-                    <p className="text-gray-200 text-base sm:text-lg max-w-2xl mx-auto">
-                      Discover apps tailored to your unique lifestyle and goals. Whether you're looking to boost productivity, enhance your well-being, or simply have fun, we've got you covered.
-                    </p>
+                  <img alt="SuperList App Icon" className="h-16 w-16 rounded-xl border border-gray-200/10 dark:border-white/10 shadow-md" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCDm-6KOgR0k8HOJIZlLi42CZMJ9N7L3tFctbY5CVxeYt8ZONraW5p9plpJyngq3FDbtjyO04Bjr0Kt2bSdMypc9Uaipstpi-F9Glaxhhq0BCGFBfazBNJoI5zt4stTpAAxdlHCQ85nVthIGWOBB_cAqKcB-1KWsbDgOggKgm7eDbWUvIba0jAM1zcfrGGfs4vzad3EFfqeSM0lEjicZsSpxTv_bGdycUgobGad_1CkyeoJq2Kc8lldzTPYKZRfS5bySBzAPAU-W6A8"/>
+                  <div className="flex flex-col">
+                    <p className="text-2xl font-bold leading-tight tracking-tight text-gray-900 dark:text-white">SuperList</p>
+                    <p className="text-sm font-normal leading-normal text-gray-500 dark:text-gray-400">AI-powered task management.</p>
                   </div>
-                  <div className="flex flex-wrap gap-4 justify-center">
-                    <button 
-                      onClick={() => document.getElementById('search-section')?.scrollIntoView({ behavior: 'smooth' })}
-                      className="flex h-12 items-center justify-center rounded-lg bg-primary px-6 text-base font-bold text-white shadow-lg hover:bg-primary/90 transition-colors"
-                    >
-                      Find Apps Now
-                    </button>
-                    <button 
-                      onClick={() => router.push('/data-analysis')}
-                      className="flex h-12 items-center justify-center rounded-lg bg-green-600 px-6 text-base font-bold text-white shadow-lg hover:bg-green-700 transition-colors"
-                    >
-                      📊 iTunes Data
-                    </button>
-                    <button 
-                      onClick={() => router.push('/apple-rss-analysis')}
-                      className="flex h-12 items-center justify-center rounded-lg bg-orange-600 px-6 text-base font-bold text-white shadow-lg hover:bg-orange-700 transition-colors"
-                    >
-                      🍎 Apple RSS
-                    </button>
-                    <button 
-                      onClick={() => router.push('/serp-analysis')}
-                      className="flex h-12 items-center justify-center rounded-lg bg-purple-600 px-6 text-base font-bold text-white shadow-lg hover:bg-purple-700 transition-colors"
-                    >
-                      🔍 SERP API
-                    </button>
-                    <button 
-                      onClick={() => router.push('/trigger')}
-                      className="flex h-12 items-center justify-center rounded-lg bg-red-600 px-6 text-base font-bold text-white shadow-lg hover:bg-red-700 transition-colors"
-                    >
-                      ⚡ Trigger Pipeline
-                    </button>
-                    <button 
-                      onClick={() => router.push('/test-plant-search')}
-                      className="flex h-12 items-center justify-center rounded-lg bg-green-600 px-6 text-base font-bold text-white shadow-lg hover:bg-green-700 transition-colors"
-                    >
-                      🌱 Test Plant Search
-                    </button>
-                    <button className="flex h-12 items-center justify-center rounded-lg bg-white/10 px-6 text-base font-bold text-white backdrop-blur-sm hover:bg-white/20 transition-colors">
-                      Browse Apps
-                    </button>
-                  </div>
+                </div>
+                <div className="mt-2">
+                  <p className="text-sm font-normal leading-normal text-gray-500 dark:text-gray-400">#Productivity #AI #Collaboration</p>
                 </div>
               </div>
-
-              {/* Simple Search Section */}
-              <div id="search-section" className="py-16 sm:py-24 px-4">
-                <div className="mx-auto max-w-2xl">
-                  <div className="text-center mb-8">
-                    <h2 className="text-3xl font-bold tracking-tight text-gray-900 dark:text-white sm:text-4xl">
-                      What do you need?
-                    </h2>
-                    <p className="mt-4 text-lg text-gray-600 dark:text-gray-400">
-                      Just tell us what you're looking for and we'll find the perfect apps for you.
-                    </p>
-                  </div>
-
-                  <div className="bg-white dark:bg-gray-800 rounded-xl border border-primary/20 dark:border-primary/30 p-8">
-                    <div className="mb-6">
-                      <label htmlFor="search-input" className="block text-lg font-medium text-gray-900 dark:text-white mb-3">
-                        Describe what you're looking for
-                      </label>
-                      <Textarea
-                        id="search-input"
-                        value={formData.wishText}
-                        onChange={(e) => setFormData(prev => ({ ...prev, wishText: e.target.value }))}
-                        placeholder="Examples:
-• I wish there was an app to help me take care of plants
-• I need something to track my daily expenses
-• Help me learn meditation and relaxation
-• I want to stay organized with my tasks
-• Find me apps to learn a new language"
-                        rows={4}
-                        className="text-base"
-                      />
-                    </div>
-                    
-                    <div className="mb-6">
-                      <p className="text-sm text-gray-500 mb-3">Or try one of these:</p>
-                      <div className="flex flex-wrap gap-2">
-                        {[
-                          "help me relax and sleep better",
-                          "track my daily habits",
-                          "learn to take care of plants",
-                          "manage my money better",
-                          "stay focused while working",
-                          "learn a new language",
-                          "workout at home",
-                          "organize my photos"
-                        ].map((suggestion, i) => (
-                          <button
-                            key={i}
-                            onClick={() => setFormData(prev => ({ ...prev, wishText: suggestion }))}
-                            className="px-4 py-2 text-sm bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-primary/10 hover:text-primary transition-colors"
-                          >
-                            {suggestion}
-                          </button>
-                        ))}
-                      </div>
-                    </div>
-
-                    <div className="text-center">
-                      <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                        <Button
-                          onClick={handleFindApps}
-                          size="lg"
-                          className="px-8 py-4 text-lg"
-                          disabled={!isFormValid}
-                          variant="outline"
-                        >
-                          📋 List View
-                        </Button>
-                        <Button
-                          onClick={handleSwipeApps}
-                          size="lg"
-                          className="px-8 py-4 text-lg"
-                          disabled={!isFormValid}
-                        >
-                          💕 Swipe to Discover
-                        </Button>
-                      </div>
-                      <p className="mt-3 text-sm text-gray-500">
-                        {!isFormValid 
-                          ? "Please describe what you're looking for"
-                          : "Choose your preferred way to discover apps"
-                        }
-                      </p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              {/* Fetch Results Section */}
-              {fetchResult && (
-                <div className="py-8 px-4">
-                  <div className="mx-auto max-w-4xl">
-                    <div className="bg-white dark:bg-gray-800 rounded-xl border border-primary/20 dark:border-primary/30 p-8">
-                      {fetchResult.success ? (
-                        <div>
-                          <h3 className="text-xl font-bold text-green-600 mb-4">
-                            ✅ Daily Apps Fetched Successfully!
-                          </h3>
-                          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
-                            <div className="bg-blue-50 dark:bg-blue-900/20 p-4 rounded-lg">
-                              <div className="text-2xl font-bold text-blue-600">{fetchResult.stats?.fetchedFromiTunes}</div>
-                              <div className="text-sm text-gray-600 dark:text-gray-400">Apps from iTunes</div>
-                            </div>
-                            <div className="bg-green-50 dark:bg-green-900/20 p-4 rounded-lg">
-                              <div className="text-2xl font-bold text-green-600">{fetchResult.stats?.storedInDatabase}</div>
-                              <div className="text-sm text-gray-600 dark:text-gray-400">Stored in Database</div>
-                            </div>
-                            <div className="bg-purple-50 dark:bg-purple-900/20 p-4 rounded-lg">
-                              <div className="text-2xl font-bold text-purple-600">{fetchResult.stats?.totalAppsInDatabase}</div>
-                              <div className="text-sm text-gray-600 dark:text-gray-400">Total Apps</div>
-                            </div>
-                          </div>
-                          
-                          {fetchResult.apps && fetchResult.apps.length > 0 && (
-                            <div>
-                              <h4 className="font-semibold text-gray-900 dark:text-white mb-3">Sample Apps Fetched:</h4>
-                              <div className="space-y-2">
-                                {fetchResult.apps.slice(0, 5).map((app: any, index: number) => (
-                                  <div key={index} className="flex justify-between items-center p-3 bg-gray-50 dark:bg-gray-700 rounded-lg">
-                                    <div>
-                                      <div className="font-medium text-gray-900 dark:text-white">{app.trackName}</div>
-                                      <div className="text-sm text-gray-600 dark:text-gray-400">by {app.artistName}</div>
-                                    </div>
-                                    <div className="text-right">
-                                      <div className="text-sm font-medium text-gray-900 dark:text-white">
-                                        {app.isFree ? 'Free' : `$${app.price}`}
-                                      </div>
-                                      <div className="text-xs text-gray-600 dark:text-gray-400">{app.primaryGenre}</div>
-                                    </div>
-                                  </div>
-                                ))}
-                              </div>
-                            </div>
-                          )}
-                        </div>
-                      ) : (
-                        <div>
-                          <h3 className="text-xl font-bold text-red-600 mb-4">
-                            ❌ Error Fetching Apps
-                          </h3>
-                          <p className="text-gray-600 dark:text-gray-400">
-                            {fetchResult.error}
-                          </p>
-                        </div>
-                      )}
-                    </div>
-                  </div>
-                </div>
-              )}
             </div>
-          </main>
-
-          {/* Footer */}
-          <footer className="w-full border-t border-primary/20 dark:border-primary/30">
-            <div className="mx-auto max-w-7xl px-6 py-12 lg:px-8">
-              <div className="flex items-center justify-center space-x-6">
-                <a className="text-sm leading-6 text-gray-600 dark:text-gray-400 hover:text-primary dark:hover:text-primary" href="#">About</a>
-                <a className="text-sm leading-6 text-gray-600 dark:text-gray-400 hover:text-primary dark:hover:text-primary" href="#">Contact</a>
-                <a className="text-sm leading-6 text-gray-600 dark:text-gray-400 hover:text-primary dark:hover:text-primary" href="#">Privacy Policy</a>
-                <a className="text-sm leading-6 text-gray-600 dark:text-gray-400 hover:text-primary dark:hover:text-primary" href="#">Terms of Service</a>
-              </div>
-              <p className="mt-8 text-center text-sm leading-5 text-gray-500 dark:text-gray-400">© 2024 App4Me. All rights reserved.</p>
+            
+            {/* Swipe Buttons */}
+            <div className="flex w-full max-w-xs gap-4">
+              <button className="flex grow cursor-pointer items-center justify-center overflow-hidden rounded-full h-16 bg-white/80 dark:bg-white/10 text-red-500 shadow-lg backdrop-blur-sm transition-transform hover:scale-105">
+                <svg className="w-8 h-8" fill="currentColor" viewBox="0 0 20 20">
+                  <path fillRule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clipRule="evenodd" />
+                </svg>
+              </button>
+              <button className="flex grow cursor-pointer items-center justify-center overflow-hidden rounded-full h-16 bg-primary text-white shadow-lg shadow-primary/30 backdrop-blur-sm transition-transform hover:scale-105">
+                <svg className="w-8 h-8" fill="currentColor" viewBox="0 0 20 20">
+                  <path fillRule="evenodd" d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" clipRule="evenodd" />
+                </svg>
+              </button>
             </div>
-          </footer>
-        </div>
+          </div>
+          
+          {/* Primary CTA Section */}
+          <div className="mt-16 text-center">
+            <p className="mb-4 text-base font-medium text-gray-700 dark:text-gray-300">Ready to find your perfect apps?</p>
+            <div className="flex flex-wrap items-center justify-center gap-3">
+              <a href="/auth/signup" className="flex min-w-[84px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-12 px-5 bg-primary text-white text-base font-bold leading-normal tracking-wide transition-colors hover:bg-primary/90">
+                <span className="truncate">Create Your Free Account</span>
+              </a>
+              <a href="/results" className="flex min-w-[84px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-12 px-5 bg-gray-500/10 text-gray-800 dark:text-white text-base font-bold leading-normal tracking-wide transition-colors hover:bg-gray-500/20">
+                <span className="truncate">Learn More</span>
+              </a>
+            </div>
+          </div>
+        </main>
       </div>
     </div>
-  );
+  )
 }

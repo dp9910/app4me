@@ -2,18 +2,21 @@
 
 import React, { createContext, useContext, useEffect, useState } from 'react'
 import { User, Session } from '@supabase/supabase-js'
-import { supabase, auth, userProfile } from './auth-client'
+import { supabase, auth } from './auth-client'
 
 interface AuthContextType {
   user: User | null
   session: Session | null
   userProfile: any
   loading: boolean
+  hasCompletedPersonalization: boolean | null
+  checkingPersonalization: boolean
   signUp: (email: string, password: string, userData?: any) => Promise<any>
   signIn: (email: string, password: string) => Promise<any>
   signInWithGoogle: () => Promise<any>
   signOut: () => Promise<any>
   updateProfile: (updates: any) => Promise<any>
+  checkPersonalizationStatus: () => Promise<void>
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined)
@@ -23,6 +26,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [session, setSession] = useState<Session | null>(null)
   const [userProfileData, setUserProfileData] = useState(null)
   const [loading, setLoading] = useState(true)
+  const [hasCompletedPersonalization, setHasCompletedPersonalization] = useState<boolean | null>(null)
+  const [checkingPersonalization, setCheckingPersonalization] = useState(false)
 
   useEffect(() => {
     // Get initial session
@@ -33,7 +38,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         setUser(session?.user ?? null)
 
         if (session?.user) {
-          await loadUserProfile(session.user.id)
+          await checkPersonalizationStatusInternal()
         }
       } catch (error) {
         console.error('Auth initialization error:', error)
@@ -55,9 +60,10 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
           setUser(session?.user ?? null)
 
           if (event === 'SIGNED_IN' && session?.user) {
-            await loadUserProfile(session.user.id)
+            await checkPersonalizationStatusInternal()
           } else if (event === 'SIGNED_OUT') {
             setUserProfileData(null)
+            setHasCompletedPersonalization(null)
           }
 
           setLoading(false)
@@ -73,16 +79,45 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     }
   }, [])
 
-  const loadUserProfile = async (userId: string) => {
+
+  const checkPersonalizationStatusInternal = async () => {
     try {
-      const { data, error } = await userProfile.get(userId)
-      if (error && error.code !== 'PGRST116') { // Not found error
-        console.error('Error loading user profile:', error)
+      // Get the current session to include auth token
+      const { data: { session } } = await supabase.auth.getSession()
+      if (!session?.access_token) {
+        console.log('No session token, setting personalization to false')
+        setHasCompletedPersonalization(false)
+        return
+      }
+
+      console.log('Checking personalization for user:', session.user?.email, session.user?.id)
+
+      const response = await fetch('/api/personalization/check', {
+        headers: {
+          'Authorization': `Bearer ${session.access_token}`
+        }
+      })
+      
+      if (response.ok) {
+        const result = await response.json()
+        console.log('Personalization check result:', result)
+        setHasCompletedPersonalization(result.hasCompleted)
       } else {
-        setUserProfileData(data)
+        console.error('Failed to check personalization status:', response.status)
+        setHasCompletedPersonalization(false)
       }
     } catch (error) {
-      console.error('Error loading user profile:', error)
+      console.error('Error checking personalization status:', error)
+      setHasCompletedPersonalization(false)
+    }
+  }
+
+  const checkPersonalizationStatus = async () => {
+    setCheckingPersonalization(true)
+    try {
+      await checkPersonalizationStatusInternal()
+    } finally {
+      setCheckingPersonalization(false)
     }
   }
 
@@ -90,15 +125,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     setLoading(true)
     try {
       const result = await auth.signUp(email, password, userData)
-      
-      if (result.data.user && !result.error) {
-        // Create user profile
-        await userProfile.create(result.data.user.id, {
-          email: email,
-          ...userData
-        })
-      }
-      
       return result
     } finally {
       setLoading(false)
@@ -130,6 +156,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       setUser(null)
       setSession(null)
       setUserProfileData(null)
+      setHasCompletedPersonalization(null)
       return result
     } finally {
       setLoading(false)
@@ -140,10 +167,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     if (!user) return { error: 'No user logged in' }
     
     try {
-      const result = await userProfile.upsert(user.id, updates)
-      if (!result.error) {
-        setUserProfileData({ ...userProfileData, ...updates })
-      }
+      const result = await auth.updateUser(updates)
       return result
     } catch (error) {
       return { error }
@@ -155,11 +179,14 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     session,
     userProfile: userProfileData,
     loading,
+    hasCompletedPersonalization,
+    checkingPersonalization,
     signUp,
     signIn,
     signInWithGoogle,
     signOut,
-    updateProfile
+    updateProfile,
+    checkPersonalizationStatus
   }
 
   return (

@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { useAuth } from '@/lib/auth/auth-context';
@@ -20,6 +20,14 @@ export default function SignUpPage() {
   });
   const [errors, setErrors] = useState<any>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isGoogleLoading, setIsGoogleLoading] = useState(false);
+
+  // Reset loading states when component mounts (after navigation from sign-out)
+  useEffect(() => {
+    setIsGoogleLoading(false);
+    setIsSubmitting(false);
+    setErrors({});
+  }, []);
 
   const validateForm = () => {
     const newErrors: any = {};
@@ -76,7 +84,8 @@ export default function SignUpPage() {
             submit: 'Please check your email and click the confirmation link to complete your signup.' 
           });
         } else {
-          router.push('/');
+          // For new signups, always go to personalization first
+          router.push('/personalize');
         }
       }
     } catch (error: any) {
@@ -87,14 +96,22 @@ export default function SignUpPage() {
   };
 
   const handleGoogleSignUp = async () => {
+    console.log('Google sign up clicked'); // Debug log
+    setIsGoogleLoading(true);
     try {
+      setErrors({}); // Clear any existing errors
       const { error } = await signInWithGoogle();
+      console.log('Google sign up result:', { error }); // Debug log
       if (error) {
         setErrors({ submit: error.message });
+        setIsGoogleLoading(false);
       }
       // The redirect will be handled by the OAuth flow
+      // Don't set loading to false here if successful - let the redirect happen
     } catch (error: any) {
+      console.error('Google sign up error:', error); // Debug log
       setErrors({ submit: error.message || 'Google sign up failed' });
+      setIsGoogleLoading(false);
     }
   };
 
@@ -199,13 +216,11 @@ export default function SignUpPage() {
           </div>
 
           {/* Google Sign Up */}
-          <Button
+          <button
             type="button"
-            variant="outline"
             onClick={handleGoogleSignUp}
-            disabled={loading}
-            className="w-full mt-4"
-            size="lg"
+            disabled={isGoogleLoading || isSubmitting}
+            className="w-full mt-4 flex items-center justify-center px-6 py-3 border-2 border-gray-200 text-gray-700 hover:border-gray-300 hover:bg-gray-50 rounded-lg font-medium transition-all focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed"
           >
             <svg className="w-5 h-5 mr-2" viewBox="0 0 24 24">
               <path fill="currentColor" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
@@ -213,8 +228,8 @@ export default function SignUpPage() {
               <path fill="currentColor" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
               <path fill="currentColor" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
             </svg>
-            Continue with Google
-          </Button>
+            {isGoogleLoading ? 'Signing up...' : 'Continue with Google'}
+          </button>
 
           {/* Sign In Link */}
           <p className="mt-6 text-center text-sm text-gray-600">

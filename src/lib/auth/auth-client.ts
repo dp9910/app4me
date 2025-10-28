@@ -66,7 +66,11 @@ export const auth = {
     const { data, error } = await supabase.auth.signInWithOAuth({
       provider: 'google',
       options: {
-        redirectTo: `${window.location.origin}/auth/callback`
+        redirectTo: `${window.location.origin}/auth/callback`,
+        queryParams: {
+          prompt: 'select_account',
+          access_type: 'offline'
+        }
       }
     })
     return { data, error }
@@ -76,7 +80,16 @@ export const auth = {
   signOut: async () => {
     if (!supabase) return { error: { message: 'Supabase not configured' } }
     
-    const { error } = await supabase.auth.signOut()
+    // Sign out from all sessions
+    const { error } = await supabase.auth.signOut({ scope: 'global' })
+    
+    // Clear any local storage/session storage related to auth
+    if (typeof window !== 'undefined') {
+      // Clear any cached auth data
+      localStorage.removeItem('supabase.auth.token')
+      sessionStorage.clear()
+    }
+    
     return { error }
   },
 
