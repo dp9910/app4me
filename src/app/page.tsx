@@ -1,4 +1,3 @@
-
 export default function HomePage() {
   return (
     <div className="relative flex min-h-screen w-full flex-col items-center overflow-x-hidden p-4 sm:p-6 md:p-8">

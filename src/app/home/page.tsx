@@ -51,14 +51,33 @@ export default function HomePage() {
   useEffect(() => {
     const fetchTopApps = async () => {
       try {
+        const cachedApps = sessionStorage.getItem('cachedApps');
+        if (cachedApps) {
+          setApps(JSON.parse(cachedApps));
+          setAppsLoading(false);
+          return;
+        }
+
         setAppsLoading(true);
         setAppsError(null);
         
-        const response = await fetch('/api/top-apps');
+        const { data: { session } } = await (await import('@/lib/supabase/client')).supabase.auth.getSession();
+
+        if (!session) {
+          setAppsError("You must be logged in to see personalized apps.");
+          return;
+        }
+
+        const response = await fetch('/api/personalized-apps', {
+          headers: {
+            'Authorization': `Bearer ${session.access_token}`,
+          },
+        });
         const result = await response.json();
         
         if (result.success) {
           setApps(result.data);
+          sessionStorage.setItem('cachedApps', JSON.stringify(result.data));
         } else {
           setAppsError(result.error || 'Failed to load apps');
         }
@@ -270,9 +289,9 @@ export default function HomePage() {
                     ) : (
                       // Real app data
                       apps.slice(0, 8).map((app) => (
-                        <div key={app.id} className="group flex flex-col gap-4 rounded-xl border border-gray-200/80 dark:border-white/10 bg-background-light dark:bg-[#111c22] p-4 transition-all hover:shadow-lg hover:-translate-y-1">
+                        <a href={app.url} target="_blank" rel="noopener noreferrer" key={app.id} className="group flex flex-col gap-4 rounded-xl border border-gray-200/80 dark:border-white/10 bg-background-light dark:bg-[#111c22] p-4 transition-all hover:shadow-lg hover:-translate-y-1">
                           <div className="flex items-start justify-between">
-                            <div className="bg-center bg-no-repeat aspect-square bg-cover rounded-lg size-12" style={{backgroundImage: `url("${app.icon}")`}}></div>
+                            <div className="bg-center bg-no-repeat aspect-square bg-cover rounded-xl w-20 h-20" style={{backgroundImage: `url("${app.icon}")`}}></div>
                             <div className="flex items-center gap-1 text-gray-600 dark:text-gray-300">
                               <svg className="w-4 h-4 text-yellow-500" fill="currentColor" viewBox="0 0 20 20">
                                 <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
@@ -281,14 +300,14 @@ export default function HomePage() {
                             </div>
                           </div>
                           <div className="flex flex-col gap-1">
-                            <h3 className="text-gray-900 dark:text-white text-base font-medium leading-normal">{app.name}</h3>
+                            <h3 className="text-gray-900 dark:text-white text-base font-medium leading-normal truncate">{app.name}</h3>
                             <p className="text-gray-500 dark:text-gray-400 text-sm font-normal leading-normal">{app.category}</p>
+                            <p className="text-xs font-mono leading-normal text-gray-400 dark:text-gray-500 pt-1">Sourced from iTunes</p>
                           </div>
                           <div className="flex items-center justify-between mt-auto">
-                            <span className="text-xs text-gray-500 dark:text-gray-400">#{app.rank}</span>
                             <span className="text-xs font-medium text-green-600 dark:text-green-400">{app.price}</span>
                           </div>
-                        </div>
+                        </a>
                       ))
                     )}
                   </div>
@@ -332,9 +351,9 @@ export default function HomePage() {
                     ) : (
                       // More top apps (next 8 apps)
                       apps.slice(8, 16).map((app) => (
-                        <div key={app.id} className="group flex flex-col gap-4 rounded-xl border border-gray-200/80 dark:border-white/10 bg-background-light dark:bg-[#111c22] p-4 transition-all hover:shadow-lg hover:-translate-y-1">
+                        <a href={app.url} target="_blank" rel="noopener noreferrer" key={app.id} className="group flex flex-col gap-4 rounded-xl border border-gray-200/80 dark:border-white/10 bg-background-light dark:bg-[#111c22] p-4 transition-all hover:shadow-lg hover:-translate-y-1">
                           <div className="flex items-start justify-between">
-                            <div className="bg-center bg-no-repeat aspect-square bg-cover rounded-lg size-12" style={{backgroundImage: `url("${app.icon}")`}}></div>
+                            <div className="bg-center bg-no-repeat aspect-square bg-cover rounded-xl w-20 h-20" style={{backgroundImage: `url("${app.icon}")`}}></div>
                             <div className="flex items-center gap-1 text-gray-600 dark:text-gray-300">
                               <svg className="w-4 h-4 text-yellow-500" fill="currentColor" viewBox="0 0 20 20">
                                 <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
@@ -343,14 +362,14 @@ export default function HomePage() {
                             </div>
                           </div>
                           <div className="flex flex-col gap-1">
-                            <h3 className="text-gray-900 dark:text-white text-base font-medium leading-normal">{app.name}</h3>
+                            <h3 className="text-gray-900 dark:text-white text-base font-medium leading-normal truncate">{app.name}</h3>
                             <p className="text-gray-500 dark:text-gray-400 text-sm font-normal leading-normal">{app.category}</p>
+                            <p className="text-xs font-mono leading-normal text-gray-400 dark:text-gray-500 pt-1">Sourced from iTunes</p>
                           </div>
                           <div className="flex items-center justify-between mt-auto">
-                            <span className="text-xs text-gray-500 dark:text-gray-400">#{app.rank}</span>
                             <span className="text-xs font-medium text-green-600 dark:text-green-400">{app.price}</span>
                           </div>
-                        </div>
+                        </a>
                       ))
                     )}
                   </div>
