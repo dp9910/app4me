@@ -100,7 +100,7 @@ export async function smartHybridRetrieval(
  */
 async function analyzeQueryIntent(query: string): Promise<QueryIntent> {
   try {
-    const model = genAI.getGenerativeModel({ model: 'gemini-2.0-flash-exp' });
+    const model = genAI.getGenerativeModel({ model: 'gemini-2.5-flash' });
     
     const prompt = `Analyze this app search query and extract the user's intent:
 
@@ -217,7 +217,8 @@ async function performSmartSemanticSearch(
       const similarity = calculateCosineSimilarity(queryEmbedding, app.embedding);
       
       // Intent relevance boost
-      const intentBoost = calculateIntentRelevance(app.apps_unified, intent);
+      const appData = Array.isArray(app.apps_unified) ? app.apps_unified[0] : app.apps_unified;
+      const intentBoost = calculateIntentRelevance(appData, intent);
       
       // Combined relevance score
       const relevanceScore = similarity + intentBoost;
@@ -225,11 +226,11 @@ async function performSmartSemanticSearch(
       if (relevanceScore > 0.4) { // Higher threshold for relevance
         results.push({
           app_id: app.app_id.toString(),
-          app_name: app.apps_unified.title,
-          category: app.apps_unified.primary_category,
-          rating: app.apps_unified.rating || 0,
-          description: app.apps_unified.description || '',
-          icon_url: app.apps_unified.icon_url,
+          app_name: appData?.title || '',
+          category: appData?.primary_category || '',
+          rating: appData?.rating || 0,
+          description: appData?.description || '',
+          icon_url: appData?.icon_url || null,
           semantic_similarity: similarity,
           intent_match: intentBoost,
           relevance_score: relevanceScore,
@@ -353,16 +354,17 @@ async function performFocusedKeywordSearch(
       }
       
       // Quality boost
-      score += (app.apps_unified.rating || 0) / 5.0 * 0.1;
+      const appData2 = Array.isArray(app.apps_unified) ? app.apps_unified[0] : app.apps_unified;
+      score += (appData2?.rating || 0) / 5.0 * 0.1;
       
       if (score > 0.1) {
         results.push({
           app_id: app.app_id.toString(),
-          app_name: app.apps_unified.title,
-          category: app.apps_unified.primary_category,
-          rating: app.apps_unified.rating || 0,
-          description: app.apps_unified.description || '',
-          icon_url: app.apps_unified.icon_url,
+          app_name: appData2?.title || '',
+          category: appData2?.primary_category || '',
+          rating: appData2?.rating || 0,
+          description: appData2?.description || '',
+          icon_url: appData2?.icon_url || null,
           keyword_score: score,
           matched_keywords: matchedKeywords,
           topic_match: false,
@@ -421,7 +423,7 @@ async function combineWithIntentRanking(
   // Calculate final scores with intent awareness
   const finalResults: SmartSearchResult[] = [];
   
-  for (const [appId, result] of combinedMap) {
+  for (const [appId, result] of Array.from(combinedMap)) {
     // Calculate intent match score
     const intentMatchScore = calculateAppIntentMatch(result, intent);
     
