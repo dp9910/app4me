@@ -155,26 +155,16 @@ export async function GET(request: NextRequest) {
       return NextResponse.json({ error: 'Failed to fetch user preferences' }, { status: 500 });
     }
 
-    // If no personalization data, return general top apps
-    if (!personalizationData || !personalizationData.app_interests) {
-      console.log('No personalization data found, returning general recommendations');
-      
-      // Fetch general top apps from a few popular categories
-      const generalCategories = ['productivity', 'games', 'social', 'photo'];
-      const allApps: any[] = [];
-      
-      for (const category of generalCategories) {
-        const categoryApps = await fetchItunesAppsForCategory(category, 5);
-        allApps.push(...categoryApps);
-      }
-      
+    // If no personalization data, prompt user to set it
+    if (!personalizationData || !personalizationData.app_interests || personalizationData.app_interests.length === 0) {
+      console.log('No personalization data found for user.');
       return NextResponse.json({
-        success: true,
-        data: allApps.slice(0, 20), // Limit to 20 apps
+        success: false,
+        data: [],
         personalized: false,
-        message: 'Showing general recommendations. Complete your personalization for better suggestions!',
+        error: 'No interests found in your profile. Please set your app interests in your profile to get personalized recommendations.',
         lastUpdated: new Date().toISOString(),
-        total: allApps.length
+        total: 0
       });
     }
 

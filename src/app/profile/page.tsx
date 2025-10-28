@@ -176,6 +176,11 @@ export default function ProfilePage() {
       setFormData(updatedData);
       setIsEditing(false);
       setSuccess('Profile updated successfully!');
+
+      // Clear the cached apps so the home page re-fetches
+      if (user) {
+        sessionStorage.removeItem(`cachedApps_${user.id}`);
+      }
     } catch (error: any) {
       console.error('Error saving profile:', error);
       setError(error.message || 'Failed to save profile');

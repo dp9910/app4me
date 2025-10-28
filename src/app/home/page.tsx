@@ -49,9 +49,15 @@ export default function HomePage() {
 
   // Fetch top apps data
   useEffect(() => {
+    if (!user) {
+      return;
+    }
+
+    const userCacheKey = `cachedApps_${user.id}`;
+
     const fetchTopApps = async () => {
       try {
-        const cachedApps = sessionStorage.getItem('cachedApps');
+        const cachedApps = sessionStorage.getItem(userCacheKey);
         if (cachedApps) {
           setApps(JSON.parse(cachedApps));
           setAppsLoading(false);
@@ -77,7 +83,7 @@ export default function HomePage() {
         
         if (result.success) {
           setApps(result.data);
-          sessionStorage.setItem('cachedApps', JSON.stringify(result.data));
+          sessionStorage.setItem(userCacheKey, JSON.stringify(result.data));
         } else {
           setAppsError(result.error || 'Failed to load apps');
         }
@@ -89,9 +95,7 @@ export default function HomePage() {
       }
     };
 
-    if (user) {
-      fetchTopApps();
-    }
+    fetchTopApps();
   }, [user]);
 
   if (loading || checkingPersonalization) {
