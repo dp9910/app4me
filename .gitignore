@@ -35,3 +35,6 @@ next-env.d.ts
 
 *.json
 *.sql
+
+# Large data files
+data-scraping/merged_data/
