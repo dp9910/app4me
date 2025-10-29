@@ -22,7 +22,7 @@ export default function HomePage() {
   const { user, loading, hasCompletedPersonalization, checkingPersonalization } = useAuth();
   const router = useRouter();
   const [userName, setUserName] = useState('');
-  const [apps, setApps] = useState<App[]>([]);
+  const [apps, setApps] = useState<{ [key: string]: App[] }>({});
   const [topWeeklyApps, setTopWeeklyApps] = useState<App[]>([]);
   const [appsLoading, setAppsLoading] = useState(true);
   const [topWeeklyAppsLoading, setTopWeeklyAppsLoading] = useState(true);
@@ -42,6 +42,7 @@ export default function HomePage() {
     }
   }, [user, loading, router]);
 
+
   // Check personalization status and redirect if needed (higher priority, faster redirect)
   useEffect(() => {
     if (user && hasCompletedPersonalization === false && !checkingPersonalization) {
@@ -60,35 +61,61 @@ export default function HomePage() {
 
     const fetchTopApps = async () => {
       try {
+        console.log('Starting fetchTopApps...');
         const cachedApps = sessionStorage.getItem(userCacheKey);
         if (cachedApps) {
-          setApps(JSON.parse(cachedApps));
-          setAppsLoading(false);
-          return;
+          console.log('Found cached apps, but clearing cache to get fresh data...');
+          sessionStorage.removeItem(userCacheKey);
         }
 
+        console.log('No cached apps, fetching from API...');
         setAppsLoading(true);
         setAppsError(null);
         
         const { data: { session } } = await (await import('@/lib/supabase/client')).supabase.auth.getSession();
+        console.log('Session:', session ? 'exists' : 'missing');
 
         if (!session) {
+          console.log('No session found');
           setAppsError("You must be logged in to see personalized apps.");
           setAppsLoading(false);
           return;
         }
 
+        console.log('Making API call to /api/personalized-apps...');
         const response = await fetch('/api/personalized-apps', {
           headers: {
             'Authorization': `Bearer ${session.access_token}`,
           },
         });
+        console.log('API response status:', response.status);
         const result = await response.json();
+        console.log('Full API response:', result);
         
         if (result.success) {
-          setApps(result.data);
-          sessionStorage.setItem(userCacheKey, JSON.stringify(result.data));
+          console.log('API response data:', result.data);
+          console.log('Is result.data an array?', Array.isArray(result.data));
+          console.log('Number of apps:', result.data?.length);
+          
+          // Group apps by category if we have a flat array
+          if (Array.isArray(result.data)) {
+            const groupedApps = result.data.reduce((acc, app) => {
+              const category = app.searchCategory || app.category || 'Other';
+              if (!acc[category]) {
+                acc[category] = [];
+              }
+              acc[category].push(app);
+              return acc;
+            }, {});
+            console.log('Grouped apps by category:', groupedApps);
+            setApps(groupedApps);
+            sessionStorage.setItem(userCacheKey, JSON.stringify(groupedApps));
+          } else {
+            setApps(result.data);
+            sessionStorage.setItem(userCacheKey, JSON.stringify(result.data));
+          }
         } else {
+          console.log('API error:', result.error);
           setAppsError(result.error || 'Failed to load apps');
         }
       } catch (error) {
@@ -280,32 +307,18 @@ export default function HomePage() {
                 </div>
               </div>
 
-              {/* App Sections */}
+              {/* App Sections - Organized by Category */}
               <div className="flex flex-col gap-10">
-                {/* Picked Just For You */}
-                <section>
-                  <div className="flex justify-between items-center px-4 pb-3 pt-5">
-                    <h2 className="text-gray-900 dark:text-white text-[22px] font-bold leading-tight tracking-[-0.015em]">
-                      Picked Just For You
-                    </h2>
-                    <div className="flex gap-2">
-                      <button className="p-2 rounded-full bg-gray-200/80 dark:bg-gray-800/80 hover:bg-gray-300 dark:hover:bg-gray-700 disabled:opacity-50">
-                        <svg className="w-5 h-5 text-gray-600 dark:text-gray-300" fill="currentColor" viewBox="0 0 20 20">
-                          <path fillRule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clipRule="evenodd"/>
-                        </svg>
-                      </button>
-                      <button className="p-2 rounded-full bg-gray-200/80 dark:bg-gray-800/80 hover:bg-gray-300 dark:hover:bg-gray-700">
-                        <svg className="w-5 h-5 text-gray-600 dark:text-gray-300" fill="currentColor" viewBox="0 0 20 20">
-                          <path fillRule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clipRule="evenodd"/>
-                        </svg>
-                      </button>
+                {appsLoading ? (
+                  // Loading state
+                  <section>
+                    <div className="flex justify-between items-center px-4 pb-3 pt-5">
+                      <h2 className="text-gray-900 dark:text-white text-[22px] font-bold leading-tight tracking-[-0.015em]">
+                        Loading your personalized apps...
+                      </h2>
                     </div>
-                  </div>
-                  
-                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-                    {appsLoading ? (
-                      // Loading state
-                      Array.from({ length: 8 }).map((_, index) => (
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                      {Array.from({ length: 8 }).map((_, index) => (
                         <div key={index} className="flex flex-col gap-4 rounded-xl border border-gray-200/80 dark:border-white/10 bg-background-light dark:bg-[#111c22] p-4 animate-pulse">
                           <div className="flex items-start justify-between">
                             <div className="bg-gray-300 dark:bg-gray-600 rounded-lg size-12"></div>
@@ -316,106 +329,70 @@ export default function HomePage() {
                             <div className="bg-gray-300 dark:bg-gray-600 rounded h-3 w-32"></div>
                           </div>
                         </div>
-                      ))
-                    ) : appsError ? (
-                      // Error state
-                      <div className="col-span-full flex flex-col items-center justify-center py-12 text-center">
-                        <div className="text-red-500 mb-2">
-                          <svg className="w-12 h-12 mx-auto" fill="currentColor" viewBox="0 0 20 20">
-                            <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clipRule="evenodd"/>
-                          </svg>
-                        </div>
-                        <h3 className="text-gray-900 dark:text-white text-lg font-medium mb-1">Failed to load apps</h3>
-                        <p className="text-gray-500 dark:text-gray-400 text-sm">{appsError}</p>
-                      </div>
-                    ) : (
-                      // Real app data
-                      apps.slice(0, 8).map((app) => (
-                        <a href={app.url} target="_blank" rel="noopener noreferrer" key={app.id} className="group flex flex-col gap-4 rounded-xl border border-gray-200/80 dark:border-white/10 bg-background-light dark:bg-[#111c22] p-4 transition-all hover:shadow-lg hover:-translate-y-1">
-                          <div className="flex items-start justify-between">
-                            <div className="bg-center bg-no-repeat aspect-square bg-cover rounded-xl w-20 h-20" style={{backgroundImage: `url("${app.icon}")`}}></div>
-                            <div className="flex items-center gap-1 text-gray-600 dark:text-gray-300">
-                              <svg className="w-4 h-4 text-yellow-500" fill="currentColor" viewBox="0 0 20 20">
-                                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
-                              </svg>
-                              <span className="text-sm font-medium">{app.rating}</span>
-                            </div>
-                          </div>
-                          <div className="flex flex-col gap-1">
-                            <h3 className="text-gray-900 dark:text-white text-base font-medium leading-normal truncate">{app.name}</h3>
-                            <p className="text-gray-500 dark:text-gray-400 text-sm font-normal leading-normal">{app.category}</p>
-                            <p className="text-xs font-mono leading-normal text-gray-400 dark:text-gray-500 pt-1">Sourced from iTunes</p>
-                          </div>
-                          <div className="flex items-center justify-between mt-auto">
-                            <span className="text-xs font-medium text-green-600 dark:text-green-400">{app.price}</span>
-                          </div>
-                        </a>
-                      ))
-                    )}
-                  </div>
-                </section>
-
-                {/* Trending This Week */}
-                <section>
-                  <div className="flex justify-between items-center px-4 pb-3 pt-5">
-                    <h2 className="text-gray-900 dark:text-white text-[22px] font-bold leading-tight tracking-[-0.015em]">
-                      More Top Apps
-                    </h2>
-                    <div className="flex gap-2">
-                      <button className="p-2 rounded-full bg-gray-200/80 dark:bg-gray-800/80 hover:bg-gray-300 dark:hover:bg-gray-700 disabled:opacity-50">
-                        <svg className="w-5 h-5 text-gray-600 dark:text-gray-300" fill="currentColor" viewBox="0 0 20 20">
-                          <path fillRule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clipRule="evenodd"/>
-                        </svg>
-                      </button>
-                      <button className="p-2 rounded-full bg-gray-200/80 dark:bg-gray-800/80 hover:bg-gray-300 dark:hover:bg-gray-700">
-                        <svg className="w-5 h-5 text-gray-600 dark:text-gray-300" fill="currentColor" viewBox="0 0 20 20">
-                          <path fillRule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clipRule="evenodd"/>
-                        </svg>
-                      </button>
+                      ))}
                     </div>
-                  </div>
-                  
-                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-                    {appsLoading ? (
-                      // Loading state for second section
-                      Array.from({ length: 8 }).map((_, index) => (
-                        <div key={index + 8} className="flex flex-col gap-4 rounded-xl border border-gray-200/80 dark:border-white/10 bg-background-light dark:bg-[#111c22] p-4 animate-pulse">
-                          <div className="flex items-start justify-between">
-                            <div className="bg-gray-300 dark:bg-gray-600 rounded-lg size-12"></div>
-                            <div className="bg-gray-300 dark:bg-gray-600 rounded h-4 w-12"></div>
-                          </div>
-                          <div className="flex flex-col gap-2">
-                            <div className="bg-gray-300 dark:bg-gray-600 rounded h-4 w-24"></div>
-                            <div className="bg-gray-300 dark:bg-gray-600 rounded h-3 w-32"></div>
-                          </div>
+                  </section>
+                ) : appsError ? (
+                  // Error state
+                  <section>
+                    <div className="col-span-full flex flex-col items-center justify-center py-12 text-center">
+                      <div className="text-red-500 mb-2">
+                        <svg className="w-12 h-12 mx-auto" fill="currentColor" viewBox="0 0 20 20">
+                          <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clipRule="evenodd"/>
+                        </svg>
+                      </div>
+                      <h3 className="text-gray-900 dark:text-white text-lg font-medium mb-1">Failed to load apps</h3>
+                      <p className="text-gray-500 dark:text-gray-400 text-sm">{appsError}</p>
+                    </div>
+                  </section>
+                ) : (
+                  // Apps organized by category
+                  Object.entries(apps).map(([category, categoryApps]) => (
+                    <section key={category}>
+                      <div className="flex justify-between items-center px-4 pb-3 pt-5">
+                        <h2 className="text-gray-900 dark:text-white text-[22px] font-bold leading-tight tracking-[-0.015em] capitalize">
+                          {category.charAt(0).toUpperCase() + category.slice(1)} Apps
+                        </h2>
+                        <div className="flex gap-2">
+                          <button className="p-2 rounded-full bg-gray-200/80 dark:bg-gray-800/80 hover:bg-gray-300 dark:hover:bg-gray-700 disabled:opacity-50">
+                            <svg className="w-5 h-5 text-gray-600 dark:text-gray-300" fill="currentColor" viewBox="0 0 20 20">
+                              <path fillRule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clipRule="evenodd"/>
+                            </svg>
+                          </button>
+                          <button className="p-2 rounded-full bg-gray-200/80 dark:bg-gray-800/80 hover:bg-gray-300 dark:hover:bg-gray-700">
+                            <svg className="w-5 h-5 text-gray-600 dark:text-gray-300" fill="currentColor" viewBox="0 0 20 20">
+                              <path fillRule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clipRule="evenodd"/>
+                            </svg>
+                          </button>
                         </div>
-                      ))
-                    ) : (
-                      // More top apps (next 8 apps)
-                      apps.slice(8, 16).map((app) => (
-                        <a href={app.url} target="_blank" rel="noopener noreferrer" key={app.id} className="group flex flex-col gap-4 rounded-xl border border-gray-200/80 dark:border-white/10 bg-background-light dark:bg-[#111c22] p-4 transition-all hover:shadow-lg hover:-translate-y-1">
-                          <div className="flex items-start justify-between">
-                            <div className="bg-center bg-no-repeat aspect-square bg-cover rounded-xl w-20 h-20" style={{backgroundImage: `url("${app.icon}")`}}></div>
-                            <div className="flex items-center gap-1 text-gray-600 dark:text-gray-300">
-                              <svg className="w-4 h-4 text-yellow-500" fill="currentColor" viewBox="0 0 20 20">
-                                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
-                              </svg>
-                              <span className="text-sm font-medium">{app.rating}</span>
+                      </div>
+                      
+                      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                        {(Array.isArray(categoryApps) ? categoryApps : []).slice(0, 8).map((app) => (
+                          <a href={app.url} target="_blank" rel="noopener noreferrer" key={app.id} className="group flex flex-col gap-4 rounded-xl border border-gray-200/80 dark:border-white/10 bg-background-light dark:bg-[#111c22] p-4 transition-all hover:shadow-lg hover:-translate-y-1">
+                            <div className="flex items-start justify-between">
+                              <div className="bg-center bg-no-repeat aspect-square bg-cover rounded-xl w-20 h-20" style={{backgroundImage: `url("${app.icon}")`}}></div>
+                              <div className="flex items-center gap-1 text-gray-600 dark:text-gray-300">
+                                <svg className="w-4 h-4 text-yellow-500" fill="currentColor" viewBox="0 0 20 20">
+                                  <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
+                                </svg>
+                                <span className="text-sm font-medium">{app.rating}</span>
+                              </div>
                             </div>
-                          </div>
-                          <div className="flex flex-col gap-1">
-                            <h3 className="text-gray-900 dark:text-white text-base font-medium leading-normal truncate">{app.name}</h3>
-                            <p className="text-gray-500 dark:text-gray-400 text-sm font-normal leading-normal">{app.category}</p>
-                            <p className="text-xs font-mono leading-normal text-gray-400 dark:text-gray-500 pt-1">Sourced from iTunes</p>
-                          </div>
-                          <div className="flex items-center justify-between mt-auto">
-                            <span className="text-xs font-medium text-green-600 dark:text-green-400">{app.price}</span>
-                          </div>
-                        </a>
-                      ))
-                    )}
-                  </div>
-                </section>
+                            <div className="flex flex-col gap-1">
+                              <h3 className="text-gray-900 dark:text-white text-base font-medium leading-normal truncate">{app.name}</h3>
+                              <p className="text-gray-500 dark:text-gray-400 text-sm font-normal leading-normal">{app.category}</p>
+                              <p className="text-xs font-mono leading-normal text-gray-400 dark:text-gray-500 pt-1">Sourced from iTunes</p>
+                            </div>
+                            <div className="flex items-center justify-between mt-auto">
+                              <span className="text-xs font-medium text-green-600 dark:text-green-400">{app.price}</span>
+                            </div>
+                          </a>
+                        ))}
+                      </div>
+                    </section>
+                  ))
+                )}
 
                 {/* Top Apps This Week */}
                 <section>
