@@ -28,6 +28,7 @@ export default function HomePage() {
   const [topWeeklyAppsLoading, setTopWeeklyAppsLoading] = useState(true);
   const [appsError, setAppsError] = useState<string | null>(null);
   const [topWeeklyAppsError, setTopWeeklyAppsError] = useState<string | null>(null);
+  const [categoryPages, setCategoryPages] = useState<{ [key: string]: number }>({});
 
   useEffect(() => {
     if (!loading && !user) {
@@ -64,8 +65,19 @@ export default function HomePage() {
         console.log('Starting fetchTopApps...');
         const cachedApps = sessionStorage.getItem(userCacheKey);
         if (cachedApps) {
-          console.log('Found cached apps, but clearing cache to get fresh data...');
-          sessionStorage.removeItem(userCacheKey);
+          console.log('Found cached apps, using them');
+          const cachedAppsData = JSON.parse(cachedApps);
+          setApps(cachedAppsData);
+          
+          // Initialize pagination for cached data
+          const initialPages: { [key: string]: number } = {};
+          Object.keys(cachedAppsData).forEach(category => {
+            initialPages[category] = 0;
+          });
+          setCategoryPages(initialPages);
+          
+          setAppsLoading(false);
+          return;
         }
 
         console.log('No cached apps, fetching from API...');
@@ -109,6 +121,14 @@ export default function HomePage() {
             }, {});
             console.log('Grouped apps by category:', groupedApps);
             setApps(groupedApps);
+            
+            // Initialize pagination for each category
+            const initialPages: { [key: string]: number } = {};
+            Object.keys(groupedApps).forEach(category => {
+              initialPages[category] = 0;
+            });
+            setCategoryPages(initialPages);
+            
             sessionStorage.setItem(userCacheKey, JSON.stringify(groupedApps));
           } else {
             setApps(result.data);
@@ -128,6 +148,25 @@ export default function HomePage() {
 
     fetchTopApps();
   }, [user]);
+
+  // Navigation handlers for category pagination
+  const handleCategoryPrevious = (category: string) => {
+    setCategoryPages(prev => ({
+      ...prev,
+      [category]: Math.max(0, (prev[category] || 0) - 1)
+    }));
+  };
+
+  const handleCategoryNext = (category: string) => {
+    const currentPage = categoryPages[category] || 0;
+    const categoryApps = apps[category] || [];
+    const maxPage = Math.ceil(categoryApps.length / 8) - 1;
+    
+    setCategoryPages(prev => ({
+      ...prev,
+      [category]: Math.min(maxPage, currentPage + 1)
+    }));
+  };
 
   // Fetch top weekly apps data
   useEffect(() => {
@@ -347,28 +386,44 @@ export default function HomePage() {
                   </section>
                 ) : (
                   // Apps organized by category
-                  Object.entries(apps).map(([category, categoryApps]) => (
-                    <section key={category}>
-                      <div className="flex justify-between items-center px-4 pb-3 pt-5">
-                        <h2 className="text-gray-900 dark:text-white text-[22px] font-bold leading-tight tracking-[-0.015em] capitalize">
-                          {category.charAt(0).toUpperCase() + category.slice(1)} Apps
-                        </h2>
-                        <div className="flex gap-2">
-                          <button className="p-2 rounded-full bg-gray-200/80 dark:bg-gray-800/80 hover:bg-gray-300 dark:hover:bg-gray-700 disabled:opacity-50">
-                            <svg className="w-5 h-5 text-gray-600 dark:text-gray-300" fill="currentColor" viewBox="0 0 20 20">
-                              <path fillRule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clipRule="evenodd"/>
-                            </svg>
-                          </button>
-                          <button className="p-2 rounded-full bg-gray-200/80 dark:bg-gray-800/80 hover:bg-gray-300 dark:hover:bg-gray-700">
-                            <svg className="w-5 h-5 text-gray-600 dark:text-gray-300" fill="currentColor" viewBox="0 0 20 20">
-                              <path fillRule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clipRule="evenodd"/>
-                            </svg>
-                          </button>
+                  Object.entries(apps).map(([category, categoryApps]) => {
+                    const currentPage = categoryPages[category] || 0;
+                    const startIndex = currentPage * 8;
+                    const endIndex = startIndex + 8;
+                    const totalPages = Math.ceil(categoryApps.length / 8);
+                    const canGoPrevious = currentPage > 0;
+                    const canGoNext = currentPage < totalPages - 1;
+                    
+                    return (
+                      <section key={category}>
+                        <div className="flex justify-between items-center px-4 pb-3 pt-5">
+                          <h2 className="text-gray-900 dark:text-white text-[22px] font-bold leading-tight tracking-[-0.015em] capitalize">
+                            {category.charAt(0).toUpperCase() + category.slice(1)} Apps ({currentPage + 1}/{totalPages})
+                          </h2>
+                          <div className="flex gap-2">
+                            <button 
+                              onClick={() => handleCategoryPrevious(category)}
+                              disabled={!canGoPrevious}
+                              className="p-2 rounded-full bg-gray-200/80 dark:bg-gray-800/80 hover:bg-gray-300 dark:hover:bg-gray-700 disabled:opacity-50 disabled:cursor-not-allowed"
+                            >
+                              <svg className="w-5 h-5 text-gray-600 dark:text-gray-300" fill="currentColor" viewBox="0 0 20 20">
+                                <path fillRule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clipRule="evenodd"/>
+                              </svg>
+                            </button>
+                            <button 
+                              onClick={() => handleCategoryNext(category)}
+                              disabled={!canGoNext}
+                              className="p-2 rounded-full bg-gray-200/80 dark:bg-gray-800/80 hover:bg-gray-300 dark:hover:bg-gray-700 disabled:opacity-50 disabled:cursor-not-allowed"
+                            >
+                              <svg className="w-5 h-5 text-gray-600 dark:text-gray-300" fill="currentColor" viewBox="0 0 20 20">
+                                <path fillRule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clipRule="evenodd"/>
+                              </svg>
+                            </button>
+                          </div>
                         </div>
-                      </div>
-                      
-                      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-                        {(Array.isArray(categoryApps) ? categoryApps : []).slice(0, 8).map((app) => (
+                        
+                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                          {(Array.isArray(categoryApps) ? categoryApps : []).slice(startIndex, endIndex).map((app) => (
                           <a href={app.url} target="_blank" rel="noopener noreferrer" key={app.id} className="group flex flex-col gap-4 rounded-xl border border-gray-200/80 dark:border-white/10 bg-background-light dark:bg-[#111c22] p-4 transition-all hover:shadow-lg hover:-translate-y-1">
                             <div className="flex items-start justify-between">
                               <div className="bg-center bg-no-repeat aspect-square bg-cover rounded-xl w-20 h-20" style={{backgroundImage: `url("${app.icon}")`}}></div>
@@ -391,7 +446,8 @@ export default function HomePage() {
                         ))}
                       </div>
                     </section>
-                  ))
+                    );
+                  })
                 )}
 
                 {/* Top Apps This Week */}

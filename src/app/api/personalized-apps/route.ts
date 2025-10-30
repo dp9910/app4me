@@ -179,7 +179,7 @@ export async function GET(request: NextRequest) {
     const categoryResults: { [key: string]: any[] } = {};
 
     for (const category of userCategories) {
-      const categoryApps = await fetchItunesAppsForCategory(category, 10);
+      const categoryApps = await fetchItunesAppsForCategory(category, 20);
       categoryResults[category] = categoryApps;
       personalizedApps.push(...categoryApps);
     }
