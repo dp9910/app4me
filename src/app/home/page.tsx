@@ -29,6 +29,88 @@ export default function HomePage() {
   const [appsError, setAppsError] = useState<string | null>(null);
   const [topWeeklyAppsError, setTopWeeklyAppsError] = useState<string | null>(null);
   const [categoryPages, setCategoryPages] = useState<{ [key: string]: number }>({});
+  const [likedApps, setLikedApps] = useState<{ [key: string]: boolean }>({});
+  const [downloadedApps, setDownloadedApps] = useState<{ [key: string]: boolean }>({});
+
+  useEffect(() => {
+    const fetchInteractions = async () => {
+      if (!user) return;
+
+      const { data: { session } } = await (await import('@/lib/supabase/client')).supabase.auth.getSession();
+      if (!session) return;
+
+      const response = await fetch('/api/user-app-interactions', {
+        method: 'GET',
+        headers: {
+          'Authorization': `Bearer ${session.access_token}`,
+          'Content-Type': 'application/json',
+        },
+        credentials: 'include'
+      });
+
+      if (response.ok) {
+        const interactions = await response.json();
+        const liked: { [key: string]: boolean } = {};
+        const downloaded: { [key: string]: boolean } = {};
+        interactions.forEach((interaction: any) => {
+          liked[interaction.app_id] = interaction.liked;
+          downloaded[interaction.app_id] = interaction.downloaded;
+        });
+        setLikedApps(liked);
+        setDownloadedApps(downloaded);
+      }
+    };
+
+    fetchInteractions();
+  }, [user]);
+
+  const toggleLike = async (e: React.MouseEvent, appId: string) => {
+    e.preventDefault();
+    e.stopPropagation();
+
+    const newLikedState = !likedApps[appId];
+    setLikedApps(prev => ({ ...prev, [appId]: newLikedState }));
+
+    const { data: { session } } = await (await import('@/lib/supabase/client')).supabase.auth.getSession();
+    
+    await fetch('/api/user-app-interactions', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${session?.access_token}`,
+      },
+      credentials: 'include',
+      body: JSON.stringify({
+        app_id: appId,
+        liked: newLikedState,
+        downloaded: downloadedApps[appId] || false,
+      }),
+    });
+  };
+
+  const toggleDownload = async (e: React.MouseEvent, appId: string) => {
+    e.preventDefault();
+    e.stopPropagation();
+
+    const newDownloadedState = !downloadedApps[appId];
+    setDownloadedApps(prev => ({ ...prev, [appId]: newDownloadedState }));
+
+    const { data: { session } } = await (await import('@/lib/supabase/client')).supabase.auth.getSession();
+
+    await fetch('/api/user-app-interactions', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${session?.access_token}`,
+      },
+      credentials: 'include',
+      body: JSON.stringify({
+        app_id: appId,
+        liked: likedApps[appId] || false,
+        downloaded: newDownloadedState,
+      }),
+    });
+  };
 
   useEffect(() => {
     if (!loading && !user) {
@@ -424,25 +506,39 @@ export default function HomePage() {
                         
                         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
                           {(Array.isArray(categoryApps) ? categoryApps : []).slice(startIndex, endIndex).map((app) => (
-                          <a href={app.url} target="_blank" rel="noopener noreferrer" key={app.id} className="group flex flex-col gap-4 rounded-xl border border-gray-200/80 dark:border-white/10 bg-background-light dark:bg-[#111c22] p-4 transition-all hover:shadow-lg hover:-translate-y-1">
-                            <div className="flex items-start justify-between">
-                              <div className="bg-center bg-no-repeat aspect-square bg-cover rounded-xl w-20 h-20" style={{backgroundImage: `url("${app.icon}")`}}></div>
-                              <div className="flex items-center gap-1 text-gray-600 dark:text-gray-300">
-                                <svg className="w-4 h-4 text-yellow-500" fill="currentColor" viewBox="0 0 20 20">
-                                  <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
-                                </svg>
-                                <span className="text-sm font-medium">{app.rating}</span>
-                              </div>
-                            </div>
-                            <div className="flex flex-col gap-1">
-                              <h3 className="text-gray-900 dark:text-white text-base font-medium leading-normal truncate">{app.name}</h3>
-                              <p className="text-gray-500 dark:text-gray-400 text-sm font-normal leading-normal">{app.category}</p>
-                              <p className="text-xs font-mono leading-normal text-gray-400 dark:text-gray-500 pt-1">Sourced from iTunes</p>
-                            </div>
+                          <div key={app.id} className="group flex flex-col gap-4 rounded-xl border-2 border-black dark:border-gray-700 bg-background-light dark:bg-[#111c22] p-4 transition-all hover:shadow-lg hover:-translate-y-1">
+                            <a href={app.url} target="_blank" rel="noopener noreferrer" className="flex flex-col gap-4">
+                                <div className="flex items-start justify-between">
+                                  <div className="bg-center bg-no-repeat aspect-square bg-cover rounded-xl w-20 h-20" style={{backgroundImage: `url("${app.icon}")`}}></div>
+                                  <div className="flex items-center gap-1 text-gray-600 dark:text-gray-300">
+                                    <svg className="w-4 h-4 text-yellow-500" fill="currentColor" viewBox="0 0 20 20">
+                                      <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
+                                    </svg>
+                                    <span className="text-sm font-medium">{app.rating}</span>
+                                  </div>
+                                </div>
+                                <div className="flex flex-col gap-1">
+                                  <h3 className="text-gray-900 dark:text-white text-base font-medium leading-normal truncate">{app.name}</h3>
+                                  <p className="text-gray-500 dark:text-gray-400 text-sm font-normal leading-normal">{app.category}</p>
+                                  <p className="text-xs font-mono leading-normal text-gray-400 dark:text-gray-500 pt-1">Sourced from iTunes</p>
+                                </div>
+                            </a>
                             <div className="flex items-center justify-between mt-auto">
                               <span className="text-xs font-medium text-green-600 dark:text-green-400">{app.price}</span>
+                              <div className="flex gap-2">
+                                <button onClick={(e) => toggleLike(e, app.id)} className={`p-1 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700 ${likedApps[app.id] ? 'text-red-500' : 'text-gray-400'}`}>
+                                  <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fillRule="evenodd" d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" clipRule="evenodd" />
+                                  </svg>
+                                </button>
+                                <button onClick={(e) => toggleDownload(e, app.id)} className={`p-1 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700 ${downloadedApps[app.id] ? 'text-green-500' : 'text-gray-400'}`}>
+                                  <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fillRule="evenodd" d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm3.293-7.707a1 1 0 011.414 0L9 10.586V3a1 1 0 112 0v7.586l1.293-1.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z" clipRule="evenodd" />
+                                  </svg>
+                                </button>
+                              </div>
                             </div>
-                          </a>
+                          </div>
                         ))}
                       </div>
                     </section>
@@ -487,24 +583,38 @@ export default function HomePage() {
                     ) : (
                       // Real app data
                       topWeeklyApps.slice(0, 8).map((app) => (
-                        <a href={app.url} target="_blank" rel="noopener noreferrer" key={app.id} className="group flex flex-col gap-4 rounded-xl border border-gray-200/80 dark:border-white/10 bg-background-light dark:bg-[#111c22] p-4 transition-all hover:shadow-lg hover:-translate-y-1">
-                          <div className="flex items-start justify-between">
-                            <div className="bg-center bg-no-repeat aspect-square bg-cover rounded-xl w-20 h-20" style={{backgroundImage: `url("${app.icon}")`}}></div>
-                            <div className="flex items-center gap-1 text-gray-600 dark:text-gray-300">
-                              <svg className="w-4 h-4 text-yellow-500" fill="currentColor" viewBox="0 0 20 20">
-                                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
-                              </svg>
-                              <span className="text-sm font-medium">{app.rating}</span>
+                        <div key={app.id} className="group flex flex-col gap-4 rounded-xl border-2 border-black dark:border-gray-700 bg-background-light dark:bg-[#111c22] p-4 transition-all hover:shadow-lg hover:-translate-y-1">
+                            <a href={app.url} target="_blank" rel="noopener noreferrer" className="flex flex-col gap-4">
+                              <div className="flex items-start justify-between">
+                                <div className="bg-center bg-no-repeat aspect-square bg-cover rounded-xl w-20 h-20" style={{backgroundImage: `url("${app.icon}")`}}></div>
+                                <div className="flex items-center gap-1 text-gray-600 dark:text-gray-300">
+                                  <svg className="w-4 h-4 text-yellow-500" fill="currentColor" viewBox="0 0 20 20">
+                                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
+                                  </svg>
+                                  <span className="text-sm font-medium">{app.rating}</span>
+                                </div>
+                              </div>
+                              <div className="flex flex-col gap-1">
+                                <h3 className="text-gray-900 dark:text-white text-base font-medium leading-normal truncate">{app.name}</h3>
+                                <p className="text-gray-500 dark:text-gray-400 text-sm font-normal leading-normal">{app.category}</p>
+                              </div>
+                            </a>
+                            <div className="flex items-center justify-between mt-auto">
+                              <span className="text-xs font-medium text-green-600 dark:text-green-400">{app.price}</span>
+                              <div className="flex gap-2">
+                                <button onClick={(e) => toggleLike(e, app.id)} className={`p-1 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700 ${likedApps[app.id] ? 'text-red-500' : 'text-gray-400'}`}>
+                                  <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fillRule="evenodd" d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" clipRule="evenodd" />
+                                  </svg>
+                                </button>
+                                <button onClick={(e) => toggleDownload(e, app.id)} className={`p-1 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700 ${downloadedApps[app.id] ? 'text-green-500' : 'text-gray-400'}`}>
+                                  <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fillRule="evenodd" d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm3.293-7.707a1 1 0 011.414 0L9 10.586V3a1 1 0 112 0v7.586l1.293-1.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z" clipRule="evenodd" />
+                                  </svg>
+                                </button>
+                              </div>
                             </div>
-                          </div>
-                          <div className="flex flex-col gap-1">
-                            <h3 className="text-gray-900 dark:text-white text-base font-medium leading-normal truncate">{app.name}</h3>
-                            <p className="text-gray-500 dark:text-gray-400 text-sm font-normal leading-normal">{app.category}</p>
-                          </div>
-                          <div className="flex items-center justify-between mt-auto">
-                            <span className="text-xs font-medium text-green-600 dark:text-green-400">{app.price}</span>
-                          </div>
-                        </a>
+                        </div>
                       ))
                     )}
                   </div>
