@@ -1,3 +1,4 @@
+
 const { createClient } = require('@supabase/supabase-js');
 const dotenv = require('dotenv');
 const fs = require('fs');
@@ -11,8 +12,8 @@ const supabase = createClient(
   process.env.SUPABASE_SERVICE_KEY
 );
 
-async function uploadAllFeatures() {
-  console.log('🚀 Starting comprehensive feature upload process...');
+async function uploadAllFeaturesSafe() {
+  console.log('🚀 Starting comprehensive and safe feature upload process...');
 
   try {
     // 1. Consolidate all features from ALL sources
@@ -47,7 +48,9 @@ async function uploadAllFeatures() {
     processFiles(glob.sync('data-scraping/features-output/full-extraction-archive/batch-*.json'), 'Full extraction archive');
     processFiles(glob.sync('data-scraping/features-output/optimized-extraction/batch-*.json'), 'Optimized extraction');
     processFiles(glob.sync('data-scraping/features-output/hybrid-extraction/batch-*.json'), 'Hybrid extraction batches');
-    
+    processFiles(glob.sync('data-scraping/features-output/serp-deepseek-extraction/serp-batch-*.json'), 'SERP extraction batches');
+
+
     // Process final consolidated files
     const hybridFinalFile = 'data-scraping/features-output/hybrid-extraction/final-hybrid-results.json';
     if (fs.existsSync(hybridFinalFile)) {
@@ -59,7 +62,6 @@ async function uploadAllFeatures() {
     if (fs.existsSync(serpFinalFile)) {
       processFiles([serpFinalFile], 'SERP final results');
     }
-    processFiles(glob.sync('data-scraping/features-output/serp-deepseek-extraction/serp-batch-*.json'), 'SERP extraction batches');
 
     console.log(`\n📊 Found ${allFeatures.size} unique apps with features.`);
 
@@ -108,7 +110,6 @@ async function uploadAllFeatures() {
           quality_signals: features.quality_signals || {},
           api_used: features.llm_features?.api_used || features.api_used || null,
           processing_time_ms: features.processing_time_ms || null,
-          // source_file: features.source_file  // Not in schema
         });
       } else {
         unmatchedFeatures.push(bundle_id);
@@ -123,12 +124,7 @@ async function uploadAllFeatures() {
       unmatchedFeatures.slice(0, 10).forEach(id => console.log(`  ${id}`));
     }
 
-    // 4. Clear existing features and upload new ones
-    console.log('\nClearing existing app_features table...');
-    const { error: deleteError } = await supabase.from('app_features').delete().neq('app_id', 0);
-    if (deleteError) console.log('Delete error (may be expected):', deleteError.message);
-
-    // 5. Upload to Supabase in batches
+    // 4. Upload to Supabase in batches
     console.log('\nUploading features to app_features table...');
     const BATCH_SIZE = 100;
     let successCount = 0;
@@ -147,7 +143,7 @@ async function uploadAllFeatures() {
       }
     }
 
-    // 6. Verify upload
+    // 5. Verify upload
     const { count: finalCount, error: countError } = await supabase.from('app_features').select('*', { count: 'exact', head: true });
     if (countError) throw countError;
 
@@ -164,4 +160,4 @@ async function uploadAllFeatures() {
   }
 }
 
-uploadAllFeatures();
+uploadAllFeaturesSafe();

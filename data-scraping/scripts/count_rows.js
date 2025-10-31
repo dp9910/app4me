@@ -25,15 +25,25 @@ async function countRows() {
 
     if (embeddingsError) throw embeddingsError;
 
+    // Count rows in app_features
+    const { count: featuresCount, error: featuresError } = await supabase
+      .from('app_features')
+      .select('*', { count: 'exact', head: true });
+
+    if (featuresError) throw featuresError;
+
     console.log('\n--- Row Counts ---');
     console.log(`apps_unified:    ${unifiedCount}`);
     console.log(`app_embeddings:  ${embeddingsCount}`);
+    console.log(`app_features:    ${featuresCount}`);
     console.log('------------------\n');
 
-    if (unifiedCount === embeddingsCount) {
+    if (unifiedCount === embeddingsCount && unifiedCount === featuresCount) {
       console.log('✅ The tables are synchronized.');
     } else {
-      console.log(`❌ Discrepancy found: ${Math.abs(unifiedCount - embeddingsCount)} rows difference.`);
+      console.log('❌ Discrepancy found:');
+      console.log(`  - apps_unified vs app_embeddings: ${Math.abs(unifiedCount - embeddingsCount)} rows difference.`);
+      console.log(`  - apps_unified vs app_features: ${Math.abs(unifiedCount - featuresCount)} rows difference.`);
     }
 
   } catch (err) {

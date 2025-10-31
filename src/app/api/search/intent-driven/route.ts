@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { intentDrivenSearch } from '@/lib/recommendation/intent-driven-search';
+import { smartHybridRetrieval } from '@/lib/recommendation/retrievers/smart-hybrid-retriever';
 
 export async function POST(request: NextRequest) {
   try {
@@ -32,22 +32,41 @@ export async function POST(request: NextRequest) {
     
     console.log(`🔍 Intent-driven search request: "${query}" (limit: ${limit})`);
     
-    // Perform intent-driven search
-    const results = await intentDrivenSearch(query.trim(), Math.min(limit, 50));
+    // Perform smart hybrid search
+    const results = await smartHybridRetrieval(query.trim(), Math.min(limit, 50));
     
     const searchTime = Date.now() - startTime;
     
     console.log(`✅ Intent-driven search completed in ${searchTime}ms: ${results.length} results`);
     
+    // Convert smart hybrid results to expected format
+    const formattedResults = results.map(result => ({
+      app_id: result.app_id,
+      app_data: {
+        name: result.app_data.name,
+        category: result.app_data.category,
+        rating: result.app_data.rating,
+        icon_url: result.app_data.icon_url,
+        description: result.app_data.description,
+        developer: 'Unknown Developer',
+        price: 'Free',
+        url: null
+      },
+      relevance_score: result.final_score,
+      match_reason: result.explanation,
+      matched_keywords: result.matched_concepts || [],
+      search_method: 'smart_hybrid'
+    }));
+
     // Prepare response
     const response = {
       success: true,
       query: query.trim(),
-      results,
+      results: formattedResults,
       metadata: {
-        count: results.length,
+        count: formattedResults.length,
         searchTime: `${searchTime}ms`,
-        searchType: 'intent-driven',
+        searchType: 'smart-hybrid',
         timestamp: new Date().toISOString()
       }
     };
@@ -55,8 +74,8 @@ export async function POST(request: NextRequest) {
     // Add performance headers
     const headers = new Headers();
     headers.set('X-Search-Time', `${searchTime}ms`);
-    headers.set('X-Result-Count', results.length.toString());
-    headers.set('X-Search-Type', 'intent-driven');
+    headers.set('X-Result-Count', formattedResults.length.toString());
+    headers.set('X-Search-Type', 'smart-hybrid');
     
     return NextResponse.json(response, { headers });
     
@@ -102,7 +121,7 @@ export async function GET(request: NextRequest) {
     }
     
     // Perform quick search with lower limit for GET requests
-    const results = await intentDrivenSearch(query, Math.min(limit, 20));
+    const results = await smartHybridRetrieval(query, Math.min(limit, 20));
     
     // Simplified response for GET
     const response = {
@@ -114,8 +133,8 @@ export async function GET(request: NextRequest) {
         category: r.app_data.category,
         rating: r.app_data.rating,
         icon_url: r.app_data.icon_url,
-        relevance_score: r.relevance_score,
-        match_reason: r.match_reason
+        relevance_score: r.final_score,
+        match_reason: r.explanation
       })),
       count: results.length
     };

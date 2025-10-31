@@ -1,8 +1,7 @@
+
 const { createClient } = require('@supabase/supabase-js');
 const dotenv = require('dotenv');
 const fs = require('fs');
-const path = require('path');
-const glob = require('glob');
 
 dotenv.config({ path: '.env.local' });
 
@@ -11,59 +10,35 @@ const supabase = createClient(
   process.env.SUPABASE_SERVICE_KEY
 );
 
-async function uploadAllFeatures() {
-  console.log('🚀 Starting comprehensive feature upload process...');
+async function combineAndUpload() {
+  console.log('🚀 Starting feature combination and upload process...');
 
   try {
-    // 1. Consolidate all features from ALL sources
-    console.log('Consolidating features from all sources...');
+    // 1. Read the feature files
+    console.log('Reading feature files...');
+    const serpFeatures = JSON.parse(fs.readFileSync('data-scraping/features-output/serp-features.json', 'utf-8'));
+    const itunesFeatures = JSON.parse(fs.readFileSync('data-scraping/features-output/itunes-features.json', 'utf-8'));
+    const generatedFeatures = fs.readFileSync('data-scraping/features-output/generated-features.jsonl', 'utf-8').split('\n').filter(Boolean).map(line => JSON.parse(line));
+
+    // 2. Combine features
+    console.log('Combining features...');
     const allFeatures = new Map();
 
-    const processFiles = (files, label) => {
-      console.log(`\n${label}:`);
-      let totalApps = 0;
-      for (const file of files) {
-        try {
-          const content = JSON.parse(fs.readFileSync(file, 'utf-8'));
-          const results = content.results || content.all_hybrid_results || content.all_serp_results || [];
-          totalApps += results.length;
-          
-          for (const result of results) {
-            if (result.app_id && result.features) {
-              allFeatures.set(result.app_id, {
-                ...result.features,
-                source_file: path.basename(file)
-              });
-            }
-          }
-        } catch (err) {
-          console.log(`  Error reading ${file}: ${err.message}`);
-        }
-      }
-      console.log(`  Processed ${files.length} files, ${totalApps} total apps`);
-    };
-
-    // Process all extraction sources
-    processFiles(glob.sync('data-scraping/features-output/full-extraction-archive/batch-*.json'), 'Full extraction archive');
-    processFiles(glob.sync('data-scraping/features-output/optimized-extraction/batch-*.json'), 'Optimized extraction');
-    processFiles(glob.sync('data-scraping/features-output/hybrid-extraction/batch-*.json'), 'Hybrid extraction batches');
-    
-    // Process final consolidated files
-    const hybridFinalFile = 'data-scraping/features-output/hybrid-extraction/final-hybrid-results.json';
-    if (fs.existsSync(hybridFinalFile)) {
-      processFiles([hybridFinalFile], 'Hybrid final results');
+    for (const [app_id, features] of Object.entries(serpFeatures)) {
+      allFeatures.set(app_id, features);
     }
 
-    // Process SERP extraction data  
-    const serpFinalFile = 'data-scraping/features-output/serp-deepseek-extraction/final-serp-deepseek-results.json';
-    if (fs.existsSync(serpFinalFile)) {
-      processFiles([serpFinalFile], 'SERP final results');
+    for (const [app_id, features] of Object.entries(itunesFeatures)) {
+      allFeatures.set(app_id, features);
     }
-    processFiles(glob.sync('data-scraping/features-output/serp-deepseek-extraction/serp-batch-*.json'), 'SERP extraction batches');
+
+    for (const { app_id, features } of generatedFeatures) {
+      allFeatures.set(app_id.toString(), features);
+    }
 
     console.log(`\n📊 Found ${allFeatures.size} unique apps with features.`);
 
-    // 2. Fetch all app IDs from apps_unified
+    // 3. Fetch all app IDs from apps_unified
     console.log('\nFetching app IDs from apps_unified...');
     let allApps = [];
     let from = 0;
@@ -90,7 +65,7 @@ async function uploadAllFeatures() {
     const appIdMap = new Map(allApps.map(app => [app.bundle_id, app.id]));
     console.log(`Found ${allApps.length} apps in database`);
 
-    // 3. Prepare data for upload with better matching
+    // 4. Prepare data for upload with better matching
     console.log('\nMatching features with database apps...');
     const featuresToUpload = [];
     const unmatchedFeatures = [];
@@ -108,7 +83,6 @@ async function uploadAllFeatures() {
           quality_signals: features.quality_signals || {},
           api_used: features.llm_features?.api_used || features.api_used || null,
           processing_time_ms: features.processing_time_ms || null,
-          // source_file: features.source_file  // Not in schema
         });
       } else {
         unmatchedFeatures.push(bundle_id);
@@ -122,11 +96,6 @@ async function uploadAllFeatures() {
       console.log('\nFirst 10 unmatched bundle_ids:');
       unmatchedFeatures.slice(0, 10).forEach(id => console.log(`  ${id}`));
     }
-
-    // 4. Clear existing features and upload new ones
-    console.log('\nClearing existing app_features table...');
-    const { error: deleteError } = await supabase.from('app_features').delete().neq('app_id', 0);
-    if (deleteError) console.log('Delete error (may be expected):', deleteError.message);
 
     // 5. Upload to Supabase in batches
     console.log('\nUploading features to app_features table...');
@@ -155,7 +124,6 @@ async function uploadAllFeatures() {
     console.log('================');
     console.log(`Total features processed: ${allFeatures.size}`);
     console.log(`Features uploaded: ${finalCount}`);
-    console.log(`Success rate: ${((finalCount / allFeatures.size) * 100).toFixed(1)}%`);
     console.log(`Successful batches: ${successCount}`);
     console.log(`Failed batches: ${errorCount}`);
 
@@ -164,4 +132,4 @@ async function uploadAllFeatures() {
   }
 }
 
-uploadAllFeatures();
+combineAndUpload();

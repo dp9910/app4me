@@ -392,99 +392,81 @@ Examples:
 
         {/* App Cards Section */}
         {currentApp && (
-          <div className="flex-1 flex flex-col items-center justify-center px-4 sm:px-6 lg:px-8 py-8">
-            <div className="w-full max-w-md mx-auto space-y-6">
+          <div className="flex-1 flex flex-col items-center justify-center px-4 sm:px-6 lg:px-8 py-4">
+            <div className="w-full max-w-sm mx-auto space-y-4">
               {/* Progress Indicator */}
               <p className="text-sm text-gray-500 dark:text-gray-400 font-medium text-center">
                 Card {cardIndex} of {totalCards}
               </p>
 
-              {/* App Card */}
-              <div className="relative w-full aspect-[3/4] group cursor-pointer transition-transform duration-300 ease-in-out hover:-translate-y-2 hover:shadow-2xl">
+              {/* App Card - Reduced Size */}
+              <div className="relative w-full h-[480px] group cursor-pointer transition-transform duration-300 ease-in-out hover:-translate-y-2 hover:shadow-2xl">
                 {/* Background Cards */}
                 <div className="absolute top-0 left-0 w-full h-full rounded-xl bg-white/50 dark:bg-white/10 transform rotate-[-4deg] -z-20"></div>
                 <div className="absolute top-0 left-0 w-full h-full rounded-xl bg-white/30 dark:bg-white/5 transform rotate-[-8deg] -z-30"></div>
                 
-                {/* Main Card Content */}
-                <div className="relative w-full h-full bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden flex flex-col">
-                  <div className="flex-1 bg-gradient-to-br from-primary/20 to-purple-500/20 dark:from-primary/30 dark:to-purple-500/30 relative p-6 flex flex-col justify-end">
-                    <div className="flex items-center gap-4">
-                      <div 
-                        className="size-20 rounded-xl bg-cover bg-center border-2 border-white/50 shadow-lg"
-                        style={{ backgroundImage: `url("${currentApp.icon}")` }}
-                      ></div>
-                      <div className="flex-1">
-                        <h3 className="text-gray-900 dark:text-white text-2xl font-bold mb-1">{currentApp.name}</h3>
-                        <p className="text-gray-700 dark:text-gray-300 text-sm mb-2">
-                          {currentApp.artist || 'Unknown Developer'}
-                        </p>
-                        <p className="text-gray-600 dark:text-gray-400 text-sm line-clamp-2">
-                          {currentApp.personalized_one_liner || currentApp.description}
-                        </p>
-                      </div>
-                    </div>
+                {/* Main Card Content - Compact Reference Design */}
+                <div className="relative w-full h-full bg-white dark:bg-gray-800 border border-gray-800 dark:border-gray-200 rounded-xl shadow-xl overflow-hidden flex flex-col justify-center items-center p-6 text-center">
+                  <div className="flex-1 flex flex-col justify-center items-center">
+                    {/* App Logo - Sized to fit nicely */}
+                    <div 
+                      className="size-32 rounded-[2rem] bg-cover bg-center shadow-2xl mb-6"
+                      style={{ backgroundImage: `url("${currentApp.icon}")` }}
+                    ></div>
+                    
+                    {/* App Name */}
+                    <h3 className="text-gray-900 dark:text-white text-2xl font-bold mb-2">
+                      {currentApp.name}
+                    </h3>
                   </div>
                   
-                  <div className="p-6 bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-200">
-                    <div className="flex items-center justify-between gap-4 mb-4">
-                      <div className="flex items-center gap-3 flex-wrap">
-                        <span className="inline-flex items-center gap-1.5 rounded-full bg-primary/10 px-2.5 py-1 text-xs font-medium text-primary">
-                          💰 {currentApp.price || 'Free'}
-                        </span>
-                        <span className="inline-flex items-center gap-1.5 rounded-full bg-gray-200 dark:bg-gray-700 px-2.5 py-1 text-xs font-medium text-gray-700 dark:text-gray-300">
-                          📱 {currentApp.category || currentApp.primary_category}
-                        </span>
-                        {currentApp.rating > 0 && (
-                          <span className="inline-flex items-center gap-1.5 rounded-full bg-yellow-100 dark:bg-yellow-900 px-2.5 py-1 text-xs font-medium text-yellow-800 dark:text-yellow-200">
-                            ⭐ {currentApp.rating.toFixed(1)}
-                          </span>
-                        )}
-                      </div>
+                  {/* Bottom section - Price/Category and Rating like reference */}
+                  <div className="flex items-center justify-center gap-6 w-full pt-6 border-t border-gray-200 dark:border-gray-700">
+                    <div className="flex flex-col items-center">
+                      <span className="inline-flex items-center gap-1.5 rounded-full bg-green-100 dark:bg-green-900/20 px-3 py-1 text-sm font-bold text-green-700 dark:text-green-400">
+                        {currentApp.price || 'Free'}
+                      </span>
                     </div>
-                    
-                    {currentApp.similarity_score && (
-                      <div className="mb-3">
-                        <div className="flex items-center justify-between text-sm mb-1">
-                          <span className="text-gray-600 dark:text-gray-400">Match Score</span>
-                          <span className="font-medium text-primary">{Math.round(currentApp.similarity_score * 100)}%</span>
+                    <div className="w-px h-6 bg-gray-200 dark:bg-gray-700"></div>
+                    <div className="flex flex-col items-center">
+                      <span className="inline-flex items-center gap-1.5 rounded-full bg-primary/10 px-3 py-1 text-sm font-bold text-primary">
+                        {currentApp.category || currentApp.primary_category}
+                      </span>
+                    </div>
+                    {currentApp.rating > 0 && (
+                      <>
+                        <div className="w-px h-6 bg-gray-200 dark:border-gray-700"></div>
+                        <div className="flex flex-col items-center">
+                          <div className="flex items-center gap-1 text-amber-500">
+                            <span className="font-bold text-sm">{currentApp.rating.toFixed(1)}</span>
+                            <span className="text-amber-400 text-lg">⭐</span>
+                          </div>
                         </div>
-                        <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
-                          <div 
-                            className="bg-primary h-2 rounded-full transition-all"
-                            style={{ width: `${Math.round(currentApp.similarity_score * 100)}%` }}
-                          ></div>
-                        </div>
-                      </div>
-                    )}
-                    
-                    {currentApp.match_reason && (
-                      <div className="text-xs text-gray-600 dark:text-gray-400 italic">
-                        Why it matches: {currentApp.match_reason}
-                      </div>
+                      </>
                     )}
                   </div>
                 </div>
               </div>
 
-              {/* Action Buttons */}
+              {/* Action Buttons - Reference Design */}
               <div className="flex items-center justify-center gap-4 pt-4">
                 <button 
                   onClick={() => handleAction('pass')}
-                  className="flex items-center justify-center size-16 bg-white dark:bg-gray-800 rounded-full shadow-md text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 hover:text-red-500 transition-all duration-200 ease-in-out transform hover:scale-110"
+                  className="flex items-center justify-center size-16 bg-white border border-gray-800 dark:border-gray-200 rounded-full shadow-lg text-red-500 hover:bg-red-500/10 transition-all duration-200 ease-in-out transform hover:scale-110"
                 >
                   <span className="text-4xl">✕</span>
                 </button>
                 <button 
-                  onClick={() => handleAction('star')}
-                  className="flex items-center justify-center size-20 bg-white dark:bg-gray-800 rounded-full shadow-lg text-purple-500 hover:bg-purple-500 hover:text-white transition-all duration-200 ease-in-out transform hover:scale-110"
+                  onClick={() => handleAction('like')}
+                  className="flex items-center justify-center size-20 bg-primary border border-gray-800 dark:border-gray-200 rounded-full shadow-xl text-white hover:bg-primary/90 transition-all duration-200 ease-in-out transform hover:scale-110"
                 >
-                  <span className="text-5xl">⭐</span>
+                  <span className="text-5xl">♥</span>
                 </button>
                 <button 
-                  onClick={() => handleAction('like')}
-                  className="flex items-center justify-center size-16 bg-white dark:bg-gray-800 rounded-full shadow-md text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 hover:text-green-500 transition-all duration-200 ease-in-out transform hover:scale-110"
+                  onClick={() => handleAction('star')}
+                  className="flex items-center justify-center size-16 bg-white border border-gray-800 dark:border-gray-200 rounded-full shadow-lg text-blue-500 hover:bg-blue-500/10 transition-all duration-200 ease-in-out transform hover:scale-110"
                 >
-                  <span className="text-3xl">❤️</span>
+                  <span className="text-3xl">ℹ</span>
                 </button>
               </div>
             </div>

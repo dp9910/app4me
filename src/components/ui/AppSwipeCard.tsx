@@ -69,124 +69,75 @@ export default function AppSwipeCard({ app, onSwipe, isActive, zIndex }: AppSwip
       transition={{ type: "spring", stiffness: 300, damping: 30 }}
     >
       <motion.div
-        className="w-full h-full bg-white dark:bg-gray-800 rounded-3xl shadow-2xl cursor-grab active:cursor-grabbing overflow-hidden"
+        className="w-full h-full bg-white dark:bg-gray-900 rounded-2xl shadow-2xl cursor-grab active:cursor-grabbing overflow-hidden border border-gray-100 dark:border-gray-700"
         drag={isActive ? "x" : false}
         dragConstraints={{ left: 0, right: 0 }}
         style={{ x, rotate, opacity }}
         onDragEnd={handleDragEnd}
-        whileTap={{ scale: 0.95 }}
+        whileTap={{ scale: 0.98 }}
       >
-        {/* Swipe Indicators */}
+        {/* Dating App Style Swipe Indicators */}
         <motion.div 
-          className="absolute top-8 left-8 bg-red-500 text-white px-4 py-2 rounded-full font-bold transform -rotate-12 z-10"
-          style={{ opacity: useTransform(x, [0, -50, -100], [0, 0.5, 1]) }}
+          className="absolute top-8 left-8 bg-red-500/90 backdrop-blur-sm text-white px-6 py-3 rounded-full font-bold transform -rotate-12 z-20 border-2 border-white shadow-xl"
+          style={{ opacity: useTransform(x, [0, -50, -100], [0, 0.7, 1]) }}
         >
-          PASS
+          NOPE
         </motion.div>
         <motion.div 
-          className="absolute top-8 right-8 bg-green-500 text-white px-4 py-2 rounded-full font-bold transform rotate-12 z-10"
-          style={{ opacity: useTransform(x, [0, 50, 100], [0, 0.5, 1]) }}
+          className="absolute top-8 right-8 bg-gradient-to-r from-pink-500/90 to-red-500/90 backdrop-blur-sm text-white px-6 py-3 rounded-full font-bold transform rotate-12 z-20 border-2 border-white shadow-xl"
+          style={{ opacity: useTransform(x, [0, 50, 100], [0, 0.7, 1]) }}
         >
-          INTERESTED
+          LIKE
         </motion.div>
 
-        {/* Card Content */}
-        <div className="p-8 h-full flex flex-col">
-          {/* App Icon */}
-          <div className="flex justify-center mb-6">
-            {app.app_data.icon_url ? (
-              <img 
-                src={app.app_data.icon_url} 
-                alt={app.app_data.name}
-                className="w-24 h-24 rounded-3xl shadow-lg object-cover"
-                onError={(e) => {
-                  e.currentTarget.style.display = 'none';
-                  e.currentTarget.nextElementSibling?.classList.remove('hidden');
-                }}
-              />
-            ) : (
-              <div className="w-24 h-24 rounded-3xl bg-gradient-to-br from-primary to-purple-600 flex items-center justify-center shadow-lg">
-                <span className="text-white text-3xl font-bold">
-                  {app.app_data.name.charAt(0)}
-                </span>
-              </div>
-            )}
-            {!app.app_data.icon_url && (
-              <div className="w-24 h-24 rounded-3xl bg-gradient-to-br from-primary to-purple-600 flex items-center justify-center shadow-lg">
-                <span className="text-white text-3xl font-bold">
-                  {app.app_data.name.charAt(0)}
-                </span>
-              </div>
-            )}
+        {/* Reference Design Card */}
+        <div className="h-full w-full flex flex-col justify-center items-center p-8 text-center">
+          <div className="flex-1 flex flex-col justify-center items-center">
+            {/* Large App Logo - Exactly like reference */}
+            <div className="w-48 h-48 rounded-[2.5rem] bg-cover bg-center shadow-2xl mb-8">
+              {app.app_data.icon_url ? (
+                <img 
+                  src={app.app_data.icon_url} 
+                  alt={app.app_data.name}
+                  className="w-48 h-48 rounded-[2.5rem] shadow-2xl object-cover"
+                  onError={(e) => {
+                    e.currentTarget.style.display = 'none';
+                    e.currentTarget.nextElementSibling?.classList.remove('hidden');
+                  }}
+                />
+              ) : (
+                <div className="w-48 h-48 rounded-[2.5rem] bg-gradient-to-br from-primary via-purple-500 to-pink-500 flex items-center justify-center shadow-2xl">
+                  <span className="text-white text-6xl font-bold">
+                    {app.app_data.name.charAt(0)}
+                  </span>
+                </div>
+              )}
+            </div>
+            
+            {/* App Name - Large like reference */}
+            <h3 className="text-gray-900 dark:text-white text-3xl font-bold mb-2">
+              {app.app_data.name}
+            </h3>
           </div>
-
-          {/* App Name */}
-          <h2 className="text-2xl font-bold text-gray-900 dark:text-white text-center mb-2">
-            {app.app_data.name}
-          </h2>
-
-          {/* App Rating & Category */}
-          <div className="flex items-center justify-center gap-4 mb-4">
+          
+          {/* Bottom section - Price and Rating like reference */}
+          <div className="flex items-center justify-center gap-6 w-full pt-6 border-t border-gray-200 dark:border-gray-700">
+            <div className="flex flex-col items-center">
+              <span className="inline-flex items-center gap-1.5 rounded-full bg-green-100 dark:bg-green-900/20 px-3 py-1 text-sm font-bold text-green-700 dark:text-green-400">
+                {app.app_data.category}
+              </span>
+            </div>
             {app.app_data.rating > 0 && (
-              <div className="flex items-center gap-1">
-                <span className="text-yellow-500 text-lg">⭐</span>
-                <span className="text-gray-600 dark:text-gray-400 font-medium">
-                  {app.app_data.rating.toFixed(1)}
-                </span>
-              </div>
+              <>
+                <div className="w-px h-6 bg-gray-200 dark:bg-gray-700"></div>
+                <div className="flex flex-col items-center">
+                  <div className="flex items-center gap-1 text-amber-500">
+                    <span className="font-bold text-sm">{app.app_data.rating.toFixed(1)}</span>
+                    <span className="text-amber-400 text-lg">⭐</span>
+                  </div>
+                </div>
+              </>
             )}
-            <span className="bg-primary/10 text-primary px-3 py-1 rounded-full text-sm font-medium">
-              {app.app_data.category}
-            </span>
-          </div>
-
-          {/* App Description */}
-          <div className="flex-1 flex flex-col justify-center">
-            <p className="text-gray-600 dark:text-gray-300 text-center text-lg leading-relaxed mb-6">
-              {app.app_data.description.length > 150 
-                ? app.app_data.description.substring(0, 150) + '...'
-                : app.app_data.description
-              }
-            </p>
-
-            {/* Why Selected */}
-            <div className="bg-gradient-to-r from-primary/10 to-purple-500/10 rounded-2xl p-4 mb-6">
-              <h3 className="font-semibold text-gray-900 dark:text-white mb-2 flex items-center gap-2">
-                <span className="text-primary">✨</span>
-                Why this app is perfect for you
-              </h3>
-              <p className="text-gray-700 dark:text-gray-300">
-                {app.personalized_oneliner}
-              </p>
-            </div>
-
-            {/* Match Score */}
-            <div className="text-center mb-4">
-              <div className="inline-flex items-center gap-2 bg-gray-100 dark:bg-gray-700 rounded-full px-3 py-1.5">
-                <span className="text-green-500">🎯</span>
-                <span className="text-gray-700 dark:text-gray-300 font-medium text-sm">
-                  {Math.round(app.llm_confidence * 100)}% match
-                </span>
-              </div>
-            </div>
-          </div>
-
-          {/* Action Buttons */}
-          <div className="flex justify-center gap-8 mt-4 pb-2">
-            <button
-              onClick={() => handleButtonSwipe('left')}
-              className="w-14 h-14 bg-red-500 hover:bg-red-600 text-white rounded-full flex items-center justify-center text-xl transition-colors shadow-lg hover:shadow-xl transform hover:scale-105"
-              disabled={!isActive}
-            >
-              ✕
-            </button>
-            <button
-              onClick={() => handleButtonSwipe('right')}
-              className="w-14 h-14 bg-green-500 hover:bg-green-600 text-white rounded-full flex items-center justify-center text-xl transition-colors shadow-lg hover:shadow-xl transform hover:scale-105"
-              disabled={!isActive}
-            >
-              ♥
-            </button>
           </div>
         </div>
       </motion.div>

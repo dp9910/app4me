@@ -206,7 +206,7 @@ export default function AppSwipeInterface({ apps, onSwipeComplete, userQuery }: 
         </button>
 
         {/* Cards Container */}
-        <div className="relative h-[600px] max-w-md mx-auto">
+        <div className="relative h-[500px] max-w-sm mx-auto">
           <AnimatePresence>
             {apps.slice(currentIndex, currentIndex + 3).map((app, index) => (
               <AppSwipeCard
@@ -219,6 +219,38 @@ export default function AppSwipeInterface({ apps, onSwipeComplete, userQuery }: 
             ))}
           </AnimatePresence>
         </div>
+        
+        {/* Action Buttons Below Card - Like Reference */}
+        <div className="flex items-center justify-center gap-4 pt-4">
+          <button
+            onClick={() => {
+              if (currentIndex < apps.length) {
+                handleSwipe('left', apps[currentIndex]);
+              }
+            }}
+            className="flex items-center justify-center w-16 h-16 bg-white border border-gray-800 dark:border-gray-200 rounded-full shadow-lg text-red-500 hover:bg-red-500/10 transition-all duration-200 ease-in-out transform hover:scale-110"
+            disabled={currentIndex >= apps.length}
+          >
+            <span className="text-4xl">✕</span>
+          </button>
+          <button
+            onClick={() => {
+              if (currentIndex < apps.length) {
+                handleSwipe('right', apps[currentIndex]);
+              }
+            }}
+            className="flex items-center justify-center w-20 h-20 bg-primary border border-gray-800 dark:border-gray-200 rounded-full shadow-xl text-white hover:bg-primary/90 transition-all duration-200 ease-in-out transform hover:scale-110"
+            disabled={currentIndex >= apps.length}
+          >
+            <span className="text-5xl">♥</span>
+          </button>
+          <button 
+            className="flex items-center justify-center w-16 h-16 bg-white border border-gray-800 dark:border-gray-200 rounded-full shadow-lg text-blue-500 hover:bg-blue-500/10 transition-all duration-200 ease-in-out transform hover:scale-110"
+            disabled={currentIndex >= apps.length}
+          >
+            <span className="text-3xl">ℹ</span>
+          </button>
+        </div>
 
         {/* Right Arrow - Like */}
         <button
@@ -227,10 +259,10 @@ export default function AppSwipeInterface({ apps, onSwipeComplete, userQuery }: 
               handleSwipe('right', apps[currentIndex]);
             }
           }}
-          className="absolute right-2 top-1/2 transform -translate-y-1/2 z-20 w-14 h-14 bg-green-500 hover:bg-green-600 text-white rounded-full flex items-center justify-center text-xl shadow-lg hover:shadow-xl hover:scale-105 transition-all"
+          className="absolute right-2 top-1/2 transform -translate-y-1/2 z-20 w-14 h-14 bg-primary hover:bg-primary/90 text-white rounded-full flex items-center justify-center text-xl shadow-lg hover:shadow-xl hover:scale-105 transition-all"
           disabled={currentIndex >= apps.length}
         >
-          →
+          ♥
         </button>
       </div>
 
