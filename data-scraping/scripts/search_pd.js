@@ -48,7 +48,7 @@ class ManualAppSearcher {
   /**
    * STEP 1: Search iTunes API
    */
-  async searchItunes(term, limit = 2) {
+  async searchItunes(term, limit = 50) {
     console.log(`\n🍎 Searching iTunes API for: "${term}"`);
     
     return new Promise((resolve, reject) => {
@@ -591,8 +591,7 @@ Return only the JSON object:`;
       // Step 8: Generate embeddings for new apps and save locally
       const embeddingsFile = await this.generateEmbeddingsForNewApps();
       
-      // Step 9: Upload everything to Supabase
-      await this.uploadToSupabase();
+     
       
       // Step 10: Save final results summary
       this.saveResults();
