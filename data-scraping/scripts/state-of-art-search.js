@@ -188,11 +188,19 @@ Return ONLY the JSON object:`;
         }
       }
       
-      // Search 3: Look for keywords in descriptions
+      // Search 3: Look for keywords in descriptions (broader search)
       if (intent.search_terms.exact_keywords && intent.search_terms.exact_keywords.length > 0) {
         console.log(`📝 Searching for keywords in descriptions...`);
         
-        const descConditions = intent.search_terms.exact_keywords
+        // Create broader search terms including partial matches
+        const broadKeywords = [...intent.search_terms.exact_keywords];
+        
+        // Add broader plant-related terms if this is about plants
+        if (intent.app_type && intent.app_type.toLowerCase().includes('plant')) {
+          broadKeywords.push('plant', 'garden', 'watering', 'flower', 'gardening');
+        }
+        
+        const descConditions = broadKeywords
           .map(keyword => `description.ilike.%${keyword}%`)
           .join(',');
         
@@ -200,25 +208,68 @@ Return ONLY the JSON object:`;
           .from('apps_unified')
           .select('id, title, primary_category, rating, icon_url, description')
           .or(descConditions)
-          .limit(50);
+          .limit(100);
         
         if (!descError && descMatches) {
           const existingIds = new Set(results.map(r => r.id));
           
           descMatches.forEach(app => {
             if (!existingIds.has(app.id)) {
-              const matchedKeywords = intent.search_terms.exact_keywords.filter(keyword =>
-                app.description?.toLowerCase().includes(keyword.toLowerCase())
+              const matchedKeywords = broadKeywords.filter(keyword =>
+                app.description?.toLowerCase().includes(keyword.toLowerCase()) ||
+                app.title?.toLowerCase().includes(keyword.toLowerCase())
               );
               
               const isAvoided = intent.avoid_categories.some(cat =>
                 app.primary_category?.toLowerCase().includes(cat.toLowerCase())
               );
               
-              if (!isAvoided && matchedKeywords.length > 0) {
+              // Filter out clearly irrelevant apps
+              const isRelevant = !app.title?.toLowerCase().includes('zombie') &&
+                               !app.title?.toLowerCase().includes('game') &&
+                               !app.primary_category?.toLowerCase().includes('games') &&
+                               !app.title?.toLowerCase().includes('delivery') &&
+                               !app.title?.toLowerCase().includes('photo print');
+              
+              // Boost score for more relevant plant apps
+              let relevanceScore = 4 + matchedKeywords.length;
+              if (intent.app_type && intent.app_type.toLowerCase().includes('plant')) {
+                // Higher score for apps that are specifically about plants/gardening
+                if (app.title?.toLowerCase().includes('plant') || 
+                    app.title?.toLowerCase().includes('garden') ||
+                    app.primary_category?.toLowerCase().includes('lifestyle')) {
+                  relevanceScore += 2;
+                }
+                
+                // Lower score for apps that just mention plant casually
+                if (app.title?.toLowerCase().includes('design') ||
+                    app.title?.toLowerCase().includes('ai') ||
+                    app.title?.toLowerCase().includes('photo')) {
+                  relevanceScore -= 1;
+                }
+              }
+              
+              // Only include apps with clear connection to the search intent
+              const hasStrongMatch = app.title?.toLowerCase().includes('plant') || 
+                                   app.title?.toLowerCase().includes('garden') ||
+                                   app.description?.toLowerCase().includes('plant care') ||
+                                   app.description?.toLowerCase().includes('watering') ||
+                                   app.description?.toLowerCase().includes('gardening');
+              
+              // Exclude clearly unrelated apps even if they mention plant casually
+              const isUnrelated = app.title?.toLowerCase().includes('restaurant') ||
+                                app.title?.toLowerCase().includes('food') ||
+                                app.title?.toLowerCase().includes('magazine') ||
+                                app.title?.toLowerCase().includes('shop') ||
+                                app.title?.toLowerCase().includes('places') ||
+                                app.title?.toLowerCase().includes('kitchen') ||
+                                app.primary_category?.toLowerCase().includes('food');
+              
+              if (!isAvoided && !isUnrelated && matchedKeywords.length > 0 && isRelevant && 
+                  (relevanceScore >= 7 || hasStrongMatch)) {
                 results.push({
                   ...app,
-                  relevance_score: 5 + matchedKeywords.length,
+                  relevance_score: relevanceScore,
                   search_method: 'description_keyword',
                   matched_keywords: matchedKeywords
                 });
@@ -352,17 +403,35 @@ Return ONLY the JSON object:`;
     // Combine all results
     const allResults = [...targetedResults, ...featureResults];
     
-    // Deduplicate by app title (keep highest scoring version)
+    // Debug: Show all results before deduplication
+    console.log('  All results before deduplication:');
+    allResults.forEach((result, i) => {
+      console.log(`    ${i+1}. ${result.title} (${result.search_method}) - Score: ${result.relevance_score}`);
+    });
+    
+    // Deduplicate by normalized title (most reliable for same app)
     const deduplicatedMap = new Map();
     allResults.forEach(result => {
-      const title = result.title?.toLowerCase().trim();
-      if (!title) return;
+      // Always use normalized title as the key for proper deduplication
+      const key = result.title?.toLowerCase().trim().replace(/[^a-z0-9]/g, '');
+      if (!key) return;
       
-      const existing = deduplicatedMap.get(title);
+      const existing = deduplicatedMap.get(key);
       const currentScore = result.relevance_score || 0;
       
-      if (!existing || currentScore > (existing.relevance_score || 0)) {
-        deduplicatedMap.set(title, result);
+      if (!existing) {
+        deduplicatedMap.set(key, result);
+      } else if (currentScore > (existing.relevance_score || 0)) {
+        // Keep the higher scoring version and combine search methods
+        result.search_method = `${existing.search_method}+${result.search_method}`;
+        result.matched_keywords = [...new Set([...(existing.matched_keywords || []), ...(result.matched_keywords || [])])];
+        deduplicatedMap.set(key, result);
+      } else {
+        // Keep existing but add the search method
+        if (!existing.search_method.includes(result.search_method)) {
+          existing.search_method = `${existing.search_method}+${result.search_method}`;
+          existing.matched_keywords = [...new Set([...(existing.matched_keywords || []), ...(result.matched_keywords || [])])];
+        }
       }
     });
     

@@ -1,5 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { smartHybridRetrieval } from '@/lib/recommendation/retrievers/smart-hybrid-retriever';
+
+// Import the state-of-art search class
+const StateOfArtSearch = require('../../../../../data-scraping/scripts/state-of-art-search.js');
 
 export async function POST(request: NextRequest) {
   try {
@@ -30,32 +32,35 @@ export async function POST(request: NextRequest) {
     
     const startTime = Date.now();
     
-    console.log(`🔍 Intent-driven search request: "${query}" (limit: ${limit})`);
+    console.log(`🔍 Intent-driven search (state-of-art) request: "${query}" (limit: ${limit})`);
     
-    // Perform smart hybrid search
-    const results = await smartHybridRetrieval(query.trim(), Math.min(limit, 50));
+    // Initialize and perform state-of-art search
+    const stateOfArtSearch = new StateOfArtSearch();
+    const searchResponse = await stateOfArtSearch.search(query.trim(), Math.min(limit, 50));
     
     const searchTime = Date.now() - startTime;
     
-    console.log(`✅ Intent-driven search completed in ${searchTime}ms: ${results.length} results`);
+    console.log(`✅ Intent-driven search completed in ${searchTime}ms: ${searchResponse.results?.length || 0} results`);
     
-    // Convert smart hybrid results to expected format
-    const formattedResults = results.map(result => ({
-      app_id: result.app_id,
+    // Convert state-of-art results to expected format
+    const formattedResults = (searchResponse.results || []).map(result => ({
+      app_id: result.id,
       app_data: {
-        name: result.app_data.name,
-        category: result.app_data.category,
-        rating: result.app_data.rating,
-        icon_url: result.app_data.icon_url,
-        description: result.app_data.description,
+        name: result.title,
+        category: result.primary_category,
+        rating: result.rating,
+        icon_url: result.icon_url,
+        description: result.description,
         developer: 'Unknown Developer',
         price: 'Free',
         url: null
       },
-      relevance_score: result.final_score,
-      match_reason: result.explanation,
-      matched_keywords: result.matched_concepts || [],
-      search_method: 'smart_hybrid'
+      relevance_score: result.relevance_score || 5,
+      match_reason: result.feature_match ? 
+        `Feature match: ${result.feature_match.use_case}` : 
+        `${result.search_method} match`,
+      matched_keywords: result.matched_keywords || [],
+      search_method: result.search_method || 'state_of_art'
     }));
 
     // Prepare response
@@ -66,7 +71,8 @@ export async function POST(request: NextRequest) {
       metadata: {
         count: formattedResults.length,
         searchTime: `${searchTime}ms`,
-        searchType: 'smart-hybrid',
+        searchType: 'state-of-art',
+        intent: searchResponse.intent,
         timestamp: new Date().toISOString()
       }
     };
@@ -75,7 +81,7 @@ export async function POST(request: NextRequest) {
     const headers = new Headers();
     headers.set('X-Search-Time', `${searchTime}ms`);
     headers.set('X-Result-Count', formattedResults.length.toString());
-    headers.set('X-Search-Type', 'smart-hybrid');
+    headers.set('X-Search-Type', 'state-of-art');
     
     return NextResponse.json(response, { headers });
     
@@ -120,23 +126,26 @@ export async function GET(request: NextRequest) {
       );
     }
     
-    // Perform quick search with lower limit for GET requests
-    const results = await smartHybridRetrieval(query, Math.min(limit, 20));
+    // Perform quick search with state-of-art algorithm
+    const stateOfArtSearch = new StateOfArtSearch();
+    const searchResponse = await stateOfArtSearch.search(query, Math.min(limit, 20));
     
     // Simplified response for GET
     const response = {
       success: true,
       query,
-      results: results.map(r => ({
-        app_id: r.app_id,
-        name: r.app_data.name,
-        category: r.app_data.category,
-        rating: r.app_data.rating,
-        icon_url: r.app_data.icon_url,
-        relevance_score: r.final_score,
-        match_reason: r.explanation
+      results: (searchResponse.results || []).map(r => ({
+        app_id: r.id,
+        name: r.title,
+        category: r.primary_category,
+        rating: r.rating,
+        icon_url: r.icon_url,
+        relevance_score: r.relevance_score || 5,
+        match_reason: r.feature_match ? 
+          `Feature match: ${r.feature_match.use_case}` : 
+          `${r.search_method} match`
       })),
-      count: results.length
+      count: searchResponse.results?.length || 0
     };
     
     return NextResponse.json(response);

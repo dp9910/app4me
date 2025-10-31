@@ -635,7 +635,7 @@ TASK 3: Identify relevance boosters:
 Return JSON:
 {
   "user_intent": {
-    "primary_goal": "what the user wants to accomplish",
+    "user_goal": "what the user wants to accomplish",
     "app_type": "specific type of functional app needed",
     "functional_keywords": ["keywords indicating real functionality"],
     "avoid_entertainment": true/false,
@@ -743,14 +743,15 @@ Be VERY specific about excluding irrelevant results. For plant care, exclude gam
     // Fallback
     return {
       intent: {
-        primary_goal: 'Find relevant apps',
+        user_goal: 'Find relevant apps',
         app_type: 'general',
-        functional_keywords: extractKeywords(query),
-        avoid_entertainment: false,
-        avoid_games: false,
-        avoid_design_only: false,
-        target_categories: ['Lifestyle', 'Productivity'],
-        exclude_categories: [],
+        specific_features: ['useful', 'well-rated', 'popular'],
+        avoid_categories: ['dating', 'games'],
+        search_terms: {
+          app_names: [],
+          exact_keywords: extractKeywords(query),
+          category_keywords: ['Lifestyle', 'Productivity']
+        },
         confidence: 0.3
       },
       shouldExclude: () => false,
@@ -1407,7 +1408,7 @@ async function performTargetedSearch(
     try {
       // Generate query embedding
       const embeddingModel = genAI.getGenerativeModel({ model: 'text-embedding-004' });
-      const searchQuery = intent.user_goal || intent.primary_goal || 'plant care app';
+      const searchQuery = intent.user_goal || 'plant care app';
       const embResult = await embeddingModel.embedContent(searchQuery);
       const queryEmbedding = embResult.embedding.values;
       

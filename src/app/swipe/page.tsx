@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { useAuth } from '@/lib/auth/auth-context';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 
 interface App {
@@ -33,6 +33,7 @@ interface App {
 export default function SwipePage() {
   const { user, loading } = useAuth();
   const router = useRouter();
+  const searchParams = useSearchParams();
   const [searchQuery, setSearchQuery] = useState('');
   const [currentApp, setCurrentApp] = useState<App | null>(null);
   const [appStack, setAppStack] = useState<App[]>([]);
@@ -42,15 +43,29 @@ export default function SwipePage() {
   const [searchResults, setSearchResults] = useState<App[]>([]);
   const [searchError, setSearchError] = useState<string | null>(null);
   const [hasSearched, setHasSearched] = useState(false);
+  const [isDemoMode, setIsDemoMode] = useState(false);
 
   useEffect(() => {
-    if (!loading && !user) {
+    // Check if we're in demo mode
+    const demoParam = searchParams.get('demo');
+    const queryParam = searchParams.get('query');
+    
+    if (demoParam === 'true') {
+      setIsDemoMode(true);
+      if (queryParam) {
+        setSearchQuery(decodeURIComponent(queryParam));
+        // Auto-trigger search if query is provided
+        setTimeout(() => {
+          handleSearchWithQuery(decodeURIComponent(queryParam));
+        }, 500);
+      }
+    } else if (!loading && !user) {
       router.push('/auth/signin');
     }
-  }, [user, loading, router]);
+  }, [searchParams, user, loading, router]);
 
-  const handleSearch = async () => {
-    if (!searchQuery.trim()) return;
+  const handleSearchWithQuery = async (query: string) => {
+    if (!query.trim()) return;
     
     setIsSearching(true);
     setSearchError(null);
@@ -63,7 +78,7 @@ export default function SwipePage() {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          query: searchQuery.trim(),
+          query: query.trim(),
           limit: 20
         }),
       });
@@ -121,6 +136,11 @@ export default function SwipePage() {
     }
   };
 
+  const handleSearch = async () => {
+    if (!searchQuery.trim()) return;
+    await handleSearchWithQuery(searchQuery);
+  };
+
   const handleAction = (action: 'pass' | 'star' | 'like') => {
     // TODO: Save user action to user-app-interactions
     console.log(`Action: ${action} on app: ${currentApp?.name}`);
@@ -165,21 +185,37 @@ export default function SwipePage() {
               <path d="M44 11.2727C44 14.0109 39.8386 16.3957 33.69 17.6364C39.8386 18.877 44 21.2618 44 24C44 26.7382 39.8386 29.123 33.69 30.3636C39.8386 31.6043 44 33.9891 44 36.7273C44 40.7439 35.0457 44 24 44C12.9543 44 4 40.7439 4 36.7273C4 33.9891 8.16144 31.6043 14.31 30.3636C8.16144 29.123 4 26.7382 4 24C4 21.2618 8.16144 18.877 14.31 17.6364C8.16144 16.3957 4 14.0109 4 11.2727C4 7.25611 12.9543 4 24 4C35.0457 4 44 7.25611 44 11.2727Z" fill="currentColor"></path>
             </svg>
           </div>
-          <h2 className="text-gray-900 dark:text-white text-lg font-bold leading-tight tracking-[-0.015em]">AppFinder</h2>
+          <h2 className="text-gray-900 dark:text-white text-lg font-bold leading-tight tracking-[-0.015em]">
+            AppFinder {isDemoMode && <span className="text-primary text-sm">• Demo</span>}
+          </h2>
         </div>
         <div className="hidden md:flex flex-1 justify-end gap-8">
           <div className="flex items-center gap-9">
-            <Link href="/home" className="text-gray-700 dark:text-gray-300 hover:text-primary dark:hover:text-primary text-sm font-medium leading-normal">Home</Link>
-            <Link href="/swipe" className="text-primary text-sm font-medium leading-normal">Swipe</Link>
-            <a className="text-gray-700 dark:text-gray-300 hover:text-primary dark:hover:text-primary text-sm font-medium leading-normal" href="#">Liked Apps</a>
+            <Link href="/" className="text-gray-700 dark:text-gray-300 hover:text-primary dark:hover:text-primary text-sm font-medium leading-normal">Home</Link>
+            {!isDemoMode && (
+              <>
+                <Link href="/swipe" className="text-primary text-sm font-medium leading-normal">Swipe</Link>
+                <a className="text-gray-700 dark:text-gray-300 hover:text-primary dark:hover:text-primary text-sm font-medium leading-normal" href="#">Liked Apps</a>
+              </>
+            )}
           </div>
           <div className="flex items-center gap-4">
-            <Link href="/profile">
-              <button className="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 px-4 bg-primary text-white text-sm font-bold leading-normal tracking-[0.015em]">
-                <span className="truncate">My Profile</span>
-              </button>
-            </Link>
-            <div className="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-10 bg-gradient-to-br from-purple-400 to-pink-400"></div>
+            {isDemoMode ? (
+              <Link href="/">
+                <button className="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 px-4 bg-primary text-white text-sm font-bold leading-normal tracking-[0.015em]">
+                  <span className="truncate">← Back to Home</span>
+                </button>
+              </Link>
+            ) : (
+              <>
+                <Link href="/profile">
+                  <button className="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 px-4 bg-primary text-white text-sm font-bold leading-normal tracking-[0.015em]">
+                    <span className="truncate">My Profile</span>
+                  </button>
+                </Link>
+                <div className="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-10 bg-gradient-to-br from-purple-400 to-pink-400"></div>
+              </>
+            )}
           </div>
         </div>
         <button className="md:hidden text-gray-800 dark:text-white">

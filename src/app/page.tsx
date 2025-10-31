@@ -1,4 +1,22 @@
+'use client';
+
+import { useState } from 'react';
+import { useRouter } from 'next/navigation';
+
 export default function HomePage() {
+  const router = useRouter();
+  const [demoQuery, setDemoQuery] = useState('');
+  
+  const handleFindApps = () => {
+    if (demoQuery.trim()) {
+      // Navigate to swipe page with the query as a URL parameter
+      router.push(`/swipe?demo=true&query=${encodeURIComponent(demoQuery.trim())}`);
+    } else {
+      // Navigate to swipe page without query for manual search
+      router.push('/swipe?demo=true');
+    }
+  };
+
   return (
     <div className="relative flex min-h-screen w-full flex-col items-center overflow-x-hidden p-4 sm:p-6 md:p-8">
       {/* Subtle Background Element */}
@@ -54,12 +72,44 @@ export default function HomePage() {
             </div>
           </div>
           
+          {/* Quick Search Section */}
+          <div className="mt-12 w-full max-w-2xl">
+            <div className="bg-white/70 dark:bg-gray-800/70 backdrop-blur-sm rounded-2xl p-6 border border-gray-200 dark:border-gray-700 shadow-xl">
+              <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-4 text-center">
+                🚀 Try Our AI-Powered Search
+              </h3>
+              <div className="space-y-4">
+                <input
+                  type="text"
+                  placeholder="What kind of app are you looking for? (e.g., plant care, budget tracking, meditation)"
+                  value={demoQuery}
+                  onChange={(e) => setDemoQuery(e.target.value)}
+                  onKeyPress={(e) => e.key === 'Enter' && handleFindApps()}
+                  className="w-full h-12 px-4 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-white placeholder:text-gray-500 dark:placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary"
+                />
+                <button
+                  onClick={handleFindApps}
+                  className="w-full bg-gradient-to-r from-primary to-purple-600 hover:from-primary/90 hover:to-purple-600/90 text-white font-bold py-3 px-6 rounded-lg transition-all duration-200 transform hover:scale-105 shadow-lg hover:shadow-xl flex items-center justify-center gap-2"
+                >
+                  <span className="text-xl">✨</span>
+                  Find My Perfect Apps
+                  <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                    <path fillRule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clipRule="evenodd"/>
+                  </svg>
+                </button>
+              </div>
+              <p className="text-sm text-gray-600 dark:text-gray-400 text-center mt-3">
+                No signup required • Try it now
+              </p>
+            </div>
+          </div>
+
           {/* Primary CTA Section */}
-          <div className="mt-16 text-center">
-            <p className="mb-4 text-base font-medium text-gray-700 dark:text-gray-300">Ready to find your perfect apps?</p>
+          <div className="mt-8 text-center">
+            <p className="mb-4 text-base font-medium text-gray-700 dark:text-gray-300">Want to save your preferences?</p>
             <div className="flex flex-wrap items-center justify-center gap-3">
-              <a href="/auth/signup" className="flex min-w-[84px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-12 px-5 bg-primary text-white text-base font-bold leading-normal tracking-wide transition-colors hover:bg-primary/90">
-                <span className="truncate">Create Your Free Account</span>
+              <a href="/auth/signup" className="flex min-w-[84px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-12 px-5 bg-gray-500/10 text-gray-800 dark:text-white text-base font-bold leading-normal tracking-wide transition-colors hover:bg-gray-500/20">
+                <span className="truncate">Create Account</span>
               </a>
               <a href="/results" className="flex min-w-[84px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-12 px-5 bg-gray-500/10 text-gray-800 dark:text-white text-base font-bold leading-normal tracking-wide transition-colors hover:bg-gray-500/20">
                 <span className="truncate">Learn More</span>
