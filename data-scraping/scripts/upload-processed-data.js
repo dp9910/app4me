@@ -6,6 +6,7 @@
  */
 
 const fs = require('fs');
+const path = require('path');
 const { createClient } = require('@supabase/supabase-js');
 require('dotenv').config({ path: '.env.local' });
 
@@ -16,10 +17,40 @@ const supabase = createClient(
 );
 
 class ProcessedDataUploader {
-  constructor() {
-    this.uniqueAppsFile = 'data-scraping/new-apps/unique-apps-chemistry-2025-10-31T17-54-01-770Z.json';
-    this.featuresFile = 'data-scraping/new-features/features-chemistry-2025-10-31T18-00-20-570Z.json';
-    this.embeddingsFile = 'data-scraping/new-embeddings/embeddings-chemistry-2025-10-31T18-01-18-056Z.json';
+  constructor(uniqueAppsFile = null, featuresFile = null, embeddingsFile = null) {
+    if (uniqueAppsFile) {
+      this.uniqueAppsFile = uniqueAppsFile;
+    } else {
+      const newAppsDir = 'data-scraping/new-apps';
+      this.uniqueAppsFile = this.getLatestJsonFile(newAppsDir);
+    }
+
+    if (featuresFile) {
+      this.featuresFile = featuresFile;
+    } else {
+      const newFeaturesDir = 'data-scraping/new-features';
+      this.featuresFile = this.getLatestJsonFile(newFeaturesDir);
+    }
+
+    if (embeddingsFile) {
+      this.embeddingsFile = embeddingsFile;
+    } else {
+      const newEmbeddingsDir = 'data-scraping/new-embeddings';
+      this.embeddingsFile = this.getLatestJsonFile(newEmbeddingsDir);
+    }
+  }
+
+  getLatestJsonFile(directory) {
+    const files = fs.readdirSync(directory)
+      .filter(file => file.endsWith('.json'))
+      .map(file => ({ file, mtime: fs.statSync(path.join(directory, file)).mtime.getTime() }))
+      .sort((a, b) => b.mtime - a.mtime); // Sort by modification time, newest first
+
+    if (files.length === 0) {
+      throw new Error(`No JSON files found in ${directory}`);
+    }
+
+    return path.join(directory, files[0].file);
   }
 
   async loadProcessedData() {
@@ -29,7 +60,9 @@ class ProcessedDataUploader {
     if (!fs.existsSync(this.uniqueAppsFile)) {
       throw new Error(`Unique apps file not found: ${this.uniqueAppsFile}`);
     }
+    console.log(`  Loading unique apps from: ${this.uniqueAppsFile}`);
     const uniqueAppsData = JSON.parse(fs.readFileSync(this.uniqueAppsFile, 'utf-8'));
+    console.log(`  uniqueAppsData keys: ${Object.keys(uniqueAppsData)}`);
     this.uniqueApps = uniqueAppsData.apps;
     console.log(`  ✅ Loaded ${this.uniqueApps.length} unique apps`);
 
@@ -78,8 +111,44 @@ class ProcessedDataUploader {
   async uploadApps() {
     console.log('📤 Uploading apps to apps_unified...');
 
-    // Prepare apps data for upload
-    const appsData = this.uniqueApps.map(app => ({
+    // Get existing bundle_ids from the database
+    const { data: existingApps, error: existingAppsError } = await supabase
+      .from('apps_unified')
+      .select('bundle_id');
+
+    if (existingAppsError) {
+      console.error('❌ Error fetching existing apps:', existingAppsError);
+      throw existingAppsError;
+    }
+
+    const existingBundleIds = new Set(existingApps.map(app => app.bundle_id));
+    console.log(`  Found ${existingBundleIds.size} existing apps in the database.`);
+
+    // Filter out apps that already exist
+    const newAppsToUpload = this.uniqueApps.filter(app => !existingBundleIds.has(app.bundle_id));
+    console.log(`  Identified ${newAppsToUpload.length} new apps to upload.`);
+
+    if (newAppsToUpload.length === 0) {
+      console.log('  ⚠️ No new apps to upload.');
+      // Even if no new apps, we still need to populate idMapping for features/embeddings
+      const { data: allAppsInDb, error: allAppsInDbError } = await supabase
+        .from('apps_unified')
+        .select('id, bundle_id');
+
+      if (allAppsInDbError) {
+        console.error('❌ Error fetching all apps for ID mapping:', allAppsInDbError);
+        throw allAppsInDbError;
+      }
+
+      this.idMapping = new Map();
+      allAppsInDb.forEach(app => {
+        this.idMapping.set(app.bundle_id, app.id);
+      });
+      return;
+    }
+
+    // Prepare new apps data for upload
+    const appsData = newAppsToUpload.map(app => ({
       bundle_id: app.bundle_id,
       title: app.title,
       developer: app.developer,
@@ -92,22 +161,54 @@ class ProcessedDataUploader {
       version: app.version
     }));
 
+    console.log(`  Attempting to upsert ${appsData.length} apps.`);
     const { data: appsInserted, error: appsError } = await supabase
       .from('apps_unified')
-      .insert(appsData)
+      .upsert(appsData, { onConflict: 'bundle_id' })
       .select('id, bundle_id');
 
-    if (appsError) throw appsError;
+    if (appsError) {
+      console.error('❌ Error during apps upsert:', appsError);
+      throw appsError;
+    }
     
     console.log(`  ✅ Uploaded ${appsInserted.length} apps to apps_unified`);
 
-    // Create mapping of bundle_id to database id
+    // Create mapping of bundle_id to database id (for all apps, including existing ones)
+    // We need the IDs of all apps that will be referenced by features and embeddings
+    const { data: allAppsInDb, error: allAppsInDbError } = await supabase
+      .from('apps_unified')
+      .select('id, bundle_id');
+
+    if (allAppsInDbError) {
+      console.error('❌ Error fetching all apps for ID mapping:', allAppsInDbError);
+      throw allAppsInDbError;
+    }
+
     this.idMapping = new Map();
-    appsInserted.forEach(app => {
+    allAppsInDb.forEach(app => {
       this.idMapping.set(app.bundle_id, app.id);
     });
 
     return appsInserted;
+  }
+
+  async populateIdMapping() {
+    console.log('🔄 Populating app ID mapping...');
+    const { data: allAppsInDb, error: allAppsInDbError } = await supabase
+      .from('apps_unified')
+      .select('id, bundle_id');
+
+    if (allAppsInDbError) {
+      console.error('❌ Error fetching all apps for ID mapping:', allAppsInDbError);
+      throw allAppsInDbError;
+    }
+
+    this.idMapping = new Map();
+    allAppsInDb.forEach(app => {
+      this.idMapping.set(app.bundle_id, app.id);
+    });
+    console.log(`  ✅ Populated ID mapping for ${this.idMapping.size} apps.`);
   }
 
   async uploadFeatures() {
@@ -120,7 +221,7 @@ class ProcessedDataUploader {
         return null;
       }
       
-      const { bundle_id, title, generated_at, ...featureFields } = feature;
+      const { bundle_id, title, generated_at, content_type, core_features, customization_level, data_privacy_level, integration_capability, pricing_model, user_interaction_style, offline_capability, social_features, learning_curve, update_frequency, ...featureFields } = feature;
       return {
         app_id: appId,
         ...featureFields
@@ -130,7 +231,7 @@ class ProcessedDataUploader {
     if (featuresData.length > 0) {
       const { error: featuresError } = await supabase
         .from('app_features')
-        .insert(featuresData);
+        .upsert(featuresData, { onConflict: 'app_id' });
       
       if (featuresError) throw featuresError;
       console.log(`  ✅ Uploaded ${featuresData.length} feature records`);
@@ -160,7 +261,7 @@ class ProcessedDataUploader {
     if (embeddingsData.length > 0) {
       const { error: embeddingsError } = await supabase
         .from('app_embeddings')
-        .insert(embeddingsData);
+        .upsert(embeddingsData, { onConflict: 'app_id' });
       
       if (embeddingsError) throw embeddingsError;
       console.log(`  ✅ Uploaded ${embeddingsData.length} embedding records`);
@@ -202,6 +303,9 @@ class ProcessedDataUploader {
       // Upload apps first
       await this.uploadApps();
 
+      // Populate ID mapping for features and embeddings
+      await this.populateIdMapping();
+
       // Upload features
       await this.uploadFeatures();
 
@@ -229,7 +333,22 @@ class ProcessedDataUploader {
 
 // Main execution
 if (require.main === module) {
-  const uploader = new ProcessedDataUploader();
+  const args = process.argv.slice(2);
+  let uniqueAppsFile = null;
+  let featuresFile = null;
+  let embeddingsFile = null;
+
+  for (let i = 0; i < args.length; i++) {
+    if (args[i] === '--apps' && args[i + 1]) {
+      uniqueAppsFile = args[++i];
+    } else if (args[i] === '--features' && args[i + 1]) {
+      featuresFile = args[++i];
+    } else if (args[i] === '--embeddings' && args[i + 1]) {
+      embeddingsFile = args[++i];
+    }
+  }
+
+  const uploader = new ProcessedDataUploader(uniqueAppsFile, featuresFile, embeddingsFile);
   uploader.run();
 }
 
