@@ -1,25 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { supabase, supabaseAdmin } from '@/lib/supabase/client';
 
-// Category mappings for iTunes search terms
-const CATEGORY_MAPPINGS: { [key: string]: string[] } = {
-  'productivity': ['productivity', 'task management', 'todo', 'notes', 'organization'],
-  'budget': ['budget', 'finance', 'expense tracker', 'money manager', 'personal finance'],
-  'fitness': ['fitness', 'workout', 'exercise', 'health tracker', 'gym'],
-  'gaming': ['games', 'puzzle', 'strategy', 'action', 'arcade'],
-  'music': ['music', 'audio', 'streaming', 'podcast', 'radio'],
-  'social': ['social media', 'messaging', 'chat', 'communication', 'networking'],
-  'photo': ['photo editing', 'camera', 'photography', 'image editor', 'filters'],
-  'education': ['education', 'learning', 'language', 'study', 'courses'],
-  'travel': ['travel', 'maps', 'navigation', 'hotels', 'flights'],
-  'shopping': ['shopping', 'ecommerce', 'deals', 'marketplace', 'retail'],
-  'food': ['food', 'recipes', 'cooking', 'restaurant', 'delivery'],
-  'news': ['news', 'current events', 'journalism', 'media', 'headlines'],
-  'weather': ['weather', 'forecast', 'climate', 'meteorology'],
-  'business': ['business', 'professional', 'enterprise', 'corporate', 'work'],
-  'entertainment': ['entertainment', 'streaming', 'videos', 'comedy', 'shows'],
-  'lifestyle': ['lifestyle', 'home', 'design', 'fashion', 'beauty']
-};
+// Default fallback interests if user has none set
+const DEFAULT_INTERESTS = ['productivity', 'entertainment', 'education', 'fitness', 'games'];
 
 // Helper function to get authenticated user from request
 async function getAuthenticatedUser(request: NextRequest) {
@@ -49,41 +32,29 @@ async function getAuthenticatedUser(request: NextRequest) {
   return { user, error: null };
 }
 
-// Function to extract categories from user interests
-function extractCategoriesFromInterests(appInterests: string[]): string[] {
-  const matchedCategories = new Set<string>();
-  
-  appInterests.forEach(interest => {
-    const lowerInterest = interest.toLowerCase();
-    
-    // Check direct matches and partial matches
-    Object.entries(CATEGORY_MAPPINGS).forEach(([category, keywords]) => {
-      if (keywords.some(keyword => 
-        lowerInterest.includes(keyword.toLowerCase()) || 
-        keyword.toLowerCase().includes(lowerInterest)
-      )) {
-        matchedCategories.add(category);
-      }
-    });
-  });
-  
-  // If no matches found, use some default categories
-  if (matchedCategories.size === 0) {
-    return ['productivity', 'utilities', 'lifestyle'];
+// Function to process user interests for iTunes search
+function processUserInterests(appInterests: string[]): string[] {
+  if (!appInterests || appInterests.length === 0) {
+    // Return random default interests
+    const shuffled = DEFAULT_INTERESTS.sort(() => Math.random() - 0.5);
+    return shuffled.slice(0, 3); // Return 3 random interests
   }
   
-  return Array.from(matchedCategories);
+  // Use user interests directly, clean them up
+  return appInterests
+    .map(interest => interest.trim().toLowerCase())
+    .filter(interest => interest.length > 0)
+    .slice(0, 5); // Limit to 5 interests to avoid too many API calls
 }
 
-// Function to fetch apps from iTunes API for a specific category
-async function fetchItunesAppsForCategory(category: string, limit: number = 10): Promise<any[]> {
+// Function to fetch apps from iTunes API for a specific interest
+async function fetchItunesAppsForInterest(interest: string, limit: number = 10): Promise<any[]> {
   try {
-    const searchTerms = CATEGORY_MAPPINGS[category] || [category];
-    const searchTerm = searchTerms[0]; // Use the primary search term
+    const searchTerm = interest; // Use the interest directly as search term
     
     const url = `https://itunes.apple.com/search?term=${encodeURIComponent(searchTerm)}&country=US&entity=software&limit=${limit * 2}`; // Get more to filter
     
-    console.log(`Fetching iTunes apps for category "${category}" with search term "${searchTerm}"`);
+    console.log(`Fetching iTunes apps for interest "${interest}" with search term "${searchTerm}"`);
     
     const response = await fetch(url, {
       headers: {
@@ -105,10 +76,10 @@ async function fetchItunesAppsForCategory(category: string, limit: number = 10):
       .filter((app: any) => app.trackName && app.artistName) // Filter out incomplete data
       .slice(0, limit) // Limit results
       .map((app: any, index: number) => ({
-        id: app.trackId?.toString() || `itunes_${category}_${index}`,
+        id: app.trackId?.toString() || `itunes_${interest}_${index}`,
         name: app.trackName,
         artist: app.artistName,
-        category: app.primaryGenreName || category,
+        category: app.primaryGenreName || interest,
         icon: app.artworkUrl512 || app.artworkUrl100 || app.artworkUrl60,
         url: app.trackViewUrl,
         rating: parseFloat((app.averageUserRating || 0).toFixed(1)),
@@ -118,18 +89,18 @@ async function fetchItunesAppsForCategory(category: string, limit: number = 10):
         bundleId: app.bundleId,
         releaseDate: app.releaseDate,
         source: 'itunes',
-        searchCategory: category,
+        searchCategory: interest,
         version: app.version,
         ratingCount: app.userRatingCount || 0,
         fileSize: app.fileSizeBytes,
         minimumOsVersion: app.minimumOsVersion
       }));
 
-    console.log(`Found ${transformedApps.length} apps for category "${category}"`);
+    console.log(`Found ${transformedApps.length} apps for interest "${interest}"`);
     return transformedApps;
     
   } catch (error: any) {
-    console.error(`Error fetching iTunes apps for category "${category}":`, error.message);
+    console.error(`Error fetching iTunes apps for interest "${interest}":`, error.message);
     return [];
   }
 }
@@ -170,18 +141,18 @@ export async function GET(request: NextRequest) {
 
     console.log('User app interests:', personalizationData.app_interests);
 
-    // Extract categories from user interests
-    const userCategories = extractCategoriesFromInterests(personalizationData.app_interests);
-    console.log('Matched categories:', userCategories);
+    // Process user interests directly
+    const userInterests = processUserInterests(personalizationData.app_interests);
+    console.log('Processed user interests:', userInterests);
 
-    // Fetch apps for each user category
+    // Fetch apps for each user interest
     const personalizedApps: any[] = [];
-    const categoryResults: { [key: string]: any[] } = {};
+    const interestResults: { [key: string]: any[] } = {};
 
-    for (const category of userCategories) {
-      const categoryApps = await fetchItunesAppsForCategory(category, 20);
-      categoryResults[category] = categoryApps;
-      personalizedApps.push(...categoryApps);
+    for (const interest of userInterests) {
+      const interestApps = await fetchItunesAppsForInterest(interest, 20);
+      interestResults[interest] = interestApps;
+      personalizedApps.push(...interestApps);
     }
 
     // Shuffle and limit the results
@@ -195,9 +166,9 @@ export async function GET(request: NextRequest) {
       personalized: true,
       userNickname: personalizationData.nickname,
       userInterests: personalizationData.app_interests,
-      matchedCategories: userCategories,
-      categoryResults: Object.keys(categoryResults).reduce((acc, cat) => {
-        acc[cat] = categoryResults[cat].length;
+      processedInterests: userInterests,
+      interestResults: Object.keys(interestResults).reduce((acc, interest) => {
+        acc[interest] = interestResults[interest].length;
         return acc;
       }, {} as { [key: string]: number }),
       message: `Found ${shuffledApps.length} personalized app recommendations based on your interests!`,
