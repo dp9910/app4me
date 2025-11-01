@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+
+<html class="" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>My Apps - App Discovery</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Spline+Sans:wght@400;500;700;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "primary": "#13a4ec",
+              "background-light": "#f6f7f8",
+              "background-dark": "#101c22",
+              "secondary-light": "#ffffff",
+              "secondary-dark": "#192b33",
+              "text-light": "#333333",
+              "text-dark": "#ffffff",
+              "subtext-light": "#6b7280",
+              "subtext-dark": "#92b7c9",
+              "border-light": "#E0E0E0",
+              "border-dark": "#233c48",
+              "accent": "#FF6B6B"
+            },
+            fontFamily: {
+              "display": ["Spline Sans", "sans-serif"]
+            },
+            borderRadius: {"DEFAULT": "0.5rem", "lg": "1rem", "xl": "1.5rem", "full": "9999px"},
+          },
+        },
+      }
+    </script>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display">
+<div class="relative flex h-auto min-h-screen w-full flex-col">
+<header class="sticky top-0 z-20 flex items-center justify-between whitespace-nowrap border-b border-solid border-border-light dark:border-border-dark px-4 sm:px-6 lg:px-10 py-3 bg-secondary-light/80 dark:bg-secondary-dark/80 backdrop-blur-sm">
+<div class="flex items-center gap-8">
+<div class="flex items-center gap-3 text-text-light dark:text-text-dark">
+<div class="size-6 text-primary">
+<svg fill="currentColor" viewbox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+<path d="M13.8261 30.5736C16.7203 29.8826 20.2244 29.4783 24 29.4783C27.7756 29.4783 31.2797 29.8826 34.1739 30.5736C36.9144 31.2278 39.9967 32.7669 41.3563 33.8352L24.8486 7.36089C24.4571 6.73303 23.5429 6.73303 23.1514 7.36089L6.64374 33.8352C8.00331 32.7669 11.0856 31.2278 13.8261 30.5736Z"></path>
+<path clip-rule="evenodd" d="M39.998 35.764C39.9944 35.7463 39.9875 35.7155 39.9748 35.6706C39.9436 35.5601 39.8949 35.4259 39.8346 35.2825C39.8168 35.2403 39.7989 35.1993 39.7813 35.1602C38.5103 34.2887 35.9788 33.0607 33.7095 32.5189C30.9875 31.8691 27.6413 31.4783 24 31.4783C20.3587 31.4783 17.0125 31.8691 14.2905 32.5189C12.0012 33.0654 9.44505 34.3104 8.18538 35.1832C8.17384 35.2075 8.16216 35.233 8.15052 35.2592C8.09919 35.3751 8.05721 35.4886 8.02977 35.589C8.00356 35.6848 8.00039 35.7333 8.00004 35.7388C8.00004 35.739 8 35.7393 8.00004 35.7388C8.00004 35.7641 8.0104 36.0767 8.68485 36.6314C9.34546 37.1746 10.4222 37.7531 11.9291 38.2772C14.9242 39.319 19.1919 40 24 40C28.8081 40 33.0758 39.319 36.0709 38.2772C37.5778 37.7531 38.6545 37.1746 39.3151 36.6314C39.9006 36.1499 39.9857 35.8511 39.998 35.764ZM4.95178 32.7688L21.4543 6.30267C22.6288 4.4191 25.3712 4.41909 26.5457 6.30267L43.0534 32.777C43.0709 32.8052 43.0878 32.8338 43.104 32.8629L41.3563 33.8352C43.104 32.8629 43.1038 32.8626 43.104 32.8629L43.1051 32.865L43.1065 32.8675L43.1101 32.8739L43.1199 32.8918C43.1276 32.906 43.1377 32.9246 43.1497 32.9473C43.1738 32.9925 43.2062 33.0545 43.244 33.1299C43.319 33.2792 43.4196 33.489 43.5217 33.7317C43.6901 34.1321 44 34.9311 44 35.7391C44 37.4427 43.003 38.7775 41.8558 39.7209C40.6947 40.6757 39.1354 41.4464 37.385 42.0552C33.8654 43.2794 29.133 44 24 44C18.867 44 14.1346 43.2794 10.615 42.0552C8.86463 41.4464 7.30529 40.6757 6.14419 39.7209C4.99695 38.7775 3.99999 37.4427 3.99999 35.7391C3.99999 34.8725 4.29264 34.0922 4.49321 33.6393C4.60375 33.3898 4.71348 33.1804 4.79687 33.0311C4.83898 32.9556 4.87547 32.8935 4.9035 32.8471C4.91754 32.8238 4.92954 32.8043 4.93916 32.7889L4.94662 32.777L4.95178 32.7688ZM35.9868 29.004L24 9.77997L12.0131 29.004C12.4661 28.8609 12.9179 28.7342 13.3617 28.6282C16.4281 27.8961 20.0901 27.4783 24 27.4783C27.9099 27.4783 31.5719 27.8961 34.6383 28.6282C35.082 28.7342 35.5339 28.8609 35.9868 29.004Z" fill-rule="evenodd"></path>
+</svg>
+</div>
+<h2 class="text-lg font-bold tracking-tight">App Discovery</h2>
+</div>
+<nav class="hidden md:flex items-center gap-8">
+<a class="text-sm font-medium text-subtext-light dark:text-subtext-dark hover:text-text-light dark:hover:text-text-dark transition-colors" href="#">Home</a>
+<a class="text-sm font-medium text-subtext-light dark:text-subtext-dark hover:text-text-light dark:hover:text-text-dark transition-colors" href="#">Discover</a>
+<a class="text-sm font-medium text-primary" href="#">My Apps</a>
+<a class="text-sm font-medium text-subtext-light dark:text-subtext-dark hover:text-text-light dark:hover:text-text-dark transition-colors" href="#">Categories</a>
+</nav>
+</div>
+<div class="flex flex-1 justify-end gap-3 sm:gap-4">
+<label class="relative hidden sm:block w-full max-w-xs">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-subtext-light dark:text-subtext-dark">search</span>
+<input class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-text-light dark:text-text-dark focus:outline-0 focus:ring-2 focus:ring-primary/50 border-border-light dark:border-border-dark bg-background-light dark:bg-background-dark focus:border-primary/50 h-10 placeholder:text-subtext-light dark:placeholder:text-subtext-dark pl-10 text-sm" placeholder="Search apps..." value=""/>
+</label>
+<button class="flex h-10 w-10 shrink-0 cursor-pointer items-center justify-center overflow-hidden rounded-lg bg-background-light dark:bg-background-dark text-subtext-light dark:text-subtext-dark hover:bg-black/5 dark:hover:bg-white/5 border border-border-light dark:border-border-dark">
+<span class="material-symbols-outlined text-xl">notifications</span>
+</button>
+<div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-10" data-alt="User profile picture" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuDH6XIFoEsbZV7rOGfkwkxamkjdVn9oduESYrLTaibjqYAO3Uiwyixq4h_bboE8T66RwRrt8_MAihx-PtTiFCjM_IoxpfZ0sWELSXhI2gZUBkVfRarB8i4NgO3PI1QrO2jPLNRB5V-5U8EXKfUtb22ZGVHYFstxpSvMKPyGmyV81WKGS7o0xOlI54TiarbPuluUjgX-nvTGWBfmIvt9AUE_H_ZHOOKLCUUhM5-rZrQba5PBdCl3zXOWopR3R60P4Nlbs-sfx6PJJPRl");'></div>
+</div>
+</header>
+<div class="flex flex-1">
+<aside class="sticky top-[65px] h-[calc(100vh-65px)] w-64 shrink-0 border-r border-border-light dark:border-border-dark p-4 hidden lg:block">
+<div class="flex h-full flex-col justify-between">
+<div class="flex flex-col gap-4">
+<div class="flex gap-3 items-center px-3">
+<div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-10" data-alt="User profile picture" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuCtDI8rv_MMuf-tLrdXjnBWK5_BNpIzxqu13K1_emOGZu4-F3ACxcuJYBkzEMJoO5_0o6f8eCESzCO73nYPaye7fLp9lWbkr1BfDdWhwxRryWIGKKDTXlPjv4irQVUtNDkRtMg8ympZ8ZwrIp8c1OPoBUQ0ULHyqUqu1EV8Y3rdtHN3CG3LzaSwi6-D3J4FAI8Q-B230MU6FLDRS83cR1nOHRXNMv0n8xseC4CEw6Mb5H9rvbIhf06sB66Ba4eKVYB2r-HZUQRd_FEG");'></div>
+<div class="flex flex-col">
+<h1 class="text-text-light dark:text-text-dark text-base font-medium leading-normal">John Doe</h1>
+<p class="text-subtext-light dark:text-subtext-dark text-sm font-normal leading-normal">john.doe@email.com</p>
+</div>
+</div>
+<div class="flex flex-col gap-1 mt-4">
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg text-text-light dark:text-text-dark hover:bg-black/5 dark:hover:bg-white/5 transition-colors" href="#">
+<span class="material-symbols-outlined text-subtext-light dark:text-subtext-dark">apps</span>
+<p class="text-sm font-medium leading-normal">All Apps</p>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg bg-primary/20 dark:bg-primary/20" href="#">
+<span class="material-symbols-outlined text-primary">spark</span>
+<p class="text-sm font-medium leading-normal text-primary">AI Productivity</p>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg text-text-light dark:text-text-dark hover:bg-black/5 dark:hover:bg-white/5 transition-colors" href="#">
+<span class="material-symbols-outlined text-subtext-light dark:text-subtext-dark">groups</span>
+<p class="text-sm font-medium leading-normal">Social Networking</p>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg text-text-light dark:text-text-dark hover:bg-black/5 dark:hover:bg-white/5 transition-colors" href="#">
+<span class="material-symbols-outlined text-subtext-light dark:text-subtext-dark">stadia_controller</span>
+<p class="text-sm font-medium leading-normal">Indie Games</p>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg text-text-light dark:text-text-dark hover:bg-black/5 dark:hover:bg-white/5 transition-colors" href="#">
+<span class="material-symbols-outlined text-subtext-light dark:text-subtext-dark">photo_camera</span>
+<p class="text-sm font-medium leading-normal">Photo Editing</p>
+</a>
+</div>
+</div>
+</div>
+</aside>
+<main class="flex-1 p-4 sm:p-6 lg:p-8">
+<div class="flex flex-wrap justify-between gap-3 items-center">
+<p class="text-text-light dark:text-text-dark text-4xl font-black leading-tight tracking-[-0.033em]">My Apps</p>
+</div>
+<section class="mt-8">
+<h2 class="text-text-light dark:text-text-dark text-[22px] font-bold leading-tight tracking-[-0.015em] px-4 pb-3 pt-5">Your Saved Apps in "AI Productivity"</h2>
+<div class="flex overflow-x-auto [-ms-scrollbar-style:none] [scrollbar-width:none] [&amp;::-webkit-scrollbar]:hidden">
+<div class="flex items-stretch p-4 gap-4">
+<div class="flex h-full w-60 flex-col gap-4 rounded-xl bg-secondary-light dark:bg-secondary-dark shadow-sm border border-border-light dark:border-border-dark group transition-transform duration-300 hover:scale-105">
+<div class="w-full bg-center bg-no-repeat aspect-video bg-cover rounded-t-xl" data-alt="Notion app branding image" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuA056LantxwsdKkkNwoNq8VpSudtic7bXtrk6_mkm81230M9Zp6Gqfjeq6kp0Pel9jGWq2F9TvEeS9APEgI-_YxN7L57ADJ9nIA0Yk595FKYNAj59KdbBbZAnbtyGRvXUw_jv3UheVWGb7J8uKLElline4xHu8nkmZV5oRvDqwUZisReFp9quL3jqtkU5uDgEPZc7yulKoPLJEiRpbgl4AbBNGFZEQcJ_ZMqLXf_hRxcZ7wBsDNjwr34qFaLqaCORrkw01zOT2tk20v");'></div>
+<div class="flex flex-col flex-1 justify-between p-4 pt-0 gap-4">
+<div>
+<p class="text-text-light dark:text-text-dark text-base font-medium leading-normal">Notion</p>
+<p class="text-subtext-light dark:text-subtext-dark text-sm font-normal leading-normal">All-in-one workspace</p>
+</div>
+<div class="flex gap-2">
+<button class="flex flex-1 min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 px-4 bg-border-light dark:bg-border-dark text-text-light dark:text-text-dark text-sm font-bold leading-normal tracking-[0.015em] hover:bg-black/10 dark:hover:bg-white/10 transition-colors">
+<span class="truncate">View</span>
+</button>
+<button class="flex size-10 cursor-pointer items-center justify-center overflow-hidden rounded-lg text-subtext-light dark:text-subtext-dark hover:bg-red-500/10 hover:text-red-500 transition-colors">
+<span class="material-symbols-outlined text-xl">delete</span>
+</button>
+</div>
+</div>
+</div>
+<div class="flex h-full w-60 flex-col gap-4 rounded-xl bg-secondary-light dark:bg-secondary-dark shadow-sm border border-border-light dark:border-border-dark group transition-transform duration-300 hover:scale-105">
+<div class="w-full bg-center bg-no-repeat aspect-video bg-cover rounded-t-xl" data-alt="Trello app branding image" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuA6F7Cq0BOQ541gRP_dLqRJjAV46P-5xNa7kIQGOS39JwQiEG16VpbWrp_71yP8k_71mPkXiR7kyggTGv5_daKncqSyEG5XL4rgE9o1XFOLmI6nYyxhEOy4kscm9bEiqEogKmMLtnfdl3ZGhgO-GZTZqPOxKRhO2ktgCcKjPso76wTAZ2vPCcftQsJY617Z3DL0k1kICWQ5UepVvUewrkopV_aveMCbA3kVLSGSxNF3dR9TuDiXDw9NBXdFZuzPOD66WXYZzhQJcAjN");'></div>
+<div class="flex flex-col flex-1 justify-between p-4 pt-0 gap-4">
+<div>
+<p class="text-text-light dark:text-text-dark text-base font-medium leading-normal">Trello</p>
+<p class="text-subtext-light dark:text-subtext-dark text-sm font-normal leading-normal">Collaborative task management</p>
+</div>
+<div class="flex gap-2">
+<button class="flex flex-1 min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 px-4 bg-border-light dark:bg-border-dark text-text-light dark:text-text-dark text-sm font-bold leading-normal tracking-[0.015em] hover:bg-black/10 dark:hover:bg-white/10 transition-colors">
+<span class="truncate">View</span>
+</button>
+<button class="flex size-10 cursor-pointer items-center justify-center overflow-hidden rounded-lg text-subtext-light dark:text-subtext-dark hover:bg-red-500/10 hover:text-red-500 transition-colors">
+<span class="material-symbols-outlined text-xl">delete</span>
+</button>
+</div>
+</div>
+</div>
+<div class="flex h-full w-60 flex-col gap-4 rounded-xl bg-secondary-light dark:bg-secondary-dark shadow-sm border border-border-light dark:border-border-dark group transition-transform duration-300 hover:scale-105">
+<div class="w-full bg-center bg-no-repeat aspect-video bg-cover rounded-t-xl" data-alt="Evernote app branding image" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuA7hsTshhRzTT-eOhEhu9DedeP9DrvXVso-EJmyN5sx2y4KrY4YuaoZ-u6AetxvS5YPnSkvMJM3snxHvqbJGy8RbLKjPEi4V8IyWOl8lpwhTrGuYr2le3uqEYcb0__YSx6218gr_mpDG2YoU2RhR4RGqkkgaRNZwnoJ-tFUNBRzKxZMe6-DbIUCz8lW-2bJWIcbN_Sw31zYEZ-9jGOS-WwuM_wf_Ytjjao2uMThpWCBClcjv2k_b_G6VxLUch5m-GF3chnyXcm0okkF");'></div>
+<div class="flex flex-col flex-1 justify-between p-4 pt-0 gap-4">
+<div>
+<p class="text-text-light dark:text-text-dark text-base font-medium leading-normal">Evernote</p>
+<p class="text-subtext-light dark:text-subtext-dark text-sm font-normal leading-normal">Your second brain</p>
+</div>
+<div class="flex gap-2">
+<button class="flex flex-1 min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 px-4 bg-border-light dark:bg-border-dark text-text-light dark:text-text-dark text-sm font-bold leading-normal tracking-[0.015em] hover:bg-black/10 dark:hover:bg-white/10 transition-colors">
+<span class="truncate">View</span>
+</button>
+<button class="flex size-10 cursor-pointer items-center justify-center overflow-hidden rounded-lg text-subtext-light dark:text-subtext-dark hover:bg-red-500/10 hover:text-red-500 transition-colors">
+<span class="material-symbols-outlined text-xl">delete</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section class="mt-8">
+<h2 class="text-accent text-[22px] font-bold leading-tight tracking-[-0.015em] px-4 pb-3 pt-5 flex items-center gap-2"><span class="material-symbols-outlined">auto_awesome</span> AI Recommendations For You</h2>
+<div class="flex overflow-x-auto [-ms-scrollbar-style:none] [scrollbar-width:none] [&amp;::-webkit-scrollbar]:hidden">
+<div class="flex items-stretch p-4 gap-4">
+<div class="flex h-full w-60 flex-col gap-4 rounded-xl bg-secondary-light dark:bg-secondary-dark shadow-sm border-2 border-accent/50 group transition-transform duration-300 hover:scale-105">
+<div class="w-full bg-center bg-no-repeat aspect-video bg-cover rounded-t-xl" data-alt="Todoist app branding image" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuCHC585Wmz5g3KOBadGJsnKheVdwEFaQ66iq4dE6_KbVHM3_qU4G0ca7mYQ5FBwzPfhnT52_xFdizzDKUpLSz_6ifYa2B3fdqsEM25Ux_NYMyC90ivngJT8XDiKsG_YuxP-5N7odnJcMbK5wBkPZvS0cnX3avrO7zX_9rceI62aCYO-_bGAceeWUsc1B8e1tSxtP6wAQ-2vFDANHQKtl_TEq7AQd6Q8wshxs_nQOELgi7w89kupfa2ob1yzN_kPUo2uPQ7v6fZv4yko");'></div>
+<div class="flex flex-col flex-1 justify-between p-4 pt-0 gap-4">
+<div>
+<p class="text-text-light dark:text-text-dark text-base font-medium leading-normal">Todoist</p>
+<p class="text-subtext-light dark:text-subtext-dark text-sm font-normal leading-normal">Organize your life</p>
+</div>
+<button class="flex min-w-[84px] w-full max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 px-4 bg-primary text-white text-sm font-bold leading-normal tracking-[0.015em] hover:bg-primary/90 transition-colors">
+<span class="truncate">View Details</span>
+</button>
+</div>
+</div>
+<div class="flex h-full w-60 flex-col gap-4 rounded-xl bg-secondary-light dark:bg-secondary-dark shadow-sm border-2 border-accent/50 group transition-transform duration-300 hover:scale-105">
+<div class="w-full bg-center bg-no-repeat aspect-video bg-cover rounded-t-xl" data-alt="Asana app branding image" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuApCfQ6q9KJkU6xED7rETtgKZX454XxmctadfbnEJwWk_U5g3cBGE45-gjA44ypT7ber9rUUqaxSgRXM5vkZ2bT0sB2qi1ucRjS313NPS8FFckYz8gGMfKXez7OEOXOJabmnadLPbPSchwir-Q1GEblTUmkUxDTrNRgG01sOYIOf3cGxiKTlW5ilfwBzm6o5GKFLcs8XG9POnvDGUfZ__GjJFfTLK1wLytpsplHsGE4DGShetMVbcOURfvVC5rwAVTX1u-9-uwL2Uow");'></div>
+<div class="flex flex-col flex-1 justify-between p-4 pt-0 gap-4">
+<div>
+<p class="text-text-light dark:text-text-dark text-base font-medium leading-normal">Asana</p>
+<p class="text-subtext-light dark:text-subtext-dark text-sm font-normal leading-normal">Work management platform</p>
+</div>
+<button class="flex min-w-[84px] w-full max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 px-4 bg-primary text-white text-sm font-bold leading-normal tracking-[0.015em] hover:bg-primary/90 transition-colors">
+<span class="truncate">View Details</span>
+</button>
+</div>
+</div>
+<div class="flex h-full w-60 flex-col gap-4 rounded-xl bg-secondary-light dark:bg-secondary-dark shadow-sm border-2 border-accent/50 group transition-transform duration-300 hover:scale-105">
+<div class="w-full bg-center bg-no-repeat aspect-video bg-cover rounded-t-xl" data-alt="Slack app branding image" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuCW1gaWRS7tH0quBX-p8jjR1ut7JPXMa_3i7iqC0jr_UwOzSfq7rBx70KPmaM5f2ff6sHZwUImgVmtuvr3kcWDR00ISXmT8wuC2SzqiA9q2DNhQdLTVtYGxjrV2JXpwhM-xlkf2cPerYIw_L2xxHi5kzW3__EiUaOKOxRbWX1crgjOsHh6K7QPKP4fnqXIignOWxr98qDp6rqN8glTa7sjUyURuz8XKuzXkLDthMUUtD2GlarFpBHC3by7o8IBm6SCWS9HRP5aF4iup");'></div>
+<div class="flex flex-col flex-1 justify-between p-4 pt-0 gap-4">
+<div>
+<p class="text-text-light dark:text-text-dark text-base font-medium leading-normal">Slack</p>
+<p class="text-subtext-light dark:text-subtext-dark text-sm font-normal leading-normal">Team communication</p>
+</div>
+<button class="flex min-w-[84px] w-full max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 px-4 bg-primary text-white text-sm font-bold leading-normal tracking-[0.015em] hover:bg-primary/90 transition-colors">
+<span class="truncate">View Details</span>
+</button>
+</div>
+</div>
+<div class="flex h-full w-60 flex-col gap-4 rounded-xl bg-secondary-light dark:bg-secondary-dark shadow-sm border-2 border-accent/50 group transition-transform duration-300 hover:scale-105">
+<div class="w-full bg-center bg-no-repeat aspect-video bg-cover rounded-t-xl" data-alt="Miro app branding image" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuDZu-UX0wHQJZCRgA3s1n8C1-F0A1Y9SlKad2aCkjGm8O_xastSFE_NWAlHV71cbQjrj8E0pr4X0RrYKrNWbXUGC31fxVoSQSAdwvW-oLhc4jUEYONJmb5QiyhPvNLXQ5pEqTALhEB8ivL6XcTXuWpKIdPqM4Bgb05xRlA2QXpOEEYBHExgaHJM8BAOJwijvQdQ2yjvlLKfHoa6_yOaG67qdjIyHwis7lpipvPULOR5YqwqapyTCcfWIRY70xdw2HIbu7y6GGLG3FJ7");'></div>
+<div class="flex flex-col flex-1 justify-between p-4 pt-0 gap-4">
+<div>
+<p class="text-text-light dark:text-text-dark text-base font-medium leading-normal">Miro</p>
+<p class="text-subtext-light dark:text-subtext-dark text-sm font-normal leading-normal">Online collaborative whiteboard</p>
+</div>
+<button class="flex min-w-[84px] w-full max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 px-4 bg-primary text-white text-sm font-bold leading-normal tracking-[0.015em] hover:bg-primary/90 transition-colors">
+<span class="truncate">View Details</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Empty State Example -->
+<section class="mt-16 text-center hidden">
+<div class="flex flex-col items-center justify-center p-12 bg-secondary-light dark:bg-secondary-dark rounded-xl border border-dashed border-border-light dark:border-border-dark">
+<div class="p-4 bg-primary/10 rounded-full mb-4">
+<span class="material-symbols-outlined text-5xl text-primary">explore</span>
+</div>
+<h3 class="text-xl font-bold text-text-light dark:text-text-dark">Your App Collection is Empty</h3>
+<p class="text-subtext-light dark:text-subtext-dark mt-2 max-w-md">Start discovering new apps! As you 'like' apps, they'll appear here, organized into categories based on your swipes.</p>
+<button class="mt-6 flex max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-12 bg-primary text-white gap-2 text-base font-bold leading-normal tracking-[0.015em] min-w-0 px-6 hover:bg-primary/90 transition-colors">
+                            Start Discovering
+                         </button>
+</div>
+</section>
+</main>
+</div>
+</div>
+</body></html>

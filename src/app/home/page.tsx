@@ -113,9 +113,14 @@ export default function HomePage() {
   };
 
   useEffect(() => {
-    if (!loading && !user) {
-      router.push('/auth/signin');
-    } else if (user) {
+    // Add a small delay to prevent race conditions during navigation
+    const timeoutId = setTimeout(() => {
+      if (!loading && !user) {
+        router.push('/auth/signin');
+      }
+    }, 100);
+
+    if (user) {
       // Get user name from metadata or email
       const name = user.user_metadata?.full_name || 
                    user.user_metadata?.name || 
@@ -123,6 +128,8 @@ export default function HomePage() {
                    'User';
       setUserName(name);
     }
+
+    return () => clearTimeout(timeoutId);
   }, [user, loading, router]);
 
 

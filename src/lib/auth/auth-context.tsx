@@ -30,15 +30,11 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [checkingPersonalization, setCheckingPersonalization] = useState(false)
 
   useEffect(() => {
-    console.log('Auth context mounted. loading = true');
-
     // Listen for auth changes
     let subscription: any = null
     if (supabase) {
       const { data } = supabase.auth.onAuthStateChange(
         async (event, session) => {
-          console.log('Auth state changed:', event, session?.user?.email)
-          
           setSession(session)
           setUser(session?.user ?? null)
 
@@ -50,13 +46,11 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
           }
 
           setLoading(false)
-          console.log('onAuthStateChange finished. loading = false');
         }
       )
       subscription = data.subscription
     } else {
       setLoading(false);
-      console.log('Supabase not initialized. loading = false');
     }
 
     return () => {
@@ -70,12 +64,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const checkPersonalizationStatusInternal = async (session: Session | null) => {
     try {
       if (!session?.access_token) {
-        console.log('No session token, setting personalization to false')
         setHasCompletedPersonalization(false)
         return
       }
-
-      console.log('Checking personalization for user:', session.user?.email, session.user?.id)
 
       const response = await fetch('/api/personalization/check', {
         headers: {
@@ -85,14 +76,11 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       
       if (response.ok) {
         const result = await response.json()
-        console.log('Personalization check result:', result)
         setHasCompletedPersonalization(result.hasCompleted)
       } else {
-        console.error('Failed to check personalization status:', response.status)
         setHasCompletedPersonalization(false)
       }
     } catch (error) {
-      console.error('Error checking personalization status:', error)
       setHasCompletedPersonalization(false)
     }
   }

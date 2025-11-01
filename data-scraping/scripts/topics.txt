@@ -1,11 +1,64 @@
 barcelona
 real madrid
 liverpool
-chelsea
-manchester united
-manchester city
-London
-English Premier League
-La Liga
-Champions League
-PSG
+Shopping
+Dating
+Dining
+Eating out
+Bars
+Liquor shops
+Hangout places
+Coffee shops
+Cafe
+Library
+Bookshop
+Tex-Mex
+Thai Food
+Chinese Food
+Indian Food
+Health Care
+Medicine
+Urgent Care
+Emergency Care
+Doctors
+Hospital
+Nurse
+Pets
+Vets
+Pet care
+Animal Care
+Plant Care
+Food
+Chocolate
+Maps
+Ads
+Online Shopping
+Groupon
+Sale
+Computer Science
+Photo Apps
+Photo Editor
+Video Editor
+Text Editor
+AI Avatar
+Saas
+Tax
+Stock Market
+Prediction Market
+Investing
+Crypto
+Sports
+Betting
+Gambling
+Travelling
+National Park
+Tourism
+Safety Apps
+Friends 
+Tv Shows
+Movies
+Gig Jobs
+Online Jobs
+Remote Jobs
+Hiring
+Education

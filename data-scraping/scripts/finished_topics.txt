@@ -5,3 +5,65 @@ dota2
 astronomy
 nextdoor
 barcelona
+real madrid
+liverpool
+shopping
+dating
+dining
+eating out
+bars
+hangout places
+coffee shops
+cafe
+library
+bookshop
+tex-mex
+thai food
+chinese food
+indian food
+health care
+medicine
+urgent care
+emergency care
+doctors
+hospital
+nurse
+pets
+vets
+pet care
+animal care
+plant care
+food
+chocolate
+maps
+ads
+online shopping
+groupon
+sale
+computer science
+photo apps
+photo editor
+video editor
+text editor
+ai avatar
+saas
+tax
+stock market
+prediction market
+investing
+crypto
+sports
+betting
+gambling
+travelling
+national park
+tourism
+safety apps
+friends
+tv shows
+movies
+gig jobs
+online jobs
+remote jobs
+hiring
+education

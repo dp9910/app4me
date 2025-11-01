@@ -59,10 +59,17 @@ export default function SwipePage() {
           handleSearchWithQuery(decodeURIComponent(queryParam));
         }, 500);
       }
-    } else if (!loading && !user) {
-      router.push('/auth/signin');
+    } else if (!loading && !user && demoParam !== 'true') {
+      // Only redirect to signin if not in demo mode and no user
+      // Add a delay to prevent race conditions during navigation
+      const timeoutId = setTimeout(() => {
+        router.push('/auth/signin');
+      }, 100);
+      
+      return () => clearTimeout(timeoutId);
     }
   }, [searchParams, user, loading, router]);
+
 
   const handleSearchWithQuery = async (query: string) => {
     if (!query.trim()) return;
@@ -191,7 +198,14 @@ export default function SwipePage() {
         </div>
         <div className="hidden md:flex flex-1 justify-end gap-8">
           <div className="flex items-center gap-9">
-            <Link href="/" className="text-gray-700 dark:text-gray-300 hover:text-primary dark:hover:text-primary text-sm font-medium leading-normal">Home</Link>
+            <button 
+              className="text-gray-700 dark:text-gray-300 hover:text-primary dark:hover:text-primary text-sm font-medium leading-normal bg-transparent border-none cursor-pointer"
+              onClick={() => {
+                window.location.href = '/home';
+              }}
+            >
+              Home
+            </button>
             {!isDemoMode && (
               <>
                 <Link href="/swipe" className="text-primary text-sm font-medium leading-normal">Swipe</Link>
@@ -201,11 +215,14 @@ export default function SwipePage() {
           </div>
           <div className="flex items-center gap-4">
             {isDemoMode ? (
-              <Link href="/">
-                <button className="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 px-4 bg-primary text-white text-sm font-bold leading-normal tracking-[0.015em]">
-                  <span className="truncate">← Back to Home</span>
-                </button>
-              </Link>
+              <button 
+                className="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 px-4 bg-primary text-white text-sm font-bold leading-normal tracking-[0.015em]"
+                onClick={() => {
+                  window.location.href = '/';
+                }}
+              >
+                <span className="truncate">← Back to Home</span>
+              </button>
             ) : (
               <>
                 <Link href="/profile">
@@ -303,7 +320,7 @@ export default function SwipePage() {
               </div>
             </div>
           </main>
-        )}}
+        )}
 
         {/* Loading State */}
         {isSearching && (
