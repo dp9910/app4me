@@ -228,85 +228,82 @@ export default function SwipePage() {
         
         {/* Search Section */}
         {!currentApp && !isSearching && !hasSearched && (
-          <div className="flex-1 flex flex-col items-center justify-center px-4 sm:px-6 lg:px-8 py-12">
-            <div className="w-full max-w-4xl mx-auto text-center space-y-8">
-              <div className="space-y-4">
-                <div className="text-7xl sm:text-8xl">🔍</div>
-                <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-gray-900 dark:text-white">
-                  Discover Your Perfect Apps
-                </h1>
-                <p className="text-xl sm:text-2xl text-gray-600 dark:text-gray-400 max-w-3xl mx-auto">
-                  Describe what you're looking for in plain English, and we'll find apps that match your needs perfectly.
-                </p>
-              </div>
-
-              {/* Big Search Bar */}
-              <div className="w-full max-w-3xl mx-auto space-y-6">
-                <div className="relative">
-                  <textarea
-                    className="w-full h-32 sm:h-40 resize-none rounded-2xl border-2 border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 px-6 py-6 text-lg sm:text-xl text-gray-900 dark:text-white placeholder:text-gray-500 dark:placeholder:text-gray-400 focus:outline-none focus:ring-4 focus:ring-primary/20 focus:border-primary shadow-lg transition-all duration-200"
-                    placeholder="Tell us what you're looking for...
-
-Examples:
-• I need an app to manage my small business finances and track expenses
-• Looking for meditation apps that work offline and have guided sessions
-• Want something to help me learn guitar with interactive lessons"
+          <main className="flex flex-1 flex-col items-center justify-center px-4 pb-12 sm:pb-20">
+            <div className="w-full max-w-3xl text-center">
+              {/* HeadlineText */}
+              <h1 className="text-gray-900 dark:text-white text-4xl sm:text-5xl font-bold leading-tight tracking-tight mb-4">Explore over 9020 iOS apps powered by our AI recommendation system</h1>
+              <p className="text-gray-500 dark:text-gray-400 max-w-3xl mx-auto mb-10 text-lg">Find the perfect app for any task by simply describing what you need.</p>
+              {/* Search Input and Button */}
+              <div className="flex flex-col sm:flex-row items-center justify-center gap-3 mb-8 w-full max-w-3xl mx-auto">
+                {/* TextField */}
+                <label className="flex flex-col w-full flex-1">
+                  <input 
+                    className="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-xl text-gray-900 dark:text-white focus:outline-0 focus:ring-2 focus:ring-primary/50 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 focus:border-primary dark:focus:border-primary h-14 placeholder:text-gray-400 dark:placeholder:text-gray-500 p-[15px] text-base font-normal leading-normal transition-all"
+                    placeholder="e.g., apps to help me take care of plants, or a simple budget tracker"
                     value={searchQuery}
-                    onChange={(e) => {
-                      if (e.target.value.length <= 500) {
-                        setSearchQuery(e.target.value);
-                      }
-                    }}
-                    maxLength={500}
+                    onChange={(e) => setSearchQuery(e.target.value)}
                   />
-                  <div className="absolute bottom-4 right-4 text-sm text-gray-400">
-                    {searchQuery.length}/500
-                  </div>
-                </div>
-                
-                <button
+                </label>
+                {/* SingleButton */}
+                <button 
                   onClick={handleSearch}
                   disabled={!searchQuery.trim() || isSearching}
-                  className="w-full sm:w-auto mx-auto bg-gradient-to-r from-primary to-purple-600 hover:from-primary/90 hover:to-purple-600/90 disabled:from-gray-300 disabled:to-gray-400 disabled:cursor-not-allowed text-white font-bold py-6 px-12 rounded-2xl text-xl transition-all duration-200 transform hover:scale-105 shadow-xl hover:shadow-2xl flex items-center justify-center gap-3"
+                  className="flex w-full sm:w-48 cursor-pointer items-center justify-center overflow-hidden rounded-xl h-14 px-5 bg-primary text-white gap-2 text-base font-bold leading-normal tracking-[0.015em] hover:bg-primary/90 transition-colors"
                 >
-                  <span className="text-2xl">✨</span>
-                  {isSearching ? 'Searching...' : 'Find My Perfect Apps'}
-                  <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 20 20">
-                    <path fillRule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clipRule="evenodd"/>
-                  </svg>
+                  <span className="truncate">Search</span>
                 </button>
               </div>
-
-              {/* Search Tips */}
-              <div className="w-full max-w-2xl mx-auto">
-                <div className="bg-white/70 dark:bg-gray-800/70 backdrop-blur-sm rounded-2xl p-6 border border-gray-200 dark:border-gray-700">
-                  <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
-                    <span className="text-2xl">💡</span>
-                    Search Tips for Better Results
-                  </h3>
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm text-gray-600 dark:text-gray-400">
-                    <div className="flex items-start gap-2">
-                      <span className="text-primary">•</span>
-                      <span>Be specific about your needs and goals</span>
-                    </div>
-                    <div className="flex items-start gap-2">
-                      <span className="text-primary">•</span>
-                      <span>Mention your platform (iOS, macOS, Windows)</span>
-                    </div>
-                    <div className="flex items-start gap-2">
-                      <span className="text-primary">•</span>
-                      <span>Include your experience level (beginner, advanced)</span>
-                    </div>
-                    <div className="flex items-start gap-2">
-                      <span className="text-primary">•</span>
-                      <span>Describe your specific use case or workflow</span>
-                    </div>
-                  </div>
+              {/* Chips */}
+              <div className="flex flex-wrap items-center justify-center gap-3 p-3">
+                <div className="flex h-9 shrink-0 cursor-pointer items-center justify-center gap-x-2 rounded-lg bg-blue-100 dark:bg-blue-500/20 px-4 transition-transform hover:scale-105">
+                  <p className="text-blue-800 dark:text-blue-300 text-sm font-medium leading-normal">Productivity</p>
+                </div>
+                <div className="flex h-9 shrink-0 cursor-pointer items-center justify-center gap-x-2 rounded-lg bg-green-100 dark:bg-green-500/20 px-4 transition-transform hover:scale-105">
+                  <p className="text-green-800 dark:text-green-300 text-sm font-medium leading-normal">Health & Fitness</p>
+                </div>
+                <div className="flex h-9 shrink-0 cursor-pointer items-center justify-center gap-x-2 rounded-lg bg-yellow-100 dark:bg-yellow-500/20 px-4 transition-transform hover:scale-105">
+                  <p className="text-yellow-800 dark:text-yellow-300 text-sm font-medium leading-normal">Finance</p>
+                </div>
+                <div className="flex h-9 shrink-0 cursor-pointer items-center justify-center gap-x-2 rounded-lg bg-purple-100 dark:bg-purple-500/20 px-4 transition-transform hover:scale-105">
+                  <p className="text-purple-800 dark:text-purple-300 text-sm font-medium leading-normal">Education</p>
+                </div>
+                <div className="flex h-9 shrink-0 cursor-pointer items-center justify-center gap-x-2 rounded-lg bg-red-100 dark:bg-red-500/20 px-4 transition-transform hover:scale-105">
+                  <p className="text-red-800 dark:text-red-300 text-sm font-medium leading-normal">Entertainment</p>
+                </div>
+                <div className="flex h-9 shrink-0 cursor-pointer items-center justify-center gap-x-2 rounded-lg bg-indigo-100 dark:bg-indigo-500/20 px-4 transition-transform hover:scale-105">
+                  <p className="text-indigo-800 dark:text-indigo-300 text-sm font-medium leading-normal">Social</p>
+                </div>
+                <div className="flex h-9 shrink-0 cursor-pointer items-center justify-center gap-x-2 rounded-lg bg-pink-100 dark:bg-pink-500/20 px-4 transition-transform hover:scale-105">
+                  <p className="text-pink-800 dark:text-pink-300 text-sm font-medium leading-normal">Photo & Video</p>
+                </div>
+                <div className="flex h-9 shrink-0 cursor-pointer items-center justify-center gap-x-2 rounded-lg bg-gray-200 dark:bg-gray-500/20 px-4 transition-transform hover:scale-105">
+                  <p className="text-gray-800 dark:text-gray-300 text-sm font-medium leading-normal">Developer Tools</p>
+                </div>
+                <div className="flex h-9 shrink-0 cursor-pointer items-center justify-center gap-x-2 rounded-lg bg-teal-100 dark:bg-teal-500/20 px-4 transition-transform hover:scale-105">
+                  <p className="text-teal-800 dark:text-teal-300 text-sm font-medium leading-normal">Business</p>
+                </div>
+                <div className="flex h-9 shrink-0 cursor-pointer items-center justify-center gap-x-2 rounded-lg bg-cyan-100 dark:bg-cyan-500/20 px-4 transition-transform hover:scale-105">
+                  <p className="text-cyan-800 dark:text-cyan-300 text-sm font-medium leading-normal">Lifestyle</p>
+                </div>
+                <div className="flex h-9 shrink-0 cursor-pointer items-center justify-center gap-x-2 rounded-lg bg-lime-100 dark:bg-lime-500/20 px-4 transition-transform hover:scale-105">
+                  <p className="text-lime-800 dark:text-lime-300 text-sm font-medium leading-normal">Travel</p>
+                </div>
+                <div className="flex h-9 shrink-0 cursor-pointer items-center justify-center gap-x-2 rounded-lg bg-amber-100 dark:bg-amber-500/20 px-4 transition-transform hover:scale-105">
+                  <p className="text-amber-800 dark:text-amber-300 text-sm font-medium leading-normal">Shopping</p>
+                </div>
+                <div className="flex h-9 shrink-0 cursor-pointer items-center justify-center gap-x-2 rounded-lg bg-orange-100 dark:bg-orange-500/20 px-4 transition-transform hover:scale-105">
+                  <p className="text-orange-800 dark:text-orange-300 text-sm font-medium leading-normal">Medical</p>
+                </div>
+                <div className="flex h-9 shrink-0 cursor-pointer items-center justify-center gap-x-2 rounded-lg bg-stone-200 dark:bg-stone-500/20 px-4 transition-transform hover:scale-105">
+                  <p className="text-stone-800 dark:text-stone-300 text-sm font-medium leading-normal">News</p>
+                </div>
+                <div className="flex h-9 shrink-0 cursor-pointer items-center justify-center gap-x-2 rounded-lg bg-rose-100 dark:bg-rose-500/20 px-4 transition-transform hover:scale-105">
+                  <p className="text-rose-800 dark:text-rose-300 text-sm font-medium leading-normal">Games</p>
                 </div>
               </div>
             </div>
-          </div>
-        )}
+          </main>
+        )}}
 
         {/* Loading State */}
         {isSearching && (
