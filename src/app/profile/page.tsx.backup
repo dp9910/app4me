@@ -419,7 +419,7 @@ export default function ProfilePage() {
           {/* Footer */}
           <footer className="border-t border-gray-200/10 dark:border-white/10 px-4 sm:px-6 lg:px-10 py-6">
             <div className="max-w-4xl mx-auto flex justify-between items-center text-sm text-gray-500 dark:text-gray-400">
-              <p>© 2024 All rights reserved.</p>
+              <p>© 2024 AppDiscovery AI. All rights reserved.</p>
               <div className="flex gap-6">
                 <Link href="/about" className="hover:text-primary">About Us</Link>
                 <Link href="/help" className="hover:text-primary">Help Center</Link>
@@ -427,7 +427,8 @@ export default function ProfilePage() {
               </div>
             </div>
           </footer>
-      </main>
+        </main>
+      </div>
     </div>
   );
 }
