@@ -35,7 +35,7 @@ const SwipeCard: React.FC<SwipeCardProps> = ({ app, onLike, onPass, isActive = t
       setSwipeDirection(null);
       setDragOffset({ x: 0, y: 0 });
       setRotation(0);
-    }, 500);
+    }, 600);
   };
 
   const handleMouseDown = (e: React.MouseEvent) => {
@@ -77,15 +77,15 @@ const SwipeCard: React.FC<SwipeCardProps> = ({ app, onLike, onPass, isActive = t
     
     setIsDragging(false);
     
-    // Determine if swipe was significant enough
-    if (Math.abs(dragOffset.x) > 100) {
+    // Determine if swipe was significant enough (reduced threshold for easier swiping)
+    if (Math.abs(dragOffset.x) > 80) {
       if (dragOffset.x > 0) {
         handleSwipe('like');
       } else {
         handleSwipe('pass');
       }
     } else {
-      // Snap back to center
+      // Snap back to center with smooth animation
       setDragOffset({ x: 0, y: 0 });
       setRotation(0);
     }
@@ -107,16 +107,6 @@ const SwipeCard: React.FC<SwipeCardProps> = ({ app, onLike, onPass, isActive = t
     }
   }, [isDragging, dragOffset]);
 
-  const getSwipeOpacity = () => {
-    if (swipeDirection === 'like') return 0;
-    if (swipeDirection === 'pass') return 0;
-    return Math.max(0, 1 - Math.abs(dragOffset.x) / 300);
-  };
-
-  const getBlurAmount = () => {
-    if (swipeDirection) return 8;
-    return Math.min(8, Math.abs(dragOffset.x) / 50);
-  };
 
   return (
     <div
@@ -124,13 +114,12 @@ const SwipeCard: React.FC<SwipeCardProps> = ({ app, onLike, onPass, isActive = t
       style={{ 
         zIndex,
         transform: swipeDirection === 'like' 
-          ? 'translateX(100%) rotate(15deg)' 
+          ? 'translateX(150%) rotate(20deg)' 
           : swipeDirection === 'pass'
-          ? 'translateX(-100%) rotate(-15deg)'
+          ? 'translateX(-150%) rotate(-20deg)'
           : `translateX(${dragOffset.x}px) translateY(${dragOffset.y}px) rotate(${rotation}deg)`,
-        opacity: getSwipeOpacity(),
-        filter: `blur(${getBlurAmount()}px)`,
-        transition: isDragging ? 'none' : 'all 0.5s ease-in-out'
+        opacity: swipeDirection ? 0 : Math.max(0.3, 1 - Math.abs(dragOffset.x) / 400),
+        transition: isDragging ? 'none' : 'all 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94)'
       }}
       className={`absolute inset-0 w-full h-full bg-white border-2 border-gray-900 dark:border-gray-200 dark:bg-gray-800 rounded-xl shadow-2xl flex flex-col justify-between p-8 text-center ${
         isActive ? 'cursor-grab active:cursor-grabbing' : 'pointer-events-none'
@@ -139,13 +128,13 @@ const SwipeCard: React.FC<SwipeCardProps> = ({ app, onLike, onPass, isActive = t
       onTouchStart={handleTouchStart}
     >
       {/* Swipe Direction Indicators */}
-      {dragOffset.x > 50 && (
-        <div className="absolute top-1/4 left-8 bg-green-500/90 text-white px-4 py-2 rounded-full font-bold transform rotate-12 shadow-xl">
+      {dragOffset.x > 40 && (
+        <div className="absolute top-1/4 left-8 bg-green-500/95 text-white px-6 py-3 rounded-full font-bold transform rotate-12 shadow-2xl border-2 border-white text-lg">
           LIKE
         </div>
       )}
-      {dragOffset.x < -50 && (
-        <div className="absolute top-1/4 right-8 bg-red-500/90 text-white px-4 py-2 rounded-full font-bold transform -rotate-12 shadow-xl">
+      {dragOffset.x < -40 && (
+        <div className="absolute top-1/4 right-8 bg-red-500/95 text-white px-6 py-3 rounded-full font-bold transform -rotate-12 shadow-2xl border-2 border-white text-lg">
           PASS
         </div>
       )}

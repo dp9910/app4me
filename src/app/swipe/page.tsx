@@ -45,6 +45,8 @@ export default function SwipePage() {
   const [searchResults, setSearchResults] = useState<App[]>([]);
   const [searchError, setSearchError] = useState<string | null>(null);
   const [hasSearched, setHasSearched] = useState(false);
+  const [swipedLeftCards, setSwipedLeftCards] = useState<App[]>([]);
+  const [swipedRightCards, setSwipedRightCards] = useState<App[]>([]);
 
   useEffect(() => {
     const queryParam = searchParams.get('query');
@@ -135,8 +137,17 @@ export default function SwipePage() {
   };
 
   const handleAction = (action: 'pass' | 'like') => {
+    if (!currentApp) return;
+    
+    // Add card to appropriate side stack
+    if (action === 'pass') {
+      setSwipedLeftCards(prev => [...prev, currentApp]);
+    } else {
+      setSwipedRightCards(prev => [...prev, currentApp]);
+    }
+    
     // TODO: Save user action to user-app-interactions
-    console.log(`Action: ${action} on app: ${currentApp?.name}`);
+    console.log(`Action: ${action} on app: ${currentApp.name}`);
     
     const nextIndex = cardIndex + 1;
     setCardIndex(nextIndex);
@@ -158,6 +169,8 @@ export default function SwipePage() {
     setSearchError(null);
     setHasSearched(false);
     setSearchQuery('');
+    setSwipedLeftCards([]);
+    setSwipedRightCards([]);
   };
 
   if (loading) {
@@ -335,9 +348,9 @@ export default function SwipePage() {
           </div>
         )}
 
-        {/* App Cards Section - Swipe Interface */}
+        {/* App Cards Section - Persistent Swipe Interface */}
         {currentApp && (
-          <div className="relative w-full max-w-4xl h-[600px] flex items-center justify-center group/card-container">
+          <div className="relative w-full max-w-6xl h-[600px] flex items-center justify-center group/card-container mx-auto">
             {/* Progress Indicator */}
             <div className="absolute top-[-40px] left-1/2 transform -translate-x-1/2 z-20">
               <p className="text-sm text-gray-500 dark:text-gray-400 font-medium">
@@ -345,53 +358,61 @@ export default function SwipePage() {
               </p>
             </div>
 
-            {/* Left Side Card (previous/swiped left) */}
-            {appStack[cardIndex] && (
-              <div 
-                className="absolute left-0 top-1/2 transform -translate-y-1/2 w-64 h-96 rounded-xl bg-white/70 dark:bg-gray-800/70 border border-gray-200 dark:border-gray-700 shadow-lg transition-all duration-300 ease-in-out pointer-events-none"
-                style={{
-                  transform: 'translateY(-50%) translateX(-50%) scale(0.8) rotate(-10deg)',
-                  filter: 'blur(2px)',
-                  opacity: 0.6,
-                  zIndex: 1
-                }}
-              >
-                <div className="flex flex-col justify-center items-center h-full p-6 text-center">
-                  <div 
-                    className="size-24 rounded-2xl bg-cover bg-center shadow-lg mb-4"
-                    style={{ backgroundImage: `url(${appStack[cardIndex].icon})` }}
-                  ></div>
-                  <h4 className="text-gray-900 dark:text-white text-lg font-bold truncate w-full">
-                    {appStack[cardIndex].name}
-                  </h4>
-                </div>
-              </div>
-            )}
-            
-            {/* Right Side Card (next in stack) */}
-            {appStack[cardIndex + 1] && (
-              <div 
-                className="absolute right-0 top-1/2 transform -translate-y-1/2 w-64 h-96 rounded-xl bg-white/70 dark:bg-gray-800/70 border border-gray-200 dark:border-gray-700 shadow-lg transition-all duration-300 ease-in-out pointer-events-none"
-                style={{
-                  transform: 'translateY(-50%) translateX(50%) scale(0.8) rotate(10deg)',
-                  filter: 'blur(2px)',
-                  opacity: 0.6,
-                  zIndex: 1
-                }}
-              >
-                <div className="flex flex-col justify-center items-center h-full p-6 text-center">
-                  <div 
-                    className="size-24 rounded-2xl bg-cover bg-center shadow-lg mb-4"
-                    style={{ backgroundImage: `url(${appStack[cardIndex + 1].icon})` }}
-                  ></div>
-                  <h4 className="text-gray-900 dark:text-white text-lg font-bold truncate w-full">
-                    {appStack[cardIndex + 1].name}
-                  </h4>
+            {/* Left Side - Most Recent Swiped Left Card (Passed) */}
+            {swipedLeftCards.length > 0 && (
+              <div className="absolute left-12 top-1/3 transform -translate-y-1/2 z-1">
+                <div 
+                  className="w-72 h-96 rounded-xl bg-white/75 dark:bg-gray-800/75 border border-gray-200 dark:border-gray-700 shadow-lg pointer-events-none"
+                  style={{
+                    transform: 'scale(0.8) rotate(-8deg)',
+                    filter: 'blur(1px)',
+                    opacity: 0.7
+                  }}
+                >
+                  <div className="flex flex-col justify-center items-center h-full p-6 text-center">
+                    <div 
+                      className="size-24 rounded-3xl bg-cover bg-center shadow-lg mb-4"
+                      style={{ backgroundImage: `url(${swipedLeftCards[swipedLeftCards.length - 1].icon})` }}
+                    ></div>
+                    <h4 className="text-gray-900 dark:text-white text-lg font-bold truncate w-full">
+                      {swipedLeftCards[swipedLeftCards.length - 1].name}
+                    </h4>
+                    <div className="absolute top-4 right-4 bg-red-500 text-white rounded-full p-2">
+                      <span className="text-base">✕</span>
+                    </div>
+                  </div>
                 </div>
               </div>
             )}
 
-            {/* Center Container for Main Active Card */}
+            {/* Right Side - Most Recent Swiped Right Card (Liked) */}
+            {swipedRightCards.length > 0 && (
+              <div className="absolute right-12 top-1/3 transform -translate-y-1/2 z-1">
+                <div 
+                  className="w-72 h-96 rounded-xl bg-white/75 dark:bg-gray-800/75 border border-gray-200 dark:border-gray-700 shadow-lg pointer-events-none"
+                  style={{
+                    transform: 'scale(0.8) rotate(8deg)',
+                    filter: 'blur(1px)',
+                    opacity: 0.7
+                  }}
+                >
+                  <div className="flex flex-col justify-center items-center h-full p-6 text-center">
+                    <div 
+                      className="size-24 rounded-3xl bg-cover bg-center shadow-lg mb-4"
+                      style={{ backgroundImage: `url(${swipedRightCards[swipedRightCards.length - 1].icon})` }}
+                    ></div>
+                    <h4 className="text-gray-900 dark:text-white text-lg font-bold truncate w-full">
+                      {swipedRightCards[swipedRightCards.length - 1].name}
+                    </h4>
+                    <div className="absolute top-4 right-4 bg-green-500 text-white rounded-full p-2">
+                      <span className="text-base">♥</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* Center Active Card */}
             <div className="relative w-80 h-[600px]">
               <SwipeCard 
                 app={currentApp} 
