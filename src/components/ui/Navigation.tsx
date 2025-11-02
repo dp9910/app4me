@@ -4,11 +4,7 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useAuth } from '@/lib/auth/auth-context';
 
-interface NavigationProps {
-  isDemoMode?: boolean;
-}
-
-export default function Navigation({ isDemoMode = false }: NavigationProps) {
+export default function Navigation() {
   const pathname = usePathname();
   const { user } = useAuth();
   
@@ -29,101 +25,88 @@ export default function Navigation({ isDemoMode = false }: NavigationProps) {
             </svg>
           </div>
           <h2 className="text-gray-900 dark:text-white text-lg font-bold leading-tight tracking-[-0.015em]">
-            AppDiscovery AI {isDemoMode && <span className="text-primary text-sm">• Demo</span>}
+            AppDiscovery AI
           </h2>
         </div>
 
         {/* Primary Navigation */}
-        {!isDemoMode && (
-          <nav className="hidden md:flex items-center gap-6">
-            <Link 
-              href="/home" 
-              className={`flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
-                pathname === '/home' 
-                  ? 'bg-primary/10 text-primary' 
-                  : 'text-gray-600 dark:text-gray-300 hover:text-primary hover:bg-gray-100 dark:hover:bg-gray-800'
-              }`}
-            >
-              <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-                <path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z"/>
-              </svg>
-              Home
-            </Link>
-            
-            <Link 
-              href="/swipe" 
-              className={`flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
-                pathname === '/swipe' 
-                  ? 'bg-primary/10 text-primary' 
-                  : 'text-gray-600 dark:text-gray-300 hover:text-primary hover:bg-gray-100 dark:hover:bg-gray-800'
-              }`}
-            >
-              <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-                <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
-              </svg>
-              Swipe & Discover
-            </Link>
-          </nav>
-        )}
+        <nav className="hidden md:flex items-center gap-6">
+          <Link 
+            href="/home" 
+            className={`flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
+              pathname === '/home' 
+                ? 'bg-primary/10 text-primary' 
+                : 'text-gray-600 dark:text-gray-300 hover:text-primary hover:bg-gray-100 dark:hover:bg-gray-800'
+            }`}
+          >
+            <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+              <path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z"/>
+            </svg>
+            Home
+          </Link>
+          
+          <Link 
+            href="/swipe" 
+            className={`flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
+              pathname === '/swipe' 
+                ? 'bg-primary/10 text-primary' 
+                : 'text-gray-600 dark:text-gray-300 hover:text-primary hover:bg-gray-100 dark:hover:bg-gray-800'
+            }`}
+          >
+            <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+              <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+            </svg>
+            Swipe & Discover
+          </Link>
+        </nav>
       </div>
 
       {/* Right: User Actions */}
       <div className="flex items-center gap-4">
-        {isDemoMode ? (
-          <button 
-            className="flex items-center justify-center px-4 py-2 bg-primary text-white text-sm font-medium rounded-lg hover:bg-primary/90 transition-colors"
-            onClick={() => {
-              window.location.href = '/';
-            }}
-          >
-            ← Back to Home
-          </button>
-        ) : (
-          <>
-            {/* Desktop Navigation */}
-            <nav className="hidden md:flex items-center gap-2">
-              <Link 
-                href="/profile" 
-                className={`flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
-                  pathname === '/profile' 
-                    ? 'bg-primary/10 text-primary' 
-                    : 'text-gray-600 dark:text-gray-300 hover:text-primary hover:bg-gray-100 dark:hover:bg-gray-800'
-                }`}
-              >
-                <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-                  <path fillRule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clipRule="evenodd"/>
-                </svg>
-                Profile
-              </Link>
-              
-              <Link 
-                href="/settings" 
-                className={`flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
-                  pathname === '/settings' 
-                    ? 'bg-primary/10 text-primary' 
-                    : 'text-gray-600 dark:text-gray-300 hover:text-primary hover:bg-gray-100 dark:hover:bg-gray-800'
-                }`}
-              >
-                <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-                  <path fillRule="evenodd" d="M11.49 3.17c-.38-1.56-2.6-1.56-2.98 0a1.532 1.532 0 01-2.286.948c-1.372-.836-2.942.734-2.106 2.106.54.886.061 2.042-.947 2.287-1.561.379-1.561 2.6 0 2.978a1.532 1.532 0 01.947 2.287c-.836 1.372.734 2.942 2.106 2.106a1.532 1.532 0 012.287.947c.379 1.561 2.6 1.561 2.978 0a1.533 1.533 0 012.287-.947c1.372.836 2.942-.734 2.106-2.106a1.533 1.533 0 01.947-2.287c1.561-.379 1.561-2.6 0-2.978a1.532 1.532 0 01-.947-2.287c.836-1.372-.734-2.942-2.106-2.106a1.532 1.532 0 01-2.287-.947zM10 13a3 3 0 100-6 3 3 0 000 6z" clipRule="evenodd"/>
-                </svg>
-                Settings
-              </Link>
-            </nav>
+        <>
+          {/* Desktop Navigation */}
+          <nav className="hidden md:flex items-center gap-2">
+            <Link 
+              href="/profile" 
+              className={`flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
+                pathname === '/profile' 
+                  ? 'bg-primary/10 text-primary' 
+                  : 'text-gray-600 dark:text-gray-300 hover:text-primary hover:bg-gray-100 dark:hover:bg-gray-800'
+              }`}
+            >
+              <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                <path fillRule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clipRule="evenodd"/>
+              </svg>
+              Profile
+            </Link>
+            
+            <Link 
+              href="/settings" 
+              className={`flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
+                pathname === '/settings' 
+                  ? 'bg-primary/10 text-primary' 
+                  : 'text-gray-600 dark:text-gray-300 hover:text-primary hover:bg-gray-100 dark:hover:bg-gray-800'
+              }`}
+            >
+              <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                <path fillRule="evenodd" d="M11.49 3.17c-.38-1.56-2.6-1.56-2.98 0a1.532 1.532 0 01-2.286.948c-1.372-.836-2.942.734-2.106 2.106.54.886.061 2.042-.947 2.287-1.561.379-1.561 2.6 0 2.978a1.532 1.532 0 01.947 2.287c-.836 1.372.734 2.942 2.106 2.106a1.532 1.532 0 012.287.947c.379 1.561 2.6 1.561 2.978 0a1.533 1.533 0 012.287-.947c1.372.836 2.942-.734 2.106-2.106a1.533 1.533 0 01.947-2.287c1.561-.379 1.561-2.6 0-2.978a1.532 1.532 0 01-.947-2.287c.836-1.372-.734-2.942-2.106-2.106a1.532 1.532 0 01-2.287-.947zM10 13a3 3 0 100-6 3 3 0 000 6z" clipRule="evenodd"/>
+              </svg>
+              Settings
+            </Link>
+          </nav>
 
-            {/* User Avatar */}
-            <div className="flex items-center gap-3">
-              <div className="bg-primary/20 rounded-full size-8 flex items-center justify-center">
-                <span className="text-primary font-medium text-sm">
-                  {userName.charAt(0).toUpperCase()}
-                </span>
-              </div>
-              <span className="hidden lg:block text-sm font-medium text-gray-900 dark:text-white">
-                {userName}
+          {/* User Avatar */}
+          <div className="flex items-center gap-3">
+            <div className="bg-primary/20 rounded-full size-8 flex items-center justify-center">
+              <span className="text-primary font-medium text-sm">
+                {userName.charAt(0).toUpperCase()}
               </span>
             </div>
-          </>
-        )}
+            <span className="hidden lg:block text-sm font-medium text-gray-900 dark:text-white">
+              {userName}
+            </span>
+          </div>
+        </>
 
         {/* Mobile Menu Button */}
         <button className="md:hidden p-2 text-gray-800 dark:text-white">

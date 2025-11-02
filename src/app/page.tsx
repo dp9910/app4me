@@ -1,21 +1,9 @@
 'use client';
 
-import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 
 export default function HomePage() {
   const router = useRouter();
-  const [demoQuery, setDemoQuery] = useState('');
-  
-  const handleFindApps = () => {
-    if (demoQuery.trim()) {
-      // Navigate to swipe page with the query as a URL parameter
-      router.push(`/swipe?demo=true&query=${encodeURIComponent(demoQuery.trim())}`);
-    } else {
-      // Navigate to swipe page without query for manual search
-      router.push('/swipe?demo=true');
-    }
-  };
 
   return (
     <div className="relative flex min-h-screen w-full flex-col items-center overflow-x-hidden p-4 sm:p-6 md:p-8">
@@ -69,38 +57,6 @@ export default function HomePage() {
                   <path fillRule="evenodd" d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" clipRule="evenodd" />
                 </svg>
               </button>
-            </div>
-          </div>
-          
-          {/* Quick Search Section */}
-          <div className="mt-12 w-full max-w-2xl">
-            <div className="bg-white/70 dark:bg-gray-800/70 backdrop-blur-sm rounded-2xl p-6 border border-gray-200 dark:border-gray-700 shadow-xl">
-              <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-4 text-center">
-                🚀 Try Our AI-Powered Search
-              </h3>
-              <div className="space-y-4">
-                <input
-                  type="text"
-                  placeholder="What kind of app are you looking for? (e.g., plant care, budget tracking, meditation)"
-                  value={demoQuery}
-                  onChange={(e) => setDemoQuery(e.target.value)}
-                  onKeyPress={(e) => e.key === 'Enter' && handleFindApps()}
-                  className="w-full h-12 px-4 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-white placeholder:text-gray-500 dark:placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary"
-                />
-                <button
-                  onClick={handleFindApps}
-                  className="w-full bg-gradient-to-r from-primary to-purple-600 hover:from-primary/90 hover:to-purple-600/90 text-white font-bold py-3 px-6 rounded-lg transition-all duration-200 transform hover:scale-105 shadow-lg hover:shadow-xl flex items-center justify-center gap-2"
-                >
-                  <span className="text-xl">✨</span>
-                  Find My Perfect Apps
-                  <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
-                    <path fillRule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clipRule="evenodd"/>
-                  </svg>
-                </button>
-              </div>
-              <p className="text-sm text-gray-600 dark:text-gray-400 text-center mt-3">
-                No signup required • Try it now
-              </p>
             </div>
           </div>
 

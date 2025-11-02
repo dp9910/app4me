@@ -579,7 +579,7 @@ export default function HomePage() {
               <p className="text-lg text-gray-600 dark:text-gray-300 mb-8 max-w-2xl mx-auto">
                 Try our AI-powered search! Describe what you need in plain English and discover apps tailored exactly to your needs.
               </p>
-              <Link href="/swipe">
+              <Link href="/swipe?query=productivity%20apps&auto=true">
                 <button className="inline-flex items-center gap-3 bg-primary hover:bg-primary/90 text-white font-bold py-4 px-8 rounded-xl text-lg transition-all duration-200 transform hover:scale-105 shadow-lg hover:shadow-xl">
                   <span className="text-2xl">🔍</span>
                   Start Swiping & Discovering

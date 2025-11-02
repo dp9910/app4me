@@ -5,6 +5,7 @@ import { useAuth } from '@/lib/auth/auth-context';
 import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import Navigation from '@/components/ui/Navigation';
+import SwipeCard from '@/components/ui/SwipeCard';
 
 interface App {
   id: string;
@@ -44,30 +45,14 @@ export default function SwipePage() {
   const [searchResults, setSearchResults] = useState<App[]>([]);
   const [searchError, setSearchError] = useState<string | null>(null);
   const [hasSearched, setHasSearched] = useState(false);
-  const [isDemoMode, setIsDemoMode] = useState(false);
 
   useEffect(() => {
-    // Check if we're in demo mode
-    const demoParam = searchParams.get('demo');
     const queryParam = searchParams.get('query');
-    
-    if (demoParam === 'true') {
-      setIsDemoMode(true);
-      if (queryParam) {
-        setSearchQuery(decodeURIComponent(queryParam));
-        // Auto-trigger search if query is provided
-        setTimeout(() => {
-          handleSearchWithQuery(decodeURIComponent(queryParam));
-        }, 500);
-      }
-    } else if (!loading && !user && demoParam !== 'true') {
-      // Only redirect to signin if not in demo mode and no user
-      // Add a delay to prevent race conditions during navigation
-      const timeoutId = setTimeout(() => {
-        router.push('/auth/signin');
-      }, 100);
-      
-      return () => clearTimeout(timeoutId);
+    if (queryParam) {
+      setSearchQuery(decodeURIComponent(queryParam));
+      handleSearchWithQuery(decodeURIComponent(queryParam));
+    } else if (!loading && !user) {
+      router.push('/auth/signin');
     }
   }, [searchParams, user, loading, router]);
 
@@ -149,7 +134,7 @@ export default function SwipePage() {
     await handleSearchWithQuery(searchQuery);
   };
 
-  const handleAction = (action: 'pass' | 'star' | 'like') => {
+  const handleAction = (action: 'pass' | 'like') => {
     // TODO: Save user action to user-app-interactions
     console.log(`Action: ${action} on app: ${currentApp?.name}`);
     
@@ -184,12 +169,11 @@ export default function SwipePage() {
   }
 
   return (
-    <div className="relative flex h-screen w-full flex-col overflow-hidden">
-      {/* Navigation */}
-      <Navigation isDemoMode={isDemoMode} />
+    <div className="relative flex h-screen w-full flex-col group/design-root overflow-hidden">
+      <Navigation />
 
       {/* Main Content */}
-      <main className="flex-1 flex flex-col bg-gray-100/50 dark:bg-gray-900/50 overflow-y-auto">
+      <main className="flex-1 flex flex-col items-center justify-center p-4 sm:p-8 lg:p-12 bg-background-light overflow-hidden">
         
         {/* Search Section */}
         {!currentApp && !isSearching && !hasSearched && (
@@ -220,49 +204,94 @@ export default function SwipePage() {
               </div>
               {/* Chips */}
               <div className="flex flex-wrap items-center justify-center gap-3 p-3">
-                <div className="flex h-9 shrink-0 cursor-pointer items-center justify-center gap-x-2 rounded-lg bg-blue-100 dark:bg-blue-500/20 px-4 transition-transform hover:scale-105">
+                <div 
+                  onClick={() => handleSearchWithQuery('productivity apps')}
+                  className="flex h-9 shrink-0 cursor-pointer items-center justify-center gap-x-2 rounded-lg bg-blue-100 dark:bg-blue-500/20 px-4 transition-transform hover:scale-105"
+                >
                   <p className="text-blue-800 dark:text-blue-300 text-sm font-medium leading-normal">Productivity</p>
                 </div>
-                <div className="flex h-9 shrink-0 cursor-pointer items-center justify-center gap-x-2 rounded-lg bg-green-100 dark:bg-green-500/20 px-4 transition-transform hover:scale-105">
+                <div 
+                  onClick={() => handleSearchWithQuery('health and fitness apps')}
+                  className="flex h-9 shrink-0 cursor-pointer items-center justify-center gap-x-2 rounded-lg bg-green-100 dark:bg-green-500/20 px-4 transition-transform hover:scale-105"
+                >
                   <p className="text-green-800 dark:text-green-300 text-sm font-medium leading-normal">Health & Fitness</p>
                 </div>
-                <div className="flex h-9 shrink-0 cursor-pointer items-center justify-center gap-x-2 rounded-lg bg-yellow-100 dark:bg-yellow-500/20 px-4 transition-transform hover:scale-105">
+                <div 
+                  onClick={() => handleSearchWithQuery('finance and budgeting apps')}
+                  className="flex h-9 shrink-0 cursor-pointer items-center justify-center gap-x-2 rounded-lg bg-yellow-100 dark:bg-yellow-500/20 px-4 transition-transform hover:scale-105"
+                >
                   <p className="text-yellow-800 dark:text-yellow-300 text-sm font-medium leading-normal">Finance</p>
                 </div>
-                <div className="flex h-9 shrink-0 cursor-pointer items-center justify-center gap-x-2 rounded-lg bg-purple-100 dark:bg-purple-500/20 px-4 transition-transform hover:scale-105">
+                <div 
+                  onClick={() => handleSearchWithQuery('education and learning apps')}
+                  className="flex h-9 shrink-0 cursor-pointer items-center justify-center gap-x-2 rounded-lg bg-purple-100 dark:bg-purple-500/20 px-4 transition-transform hover:scale-105"
+                >
                   <p className="text-purple-800 dark:text-purple-300 text-sm font-medium leading-normal">Education</p>
                 </div>
-                <div className="flex h-9 shrink-0 cursor-pointer items-center justify-center gap-x-2 rounded-lg bg-red-100 dark:bg-red-500/20 px-4 transition-transform hover:scale-105">
+                <div 
+                  onClick={() => handleSearchWithQuery('entertainment and media apps')}
+                  className="flex h-9 shrink-0 cursor-pointer items-center justify-center gap-x-2 rounded-lg bg-red-100 dark:bg-red-500/20 px-4 transition-transform hover:scale-105"
+                >
                   <p className="text-red-800 dark:text-red-300 text-sm font-medium leading-normal">Entertainment</p>
                 </div>
-                <div className="flex h-9 shrink-0 cursor-pointer items-center justify-center gap-x-2 rounded-lg bg-indigo-100 dark:bg-indigo-500/20 px-4 transition-transform hover:scale-105">
+                <div 
+                  onClick={() => handleSearchWithQuery('social networking apps')}
+                  className="flex h-9 shrink-0 cursor-pointer items-center justify-center gap-x-2 rounded-lg bg-indigo-100 dark:bg-indigo-500/20 px-4 transition-transform hover:scale-105"
+                >
                   <p className="text-indigo-800 dark:text-indigo-300 text-sm font-medium leading-normal">Social</p>
                 </div>
-                <div className="flex h-9 shrink-0 cursor-pointer items-center justify-center gap-x-2 rounded-lg bg-pink-100 dark:bg-pink-500/20 px-4 transition-transform hover:scale-105">
+                <div 
+                  onClick={() => handleSearchWithQuery('photo and video editing apps')}
+                  className="flex h-9 shrink-0 cursor-pointer items-center justify-center gap-x-2 rounded-lg bg-pink-100 dark:bg-pink-500/20 px-4 transition-transform hover:scale-105"
+                >
                   <p className="text-pink-800 dark:text-pink-300 text-sm font-medium leading-normal">Photo & Video</p>
                 </div>
-                <div className="flex h-9 shrink-0 cursor-pointer items-center justify-center gap-x-2 rounded-lg bg-gray-200 dark:bg-gray-500/20 px-4 transition-transform hover:scale-105">
+                <div 
+                  onClick={() => handleSearchWithQuery('developer tools and coding apps')}
+                  className="flex h-9 shrink-0 cursor-pointer items-center justify-center gap-x-2 rounded-lg bg-gray-200 dark:bg-gray-500/20 px-4 transition-transform hover:scale-105"
+                >
                   <p className="text-gray-800 dark:text-gray-300 text-sm font-medium leading-normal">Developer Tools</p>
                 </div>
-                <div className="flex h-9 shrink-0 cursor-pointer items-center justify-center gap-x-2 rounded-lg bg-teal-100 dark:bg-teal-500/20 px-4 transition-transform hover:scale-105">
+                <div 
+                  onClick={() => handleSearchWithQuery('business and productivity apps')}
+                  className="flex h-9 shrink-0 cursor-pointer items-center justify-center gap-x-2 rounded-lg bg-teal-100 dark:bg-teal-500/20 px-4 transition-transform hover:scale-105"
+                >
                   <p className="text-teal-800 dark:text-teal-300 text-sm font-medium leading-normal">Business</p>
                 </div>
-                <div className="flex h-9 shrink-0 cursor-pointer items-center justify-center gap-x-2 rounded-lg bg-cyan-100 dark:bg-cyan-500/20 px-4 transition-transform hover:scale-105">
+                <div 
+                  onClick={() => handleSearchWithQuery('lifestyle and daily life apps')}
+                  className="flex h-9 shrink-0 cursor-pointer items-center justify-center gap-x-2 rounded-lg bg-cyan-100 dark:bg-cyan-500/20 px-4 transition-transform hover:scale-105"
+                >
                   <p className="text-cyan-800 dark:text-cyan-300 text-sm font-medium leading-normal">Lifestyle</p>
                 </div>
-                <div className="flex h-9 shrink-0 cursor-pointer items-center justify-center gap-x-2 rounded-lg bg-lime-100 dark:bg-lime-500/20 px-4 transition-transform hover:scale-105">
+                <div 
+                  onClick={() => handleSearchWithQuery('travel and navigation apps')}
+                  className="flex h-9 shrink-0 cursor-pointer items-center justify-center gap-x-2 rounded-lg bg-lime-100 dark:bg-lime-500/20 px-4 transition-transform hover:scale-105"
+                >
                   <p className="text-lime-800 dark:text-lime-300 text-sm font-medium leading-normal">Travel</p>
                 </div>
-                <div className="flex h-9 shrink-0 cursor-pointer items-center justify-center gap-x-2 rounded-lg bg-amber-100 dark:bg-amber-500/20 px-4 transition-transform hover:scale-105">
+                <div 
+                  onClick={() => handleSearchWithQuery('shopping and e-commerce apps')}
+                  className="flex h-9 shrink-0 cursor-pointer items-center justify-center gap-x-2 rounded-lg bg-amber-100 dark:bg-amber-500/20 px-4 transition-transform hover:scale-105"
+                >
                   <p className="text-amber-800 dark:text-amber-300 text-sm font-medium leading-normal">Shopping</p>
                 </div>
-                <div className="flex h-9 shrink-0 cursor-pointer items-center justify-center gap-x-2 rounded-lg bg-orange-100 dark:bg-orange-500/20 px-4 transition-transform hover:scale-105">
+                <div 
+                  onClick={() => handleSearchWithQuery('medical and healthcare apps')}
+                  className="flex h-9 shrink-0 cursor-pointer items-center justify-center gap-x-2 rounded-lg bg-orange-100 dark:bg-orange-500/20 px-4 transition-transform hover:scale-105"
+                >
                   <p className="text-orange-800 dark:text-orange-300 text-sm font-medium leading-normal">Medical</p>
                 </div>
-                <div className="flex h-9 shrink-0 cursor-pointer items-center justify-center gap-x-2 rounded-lg bg-stone-200 dark:bg-stone-500/20 px-4 transition-transform hover:scale-105">
+                <div 
+                  onClick={() => handleSearchWithQuery('news and information apps')}
+                  className="flex h-9 shrink-0 cursor-pointer items-center justify-center gap-x-2 rounded-lg bg-stone-200 dark:bg-stone-500/20 px-4 transition-transform hover:scale-105"
+                >
                   <p className="text-stone-800 dark:text-stone-300 text-sm font-medium leading-normal">News</p>
                 </div>
-                <div className="flex h-9 shrink-0 cursor-pointer items-center justify-center gap-x-2 rounded-lg bg-rose-100 dark:bg-rose-500/20 px-4 transition-transform hover:scale-105">
+                <div 
+                  onClick={() => handleSearchWithQuery('games and entertainment apps')}
+                  className="flex h-9 shrink-0 cursor-pointer items-center justify-center gap-x-2 rounded-lg bg-rose-100 dark:bg-rose-500/20 px-4 transition-transform hover:scale-105"
+                >
                   <p className="text-rose-800 dark:text-rose-300 text-sm font-medium leading-normal">Games</p>
                 </div>
               </div>
@@ -306,167 +335,71 @@ export default function SwipePage() {
           </div>
         )}
 
-        {/* Search Results List (when no current app but have results) */}
-        {!isSearching && !currentApp && searchResults.length > 0 && !searchError && (
-          <div className="flex-1 px-4 sm:px-6 lg:px-8 py-8">
-            <div className="max-w-4xl mx-auto">
-              <div className="text-center mb-8">
-                <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">
-                  🎉 Search Complete!
-                </h2>
-                <p className="text-gray-600 dark:text-gray-400 mb-4">
-                  Found {searchResults.length} apps matching your search. 
-                  {cardIndex > searchResults.length ? ' You\'ve seen all the results!' : ` You've seen ${cardIndex - 1} so far.`}
-                </p>
-                <div className="flex justify-center gap-4">
-                  <button
-                    onClick={resetSearch}
-                    className="bg-gray-500 hover:bg-gray-600 text-white font-medium py-2 px-4 rounded-lg transition-colors"
-                  >
-                    New Search
-                  </button>
-                  {cardIndex <= searchResults.length && (
-                    <button
-                      onClick={() => {
-                        setCurrentApp(searchResults[cardIndex - 1]);
-                      }}
-                      className="bg-primary hover:bg-primary/90 text-white font-medium py-2 px-4 rounded-lg transition-colors"
-                    >
-                      Continue Swiping
-                    </button>
-                  )}
-                </div>
-              </div>
-
-              {/* Results List */}
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {searchResults.map((app, index) => (
-                  <div 
-                    key={app.id}
-                    className={`bg-white dark:bg-gray-800 rounded-xl p-6 shadow-lg transition-all hover:shadow-xl ${
-                      index < cardIndex - 1 ? 'opacity-50' : ''
-                    }`}
-                  >
-                    <div className="flex items-start gap-4">
-                      <div 
-                        className="w-16 h-16 rounded-xl bg-cover bg-center flex-shrink-0"
-                        style={{ backgroundImage: `url("${app.icon}")` }}
-                      ></div>
-                      <div className="flex-1 min-w-0">
-                        <h3 className="font-bold text-gray-900 dark:text-white text-lg mb-1 truncate">
-                          {app.name}
-                        </h3>
-                        <p className="text-gray-600 dark:text-gray-400 text-sm mb-2">
-                          {app.category || app.primary_category}
-                        </p>
-                        <p className="text-gray-700 dark:text-gray-300 text-sm line-clamp-3">
-                          {app.personalized_one_liner || app.description}
-                        </p>
-                        {app.similarity_score && (
-                          <div className="mt-3 flex items-center gap-2">
-                            <div className="text-xs font-medium text-primary">
-                              {Math.round(app.similarity_score * 100)}% match
-                            </div>
-                            {app.rating > 0 && (
-                              <div className="text-xs text-gray-500">
-                                ⭐ {app.rating.toFixed(1)}
-                              </div>
-                            )}
-                          </div>
-                        )}
-                      </div>
-                    </div>
-                    {index < cardIndex - 1 && (
-                      <div className="mt-3 text-xs text-green-600 font-medium">
-                        ✓ Already seen
-                      </div>
-                    )}
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-        )}
-
-        {/* App Cards Section */}
+        {/* App Cards Section - Swipe Interface */}
         {currentApp && (
-          <div className="flex-1 flex flex-col items-center justify-center px-4 sm:px-6 lg:px-8 py-4">
-            <div className="w-full max-w-sm mx-auto space-y-4">
-              {/* Progress Indicator */}
-              <p className="text-sm text-gray-500 dark:text-gray-400 font-medium text-center">
-                Card {cardIndex} of {totalCards}
+          <div className="relative w-full max-w-4xl h-[600px] flex items-center justify-center group/card-container">
+            {/* Progress Indicator */}
+            <div className="absolute top-[-40px] left-1/2 transform -translate-x-1/2 z-20">
+              <p className="text-sm text-gray-500 dark:text-gray-400 font-medium">
+                {cardIndex} of {totalCards}
               </p>
+            </div>
 
-              {/* App Card - Reduced Size */}
-              <div className="relative w-full h-[480px] group cursor-pointer transition-transform duration-300 ease-in-out hover:-translate-y-2 hover:shadow-2xl">
-                {/* Background Cards */}
-                <div className="absolute top-0 left-0 w-full h-full rounded-xl bg-white/50 dark:bg-white/10 transform rotate-[-4deg] -z-20"></div>
-                <div className="absolute top-0 left-0 w-full h-full rounded-xl bg-white/30 dark:bg-white/5 transform rotate-[-8deg] -z-30"></div>
-                
-                {/* Main Card Content - Compact Reference Design */}
-                <div className="relative w-full h-full bg-white dark:bg-gray-800 border border-gray-800 dark:border-gray-200 rounded-xl shadow-xl overflow-hidden flex flex-col justify-center items-center p-6 text-center">
-                  <div className="flex-1 flex flex-col justify-center items-center">
-                    {/* App Logo - Sized to fit nicely */}
-                    <div 
-                      className="size-32 rounded-[2rem] bg-cover bg-center shadow-2xl mb-6"
-                      style={{ backgroundImage: `url("${currentApp.icon}")` }}
-                    ></div>
-                    
-                    {/* App Name */}
-                    <h3 className="text-gray-900 dark:text-white text-2xl font-bold mb-2">
-                      {currentApp.name}
-                    </h3>
-                  </div>
-                  
-                  {/* Bottom section - Price/Category and Rating like reference */}
-                  <div className="flex items-center justify-center gap-6 w-full pt-6 border-t border-gray-200 dark:border-gray-700">
-                    <div className="flex flex-col items-center">
-                      <span className="inline-flex items-center gap-1.5 rounded-full bg-green-100 dark:bg-green-900/20 px-3 py-1 text-sm font-bold text-green-700 dark:text-green-400">
-                        {currentApp.price || 'Free'}
-                      </span>
-                    </div>
-                    <div className="w-px h-6 bg-gray-200 dark:bg-gray-700"></div>
-                    <div className="flex flex-col items-center">
-                      <span className="inline-flex items-center gap-1.5 rounded-full bg-primary/10 px-3 py-1 text-sm font-bold text-primary">
-                        {currentApp.category || currentApp.primary_category}
-                      </span>
-                    </div>
-                    {currentApp.rating > 0 && (
-                      <>
-                        <div className="w-px h-6 bg-gray-200 dark:border-gray-700"></div>
-                        <div className="flex flex-col items-center">
-                          <div className="flex items-center gap-1 text-amber-500">
-                            <span className="font-bold text-sm">{currentApp.rating.toFixed(1)}</span>
-                            <span className="text-amber-400 text-lg">⭐</span>
-                          </div>
-                        </div>
-                      </>
-                    )}
-                  </div>
+            {/* Left Side Card (previous/swiped left) */}
+            {appStack[cardIndex] && (
+              <div 
+                className="absolute left-0 top-1/2 transform -translate-y-1/2 w-64 h-96 rounded-xl bg-white/70 dark:bg-gray-800/70 border border-gray-200 dark:border-gray-700 shadow-lg transition-all duration-300 ease-in-out pointer-events-none"
+                style={{
+                  transform: 'translateY(-50%) translateX(-50%) scale(0.8) rotate(-10deg)',
+                  filter: 'blur(2px)',
+                  opacity: 0.6,
+                  zIndex: 1
+                }}
+              >
+                <div className="flex flex-col justify-center items-center h-full p-6 text-center">
+                  <div 
+                    className="size-24 rounded-2xl bg-cover bg-center shadow-lg mb-4"
+                    style={{ backgroundImage: `url(${appStack[cardIndex].icon})` }}
+                  ></div>
+                  <h4 className="text-gray-900 dark:text-white text-lg font-bold truncate w-full">
+                    {appStack[cardIndex].name}
+                  </h4>
                 </div>
               </div>
-
-              {/* Action Buttons - Reference Design */}
-              <div className="flex items-center justify-center gap-4 pt-4">
-                <button 
-                  onClick={() => handleAction('pass')}
-                  className="flex items-center justify-center size-16 bg-white border border-gray-800 dark:border-gray-200 rounded-full shadow-lg text-red-500 hover:bg-red-500/10 transition-all duration-200 ease-in-out transform hover:scale-110"
-                >
-                  <span className="text-4xl">✕</span>
-                </button>
-                <button 
-                  onClick={() => handleAction('like')}
-                  className="flex items-center justify-center size-20 bg-primary border border-gray-800 dark:border-gray-200 rounded-full shadow-xl text-white hover:bg-primary/90 transition-all duration-200 ease-in-out transform hover:scale-110"
-                >
-                  <span className="text-5xl">♥</span>
-                </button>
-                <button 
-                  onClick={() => handleAction('star')}
-                  className="flex items-center justify-center size-16 bg-white border border-gray-800 dark:border-gray-200 rounded-full shadow-lg text-blue-500 hover:bg-blue-500/10 transition-all duration-200 ease-in-out transform hover:scale-110"
-                >
-                  <span className="text-3xl">ℹ</span>
-                </button>
+            )}
+            
+            {/* Right Side Card (next in stack) */}
+            {appStack[cardIndex + 1] && (
+              <div 
+                className="absolute right-0 top-1/2 transform -translate-y-1/2 w-64 h-96 rounded-xl bg-white/70 dark:bg-gray-800/70 border border-gray-200 dark:border-gray-700 shadow-lg transition-all duration-300 ease-in-out pointer-events-none"
+                style={{
+                  transform: 'translateY(-50%) translateX(50%) scale(0.8) rotate(10deg)',
+                  filter: 'blur(2px)',
+                  opacity: 0.6,
+                  zIndex: 1
+                }}
+              >
+                <div className="flex flex-col justify-center items-center h-full p-6 text-center">
+                  <div 
+                    className="size-24 rounded-2xl bg-cover bg-center shadow-lg mb-4"
+                    style={{ backgroundImage: `url(${appStack[cardIndex + 1].icon})` }}
+                  ></div>
+                  <h4 className="text-gray-900 dark:text-white text-lg font-bold truncate w-full">
+                    {appStack[cardIndex + 1].name}
+                  </h4>
+                </div>
               </div>
+            )}
+
+            {/* Center Container for Main Active Card */}
+            <div className="relative w-80 h-[600px]">
+              <SwipeCard 
+                app={currentApp} 
+                onLike={() => handleAction('like')} 
+                onPass={() => handleAction('pass')}
+                isActive={true}
+                zIndex={10}
+              />
             </div>
           </div>
         )}
