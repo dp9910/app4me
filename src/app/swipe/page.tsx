@@ -6,6 +6,7 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import Navigation from '@/components/ui/Navigation';
 import SwipeCard from '@/components/ui/SwipeCard';
+import { supabase } from '@/lib/supabase/client';
 
 interface App {
   id: string;
@@ -47,6 +48,8 @@ export default function SwipePage() {
   const [hasSearched, setHasSearched] = useState(false);
   const [swipedLeftCards, setSwipedLeftCards] = useState<App[]>([]);
   const [swipedRightCards, setSwipedRightCards] = useState<App[]>([]);
+  const [sessionId, setSessionId] = useState<string | null>(null);
+  const [sessionStartTime, setSessionStartTime] = useState<number | null>(null);
 
   useEffect(() => {
     const queryParam = searchParams.get('query');
@@ -58,10 +61,121 @@ export default function SwipePage() {
     }
   }, [searchParams, user, loading, router]);
 
+  // Cleanup effect to handle session completion when leaving the page
+  useEffect(() => {
+    return () => {
+      // Complete session when component unmounts (navigation to other pages)
+      if (sessionId && currentApp) {
+        completeSwipeSessionIncomplete('user_stopped');
+      }
+    };
+  }, [sessionId, currentApp, swipedRightCards.length, swipedLeftCards.length, sessionStartTime]);
+
+  const startSwipeSession = async (query: string, totalApps: number) => {
+    if (!user) return null;
+    
+    try {
+      const startTime = Date.now();
+      setSessionStartTime(startTime);
+      
+      const { data, error } = await supabase
+        .from('swipe_sessions')
+        .insert({
+          user_id: user.id,
+          search_query: query,
+          total_apps_shown: totalApps,
+          started_at: new Date().toISOString()
+        })
+        .select()
+        .single();
+
+      if (error) {
+        console.error('Error creating swipe session:', error);
+        return null;
+      }
+
+      setSessionId(data.id);
+      return data.id;
+    } catch (error) {
+      console.error('Error starting swipe session:', error);
+      return null;
+    }
+  };
+
+  const logSwipeInteraction = async (app: App, action: 'like' | 'pass', cardPosition: number) => {
+    if (!user || !sessionId) return;
+    
+    try {
+      const swipeStartTime = sessionStartTime || Date.now();
+      const swipeDuration = Date.now() - swipeStartTime;
+      
+      await supabase
+        .from('swipe_interactions')
+        .insert({
+          user_id: user.id,
+          session_id: sessionId,
+          search_query: searchQuery,
+          app_bundle_id: app.app_id,
+          app_name: app.name,
+          app_category: app.category,
+          interaction_type: action,
+          card_position: cardPosition,
+          swipe_duration_ms: swipeDuration
+        });
+    } catch (error) {
+      console.error('Error logging swipe interaction:', error);
+    }
+  };
+
+  const completeSwipeSession = async (reason: 'finished_all' | 'user_stopped' | 'start_over') => {
+    if (!sessionId || !sessionStartTime) return;
+    
+    try {
+      const totalDuration = Date.now() - sessionStartTime;
+      
+      await supabase
+        .from('swipe_sessions')
+        .update({
+          total_likes: swipedRightCards.length,
+          total_passes: swipedLeftCards.length,
+          session_duration_ms: totalDuration,
+          completed: reason === 'finished_all', // Only mark as completed if user finished all apps
+          completion_reason: reason,
+          completed_at: new Date().toISOString()
+        })
+        .eq('id', sessionId);
+    } catch (error) {
+      console.error('Error completing swipe session:', error);
+    }
+  };
+
+  const completeSwipeSessionIncomplete = async (reason: 'user_stopped' | 'start_over') => {
+    if (!sessionId || !sessionStartTime) return;
+    
+    try {
+      const totalDuration = Date.now() - sessionStartTime;
+      
+      await supabase
+        .from('swipe_sessions')
+        .update({
+          total_likes: swipedRightCards.length,
+          total_passes: swipedLeftCards.length,
+          session_duration_ms: totalDuration,
+          completed: false, // Always mark as incomplete
+          completion_reason: reason,
+          completed_at: new Date().toISOString()
+        })
+        .eq('id', sessionId);
+    } catch (error) {
+      console.error('Error marking swipe session as incomplete:', error);
+    }
+  };
 
   const handleSearchWithQuery = async (query: string) => {
     if (!query.trim()) return;
     
+    // Update the search query state to match the actual query being used
+    setSearchQuery(query.trim());
     setIsSearching(true);
     setSearchError(null);
     setHasSearched(true);
@@ -117,6 +231,9 @@ export default function SwipePage() {
           setCurrentApp(normalizedResults[0]);
           setAppStack(normalizedResults);
           setCardIndex(1);
+          
+          // Start a new swipe session
+          await startSwipeSession(query, normalizedResults.length);
         } else {
           setSearchError('No apps found matching your search. Try different keywords or be more specific.');
         }
@@ -136,8 +253,11 @@ export default function SwipePage() {
     await handleSearchWithQuery(searchQuery);
   };
 
-  const handleAction = (action: 'pass' | 'like') => {
+  const handleAction = async (action: 'pass' | 'like') => {
     if (!currentApp) return;
+    
+    // Log the swipe interaction to database
+    await logSwipeInteraction(currentApp, action, cardIndex);
     
     // Add card to appropriate side stack
     if (action === 'pass') {
@@ -146,21 +266,24 @@ export default function SwipePage() {
       setSwipedRightCards(prev => [...prev, currentApp]);
     }
     
-    // TODO: Save user action to user-app-interactions
-    console.log(`Action: ${action} on app: ${currentApp.name}`);
-    
     const nextIndex = cardIndex + 1;
     setCardIndex(nextIndex);
     
     if (nextIndex <= appStack.length) {
       setCurrentApp(appStack[nextIndex - 1]);
     } else {
-      // No more apps
+      // No more apps - session completed
       setCurrentApp(null);
+      await completeSwipeSession('finished_all');
     }
   };
 
-  const resetSearch = () => {
+  const resetSearch = async () => {
+    // Complete current session as incomplete if it exists
+    if (sessionId) {
+      await completeSwipeSessionIncomplete('start_over');
+    }
+    
     setCurrentApp(null);
     setAppStack([]);
     setSearchResults([]);
@@ -171,6 +294,8 @@ export default function SwipePage() {
     setSearchQuery('');
     setSwipedLeftCards([]);
     setSwipedRightCards([]);
+    setSessionId(null);
+    setSessionStartTime(null);
   };
 
   if (loading) {
@@ -187,6 +312,21 @@ export default function SwipePage() {
 
       {/* Main Content */}
       <main className="flex-1 flex flex-col items-center justify-center p-4 sm:p-8 lg:p-12 bg-background-light overflow-hidden">
+        
+        {/* Start Over Button - Top Right */}
+        {(currentApp || hasSearched) && (
+          <div className="absolute top-4 right-4 z-30">
+            <button
+              onClick={async () => {
+                await resetSearch();
+              }}
+              className="flex items-center gap-2 px-4 py-2 bg-gray-500 hover:bg-gray-600 text-white rounded-lg font-medium transition-colors shadow-lg"
+            >
+              <span className="text-sm">🔄</span>
+              <span>Start Over</span>
+            </button>
+          </div>
+        )}
         
         {/* Search Section */}
         {!currentApp && !isSearching && !hasSearched && (
@@ -339,7 +479,7 @@ export default function SwipePage() {
                 {searchError}
               </p>
               <button
-                onClick={resetSearch}
+                onClick={async () => await resetSearch()}
                 className="bg-primary hover:bg-primary/90 text-white font-medium py-3 px-6 rounded-lg transition-colors"
               >
                 Try Another Search
