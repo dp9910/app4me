@@ -6,6 +6,9 @@ interface App {
   category?: string;
   icon: string;
   rating?: number;
+  price?: string;
+  description?: string;
+  artist?: string;
 }
 
 interface SwipeCardProps {
@@ -141,41 +144,47 @@ const SwipeCard: React.FC<SwipeCardProps> = ({ app, onLike, onPass, isActive = t
       
       <div className="flex-1 flex flex-col justify-center items-center">
         <div
-          className="size-48 rounded-[2.5rem] bg-cover bg-center shadow-2xl mb-8"
+          className="size-48 rounded-[2.5rem] bg-cover bg-center shadow-2xl mb-8 mt-[-3rem]"
           style={{ backgroundImage: `url('${app.icon}')` }}
         ></div>
-        <div className="flex flex-col gap-2">
+        <div className="flex flex-col gap-3 text-center">
           <h3 className="text-gray-900 dark:text-white text-3xl font-bold">{app.name}</h3>
-          <p className="text-gray-500 text-sm">{app.category}</p>
+          
+          {/* Developer */}
+          {app.artist && app.artist !== 'Unknown Developer' && (
+            <p className="text-gray-500 text-sm">
+              by {app.artist}
+            </p>
+          )}
+          
+          {/* Category and Price Row */}
+          <div className="flex items-center justify-center gap-3">
+            <span className="text-gray-500 text-sm">{app.category}</span>
+            {app.price && (
+              <>
+                <span className="text-gray-400">•</span>
+                <span className="text-primary font-semibold text-sm">{app.price}</span>
+              </>
+            )}
+          </div>
+          
+          {/* Rating */}
           {app.rating && (
             <div className="flex items-center justify-center gap-1 text-amber-500">
               <span className="font-bold text-sm">{app.rating.toFixed(1)}</span>
               <span className="text-lg">⭐</span>
             </div>
           )}
+          
+          {/* Description */}
+          {app.description && app.description !== 'app_name_match' && app.description !== 'No description available' && (
+            <p className="text-gray-600 dark:text-gray-400 text-sm leading-relaxed px-4 max-w-sm mx-auto line-clamp-2">
+              {app.description.split('\n')[0].trim()}
+            </p>
+          )}
         </div>
       </div>
       
-      {isActive && (
-        <>
-          <div className="absolute bottom-6 left-6">
-            <button
-              onClick={() => handleSwipe('pass')}
-              className="flex items-center justify-center size-16 bg-red-500 rounded-full text-white shadow-lg hover:bg-red-600 transition-all duration-200 ease-in-out transform hover:scale-110"
-            >
-              <span className="text-4xl">✕</span>
-            </button>
-          </div>
-          <div className="absolute bottom-6 right-6">
-            <button
-              onClick={() => handleSwipe('like')}
-              className="flex items-center justify-center size-16 bg-green-500 rounded-full text-white shadow-lg hover:bg-green-600 transition-all duration-200 ease-in-out transform hover:scale-110"
-            >
-              <span className="text-4xl">✓</span>
-            </button>
-          </div>
-        </>
-      )}
     </div>
   );
 };

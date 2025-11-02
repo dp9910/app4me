@@ -374,9 +374,25 @@ export default function SwipePage() {
                       className="size-24 rounded-3xl bg-cover bg-center shadow-lg mb-4"
                       style={{ backgroundImage: `url(${swipedLeftCards[swipedLeftCards.length - 1].icon})` }}
                     ></div>
-                    <h4 className="text-gray-900 dark:text-white text-lg font-bold truncate w-full">
+                    <h4 className="text-gray-900 dark:text-white text-lg font-bold truncate w-full mb-2">
                       {swipedLeftCards[swipedLeftCards.length - 1].name}
                     </h4>
+                    <div className="flex items-center justify-center gap-2 mb-2">
+                      <span className="text-gray-500 text-xs">{swipedLeftCards[swipedLeftCards.length - 1].category}</span>
+                      {swipedLeftCards[swipedLeftCards.length - 1].price && (
+                        <>
+                          <span className="text-gray-400 text-xs">•</span>
+                          <span className="text-primary font-semibold text-xs">{swipedLeftCards[swipedLeftCards.length - 1].price}</span>
+                        </>
+                      )}
+                    </div>
+                    {swipedLeftCards[swipedLeftCards.length - 1].description && 
+                     swipedLeftCards[swipedLeftCards.length - 1].description !== 'app_name_match' && 
+                     swipedLeftCards[swipedLeftCards.length - 1].description !== 'No description available' && (
+                      <p className="text-gray-600 dark:text-gray-400 text-xs leading-relaxed px-2 line-clamp-1">
+                        {swipedLeftCards[swipedLeftCards.length - 1].description.split('\n')[0].trim()}
+                      </p>
+                    )}
                     <div className="absolute top-4 right-4 bg-red-500 text-white rounded-full p-2">
                       <span className="text-base">✕</span>
                     </div>
@@ -401,9 +417,25 @@ export default function SwipePage() {
                       className="size-24 rounded-3xl bg-cover bg-center shadow-lg mb-4"
                       style={{ backgroundImage: `url(${swipedRightCards[swipedRightCards.length - 1].icon})` }}
                     ></div>
-                    <h4 className="text-gray-900 dark:text-white text-lg font-bold truncate w-full">
+                    <h4 className="text-gray-900 dark:text-white text-lg font-bold truncate w-full mb-2">
                       {swipedRightCards[swipedRightCards.length - 1].name}
                     </h4>
+                    <div className="flex items-center justify-center gap-2 mb-2">
+                      <span className="text-gray-500 text-xs">{swipedRightCards[swipedRightCards.length - 1].category}</span>
+                      {swipedRightCards[swipedRightCards.length - 1].price && (
+                        <>
+                          <span className="text-gray-400 text-xs">•</span>
+                          <span className="text-primary font-semibold text-xs">{swipedRightCards[swipedRightCards.length - 1].price}</span>
+                        </>
+                      )}
+                    </div>
+                    {swipedRightCards[swipedRightCards.length - 1].description && 
+                     swipedRightCards[swipedRightCards.length - 1].description !== 'app_name_match' && 
+                     swipedRightCards[swipedRightCards.length - 1].description !== 'No description available' && (
+                      <p className="text-gray-600 dark:text-gray-400 text-xs leading-relaxed px-2 line-clamp-1">
+                        {swipedRightCards[swipedRightCards.length - 1].description.split('\n')[0].trim()}
+                      </p>
+                    )}
                     <div className="absolute top-4 right-4 bg-green-500 text-white rounded-full p-2">
                       <span className="text-base">♥</span>
                     </div>
@@ -421,6 +453,24 @@ export default function SwipePage() {
                 isActive={true}
                 zIndex={10}
               />
+              
+              {/* Action Buttons Outside Card - Left and Right */}
+              <div className="absolute bottom-6 left-[-80px]">
+                <button
+                  onClick={() => handleAction('pass')}
+                  className="flex items-center justify-center size-16 bg-red-500 rounded-full text-white shadow-lg hover:bg-red-600 transition-all duration-200 ease-in-out transform hover:scale-110"
+                >
+                  <span className="text-4xl">✕</span>
+                </button>
+              </div>
+              <div className="absolute bottom-6 right-[-80px]">
+                <button
+                  onClick={() => handleAction('like')}
+                  className="flex items-center justify-center size-16 bg-green-500 rounded-full text-white shadow-lg hover:bg-green-600 transition-all duration-200 ease-in-out transform hover:scale-110"
+                >
+                  <span className="text-4xl">♥</span>
+                </button>
+              </div>
             </div>
           </div>
         )}
