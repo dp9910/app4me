@@ -570,31 +570,11 @@ export default function HomePage() {
             </div>
           </div>
 
-          {/* Call-to-Action Section */}
-          <section className="bg-gradient-to-r from-primary/10 to-purple-500/10 dark:from-primary/20 dark:to-purple-500/20 py-16 px-4 sm:px-6 lg:px-10 mx-4 sm:mx-6 lg:mx-10 rounded-2xl mb-10">
-            <div className="max-w-4xl mx-auto text-center">
-              <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 dark:text-white mb-4">
-                Can't Find What You're Looking For?
-              </h2>
-              <p className="text-lg text-gray-600 dark:text-gray-300 mb-8 max-w-2xl mx-auto">
-                Try our AI-powered search! Describe what you need in plain English and discover apps tailored exactly to your needs.
-              </p>
-              <Link href="/swipe?query=productivity%20apps&auto=true">
-                <button className="inline-flex items-center gap-3 bg-primary hover:bg-primary/90 text-white font-bold py-4 px-8 rounded-xl text-lg transition-all duration-200 transform hover:scale-105 shadow-lg hover:shadow-xl">
-                  <span className="text-2xl">🔍</span>
-                  Start Swiping & Discovering
-                  <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
-                    <path fillRule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clipRule="evenodd"/>
-                  </svg>
-                </button>
-              </Link>
-            </div>
-          </section>
 
           {/* Footer */}
           <footer className="border-t border-gray-200/10 dark:border-white/10 px-4 sm:px-6 lg:px-10 py-6">
             <div className="max-w-7xl mx-auto flex justify-between items-center text-sm text-gray-500 dark:text-gray-400">
-              <p>© 2024 All rights reserved.</p>
+              <p>© 2025 All rights reserved.</p>
               <div className="flex gap-6">
                 <Link href="/about" className="hover:text-primary">About Us</Link>
                 <Link href="/help" className="hover:text-primary">Help Center</Link>

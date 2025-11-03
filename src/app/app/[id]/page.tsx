@@ -511,30 +511,8 @@ export default function AppSpotlightPage() {
 
 
 
-              {/* Category Analysis */}
-              {appFeatures?.category_classification && (
-                <div className="bg-white dark:bg-gray-800 rounded-xl p-6">
-                  <h2 className="text-gray-900 dark:text-white text-xl font-bold mb-4">Category Analysis</h2>
-                  <div className="p-4 rounded-lg bg-primary/10 border border-primary/20">
-                    <pre className="text-gray-700 dark:text-gray-300 text-sm whitespace-pre-wrap">
-                      {JSON.stringify(appFeatures.category_classification, null, 2)}
-                    </pre>
-                  </div>
-                </div>
-              )}
 
 
-              {/* Keywords Analysis */}
-              {appFeatures?.keywords_tfidf && (
-                <div className="bg-white dark:bg-gray-800 rounded-xl p-6">
-                  <h3 className="text-gray-900 dark:text-white text-lg font-bold mb-4">Keywords Analysis</h3>
-                  <div className="p-4 rounded-lg bg-gray-50 dark:bg-gray-700">
-                    <pre className="text-gray-700 dark:text-gray-300 text-sm whitespace-pre-wrap">
-                      {JSON.stringify(appFeatures.keywords_tfidf, null, 2)}
-                    </pre>
-                  </div>
-                </div>
-              )}
 
 
             </div>
