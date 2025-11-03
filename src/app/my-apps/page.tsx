@@ -24,6 +24,38 @@ interface SwipedApp {
   rating?: number;
   description?: string;
   interaction_type: 'like' | 'pass';
+  
+  // Rich data from apps_unified
+  developer?: string;
+  price?: number;
+  formatted_price?: string;
+  rating_count?: number;
+  icon_url_hd?: string;
+  screenshots?: string[];
+  primary_category?: string;
+  genres?: string[];
+  size_bytes?: number;
+  version?: string;
+  age_rating?: string;
+  data_quality_score?: number;
+  
+  // Rich data from app_features (disabled until table exists)
+  // metadata_category_primary?: string;
+  // llm_primary_use_case?: string;
+  // llm_complexity_level?: string;
+  quality_signals?: number;
+  // category_scores?: {
+  //   productivity?: number;
+  //   finance?: number;
+  //   health?: number;
+  //   entertainment?: number;
+  //   education?: number;
+  // };
+  llm_primary_use_case?: string;
+  llm_emotional_tone?: string;
+  llm_best_for_keywords?: string[];
+  llm_target_personas?: string[];
+  llm_key_features?: string[];
 }
 
 interface QueryStats {
@@ -113,10 +145,32 @@ export default function MyAppsPage() {
       // Fetch app details from apps_unified table
       let appDetailsMap = new Map();
       if (appBundleIds.length > 0) {
-        // Try multiple approaches to match app IDs
+        // Fetch comprehensive app details from apps_unified table
         const { data: appDetails, error: appDetailsError } = await supabase
           .from('apps_unified')
-          .select('id, title, icon_url, rating, primary_category, description')
+          .select(`
+            id,
+            title,
+            developer,
+            price,
+            formatted_price,
+            rating,
+            rating_count,
+            icon_url,
+            icon_url_hd,
+            screenshots,
+            description,
+            primary_category,
+            all_categories,
+            genres,
+            size_bytes,
+            version,
+            age_rating,
+            data_quality_score,
+            total_appearances,
+            avg_rank,
+            best_rank
+          `)
           .in('id', appBundleIds);
 
         console.log('App details from apps_unified (by id):', appDetails);
@@ -144,7 +198,26 @@ export default function MyAppsPage() {
             
             const { data: titleMatches, error: titleError } = await supabase
               .from('apps_unified')
-              .select('id, title, icon_url, rating, primary_category, description')
+              .select(`
+                id,
+                title,
+                developer,
+                price,
+                formatted_price,
+                rating,
+                rating_count,
+                icon_url,
+                icon_url_hd,
+                screenshots,
+                description,
+                primary_category,
+                all_categories,
+                genres,
+                size_bytes,
+                version,
+                age_rating,
+                data_quality_score
+              `)
               .or(titleConditions)
               .limit(50);
 
@@ -167,6 +240,10 @@ export default function MyAppsPage() {
       }
       
       console.log('Final app details map size:', appDetailsMap.size);
+
+      // Skip features for now since table doesn't exist
+      let appFeaturesMap = new Map();
+      console.log('Skipping app_features table (not available yet)');
 
       // Fetch session statistics
       const { data: sessionStats, error: sessionStatsError } = await supabase
@@ -249,13 +326,16 @@ export default function MyAppsPage() {
         duration_ms: session.session_duration_ms
       })) || [];
 
-      // Format all apps data with app details from apps_unified
+      // Format all apps data with rich details from both apps_unified and app_features
       const formattedAllApps = allApps?.map(app => {
         const appDetails = appDetailsMap.get(app.app_bundle_id);
+        const appFeatures = appFeaturesMap.get(app.app_bundle_id);
         console.log(`Formatting app ${app.app_name} (${app.app_bundle_id}):`, {
           hasAppDetails: !!appDetails,
+          hasAppFeatures: !!appFeatures,
           icon_url: appDetails?.icon_url,
-          title: appDetails?.title
+          title: appDetails?.title,
+          primary_use_case: appFeatures?.primary_use_case
         });
         
         return {
@@ -266,17 +346,39 @@ export default function MyAppsPage() {
           swiped_at: app.created_at,
           session_id: app.session_id,
           card_position: app.card_position,
-          icon_url: appDetails?.icon_url,
+          interaction_type: app.interaction_type,
+          
+          // Rich data from apps_unified
+          developer: appDetails?.developer,
+          price: appDetails?.price,
+          formatted_price: appDetails?.formatted_price,
           rating: appDetails?.rating,
+          rating_count: appDetails?.rating_count,
+          icon_url: appDetails?.icon_url,
+          icon_url_hd: appDetails?.icon_url_hd,
+          screenshots: appDetails?.screenshots,
           description: appDetails?.description,
-          interaction_type: app.interaction_type
+          primary_category: appDetails?.primary_category,
+          genres: appDetails?.genres,
+          size_bytes: appDetails?.size_bytes,
+          version: appDetails?.version,
+          age_rating: appDetails?.age_rating,
+          data_quality_score: appDetails?.data_quality_score,
+          
+          // Rich data from app_features (disabled until table exists)
+          // metadata_category_primary: appFeatures?.metadata_category_primary,
+          // llm_primary_use_case: appFeatures?.llm_primary_use_case,
+          // llm_complexity_level: appFeatures?.llm_complexity_level,
         };
       }) || [];
       
-      console.log('Formatted all apps with icons:', formattedAllApps.map(app => ({
+      console.log('Formatted all apps with rich data:', formattedAllApps.map(app => ({
         name: app.app_name,
         has_icon: !!app.icon_url,
-        icon_url: app.icon_url,
+        has_description: !!app.description,
+        developer: app.developer,
+        rating: app.rating,
+        primary_use_case: app.primary_use_case,
         interaction: app.interaction_type
       })));
 
@@ -381,8 +483,8 @@ export default function MyAppsPage() {
               My Apps
             </h1>
             
-            {/* Quick Stats */}
-            {analytics?.sessionStats && (
+            {/* Enhanced Quick Stats */}
+            {analytics?.sessionStats && analytics?.allApps && (
               <div className="flex gap-4">
                 <div className="text-center">
                   <div className="text-2xl font-bold text-primary">
@@ -401,6 +503,23 @@ export default function MyAppsPage() {
                     {Math.round(analytics.sessionStats.like_rate)}%
                   </div>
                   <div className="text-sm text-gray-500 dark:text-gray-400">Like Rate</div>
+                </div>
+                <div className="text-center">
+                  <div className="text-2xl font-bold text-amber-500">
+                    {(() => {
+                      const appsWithRating = analytics.allApps.filter(app => app.rating && app.rating > 0);
+                      const avgRating = appsWithRating.length > 0 ? 
+                        appsWithRating.reduce((sum, app) => sum + (app.rating || 0), 0) / appsWithRating.length : 0;
+                      return avgRating > 0 ? avgRating.toFixed(1) : 'N/A';
+                    })()}
+                  </div>
+                  <div className="text-sm text-gray-500 dark:text-gray-400">Avg Rating</div>
+                </div>
+                <div className="text-center">
+                  <div className="text-2xl font-bold text-purple-500">
+                    {analytics.allApps.filter(app => app.developer).length}
+                  </div>
+                  <div className="text-sm text-gray-500 dark:text-gray-400">With Developer</div>
                 </div>
               </div>
             )}
@@ -461,6 +580,7 @@ export default function MyAppsPage() {
                     key={query.search_query} 
                     query={query} 
                     onSelect={() => setSelectedQuery(query.search_query)}
+                    analytics={analytics}
                   />
                 ))}
               </div>
@@ -472,11 +592,36 @@ export default function MyAppsPage() {
 }
 
 // Helper Components
-function QueryCard({ query, onSelect }: { query: QueryStats; onSelect: () => void }) {
+function QueryCard({ query, onSelect, analytics }: { query: QueryStats; onSelect: () => void; analytics: SwipeAnalytics | null }) {
+  const queryApps = analytics?.allApps.filter(app => app.search_query === query.search_query) || [];
+  
+  // Calculate insights from the apps in this query
+  const avgRating = queryApps.length > 0 ? 
+    queryApps.reduce((sum, app) => sum + (app.rating || 0), 0) / queryApps.filter(app => app.rating).length : 0;
+  
+  // Simplified without features data
+  const topCategories = {};
+  
+  const topCategory = Object.entries(topCategories)
+    .sort(([,a], [,b]) => b - a)[0];
+  
+  const getCategoryIcon = (category: string) => {
+    const icons: Record<string, string> = {
+      productivity: '⚡',
+      finance: '💰',
+      health: '🏃',
+      entertainment: '🎮',
+      education: '📚'
+    };
+    return icons[category] || '📱';
+  };
+  
+  const qualityApps = 0; // Disabled until features table exists
+  
   return (
     <div 
       onClick={onSelect}
-      className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-8 cursor-pointer hover:shadow-lg transition-all duration-300 hover:scale-[1.02] hover:border-primary/50"
+      className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-6 cursor-pointer hover:shadow-lg transition-all duration-300 hover:scale-[1.02] hover:border-primary/50"
     >
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-4">
@@ -488,10 +633,38 @@ function QueryCard({ query, onSelect }: { query: QueryStats; onSelect: () => voi
             <p className="text-gray-500 dark:text-gray-400 text-sm mt-1">
               Last searched {new Date(query.last_searched).toLocaleDateString()}
             </p>
+            
+            {/* Query Insights */}
+            <div className="flex items-center gap-4 mt-2">
+              {avgRating > 0 && (
+                <div className="flex items-center gap-1">
+                  <span className="text-amber-500 text-sm">⭐</span>
+                  <span className="text-gray-600 dark:text-gray-400 text-sm">
+                    {avgRating.toFixed(1)} avg
+                  </span>
+                </div>
+              )}
+              
+              {topCategory && (
+                <div className="flex items-center gap-1">
+                  <span className="text-sm">{getCategoryIcon(topCategory[0])}</span>
+                  <span className="text-gray-600 dark:text-gray-400 text-sm">
+                    {topCategory[0]}
+                  </span>
+                </div>
+              )}
+              
+              <div className="flex items-center gap-1">
+                <span className="text-blue-500 text-sm">📱</span>
+                <span className="text-gray-600 dark:text-gray-400 text-sm">
+                  {query.total_count} apps total
+                </span>
+              </div>
+            </div>
           </div>
         </div>
         
-        <div className="flex items-center gap-8">
+        <div className="flex items-center gap-6">
           <div className="text-center">
             <div className="flex items-center gap-2 mb-1">
               <span className="text-green-500 text-2xl">👍</span>
@@ -508,6 +681,13 @@ function QueryCard({ query, onSelect }: { query: QueryStats; onSelect: () => voi
             <span className="text-gray-500 dark:text-gray-400 text-sm">Passed</span>
           </div>
           
+          <div className="text-center">
+            <div className="text-xl font-bold text-gray-700 dark:text-gray-300 mb-1">
+              {query.total_count}
+            </div>
+            <span className="text-gray-500 dark:text-gray-400 text-sm">Total</span>
+          </div>
+          
           <div className="text-gray-400 dark:text-gray-500">
             <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 20 20">
               <path fillRule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clipRule="evenodd" />
@@ -520,7 +700,18 @@ function QueryCard({ query, onSelect }: { query: QueryStats; onSelect: () => voi
 }
 
 function AppCard({ app, onRemove }: { app: SwipedApp; onRemove: (sessionId: string, appId: string) => void }) {
+  const router = useRouter();
   const isLiked = app.interaction_type === 'like';
+  
+  const formatFileSize = (bytes?: number) => {
+    if (!bytes) return null;
+    const sizes = ['B', 'KB', 'MB', 'GB'];
+    const i = Math.floor(Math.log(bytes) / Math.log(1024));
+    return Math.round(bytes / Math.pow(1024, i) * 10) / 10 + ' ' + sizes[i];
+  };
+  
+  // Simplified without features data
+  const topCategory = null;
   
   return (
     <div className={`flex h-full w-full flex-col gap-4 rounded-xl shadow-sm border group transition-transform duration-300 hover:scale-105 ${
@@ -529,19 +720,19 @@ function AppCard({ app, onRemove }: { app: SwipedApp; onRemove: (sessionId: stri
         : 'bg-red-50 dark:bg-red-900/20 border-red-200 dark:border-red-700'
     }`}>
       <div 
-        className="w-full bg-center bg-no-repeat aspect-video bg-cover rounded-t-xl flex items-center justify-center"
+        className="w-full bg-center bg-no-repeat aspect-video bg-cover rounded-t-xl flex items-center justify-center relative"
         style={{ 
           backgroundColor: '#f3f4f6'
         }}
       >
-        {app.icon_url ? (
+        {app.icon_url_hd || app.icon_url ? (
           <img 
-            src={app.icon_url} 
+            src={app.icon_url_hd || app.icon_url} 
             alt={app.app_name}
             className="w-24 h-24 rounded-2xl shadow-lg"
             onError={(e) => {
               const target = e.target as HTMLImageElement;
-              target.src = '/default-app-icon.png';
+              target.src = app.icon_url || '/default-app-icon.png';
             }}
           />
         ) : (
@@ -549,8 +740,23 @@ function AppCard({ app, onRemove }: { app: SwipedApp; onRemove: (sessionId: stri
             <span className="text-3xl">📱</span>
           </div>
         )}
+        
+        {/* Price Badge */}
+        {app.formatted_price && (
+          <div className="absolute top-2 right-2 bg-primary text-white text-xs font-bold px-2 py-1 rounded-full">
+            {app.formatted_price}
+          </div>
+        )}
+        
+        {/* Quality Score Badge */}
+        {app.quality_signals && app.quality_signals > 0.7 && (
+          <div className="absolute top-2 left-2 bg-green-500 text-white text-xs font-bold px-2 py-1 rounded-full">
+            ⭐ {Math.round(app.quality_signals * 100)}%
+          </div>
+        )}
       </div>
-      <div className="flex flex-col flex-1 justify-between p-4 pt-0 gap-4">
+      
+      <div className="flex flex-col flex-1 justify-between p-4 pt-0 gap-3">
         <div>
           <div className="flex items-center justify-between mb-2">
             <p className="text-gray-900 dark:text-white text-base font-medium leading-normal">
@@ -560,27 +766,83 @@ function AppCard({ app, onRemove }: { app: SwipedApp; onRemove: (sessionId: stri
               {isLiked ? '👍' : '👎'}
             </span>
           </div>
-          <p className="text-gray-500 dark:text-gray-400 text-sm font-normal leading-normal">
-            {app.app_category}
-          </p>
           
-          {/* Rating */}
-          {app.rating && app.rating > 0 && (
-            <div className="flex items-center gap-1 mt-1">
-              <span className="text-amber-500 text-sm">⭐</span>
-              <span className="text-gray-600 dark:text-gray-400 text-sm font-medium">
-                {app.rating.toFixed(1)}
-              </span>
+          {/* Developer */}
+          {app.developer && (
+            <p className="text-primary text-sm font-medium">
+              {app.developer}
+            </p>
+          )}
+          
+          {/* Description fallback */}
+          {app.description && (
+            <p className="text-gray-600 dark:text-gray-400 text-sm mt-1 line-clamp-2">
+              {app.description.substring(0, 100)}...
+            </p>
+          )}
+          
+          {/* Category & Rating Row */}
+          <div className="flex items-center justify-between mt-2">
+            <div className="flex items-center gap-2">
+              {topCategory && (
+                <div className="flex items-center gap-1">
+                  <span className="text-sm">{topCategory.icon}</span>
+                  <span className="text-xs text-gray-500 dark:text-gray-400">
+                    {topCategory.value?.toFixed(1)}
+                  </span>
+                </div>
+              )}
+              {app.version && (
+                <span className="text-xs bg-gray-200 dark:bg-gray-700 text-gray-600 dark:text-gray-400 px-2 py-1 rounded">
+                  v{app.version}
+                </span>
+              )}
+            </div>
+            
+            {/* Rating */}
+            {app.rating && app.rating > 0 && (
+              <div className="flex items-center gap-1">
+                <span className="text-amber-500 text-sm">⭐</span>
+                <span className="text-gray-600 dark:text-gray-400 text-sm font-medium">
+                  {app.rating.toFixed(1)}
+                </span>
+                {app.rating_count && (
+                  <span className="text-xs text-gray-500 dark:text-gray-400">
+                    ({app.rating_count > 1000 ? `${(app.rating_count/1000).toFixed(1)}k` : app.rating_count})
+                  </span>
+                )}
+              </div>
+            )}
+          </div>
+          
+          {/* Keywords/Tags */}
+          {app.llm_best_for_keywords && app.llm_best_for_keywords.length > 0 && (
+            <div className="flex flex-wrap gap-1 mt-2">
+              {app.llm_best_for_keywords.slice(0, 3).map((keyword, index) => (
+                <span key={index} className="text-xs bg-primary/20 text-primary px-2 py-1 rounded-full">
+                  {keyword}
+                </span>
+              ))}
             </div>
           )}
           
-          <p className="text-gray-400 dark:text-gray-500 text-xs mt-1">
-            {isLiked ? 'Liked' : 'Passed'} {new Date(app.swiped_at).toLocaleDateString()}
-          </p>
+          {/* Additional Info Row */}
+          <div className="flex items-center justify-between mt-2 text-xs text-gray-400 dark:text-gray-500">
+            <span>
+              {isLiked ? 'Liked' : 'Passed'} {new Date(app.swiped_at).toLocaleDateString()}
+            </span>
+            {formatFileSize(app.size_bytes) && (
+              <span>{formatFileSize(app.size_bytes)}</span>
+            )}
+          </div>
         </div>
+        
         <div className="flex gap-2">
-          <button className="flex flex-1 min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 px-4 bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-white text-sm font-bold leading-normal tracking-[0.015em] hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors">
-            <span className="truncate">View</span>
+          <button 
+            onClick={() => router.push(`/app/${app.app_id}`)}
+            className="flex flex-1 min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 px-4 bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-white text-sm font-bold leading-normal tracking-[0.015em] hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors"
+          >
+            <span className="truncate">View Details</span>
           </button>
           <button 
             onClick={() => onRemove(app.session_id, app.app_id)}
