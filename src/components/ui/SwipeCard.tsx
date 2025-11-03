@@ -1,192 +1,74 @@
-import React, { useState, useRef, useEffect } from 'react';
+'use client';
 
-interface App {
-  id: string;
+import { useDrag } from '@use-gesture/react';
+import { animated, useSpring, to } from '@react-spring/web';
+
+interface CardProps {
   name: string;
-  category?: string;
+  category: string;
   icon: string;
-  rating?: number;
-  price?: string;
-  description?: string;
-  artist?: string;
+  onLike?: () => void;
+  onSkip?: () => void;
 }
 
-interface SwipeCardProps {
-  app: App;
-  onLike: () => void;
-  onPass: () => void;
-  isActive?: boolean;
-  zIndex?: number;
-}
+export default function Card({ name, category, icon, onLike, onSkip }: CardProps) {
+  const [{ x, y, rotateX, rotateY, rotateZ, scale }, api] = useSpring(() => ({
+    rotateX: 0,
+    rotateY: 0,
+    rotateZ: 0,
+    scale: 1,
+    x: 0,
+    y: 0,
+  }));
 
-const SwipeCard: React.FC<SwipeCardProps> = ({ app, onLike, onPass, isActive = true, zIndex = 10 }) => {
-  const [swipeDirection, setSwipeDirection] = useState<'like' | 'pass' | null>(null);
-  const [isDragging, setIsDragging] = useState(false);
-  const [dragOffset, setDragOffset] = useState({ x: 0, y: 0 });
-  const [rotation, setRotation] = useState(0);
-  const cardRef = useRef<HTMLDivElement>(null);
-  const startPos = useRef({ x: 0, y: 0 });
+  const bind = useDrag(({ down, movement: [mx], direction: [xDir], velocity: [vx] }) => {
+    const trigger = vx > 0.2;
+    const dir = xDir < 0 ? -1 : 1;
 
-  const handleSwipe = (direction: 'like' | 'pass') => {
-    setSwipeDirection(direction);
-    setTimeout(() => {
-      if (direction === 'like') {
-        onLike();
-      } else {
-        onPass();
-      }
-      setSwipeDirection(null);
-      setDragOffset({ x: 0, y: 0 });
-      setRotation(0);
-    }, 600);
-  };
-
-  const handleMouseDown = (e: React.MouseEvent) => {
-    if (!isActive) return;
-    setIsDragging(true);
-    startPos.current = { x: e.clientX, y: e.clientY };
-  };
-
-  const handleTouchStart = (e: React.TouchEvent) => {
-    if (!isActive) return;
-    setIsDragging(true);
-    const touch = e.touches[0];
-    startPos.current = { x: touch.clientX, y: touch.clientY };
-  };
-
-  const handleMouseMove = (e: MouseEvent) => {
-    if (!isDragging || !isActive) return;
-    
-    const deltaX = e.clientX - startPos.current.x;
-    const deltaY = e.clientY - startPos.current.y;
-    
-    setDragOffset({ x: deltaX, y: deltaY });
-    setRotation(deltaX * 0.1); // Subtle rotation based on horizontal movement
-  };
-
-  const handleTouchMove = (e: TouchEvent) => {
-    if (!isDragging || !isActive) return;
-    
-    const touch = e.touches[0];
-    const deltaX = touch.clientX - startPos.current.x;
-    const deltaY = touch.clientY - startPos.current.y;
-    
-    setDragOffset({ x: deltaX, y: deltaY });
-    setRotation(deltaX * 0.1);
-  };
-
-  const handleMouseUp = () => {
-    if (!isDragging || !isActive) return;
-    
-    setIsDragging(false);
-    
-    // Determine if swipe was significant enough (reduced threshold for easier swiping)
-    if (Math.abs(dragOffset.x) > 80) {
-      if (dragOffset.x > 0) {
-        handleSwipe('like');
-      } else {
-        handleSwipe('pass');
-      }
-    } else {
-      // Snap back to center with smooth animation
-      setDragOffset({ x: 0, y: 0 });
-      setRotation(0);
+    if (!down && trigger) {
+      if (dir === 1 && onLike) onLike();
+      if (dir === -1 && onSkip) onSkip();
     }
-  };
 
-  useEffect(() => {
-    if (isDragging) {
-      document.addEventListener('mousemove', handleMouseMove);
-      document.addEventListener('mouseup', handleMouseUp);
-      document.addEventListener('touchmove', handleTouchMove);
-      document.addEventListener('touchend', handleMouseUp);
-      
-      return () => {
-        document.removeEventListener('mousemove', handleMouseMove);
-        document.removeEventListener('mouseup', handleMouseUp);
-        document.removeEventListener('touchmove', handleTouchMove);
-        document.removeEventListener('touchend', handleMouseUp);
-      };
-    }
-  }, [isDragging, dragOffset]);
-
+    api.start({
+      x: down ? mx : 0,
+      rotateZ: down ? mx / 10 : 0,
+      scale: down ? 1.1 : 1,
+    });
+  });
 
   return (
-    <div
-      ref={cardRef}
-      style={{ 
-        zIndex,
-        transform: swipeDirection === 'like' 
-          ? 'translateX(150%) rotate(20deg)' 
-          : swipeDirection === 'pass'
-          ? 'translateX(-150%) rotate(-20deg)'
-          : `translateX(${dragOffset.x}px) translateY(${dragOffset.y}px) rotate(${rotation}deg)`,
-        opacity: swipeDirection ? 0 : Math.max(0.3, 1 - Math.abs(dragOffset.x) / 400),
-        transition: isDragging ? 'none' : 'all 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94)'
-      }}
-      className={`absolute inset-0 w-full h-full bg-white border-2 border-gray-900 dark:border-gray-200 dark:bg-gray-800 rounded-xl shadow-2xl flex flex-col justify-between p-8 text-center ${
-        isActive ? 'cursor-grab active:cursor-grabbing' : 'pointer-events-none'
-      } ${isDragging ? 'cursor-grabbing' : ''}`}
-      onMouseDown={handleMouseDown}
-      onTouchStart={handleTouchStart}
+    <animated.div
+      {...bind()}
+      style={{ x, y, rotateX, rotateY, rotateZ, scale }}
+      className="w-full max-w-md rounded-xl bg-gray-50 dark:bg-[#192b33] shadow-2xl shadow-black/20 backdrop-blur-sm transition-all duration-300 ease-out cursor-grab active:cursor-grabbing"
     >
-      {/* Swipe Direction Indicators */}
-      {dragOffset.x > 40 && (
-        <div className="absolute top-1/4 left-8 bg-green-500/95 text-white px-6 py-3 rounded-full font-bold transform rotate-12 shadow-2xl border-2 border-white text-lg">
-          LIKE
-        </div>
-      )}
-      {dragOffset.x < -40 && (
-        <div className="absolute top-1/4 right-8 bg-red-500/95 text-white px-6 py-3 rounded-full font-bold transform -rotate-12 shadow-2xl border-2 border-white text-lg">
-          PASS
-        </div>
-      )}
-      
-      <div className="flex-1 flex flex-col justify-center items-center">
+      <div className="relative w-full h-full">
         <div
-          className="size-48 rounded-[2.5rem] bg-cover bg-center shadow-2xl mb-8 mt-[-3rem]"
-          style={{ backgroundImage: `url('${app.icon}')` }}
+          className="w-full h-full bg-center bg-no-repeat bg-contain rounded-xl"
+          style={{ backgroundImage: `url("${icon}")` }}
         ></div>
-        <div className="flex flex-col gap-3 text-center">
-          <h3 className="text-gray-900 dark:text-white text-3xl font-bold">{app.name}</h3>
-          
-          {/* Developer */}
-          {app.artist && app.artist !== 'Unknown Developer' && (
-            <p className="text-gray-500 text-sm">
-              by {app.artist}
-            </p>
-          )}
-          
-          {/* Category and Price Row */}
-          <div className="flex items-center justify-center gap-3">
-            <span className="text-gray-500 text-sm">{app.category}</span>
-            {app.price && (
-              <>
-                <span className="text-gray-400">•</span>
-                <span className="text-primary font-semibold text-sm">{app.price}</span>
-              </>
-            )}
-          </div>
-          
-          {/* Rating */}
-          {app.rating && (
-            <div className="flex items-center justify-center gap-1 text-amber-500">
-              <span className="font-bold text-sm">{app.rating.toFixed(1)}</span>
-              <span className="text-lg">⭐</span>
-            </div>
-          )}
-          
-          {/* Description */}
-          {app.description && app.description !== 'app_name_match' && app.description !== 'No description available' && (
-            <p className="text-gray-600 dark:text-gray-400 text-sm leading-relaxed px-4 max-w-sm mx-auto line-clamp-2">
-              {app.description.split('\n')[0].trim()}
-            </p>
-          )}
+        <div className="absolute bottom-0 left-0 right-0 p-6 bg-gradient-to-t from-black/80 to-transparent rounded-b-xl">
+          <h3 className="text-2xl font-bold text-white">{name}</h3>
+          <p className="text-lg text-gray-300">{category}</p>
         </div>
+        <animated.div
+          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-4xl font-bold text-red-500 border-4 border-red-500 rounded-lg px-4 py-2 transform -rotate-12 opacity-0"
+          style={{
+            opacity: to(x, (x) => (x < -50 ? 1 : 0)),
+          }}
+        >
+          NOPE
+        </animated.div>
+        <animated.div
+          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-4xl font-bold text-green-500 border-4 border-green-500 rounded-lg px-4 py-2 transform rotate-12 opacity-0"
+          style={{
+            opacity: to(x, (x) => (x > 50 ? 1 : 0)),
+          }}
+        >
+          LIKE
+        </animated.div>
       </div>
-      
-    </div>
+    </animated.div>
   );
-};
-
-export default SwipeCard;
+}

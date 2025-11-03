@@ -1,12 +1,21 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
+import SwipeCard from '../components/ui/SwipeCard';
 
 export default function HomePage() {
   const router = useRouter();
 
   return (
     <div className="relative flex min-h-screen w-full flex-col items-center overflow-x-hidden p-4 sm:p-6 md:p-8">
+      <div className="absolute top-4 right-4 z-20 flex gap-4">
+        <a href="/auth/signin" className="flex min-w-[84px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-12 px-5 bg-gray-500/10 text-gray-800 dark:text-white text-base font-bold leading-normal tracking-wide transition-colors hover:bg-gray-500/20">
+          <span className="truncate">Sign In</span>
+        </a>
+        <a href="/auth/signup" className="flex min-w-[84px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-12 px-5 bg-primary text-white text-base font-bold leading-normal tracking-wide transition-colors hover:bg-primary/80">
+          <span className="truncate">Sign Up</span>
+        </a>
+      </div>
       {/* Subtle Background Element */}
       <div className="absolute inset-0 z-0 opacity-20">
         <div className="absolute bottom-0 left-[-20%] top-[-10%] h-[500px] w-[500px] rounded-full bg-primary/20 blur-[120px]"></div>
@@ -16,62 +25,61 @@ export default function HomePage() {
       
       <div className="relative z-10 flex w-full max-w-6xl flex-col items-center">
         <main className="flex w-full flex-1 flex-col items-center justify-center py-12 sm:py-16 md:py-20">
-          {/* Hero/Headline Section */}
-          <div className="flex flex-col gap-3 text-center mb-10 max-w-3xl">
-            <h1 className="text-4xl font-black leading-tight tracking-tighter text-gray-900 dark:text-white sm:text-5xl md:text-6xl">
-              The Future of App Discovery
-            </h1>
-            <p className="text-base font-normal leading-normal text-gray-600 dark:text-gray-400 sm:text-lg">
-              Our AI curates personalized app recommendations for you. Swipe to discover your next favorite app, instantly.
-            </p>
-          </div>
-          
-          {/* Interactive App Card Section */}
-          <div className="flex flex-col items-center gap-6 w-full max-w-sm">
-            {/* App Card */}
-            <div className="w-full rounded-xl bg-gray-50 dark:bg-[#192b33] shadow-2xl shadow-black/20 backdrop-blur-sm transition-all duration-300 ease-out hover:-translate-y-2 hover:shadow-primary/30">
-              <div className="w-full bg-center bg-no-repeat aspect-video bg-cover rounded-t-xl" style={{backgroundImage: 'url("https://lh3.googleusercontent.com/aida-public/AB6AXuBpQVcm3RZvprgUOP7bAlmw3YUdh152UG2o6iOkdxpv5KCpqQDuowbTEEzZcBpR_WsPbMhp3sxVehbnJ5jynBoUQjNoSmxhCrBEiSctLU5RHGn6jMJJUt_Ljyv-8LOYKoWwrIYis88S2SNaTaYTe50xJPXwgmuEARZ_cEZnB4F6hSLYvn7fhN6HPUgN3I4BQQhRHkPNZMW_lsqSjqpPVPVxlSqb7MDb_iBegqApe0yHApnRaCt7xRR29G7xM6yTSKE2hT_fX02wFujo")'}}></div>
-              <div className="flex w-full flex-col items-stretch justify-center gap-2 p-6">
-                <div className="flex items-center gap-4">
-                  <img alt="SuperList App Icon" className="h-16 w-16 rounded-xl border border-gray-200/10 dark:border-white/10 shadow-md" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCDm-6KOgR0k8HOJIZlLi42CZMJ9N7L3tFctbY5CVxeYt8ZONraW5p9plpJyngq3FDbtjyO04Bjr0Kt2bSdMypc9Uaipstpi-F9Glaxhhq0BCGFBfazBNJoI5zt4stTpAAxdlHCQ85nVthIGWOBB_cAqKcB-1KWsbDgOggKgm7eDbWUvIba0jAM1zcfrGGfs4vzad3EFfqeSM0lEjicZsSpxTv_bGdycUgobGad_1CkyeoJq2Kc8lldzTPYKZRfS5bySBzAPAU-W6A8"/>
-                  <div className="flex flex-col">
-                    <p className="text-2xl font-bold leading-tight tracking-tight text-gray-900 dark:text-white">SuperList</p>
-                    <p className="text-sm font-normal leading-normal text-gray-500 dark:text-gray-400">AI-powered task management.</p>
-                  </div>
-                </div>
-                <div className="mt-2">
-                  <p className="text-sm font-normal leading-normal text-gray-500 dark:text-gray-400">#Productivity #AI #Collaboration</p>
-                </div>
-              </div>
+          <div className="w-full max-w-6xl">
+            {/* Hero/Headline Section */}
+            <div className="flex flex-col gap-3 text-center mb-10">
+              <h1 className="text-4xl font-black leading-tight tracking-tighter text-gray-900 dark:text-white sm:text-5xl md:text-6xl">
+                The new way of app discovery
+              </h1>
+              <p className="text-base font-normal leading-normal text-gray-600 dark:text-gray-400 sm:text-lg">
+                Search apps in plain english powered by AI.
+              </p>
+            </div>
+
+            {/* Search Query Example */}
+            <div className="flex flex-col items-center gap-2 mb-10">
+              <p className="text-lg font-medium text-gray-600 dark:text-gray-400 line-through">
+                budgeting apps
+              </p>
+              <p className="text-2xl font-bold text-gray-900 dark:text-white">
+                apps to help me stop overspending
+              </p>
             </div>
             
-            {/* Swipe Buttons */}
-            <div className="flex w-full max-w-xs gap-4">
-              <button className="flex grow cursor-pointer items-center justify-center overflow-hidden rounded-full h-16 bg-white/80 dark:bg-white/10 text-red-500 shadow-lg backdrop-blur-sm transition-transform hover:scale-105">
-                <svg className="w-8 h-8" fill="currentColor" viewBox="0 0 20 20">
-                  <path fillRule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clipRule="evenodd" />
-                </svg>
-              </button>
-              <button className="flex grow cursor-pointer items-center justify-center overflow-hidden rounded-full h-16 bg-primary text-white shadow-lg shadow-primary/30 backdrop-blur-sm transition-transform hover:scale-105">
-                <svg className="w-8 h-8" fill="currentColor" viewBox="0 0 20 20">
-                  <path fillRule="evenodd" d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" clipRule="evenodd" />
-                </svg>
-              </button>
+            {/* Image Section */}
+            <div className="flex flex-col items-center gap-6 w-full">
+              <img src="/ui_image.png" alt="App Screenshot" className="w-full h-auto rounded-xl shadow-2xl shadow-black/20" />
+            </div>
+
+            {/* Dashboard Customization Section */}
+            <div className="flex flex-col items-center gap-10 w-full mt-20">
+              <div className="text-center">
+                <h2 className="text-3xl font-bold text-gray-900 dark:text-white">Your Personal App Dashboard</h2>
+                <p className="text-lg text-gray-600 dark:text-gray-400 mt-2">Your personal app dashboard. Curated iOS apps based on your interests. No personal data collected. Interact with apps by liking or marking them as downloaded.</p>
+              </div>
+              <img src="/dashboard.png" alt="Dashboard Screenshot" className="w-full h-[600px] rounded-xl shadow-2xl shadow-black/20" />
+            </div>
+
+            {/* App Personalization Section */}
+            <div className="flex flex-col items-center gap-10 w-full mt-20">
+              <div className="text-center">
+                <h2 className="text-3xl font-bold text-gray-900 dark:text-white">Personalize Your App Search</h2>
+                <p className="text-lg text-gray-600 dark:text-gray-400 mt-2">Keep track of your searches, discovered apps, and your likes and dislikes.</p>
+              </div>
+              <img src="/app_like.png" alt="App Personalization Screenshot" className="w-full rounded-xl shadow-2xl shadow-black/20" />
+            </div>
+
+            {/* App Spotlight Section */}
+            <div className="flex flex-col items-center gap-10 w-full mt-20">
+              <div className="text-center">
+                <h2 className="text-3xl font-bold text-gray-900 dark:text-white">App Spotlight</h2>
+                <p className="text-lg text-gray-600 dark:text-gray-400 mt-2">See a detailed breakdown of any app.</p>
+              </div>
+              <img src="/app_spotlight.png" alt="App Spotlight Screenshot" className="w-full rounded-xl shadow-2xl shadow-black/20" />
             </div>
           </div>
 
-          {/* Primary CTA Section */}
-          <div className="mt-8 text-center">
-            <p className="mb-4 text-base font-medium text-gray-700 dark:text-gray-300">Want to save your preferences?</p>
-            <div className="flex flex-wrap items-center justify-center gap-3">
-              <a href="/auth/signup" className="flex min-w-[84px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-12 px-5 bg-gray-500/10 text-gray-800 dark:text-white text-base font-bold leading-normal tracking-wide transition-colors hover:bg-gray-500/20">
-                <span className="truncate">Create Account</span>
-              </a>
-              <a href="/results" className="flex min-w-[84px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-12 px-5 bg-gray-500/10 text-gray-800 dark:text-white text-base font-bold leading-normal tracking-wide transition-colors hover:bg-gray-500/20">
-                <span className="truncate">Learn More</span>
-              </a>
-            </div>
-          </div>
+          
         </main>
       </div>
     </div>

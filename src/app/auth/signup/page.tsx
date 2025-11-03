@@ -14,9 +14,7 @@ export default function SignUpPage() {
   const [formData, setFormData] = useState({
     email: '',
     password: '',
-    confirmPassword: '',
-    firstName: '',
-    lastName: ''
+    confirmPassword: ''
   });
   const [errors, setErrors] = useState<any>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -48,9 +46,7 @@ export default function SignUpPage() {
       newErrors.confirmPassword = 'Passwords do not match';
     }
 
-    if (!formData.firstName) {
-      newErrors.firstName = 'First name is required';
-    }
+    
 
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
@@ -67,12 +63,7 @@ export default function SignUpPage() {
     try {
       const { data, error } = await signUp(
         formData.email, 
-        formData.password,
-        {
-          first_name: formData.firstName,
-          last_name: formData.lastName,
-          full_name: `${formData.firstName} ${formData.lastName}`.trim()
-        }
+        formData.password
       );
 
       if (error) {
@@ -133,26 +124,7 @@ export default function SignUpPage() {
         {/* Form */}
         <div className="bg-white rounded-2xl shadow-xl p-8">
           <form className="space-y-6" onSubmit={handleSubmit}>
-            {/* Name Fields */}
-            <div className="grid grid-cols-2 gap-4">
-              <Input
-                label="First Name"
-                type="text"
-                value={formData.firstName}
-                onChange={(e) => setFormData(prev => ({ ...prev, firstName: e.target.value }))}
-                error={errors.firstName}
-                placeholder="John"
-                required
-              />
-              <Input
-                label="Last Name"
-                type="text"
-                value={formData.lastName}
-                onChange={(e) => setFormData(prev => ({ ...prev, lastName: e.target.value }))}
-                error={errors.lastName}
-                placeholder="Doe"
-              />
-            </div>
+            
 
             {/* Email */}
             <Input
