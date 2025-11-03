@@ -116,9 +116,6 @@ export default function Navigation() {
                 {userName.charAt(0).toUpperCase()}
               </span>
             </div>
-            <span className="hidden lg:block text-sm font-medium text-gray-900 dark:text-white">
-              {userName}
-            </span>
           </div>
         </>
 

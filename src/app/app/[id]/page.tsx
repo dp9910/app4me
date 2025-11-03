@@ -313,11 +313,6 @@ export default function AppSpotlightPage() {
                     <p className="text-primary text-base font-medium leading-normal">
                       {appDetails.developer}
                     </p>
-                    {appFeatures?.primary_use_case && (
-                      <p className="text-gray-600 dark:text-gray-400 text-sm font-normal leading-normal mt-1">
-                        {appFeatures.primary_use_case}
-                      </p>
-                    )}
                   </div>
                 </div>
                 
@@ -433,66 +428,69 @@ export default function AppSpotlightPage() {
 
             {/* Right Column */}
             <div className="lg:col-span-2 flex flex-col gap-6">
-              {/* Description */}
+              {/* Description - Top Priority */}
               <div className="bg-white dark:bg-gray-800 rounded-xl p-6">
-                <h2 className="text-gray-900 dark:text-white text-xl font-bold mb-4">About This App</h2>
-                
-                {/* Primary Use Case */}
-                {appFeatures?.primary_use_case && (
-                  <div className="mb-4 p-4 rounded-lg bg-primary/10 border border-primary/20">
-                    <h3 className="text-primary font-semibold text-sm mb-2">Primary Use Case</h3>
-                    <p className="text-gray-700 dark:text-gray-300 text-sm">
-                      {appFeatures.primary_use_case}
-                    </p>
-                  </div>
+                <h2 className="text-gray-900 dark:text-white text-xl font-bold mb-4">Description</h2>
+                <p className="text-gray-600 dark:text-gray-400 text-sm leading-relaxed line-clamp-4" id="app-description">
+                  {appDetails.description || 'No description available.'}
+                </p>
+                {appDetails.description && appDetails.description.length > 200 && (
+                  <button 
+                    onClick={() => {
+                      const desc = document.getElementById('app-description');
+                      if (desc) {
+                        desc.classList.toggle('line-clamp-4');
+                        const button = desc.nextElementSibling as HTMLButtonElement;
+                        button.textContent = desc.classList.contains('line-clamp-4') ? 'Read more' : 'Read less';
+                      }
+                    }}
+                    className="text-primary text-sm mt-2 hover:underline"
+                  >
+                    Read more
+                  </button>
                 )}
+              </div>
 
-                {/* Target Users */}
-                {appFeatures?.target_user && (
-                  <div className="mb-4 p-4 rounded-lg bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-700">
-                    <h3 className="text-blue-800 dark:text-blue-200 font-semibold text-sm mb-2">Target Users</h3>
-                    <p className="text-blue-700 dark:text-blue-300 text-sm font-medium">{appFeatures.target_user}</p>
-                  </div>
-                )}
+              {/* App Features */}
+              {(appFeatures?.primary_use_case || appFeatures?.target_user || appFeatures?.key_benefit || appFeatures?.complexity) && (
+                <div className="bg-white dark:bg-gray-800 rounded-xl p-6">
+                  <h2 className="text-gray-900 dark:text-white text-xl font-bold mb-4">App Features</h2>
+                  
+                  {/* Primary Use Case */}
+                  {appFeatures?.primary_use_case && (
+                    <div className="mb-4 p-4 rounded-lg bg-primary/10 border border-primary/20">
+                      <h3 className="text-primary font-semibold text-sm mb-2">Primary Use Case</h3>
+                      <p className="text-gray-700 dark:text-gray-300 text-sm">
+                        {appFeatures.primary_use_case}
+                      </p>
+                    </div>
+                  )}
 
-                {/* Key Benefit */}
-                {appFeatures?.key_benefit && (
-                  <div className="mb-4 p-4 rounded-lg bg-emerald-50 dark:bg-emerald-900/20 border border-emerald-200 dark:border-emerald-700">
-                    <h3 className="text-emerald-800 dark:text-emerald-200 font-semibold text-sm mb-2">Key Benefit</h3>
-                    <p className="text-emerald-700 dark:text-emerald-300 text-sm font-medium">{appFeatures.key_benefit}</p>
-                  </div>
-                )}
+                  {/* Target Users */}
+                  {appFeatures?.target_user && (
+                    <div className="mb-4 p-4 rounded-lg bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-700">
+                      <h3 className="text-blue-800 dark:text-blue-200 font-semibold text-sm mb-2">Target Users</h3>
+                      <p className="text-blue-700 dark:text-blue-300 text-sm font-medium">{appFeatures.target_user}</p>
+                    </div>
+                  )}
 
-                {/* Complexity */}
-                {appFeatures?.complexity && (
-                  <div className="mb-4 p-4 rounded-lg bg-purple-50 dark:bg-purple-900/20 border border-purple-200 dark:border-purple-700">
-                    <h3 className="text-purple-800 dark:text-purple-200 font-semibold text-sm mb-2">Complexity Level</h3>
-                    <p className="text-purple-700 dark:text-purple-300 text-sm font-medium capitalize">{appFeatures.complexity}</p>
-                  </div>
-                )}
+                  {/* Key Benefit */}
+                  {appFeatures?.key_benefit && (
+                    <div className="mb-4 p-4 rounded-lg bg-emerald-50 dark:bg-emerald-900/20 border border-emerald-200 dark:border-emerald-700">
+                      <h3 className="text-emerald-800 dark:text-emerald-200 font-semibold text-sm mb-2">Key Benefit</h3>
+                      <p className="text-emerald-700 dark:text-emerald-300 text-sm font-medium">{appFeatures.key_benefit}</p>
+                    </div>
+                  )}
 
-                <div>
-                  <h3 className="text-gray-900 dark:text-white font-semibold mb-2">Description</h3>
-                  <p className="text-gray-600 dark:text-gray-400 text-sm leading-relaxed line-clamp-4" id="app-description">
-                    {appDetails.description || 'No description available.'}
-                  </p>
-                  {appDetails.description && appDetails.description.length > 200 && (
-                    <button 
-                      onClick={() => {
-                        const desc = document.getElementById('app-description');
-                        if (desc) {
-                          desc.classList.toggle('line-clamp-4');
-                          const button = desc.nextElementSibling as HTMLButtonElement;
-                          button.textContent = desc.classList.contains('line-clamp-4') ? 'Read more' : 'Read less';
-                        }
-                      }}
-                      className="text-primary text-sm mt-2 hover:underline"
-                    >
-                      Read more
-                    </button>
+                  {/* Complexity */}
+                  {appFeatures?.complexity && (
+                    <div className="mb-4 p-4 rounded-lg bg-purple-50 dark:bg-purple-900/20 border border-purple-200 dark:border-purple-700">
+                      <h3 className="text-purple-800 dark:text-purple-200 font-semibold text-sm mb-2">Complexity Level</h3>
+                      <p className="text-purple-700 dark:text-purple-300 text-sm font-medium capitalize">{appFeatures.complexity}</p>
+                    </div>
                   )}
                 </div>
-              </div>
+              )}
 
               {/* Screenshots */}
               {appDetails.screenshots && appDetails.screenshots.length > 0 && (
