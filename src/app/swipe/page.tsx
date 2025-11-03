@@ -50,6 +50,7 @@ export default function SwipePage() {
   const [swipedRightCards, setSwipedRightCards] = useState<App[]>([]);
   const [sessionId, setSessionId] = useState<string | null>(null);
   const [sessionStartTime, setSessionStartTime] = useState<number | null>(null);
+  const [isCompleting, setIsCompleting] = useState(false);
 
   useEffect(() => {
     const queryParam = searchParams.get('query');
@@ -273,8 +274,13 @@ export default function SwipePage() {
       setCurrentApp(appStack[nextIndex - 1]);
     } else {
       // No more apps - session completed
-      setCurrentApp(null);
+      setIsCompleting(true);
       await completeSwipeSession('finished_all');
+      setCurrentApp(null);
+      // Show completion message then redirect
+      setTimeout(() => {
+        router.replace('/my-apps');
+      }, 1500);
     }
   };
 
@@ -296,6 +302,7 @@ export default function SwipePage() {
     setSwipedRightCards([]);
     setSessionId(null);
     setSessionStartTime(null);
+    setIsCompleting(false);
   };
 
   if (loading) {
@@ -329,7 +336,7 @@ export default function SwipePage() {
         )}
         
         {/* Search Section */}
-        {!currentApp && !isSearching && !hasSearched && (
+        {!currentApp && !isSearching && !hasSearched && !isCompleting && (
           <main className="flex flex-1 flex-col items-center justify-center px-4 pb-12 sm:pb-20">
             <div className="w-full max-w-3xl text-center">
               {/* HeadlineText */}
@@ -468,7 +475,7 @@ export default function SwipePage() {
         )}
 
         {/* Error State */}
-        {!isSearching && hasSearched && searchError && (
+        {!isSearching && hasSearched && searchError && !isCompleting && (
           <div className="flex-1 flex flex-col items-center justify-center px-4 py-12">
             <div className="text-center space-y-6 max-w-md">
               <div className="text-6xl">😞</div>
@@ -488,8 +495,54 @@ export default function SwipePage() {
           </div>
         )}
 
+        {/* Completion Screen */}
+        {isCompleting && (
+          <div className="flex-1 flex flex-col items-center justify-center px-4 py-12">
+            <div className="text-center space-y-6 max-w-md">
+              <div className="text-6xl">🎉</div>
+              <h2 className="text-3xl font-bold text-gray-900 dark:text-white">
+                Great Job!
+              </h2>
+              <p className="text-lg text-gray-600 dark:text-gray-400">
+                You've completed your app discovery session. Taking you to your results...
+              </p>
+              <div className="flex justify-center gap-8 mt-8">
+                <div className="text-center">
+                  <div className="text-2xl font-bold text-green-500">{swipedRightCards.length}</div>
+                  <div className="text-sm text-gray-500">Apps Liked</div>
+                </div>
+                <div className="text-center">
+                  <div className="text-2xl font-bold text-red-500">{swipedLeftCards.length}</div>
+                  <div className="text-sm text-gray-500">Apps Passed</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Fallback for completed session (should not happen but prevents blank screen) */}
+        {!currentApp && !isSearching && hasSearched && !searchError && !isCompleting && (
+          <div className="flex-1 flex flex-col items-center justify-center px-4 py-12">
+            <div className="text-center space-y-6 max-w-md">
+              <div className="text-6xl">✅</div>
+              <h2 className="text-2xl font-bold text-gray-900 dark:text-white">
+                Session Complete!
+              </h2>
+              <p className="text-gray-600 dark:text-gray-400">
+                Redirecting to your results...
+              </p>
+              <button
+                onClick={() => router.replace('/my-apps')}
+                className="bg-primary hover:bg-primary/90 text-white font-medium py-3 px-6 rounded-lg transition-colors"
+              >
+                View My Apps
+              </button>
+            </div>
+          </div>
+        )}
+
         {/* App Cards Section - Persistent Swipe Interface */}
-        {currentApp && (
+        {currentApp && !isCompleting && (
           <div className="relative w-full max-w-6xl h-[600px] flex items-center justify-center group/card-container mx-auto">
             {/* Progress Indicator */}
             <div className="absolute top-[-40px] left-1/2 transform -translate-x-1/2 z-20">
