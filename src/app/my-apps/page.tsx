@@ -455,7 +455,7 @@ export default function MyAppsPage() {
                 Your Search Queries
               </h2>
               
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              <div className="space-y-4">
                 {analytics?.queries.map((query) => (
                   <QueryCard 
                     key={query.search_query} 
@@ -464,23 +464,6 @@ export default function MyAppsPage() {
                   />
                 ))}
               </div>
-
-              {/* Recent Activity Timeline */}
-              {analytics?.recentActivity.length > 0 && (
-                <section className="mt-12">
-                  <h2 className="text-gray-900 dark:text-white text-2xl font-bold leading-tight tracking-[-0.015em] px-4 pb-3 pt-5 flex items-center gap-2">
-                    <span className="text-xl">📊</span> 
-                    Recent Swipe Activity
-                  </h2>
-                  <div className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-6">
-                    <div className="space-y-4">
-                      {analytics.recentActivity.slice(0, 5).map((activity, index) => (
-                        <ActivityItem key={index} activity={activity} />
-                      ))}
-                    </div>
-                  </div>
-                </section>
-              )}
             </div>
           )}
         </main>
@@ -493,38 +476,42 @@ function QueryCard({ query, onSelect }: { query: QueryStats; onSelect: () => voi
   return (
     <div 
       onClick={onSelect}
-      className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-6 cursor-pointer hover:shadow-lg transition-all duration-300 hover:scale-105"
+      className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-8 cursor-pointer hover:shadow-lg transition-all duration-300 hover:scale-[1.02] hover:border-primary/50"
     >
-      <div className="flex items-center gap-3 mb-4">
-        <span className="text-2xl">{getCategoryIcon(query.search_query)}</span>
-        <h3 className="text-gray-900 dark:text-white text-xl font-bold truncate">
-          {formatCategoryName(query.search_query)}
-        </h3>
-      </div>
-      
-      <div className="space-y-3">
-        <div className="flex justify-between items-center">
-          <div className="flex items-center gap-2">
-            <span className="text-green-500 text-xl">👍</span>
-            <span className="text-gray-600 dark:text-gray-400 text-sm">Liked</span>
+      <div className="flex items-center justify-between">
+        <div className="flex items-center gap-4">
+          <span className="text-4xl">{getCategoryIcon(query.search_query)}</span>
+          <div>
+            <h3 className="text-gray-900 dark:text-white text-2xl font-bold">
+              {formatCategoryName(query.search_query)}
+            </h3>
+            <p className="text-gray-500 dark:text-gray-400 text-sm mt-1">
+              Last searched {new Date(query.last_searched).toLocaleDateString()}
+            </p>
           </div>
-          <span className="text-green-500 font-bold text-lg">{query.liked_count}</span>
         </div>
         
-        <div className="flex justify-between items-center">
-          <div className="flex items-center gap-2">
-            <span className="text-red-500 text-xl">👎</span>
-            <span className="text-gray-600 dark:text-gray-400 text-sm">Passed</span>
+        <div className="flex items-center gap-8">
+          <div className="text-center">
+            <div className="flex items-center gap-2 mb-1">
+              <span className="text-green-500 text-2xl">👍</span>
+              <span className="text-green-500 font-bold text-2xl">{query.liked_count}</span>
+            </div>
+            <span className="text-gray-500 dark:text-gray-400 text-sm">Liked</span>
           </div>
-          <span className="text-red-500 font-bold text-lg">{query.disliked_count}</span>
-        </div>
-        
-        <div className="pt-2 border-t border-gray-200 dark:border-gray-600">
-          <div className="flex justify-between items-center">
-            <span className="text-gray-500 dark:text-gray-400 text-xs">Last searched</span>
-            <span className="text-gray-600 dark:text-gray-300 text-xs">
-              {new Date(query.last_searched).toLocaleDateString()}
-            </span>
+          
+          <div className="text-center">
+            <div className="flex items-center gap-2 mb-1">
+              <span className="text-red-500 text-2xl">👎</span>
+              <span className="text-red-500 font-bold text-2xl">{query.disliked_count}</span>
+            </div>
+            <span className="text-gray-500 dark:text-gray-400 text-sm">Passed</span>
+          </div>
+          
+          <div className="text-gray-400 dark:text-gray-500">
+            <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 20 20">
+              <path fillRule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clipRule="evenodd" />
+            </svg>
           </div>
         </div>
       </div>
