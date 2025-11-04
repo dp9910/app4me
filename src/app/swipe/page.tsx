@@ -322,7 +322,7 @@ export default function SwipePage() {
         
         {/* Start Over Button - Top Right */}
         {(currentApp || hasSearched) && (
-          <div className="absolute top-4 right-4 z-30">
+          <div className="absolute top-20 right-4 z-30">
             <button
               onClick={async () => {
                 await resetSearch();
