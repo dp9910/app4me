@@ -395,13 +395,271 @@ Return ONLY the JSON object:`;
   }
 
   /**
-   * STEP 4: Final ranking and selection
+   * STEP 4: Semantic search using vector embeddings
    */
-  async finalRankingAndSelection(targetedResults, featureResults, intent, limit) {
+  async performSemanticSearch(userQuery, intent, limit = 20) {
+    console.log('\n🧠 Performing semantic search...');
+    
+    try {
+      // Generate embedding for user query
+      const queryEmbedding = await this.generateQueryEmbedding(userQuery);
+      if (!queryEmbedding) {
+        console.log('  ⚠️ Could not generate query embedding, skipping semantic search');
+        return [];
+      }
+
+      // Alternative approach: Get embeddings and calculate similarity manually
+      console.log('  🔄 Using manual similarity calculation...');
+      
+      // Get all embeddings - remove limit to find all relevant apps
+      // TODO: Optimize this with PostgreSQL vector similarity function later
+      const { data: allEmbeddings, error } = await supabase
+        .from('app_embeddings')
+        .select(`
+          app_id,
+          embedding,
+          apps_unified!inner(
+            id,
+            title,
+            primary_category,
+            rating,
+            icon_url,
+            description,
+            developer,
+            price
+          )
+        `); // No limit - process all embeddings to find best matches
+
+      if (error) {
+        console.error('❌ Semantic search error:', error);
+        console.log('  ⚠️ Continuing without semantic results...');
+        return [];
+      }
+
+      if (!allEmbeddings || allEmbeddings.length === 0) {
+        console.log('  📊 No embeddings found');
+        return [];
+      }
+
+      // Calculate similarities
+      const semanticMatches = [];
+      let totalProcessed = 0;
+      let highSimilarityCount = 0;
+      
+      console.log(`  📊 Processing ${allEmbeddings.length} embeddings...`);
+      
+      for (const item of allEmbeddings) {
+        try {
+          if (!item.embedding) continue;
+          
+          totalProcessed++;
+          
+          // Parse embedding (stored as JSON string)
+          const appEmbedding = JSON.parse(item.embedding);
+          if (!Array.isArray(appEmbedding)) continue;
+          
+          // Handle different embedding dimensions (existing embeddings are 768, Gemini might be different)
+          const expectedDimensions = appEmbedding.length;
+          if (queryEmbedding.length !== expectedDimensions) {
+            if (totalProcessed <= 3) {
+              console.log(`  ⚠️ Dimension mismatch: query=${queryEmbedding.length}, app=${expectedDimensions}, skipping`);
+            }
+            continue;
+          }
+          
+          // Calculate cosine similarity
+          const similarity = this.calculateCosineSimilarity(queryEmbedding, appEmbedding);
+          
+          if (similarity > 0.15) { // Much lower threshold to see actual scores
+            const app = Array.isArray(item.apps_unified) ? item.apps_unified[0] : item.apps_unified;
+            semanticMatches.push({
+              app_id: app.id,
+              app_name: app.title,
+              category: app.primary_category,
+              rating: app.rating,
+              icon_url: app.icon_url,
+              description: app.description,
+              developer: app.developer,
+              price: app.price,
+              similarity: similarity
+            });
+            
+            highSimilarityCount++;
+            
+            // Log high-similarity matches as we find them
+            if (similarity > 0.6) {
+              console.log(`  ✨ High similarity found: "${app.title}" = ${similarity.toFixed(3)}`);
+            }
+          }
+        } catch (e) {
+          // Skip invalid embeddings
+          continue;
+        }
+      }
+      
+      console.log(`  📈 Processed ${totalProcessed} embeddings, found ${highSimilarityCount} above 0.15 threshold`);
+      
+      // Show the top 5 similarity scores for debugging
+      const allSimilarities = [];
+      for (const item of allEmbeddings.slice(0, 50)) { // Check first 50 for quick debug
+        try {
+          if (!item.embedding) continue;
+          const appEmbedding = JSON.parse(item.embedding);
+          if (!Array.isArray(appEmbedding) || queryEmbedding.length !== appEmbedding.length) continue;
+          
+          const similarity = this.calculateCosineSimilarity(queryEmbedding, appEmbedding);
+          const app = Array.isArray(item.apps_unified) ? item.apps_unified[0] : item.apps_unified;
+          allSimilarities.push({ title: app.title, similarity });
+        } catch (e) { continue; }
+      }
+      
+      allSimilarities.sort((a, b) => b.similarity - a.similarity);
+      console.log(`  🔍 Top 5 similarities found:`);
+      allSimilarities.slice(0, 5).forEach((item, i) => {
+        console.log(`     ${i+1}. ${item.title}: ${item.similarity.toFixed(4)}`);
+      });
+      
+      if (highSimilarityCount === 0) {
+        console.log(`  ⚠️ No matches above 0.15 threshold found!`);
+      }
+      
+      // Sort by similarity and limit
+      semanticMatches.sort((a, b) => b.similarity - a.similarity);
+      const topMatches = semanticMatches.slice(0, limit);
+
+      if (!topMatches || topMatches.length === 0) {
+        console.log('  📊 No semantic matches found above threshold');
+        return [];
+      }
+
+      console.log(`🎯 Found ${topMatches.length} semantic matches`);
+
+      // Convert to standardized format and add semantic scoring
+      const semanticResults = topMatches.map(match => ({
+        id: match.app_id,
+        title: match.app_name,
+        primary_category: match.category,
+        rating: match.rating,
+        icon_url: match.icon_url,
+        description: match.description,
+        developer: match.developer,
+        price: match.price,
+        relevance_score: 6 + (match.similarity * 4), // Base 6 + up to 4 from similarity
+        search_method: 'semantic_vector',
+        matched_keywords: [],
+        semantic_similarity: match.similarity
+      }));
+
+      // Log top semantic matches
+      console.log('  🔝 Top semantic matches:');
+      semanticResults.slice(0, 3).forEach((result, i) => {
+        console.log(`    ${i+1}. ${result.title} - Similarity: ${(result.semantic_similarity * 100).toFixed(1)}%`);
+      });
+
+      return semanticResults;
+
+    } catch (error) {
+      console.error('❌ Semantic search failed:', error);
+      console.log('  ⚠️ Continuing without semantic results...');
+      return [];
+    }
+  }
+
+  /**
+   * Generate query embedding for semantic search
+   */
+  async generateQueryEmbedding(userQuery) {
+    try {
+      console.log(`🔢 Generating embedding for: "${userQuery}"`);
+      
+      // Use Gemini for embeddings
+      const { GoogleGenerativeAI } = require('@google/generative-ai');
+      const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
+      
+      const model = genAI.getGenerativeModel({ 
+        model: 'text-embedding-004'
+      });
+      
+      // IMPORTANT: Match the original embedding format used in search_pd.js
+      // Original format: `${app.title} ${app.developer} ${app.category} ${app.description}`.slice(0, 1000)
+      // For queries, we create a pseudo-app format to match stored embeddings
+      const expandedQuery = `${userQuery} app mobile application productivity utility ${userQuery} ${userQuery} feature description functionality user interface experience`.slice(0, 1000);
+      console.log(`  📝 Expanded query: "${expandedQuery}"`);
+      
+      const result = await model.embedContent(expandedQuery);
+      return result.embedding.values;
+      
+    } catch (error) {
+      // Try alternative Gemini API approach
+      try {
+        console.log('  🔄 Trying alternative Gemini API...');
+        
+        // Use the same expanded query format  
+        const expandedQuery = `${userQuery} app mobile application productivity utility ${userQuery} ${userQuery} feature description functionality user interface experience`.slice(0, 1000);
+        
+        const response = await fetch('https://generativelanguage.googleapis.com/v1beta/models/text-embedding-004:embedContent?key=' + process.env.GEMINI_API_KEY, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            content: {
+              parts: [{ text: expandedQuery }]
+            }
+          })
+        });
+        
+        if (!response.ok) {
+          throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+        }
+        
+        const data = await response.json();
+        return data.embedding?.values;
+        
+      } catch (altError) {
+        console.error('❌ Embedding generation failed:', error);
+        console.log('  💡 Make sure GEMINI_API_KEY is set in .env.local');
+        return null;
+      }
+    }
+  }
+
+  /**
+   * Calculate cosine similarity between two vectors
+   */
+  calculateCosineSimilarity(vectorA, vectorB) {
+    if (!vectorA || !vectorB || vectorA.length !== vectorB.length) {
+      return 0;
+    }
+
+    let dotProduct = 0;
+    let magnitudeA = 0;
+    let magnitudeB = 0;
+
+    for (let i = 0; i < vectorA.length; i++) {
+      dotProduct += vectorA[i] * vectorB[i];
+      magnitudeA += vectorA[i] * vectorA[i];
+      magnitudeB += vectorB[i] * vectorB[i];
+    }
+
+    magnitudeA = Math.sqrt(magnitudeA);
+    magnitudeB = Math.sqrt(magnitudeB);
+
+    if (magnitudeA === 0 || magnitudeB === 0) {
+      return 0;
+    }
+
+    return dotProduct / (magnitudeA * magnitudeB);
+  }
+
+  /**
+   * STEP 5: Final ranking and selection
+   */
+  async finalRankingAndSelection(targetedResults, featureResults, semanticResults, intent, limit) {
     console.log('\n🎯 Final ranking and selection...');
     
     // Combine all results
-    const allResults = [...targetedResults, ...featureResults];
+    const allResults = [...targetedResults, ...featureResults, ...semanticResults];
     
     // Debug: Show all results before deduplication
     console.log('  All results before deduplication:');
@@ -421,17 +679,34 @@ Return ONLY the JSON object:`;
       
       if (!existing) {
         deduplicatedMap.set(key, result);
-      } else if (currentScore > (existing.relevance_score || 0)) {
-        // Keep the higher scoring version and combine search methods
-        result.search_method = `${existing.search_method}+${result.search_method}`;
-        result.matched_keywords = [...new Set([...(existing.matched_keywords || []), ...(result.matched_keywords || [])])];
-        deduplicatedMap.set(key, result);
       } else {
-        // Keep existing but add the search method
+        // Combine results from multiple search methods
+        const existingScore = existing.relevance_score || 0;
+        const newScore = currentScore || 0;
+        
+        // Use highest base score and add method bonus
+        let combinedScore = Math.max(existingScore, newScore);
+        
+        // Add bonus for being found through multiple methods
+        if (!existing.search_method.includes(result.search_method)) {
+          combinedScore += 1; // Multi-method bonus
+        }
+        
+        // Preserve semantic similarity if available
+        if (result.semantic_similarity && (!existing.semantic_similarity || result.semantic_similarity > existing.semantic_similarity)) {
+          existing.semantic_similarity = result.semantic_similarity;
+        }
+        
+        // Combine search methods
         if (!existing.search_method.includes(result.search_method)) {
           existing.search_method = `${existing.search_method}+${result.search_method}`;
-          existing.matched_keywords = [...new Set([...(existing.matched_keywords || []), ...(result.matched_keywords || [])])];
         }
+        
+        // Combine matched keywords
+        existing.matched_keywords = [...new Set([...(existing.matched_keywords || []), ...(result.matched_keywords || [])])];
+        
+        // Update score
+        existing.relevance_score = combinedScore;
       }
     });
     
@@ -469,10 +744,16 @@ Return ONLY the JSON object:`;
       const featureResults = await this.performFeatureBasedSearch(userIntent, limit);
       console.log(`✨ Found ${featureResults.length} feature results`);
       
-      // Step 4: Final ranking and selection
+      // Step 4: Semantic search using embeddings
+      console.log('🧠 Step 4: Semantic search...');
+      const semanticResults = await this.performSemanticSearch(userQuery, userIntent, limit);
+      console.log(`🔗 Found ${semanticResults.length} semantic results`);
+      
+      // Step 5: Final ranking and selection
       const finalResults = await this.finalRankingAndSelection(
         targetedResults, 
-        featureResults, 
+        featureResults,
+        semanticResults,
         userIntent, 
         limit
       );
@@ -488,7 +769,13 @@ Return ONLY the JSON object:`;
         metadata: {
           total_found: finalResults.length,
           search_time_ms: searchTime,
-          methods_used: ['targeted_search', 'feature_search']
+          methods_used: ['targeted_search', 'feature_search', 'semantic_search'],
+          result_breakdown: {
+            targeted: targetedResults.length,
+            features: featureResults.length,
+            semantic: semanticResults.length,
+            final: finalResults.length
+          }
         }
       };
 
