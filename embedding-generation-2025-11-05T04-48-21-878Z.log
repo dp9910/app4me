@@ -1,0 +1,9 @@
+[2025-11-05T04:48:21.879Z] 🚀 === PRODUCTION EMBEDDING GENERATION STARTED ===
+[2025-11-05T04:48:21.879Z] Start time: 2025-11-05T04:48:21.879Z
+[2025-11-05T04:48:21.879Z] Target: All apps in apps_unified table
+[2025-11-05T04:48:21.879Z] Format: Natural language (title. description. Category: category)
+[2025-11-05T04:48:21.879Z] Model: text-embedding-004
+[2025-11-05T04:48:21.879Z] Backup frequency: Every 100 apps
+[2025-11-05T04:48:21.879Z] 
+[2025-11-05T04:48:21.879Z] 📊 Fetching all apps from apps_unified...
+[2025-11-05T04:48:22.131Z] ❌ Error fetching apps: invalid input syntax for type bigint: "SELECT app_id FROM new_embeddings"

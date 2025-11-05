@@ -111,14 +111,27 @@ class ProcessedDataUploader {
   async uploadApps() {
     console.log('📤 Uploading apps to apps_unified...');
 
-    // Get existing bundle_ids from the database
-    const { data: existingApps, error: existingAppsError } = await supabase
-      .from('apps_unified')
-      .select('bundle_id');
+    // Get existing bundle_ids from the database with pagination
+    let existingApps = [];
+    let start = 0;
+    const batchSize = 1000;
+    
+    while (true) {
+      const { data, error } = await supabase
+        .from('apps_unified')
+        .select('bundle_id')
+        .range(start, start + batchSize - 1);
 
-    if (existingAppsError) {
-      console.error('❌ Error fetching existing apps:', existingAppsError);
-      throw existingAppsError;
+      if (error) {
+        console.error('❌ Error fetching existing apps:', error);
+        throw error;
+      }
+      
+      if (data.length === 0) break;
+      existingApps = [...existingApps, ...data];
+      start += batchSize;
+      
+      if (data.length < batchSize) break;
     }
 
     const existingBundleIds = new Set(existingApps.map(app => app.bundle_id));
@@ -131,19 +144,7 @@ class ProcessedDataUploader {
     if (newAppsToUpload.length === 0) {
       console.log('  ⚠️ No new apps to upload.');
       // Even if no new apps, we still need to populate idMapping for features/embeddings
-      const { data: allAppsInDb, error: allAppsInDbError } = await supabase
-        .from('apps_unified')
-        .select('id, bundle_id');
-
-      if (allAppsInDbError) {
-        console.error('❌ Error fetching all apps for ID mapping:', allAppsInDbError);
-        throw allAppsInDbError;
-      }
-
-      this.idMapping = new Map();
-      allAppsInDb.forEach(app => {
-        this.idMapping.set(app.bundle_id, app.id);
-      });
+      await this.populateIdMapping();
       return;
     }
 
@@ -176,32 +177,35 @@ class ProcessedDataUploader {
 
     // Create mapping of bundle_id to database id (for all apps, including existing ones)
     // We need the IDs of all apps that will be referenced by features and embeddings
-    const { data: allAppsInDb, error: allAppsInDbError } = await supabase
-      .from('apps_unified')
-      .select('id, bundle_id');
-
-    if (allAppsInDbError) {
-      console.error('❌ Error fetching all apps for ID mapping:', allAppsInDbError);
-      throw allAppsInDbError;
-    }
-
-    this.idMapping = new Map();
-    allAppsInDb.forEach(app => {
-      this.idMapping.set(app.bundle_id, app.id);
-    });
+    await this.populateIdMapping();
 
     return appsInserted;
   }
 
   async populateIdMapping() {
     console.log('🔄 Populating app ID mapping...');
-    const { data: allAppsInDb, error: allAppsInDbError } = await supabase
-      .from('apps_unified')
-      .select('id, bundle_id');
+    
+    // Get all apps with pagination
+    let allAppsInDb = [];
+    let start = 0;
+    const batchSize = 1000;
+    
+    while (true) {
+      const { data, error } = await supabase
+        .from('apps_unified')
+        .select('id, bundle_id')
+        .range(start, start + batchSize - 1);
 
-    if (allAppsInDbError) {
-      console.error('❌ Error fetching all apps for ID mapping:', allAppsInDbError);
-      throw allAppsInDbError;
+      if (error) {
+        console.error('❌ Error fetching apps for ID mapping:', error);
+        throw error;
+      }
+      
+      if (data.length === 0) break;
+      allAppsInDb = [...allAppsInDb, ...data];
+      start += batchSize;
+      
+      if (data.length < batchSize) break;
     }
 
     this.idMapping = new Map();

@@ -1,0 +1,10 @@
+[2025-11-05T04:47:47.668Z] 🚀 === PRODUCTION EMBEDDING GENERATION STARTED ===
+[2025-11-05T04:47:47.668Z] Start time: 2025-11-05T04:47:47.668Z
+[2025-11-05T04:47:47.668Z] Target: All apps in apps_unified table
+[2025-11-05T04:47:47.668Z] Format: Natural language (title. description. Category: category)
+[2025-11-05T04:47:47.668Z] Model: text-embedding-004
+[2025-11-05T04:47:47.668Z] Backup frequency: Every 100 apps
+[2025-11-05T04:47:47.668Z] 
+[2025-11-05T04:47:47.668Z] 📁 Created backup folder: new_embeddings
+[2025-11-05T04:47:47.668Z] 📊 Fetching all apps from apps_unified...
+[2025-11-05T04:47:48.036Z] ❌ Error fetching apps: column apps_unified.created_at does not exist

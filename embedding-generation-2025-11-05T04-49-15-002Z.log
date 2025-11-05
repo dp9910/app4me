@@ -1,0 +1,45 @@
+[2025-11-05T04:49:15.002Z] 🚀 === PRODUCTION EMBEDDING GENERATION STARTED ===
+[2025-11-05T04:49:15.002Z] Start time: 2025-11-05T04:49:15.002Z
+[2025-11-05T04:49:15.002Z] Target: All apps in apps_unified table
+[2025-11-05T04:49:15.002Z] Format: Natural language (title. description. Category: category)
+[2025-11-05T04:49:15.002Z] Model: text-embedding-004
+[2025-11-05T04:49:15.002Z] Backup frequency: Every 100 apps
+[2025-11-05T04:49:15.002Z] 
+[2025-11-05T04:49:15.002Z] 📊 Fetching all apps from apps_unified...
+[2025-11-05T04:49:15.232Z] 📊 Found 15 existing embeddings
+[2025-11-05T04:49:15.986Z] ✅ Found 1000 total apps, 1000 need embeddings
+[2025-11-05T04:49:15.987Z] 📈 Progress will be logged every 10 apps
+[2025-11-05T04:49:15.987Z] 💾 Backups will be saved every 100 apps
+[2025-11-05T04:49:15.987Z] 
+[2025-11-05T04:49:15.988Z] [1/1000] Processing: ABC News: Live Breaking News
+[2025-11-05T04:49:15.988Z]   📝 Text: "ABC News: Live Breaking News. Discover the power of staying informed with the AB..."
+[2025-11-05T04:49:16.749Z] [2/1000] Processing: Rustavi Transport
+[2025-11-05T04:49:16.750Z]   📝 Text: "Rustavi Transport. Rustavi Transport is your all-in-one solution for navigating ..."
+[2025-11-05T04:49:17.368Z] [3/1000] Processing: Foodi AI
+[2025-11-05T04:49:17.368Z]   📝 Text: "Foodi AI. FOODI AI - YOUR INTELLIGENT NUTRITION COMPANION  Transform the way you..."
+[2025-11-05T04:49:17.959Z] [4/1000] Processing: AJC News
+[2025-11-05T04:49:17.960Z]   📝 Text: "AJC News. AJC NEWS Stay informed, connected and up to date with the AJC News app..."
+[2025-11-05T04:49:18.578Z] [5/1000] Processing: Boston 25 Weather
+[2025-11-05T04:49:18.578Z]   📝 Text: "Boston 25 Weather. Chief Meteorologist Kevin Lemanowicz and The Boston 25 Weathe..."
+[2025-11-05T04:49:22.014Z] 📊 Progress: 10 processed | 10 success | 0 failed | 100.0% success rate | 85.6/min
+[2025-11-05T04:49:27.969Z] 📊 Progress: 20 processed | 20 success | 0 failed | 100.0% success rate | 92.5/min
+[2025-11-05T04:49:33.974Z] 📊 Progress: 30 processed | 30 success | 0 failed | 100.0% success rate | 94.9/min
+[2025-11-05T04:49:39.806Z] 📊 Progress: 40 processed | 40 success | 0 failed | 100.0% success rate | 96.8/min
+[2025-11-05T04:49:45.593Z] 📊 Progress: 50 processed | 50 success | 0 failed | 100.0% success rate | 98.1/min
+[2025-11-05T04:49:51.395Z] 📊 Progress: 60 processed | 60 success | 0 failed | 100.0% success rate | 98.9/min
+[2025-11-05T04:49:57.339Z] 📊 Progress: 70 processed | 70 success | 0 failed | 100.0% success rate | 99.2/min
+[2025-11-05T04:50:03.197Z] 📊 Progress: 80 processed | 80 success | 0 failed | 100.0% success rate | 99.6/min
+[2025-11-05T04:50:09.291Z] 📊 Progress: 90 processed | 90 success | 0 failed | 100.0% success rate | 99.5/min
+[2025-11-05T04:50:15.305Z] 📊 Progress: 100 processed | 100 success | 0 failed | 100.0% success rate | 99.5/min
+[2025-11-05T04:50:15.330Z] 💾 Backup saved: embeddings-batch-100-2025-11-05T04-50-15-306Z.json (100 records)
+[2025-11-05T04:50:21.161Z] 📊 Progress: 110 processed | 110 success | 0 failed | 100.0% success rate | 99.8/min
+[2025-11-05T04:50:26.980Z] 📊 Progress: 120 processed | 120 success | 0 failed | 100.0% success rate | 100.0/min
+[2025-11-05T04:50:32.788Z] 📊 Progress: 130 processed | 130 success | 0 failed | 100.0% success rate | 100.3/min
+[2025-11-05T04:50:38.631Z] 📊 Progress: 140 processed | 140 success | 0 failed | 100.0% success rate | 100.4/min
+[2025-11-05T04:50:44.524Z] 📊 Progress: 150 processed | 150 success | 0 failed | 100.0% success rate | 100.5/min
+[2025-11-05T04:50:50.335Z] 📊 Progress: 160 processed | 160 success | 0 failed | 100.0% success rate | 100.7/min
+[2025-11-05T04:50:56.145Z] 📊 Progress: 170 processed | 170 success | 0 failed | 100.0% success rate | 100.8/min
+[2025-11-05T04:51:02.025Z] 📊 Progress: 180 processed | 180 success | 0 failed | 100.0% success rate | 100.9/min
+[2025-11-05T04:51:07.901Z] 📊 Progress: 190 processed | 190 success | 0 failed | 100.0% success rate | 101.0/min
+[2025-11-05T04:51:13.822Z] 📊 Progress: 200 processed | 200 success | 0 failed | 100.0% success rate | 101.0/min
+[2025-11-05T04:51:13.842Z] 💾 Backup saved: embeddings-batch-200-2025-11-05T04-51-13-823Z.json (100 records)
