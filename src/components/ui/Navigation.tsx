@@ -25,7 +25,7 @@ export default function Navigation() {
             </svg>
           </div>
           <h2 className="text-gray-900 dark:text-white text-lg font-bold leading-tight tracking-[-0.015em]">
-            AppDiscovery AI
+            apps4me
           </h2>
         </div>
 

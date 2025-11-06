@@ -1,0 +1,962 @@
+[2025-11-05T05:33:58.528Z] 🚀 === PRODUCTION EMBEDDING GENERATION STARTED ===
+[2025-11-05T05:33:58.528Z] Start time: 2025-11-05T05:33:58.528Z
+[2025-11-05T05:33:58.528Z] Target: All apps in apps_unified table
+[2025-11-05T05:33:58.528Z] Format: Natural language (title. description. Category: category)
+[2025-11-05T05:33:58.528Z] Model: text-embedding-004
+[2025-11-05T05:33:58.528Z] Backup frequency: Every 100 apps
+[2025-11-05T05:33:58.528Z] 
+[2025-11-05T05:33:58.528Z] 📊 Fetching all apps from apps_unified...
+[2025-11-05T05:33:58.959Z] 📊 Fetched embedding batch: 1000 (total existing: 1000)
+[2025-11-05T05:33:59.042Z] 📊 Fetched embedding batch: 15 (total existing: 1015)
+[2025-11-05T05:33:59.042Z] 📊 Found 1015 existing embeddings
+[2025-11-05T05:33:59.422Z] 📊 Fetched batch: 1000 apps (total so far: 1000)
+[2025-11-05T05:33:59.632Z] 📊 Fetched batch: 1000 apps (total so far: 2000)
+[2025-11-05T05:33:59.859Z] 📊 Fetched batch: 1000 apps (total so far: 3000)
+[2025-11-05T05:34:00.066Z] 📊 Fetched batch: 1000 apps (total so far: 4000)
+[2025-11-05T05:34:00.263Z] 📊 Fetched batch: 1000 apps (total so far: 5000)
+[2025-11-05T05:34:00.462Z] 📊 Fetched batch: 1000 apps (total so far: 6000)
+[2025-11-05T05:34:00.685Z] 📊 Fetched batch: 1000 apps (total so far: 7000)
+[2025-11-05T05:34:00.869Z] 📊 Fetched batch: 1000 apps (total so far: 8000)
+[2025-11-05T05:34:01.075Z] 📊 Fetched batch: 1000 apps (total so far: 9000)
+[2025-11-05T05:34:01.197Z] 📊 Fetched batch: 332 apps (total so far: 9332)
+[2025-11-05T05:34:01.203Z] ✅ Found 9332 total apps, 8317 need embeddings
+[2025-11-05T05:34:01.203Z] 📈 Progress will be logged every 10 apps
+[2025-11-05T05:34:01.203Z] 💾 Backups will be saved every 100 apps
+[2025-11-05T05:34:01.203Z] 
+[2025-11-05T05:34:01.203Z] [1/8317] Processing: Cinemark Theatres
+[2025-11-05T05:34:01.204Z]   📝 Text: "Cinemark Theatres. Introducing the updated Cinemark Theatres app. Category: Mobi..."
+[2025-11-05T05:34:02.018Z] [2/8317] Processing: 123Movies ™
+[2025-11-05T05:34:02.019Z]   📝 Text: "123Movies ™. 123Movies is the simplest and fastest way to discover movies, serie..."
+[2025-11-05T05:34:02.618Z] [3/8317] Processing: Round Health
+[2025-11-05T05:34:02.618Z]   📝 Text: "Round Health. Round makes it easier to remember to take your medicine, so you ca..."
+[2025-11-05T05:34:03.301Z] [4/8317] Processing: PhotoCircle
+[2025-11-05T05:34:03.302Z]   📝 Text: "PhotoCircle. PhotoCircle is a private photo-sharing app trusted by families, fri..."
+[2025-11-05T05:34:03.886Z] [5/8317] Processing: CircleBlast Network
+[2025-11-05T05:34:03.887Z]   📝 Text: "CircleBlast Network. CircleBlast Network is an executive relationship marketing ..."
+[2025-11-05T05:34:07.284Z] 📊 Progress: 10 processed | 10 success | 0 failed | 100.0% success rate | 68.5/min
+[2025-11-05T05:34:13.458Z] 📊 Progress: 20 processed | 20 success | 0 failed | 100.0% success rate | 80.4/min
+[2025-11-05T05:34:19.312Z] 📊 Progress: 30 processed | 30 success | 0 failed | 100.0% success rate | 86.6/min
+[2025-11-05T05:34:25.372Z] 📊 Progress: 40 processed | 40 success | 0 failed | 100.0% success rate | 89.4/min
+[2025-11-05T05:34:31.294Z] 📊 Progress: 50 processed | 50 success | 0 failed | 100.0% success rate | 91.6/min
+[2025-11-05T05:34:37.150Z] 📊 Progress: 60 processed | 60 success | 0 failed | 100.0% success rate | 93.2/min
+[2025-11-05T05:34:43.040Z] 📊 Progress: 70 processed | 70 success | 0 failed | 100.0% success rate | 94.4/min
+[2025-11-05T05:34:48.915Z] 📊 Progress: 80 processed | 80 success | 0 failed | 100.0% success rate | 95.3/min
+[2025-11-05T05:34:54.854Z] 📊 Progress: 90 processed | 90 success | 0 failed | 100.0% success rate | 95.9/min
+[2025-11-05T05:35:01.421Z] 📊 Progress: 100 processed | 100 success | 0 failed | 100.0% success rate | 95.4/min
+[2025-11-05T05:35:01.440Z] 💾 Backup saved: embeddings-batch-100-2025-11-05T05-35-01-422Z.json (100 records)
+[2025-11-05T05:35:07.668Z] 📊 Progress: 110 processed | 110 success | 0 failed | 100.0% success rate | 95.5/min
+[2025-11-05T05:35:13.639Z] 📊 Progress: 120 processed | 120 success | 0 failed | 100.0% success rate | 95.9/min
+[2025-11-05T05:35:19.654Z] 📊 Progress: 130 processed | 130 success | 0 failed | 100.0% success rate | 96.1/min
+[2025-11-05T05:35:25.547Z] 📊 Progress: 140 processed | 140 success | 0 failed | 100.0% success rate | 96.5/min
+[2025-11-05T05:35:31.483Z] 📊 Progress: 150 processed | 150 success | 0 failed | 100.0% success rate | 96.8/min
+[2025-11-05T05:35:37.249Z] 📊 Progress: 160 processed | 160 success | 0 failed | 100.0% success rate | 97.2/min
+[2025-11-05T05:35:43.133Z] 📊 Progress: 170 processed | 170 success | 0 failed | 100.0% success rate | 97.5/min
+[2025-11-05T05:35:48.829Z] 📊 Progress: 180 processed | 180 success | 0 failed | 100.0% success rate | 97.9/min
+[2025-11-05T05:35:54.564Z] 📊 Progress: 190 processed | 190 success | 0 failed | 100.0% success rate | 98.2/min
+[2025-11-05T05:36:00.358Z] 📊 Progress: 200 processed | 200 success | 0 failed | 100.0% success rate | 98.5/min
+[2025-11-05T05:36:00.375Z] 💾 Backup saved: embeddings-batch-200-2025-11-05T05-36-00-359Z.json (100 records)
+[2025-11-05T05:36:06.190Z] 📊 Progress: 210 processed | 210 success | 0 failed | 100.0% success rate | 98.7/min
+[2025-11-05T05:36:11.946Z] 📊 Progress: 220 processed | 220 success | 0 failed | 100.0% success rate | 98.9/min
+[2025-11-05T05:36:17.750Z] 📊 Progress: 230 processed | 230 success | 0 failed | 100.0% success rate | 99.1/min
+[2025-11-05T05:36:23.482Z] 📊 Progress: 240 processed | 240 success | 0 failed | 100.0% success rate | 99.3/min
+[2025-11-05T05:36:29.349Z] 📊 Progress: 250 processed | 250 success | 0 failed | 100.0% success rate | 99.5/min
+[2025-11-05T05:36:35.084Z] 📊 Progress: 260 processed | 260 success | 0 failed | 100.0% success rate | 99.6/min
+[2025-11-05T05:36:40.903Z] 📊 Progress: 270 processed | 270 success | 0 failed | 100.0% success rate | 99.8/min
+[2025-11-05T05:36:46.690Z] 📊 Progress: 280 processed | 280 success | 0 failed | 100.0% success rate | 99.9/min
+[2025-11-05T05:36:52.439Z] 📊 Progress: 290 processed | 290 success | 0 failed | 100.0% success rate | 100.1/min
+[2025-11-05T05:36:58.189Z] 📊 Progress: 300 processed | 300 success | 0 failed | 100.0% success rate | 100.2/min
+[2025-11-05T05:36:58.208Z] 💾 Backup saved: embeddings-batch-300-2025-11-05T05-36-58-190Z.json (100 records)
+[2025-11-05T05:37:03.995Z] 📊 Progress: 310 processed | 310 success | 0 failed | 100.0% success rate | 100.3/min
+[2025-11-05T05:37:09.756Z] 📊 Progress: 320 processed | 320 success | 0 failed | 100.0% success rate | 100.4/min
+[2025-11-05T05:37:15.534Z] 📊 Progress: 330 processed | 330 success | 0 failed | 100.0% success rate | 100.5/min
+[2025-11-05T05:37:21.310Z] 📊 Progress: 340 processed | 340 success | 0 failed | 100.0% success rate | 100.6/min
+[2025-11-05T05:37:27.387Z] 📊 Progress: 350 processed | 350 success | 0 failed | 100.0% success rate | 100.5/min
+[2025-11-05T05:37:33.452Z] 📊 Progress: 360 processed | 360 success | 0 failed | 100.0% success rate | 100.5/min
+[2025-11-05T05:37:39.389Z] 📊 Progress: 370 processed | 370 success | 0 failed | 100.0% success rate | 100.5/min
+[2025-11-05T05:37:45.230Z] 📊 Progress: 380 processed | 380 success | 0 failed | 100.0% success rate | 100.6/min
+[2025-11-05T05:37:51.197Z] 📊 Progress: 390 processed | 390 success | 0 failed | 100.0% success rate | 100.6/min
+[2025-11-05T05:37:57.097Z] 📊 Progress: 400 processed | 400 success | 0 failed | 100.0% success rate | 100.6/min
+[2025-11-05T05:37:57.117Z] 💾 Backup saved: embeddings-batch-400-2025-11-05T05-37-57-097Z.json (100 records)
+[2025-11-05T05:38:02.870Z] 📊 Progress: 410 processed | 410 success | 0 failed | 100.0% success rate | 100.7/min
+[2025-11-05T05:38:08.656Z] 📊 Progress: 420 processed | 420 success | 0 failed | 100.0% success rate | 100.7/min
+[2025-11-05T05:38:14.406Z] 📊 Progress: 430 processed | 430 success | 0 failed | 100.0% success rate | 100.8/min
+[2025-11-05T05:38:20.446Z] 📊 Progress: 440 processed | 440 success | 0 failed | 100.0% success rate | 100.8/min
+[2025-11-05T05:38:26.342Z] 📊 Progress: 450 processed | 450 success | 0 failed | 100.0% success rate | 100.8/min
+[2025-11-05T05:38:32.204Z] 📊 Progress: 460 processed | 460 success | 0 failed | 100.0% success rate | 100.8/min
+[2025-11-05T05:38:38.092Z] 📊 Progress: 470 processed | 470 success | 0 failed | 100.0% success rate | 100.9/min
+[2025-11-05T05:38:43.986Z] 📊 Progress: 480 processed | 480 success | 0 failed | 100.0% success rate | 100.9/min
+[2025-11-05T05:38:49.958Z] 📊 Progress: 490 processed | 490 success | 0 failed | 100.0% success rate | 100.9/min
+[2025-11-05T05:38:55.855Z] 📊 Progress: 500 processed | 500 success | 0 failed | 100.0% success rate | 100.9/min
+[2025-11-05T05:38:55.872Z] 💾 Backup saved: embeddings-batch-500-2025-11-05T05-38-55-856Z.json (100 records)
+[2025-11-05T05:39:01.934Z] 📊 Progress: 510 processed | 510 success | 0 failed | 100.0% success rate | 100.9/min
+[2025-11-05T05:39:07.938Z] 📊 Progress: 520 processed | 520 success | 0 failed | 100.0% success rate | 100.8/min
+[2025-11-05T05:39:13.682Z] 📊 Progress: 530 processed | 530 success | 0 failed | 100.0% success rate | 100.9/min
+[2025-11-05T05:39:19.503Z] 📊 Progress: 540 processed | 540 success | 0 failed | 100.0% success rate | 100.9/min
+[2025-11-05T05:39:25.272Z] 📊 Progress: 550 processed | 550 success | 0 failed | 100.0% success rate | 101.0/min
+[2025-11-05T05:39:31.046Z] 📊 Progress: 560 processed | 560 success | 0 failed | 100.0% success rate | 101.0/min
+[2025-11-05T05:39:36.874Z] 📊 Progress: 570 processed | 570 success | 0 failed | 100.0% success rate | 101.1/min
+[2025-11-05T05:39:42.613Z] 📊 Progress: 580 processed | 580 success | 0 failed | 100.0% success rate | 101.1/min
+[2025-11-05T05:39:48.309Z] 📊 Progress: 590 processed | 590 success | 0 failed | 100.0% success rate | 101.2/min
+[2025-11-05T05:39:54.000Z] 📊 Progress: 600 processed | 600 success | 0 failed | 100.0% success rate | 101.3/min
+[2025-11-05T05:39:54.017Z] 💾 Backup saved: embeddings-batch-600-2025-11-05T05-39-54-001Z.json (100 records)
+[2025-11-05T05:39:59.843Z] 📊 Progress: 610 processed | 610 success | 0 failed | 100.0% success rate | 101.3/min
+[2025-11-05T05:40:05.786Z] 📊 Progress: 620 processed | 620 success | 0 failed | 100.0% success rate | 101.3/min
+[2025-11-05T05:40:11.727Z] 📊 Progress: 630 processed | 630 success | 0 failed | 100.0% success rate | 101.3/min
+[2025-11-05T05:40:17.622Z] 📊 Progress: 640 processed | 640 success | 0 failed | 100.0% success rate | 101.3/min
+[2025-11-05T05:40:23.483Z] 📊 Progress: 650 processed | 650 success | 0 failed | 100.0% success rate | 101.3/min
+[2025-11-05T05:40:29.248Z] 📊 Progress: 660 processed | 660 success | 0 failed | 100.0% success rate | 101.4/min
+[2025-11-05T05:40:35.104Z] 📊 Progress: 670 processed | 670 success | 0 failed | 100.0% success rate | 101.4/min
+[2025-11-05T05:40:40.960Z] 📊 Progress: 680 processed | 680 success | 0 failed | 100.0% success rate | 101.4/min
+[2025-11-05T05:40:52.510Z] 📊 Progress: 690 processed | 690 success | 0 failed | 100.0% success rate | 100.0/min
+[2025-11-05T05:40:58.532Z] 📊 Progress: 700 processed | 700 success | 0 failed | 100.0% success rate | 100.0/min
+[2025-11-05T05:40:58.551Z] 💾 Backup saved: embeddings-batch-700-2025-11-05T05-40-58-532Z.json (100 records)
+[2025-11-05T05:41:04.462Z] 📊 Progress: 710 processed | 710 success | 0 failed | 100.0% success rate | 100.0/min
+[2025-11-05T05:41:10.300Z] 📊 Progress: 720 processed | 720 success | 0 failed | 100.0% success rate | 100.1/min
+[2025-11-05T05:41:16.180Z] 📊 Progress: 730 processed | 730 success | 0 failed | 100.0% success rate | 100.1/min
+[2025-11-05T05:41:21.984Z] 📊 Progress: 740 processed | 740 success | 0 failed | 100.0% success rate | 100.1/min
+[2025-11-05T05:41:27.982Z] 📊 Progress: 750 processed | 750 success | 0 failed | 100.0% success rate | 100.1/min
+[2025-11-05T05:41:33.809Z] 📊 Progress: 760 processed | 760 success | 0 failed | 100.0% success rate | 100.2/min
+[2025-11-05T05:41:39.602Z] 📊 Progress: 770 processed | 770 success | 0 failed | 100.0% success rate | 100.2/min
+[2025-11-05T05:41:45.432Z] 📊 Progress: 780 processed | 780 success | 0 failed | 100.0% success rate | 100.2/min
+[2025-11-05T05:41:51.260Z] 📊 Progress: 790 processed | 790 success | 0 failed | 100.0% success rate | 100.3/min
+[2025-11-05T05:41:57.157Z] 📊 Progress: 800 processed | 800 success | 0 failed | 100.0% success rate | 100.3/min
+[2025-11-05T05:41:57.173Z] 💾 Backup saved: embeddings-batch-800-2025-11-05T05-41-57-158Z.json (100 records)
+[2025-11-05T05:42:02.993Z] 📊 Progress: 810 processed | 810 success | 0 failed | 100.0% success rate | 100.3/min
+[2025-11-05T05:42:08.857Z] 📊 Progress: 820 processed | 820 success | 0 failed | 100.0% success rate | 100.3/min
+[2025-11-05T05:42:14.843Z] 📊 Progress: 830 processed | 830 success | 0 failed | 100.0% success rate | 100.3/min
+[2025-11-05T05:42:20.723Z] 📊 Progress: 840 processed | 840 success | 0 failed | 100.0% success rate | 100.4/min
+[2025-11-05T05:42:26.565Z] 📊 Progress: 850 processed | 850 success | 0 failed | 100.0% success rate | 100.4/min
+[2025-11-05T05:42:32.419Z] 📊 Progress: 860 processed | 860 success | 0 failed | 100.0% success rate | 100.4/min
+[2025-11-05T05:42:38.541Z] 📊 Progress: 870 processed | 870 success | 0 failed | 100.0% success rate | 100.4/min
+[2025-11-05T05:42:44.460Z] 📊 Progress: 880 processed | 880 success | 0 failed | 100.0% success rate | 100.4/min
+[2025-11-05T05:42:50.502Z] 📊 Progress: 890 processed | 890 success | 0 failed | 100.0% success rate | 100.4/min
+[2025-11-05T05:42:56.570Z] 📊 Progress: 900 processed | 900 success | 0 failed | 100.0% success rate | 100.4/min
+[2025-11-05T05:42:56.587Z] 💾 Backup saved: embeddings-batch-900-2025-11-05T05-42-56-571Z.json (100 records)
+[2025-11-05T05:43:02.595Z] 📊 Progress: 910 processed | 910 success | 0 failed | 100.0% success rate | 100.4/min
+[2025-11-05T05:43:08.599Z] 📊 Progress: 920 processed | 920 success | 0 failed | 100.0% success rate | 100.4/min
+[2025-11-05T05:43:14.549Z] 📊 Progress: 930 processed | 930 success | 0 failed | 100.0% success rate | 100.4/min
+[2025-11-05T05:43:20.408Z] 📊 Progress: 940 processed | 940 success | 0 failed | 100.0% success rate | 100.4/min
+[2025-11-05T05:43:26.465Z] 📊 Progress: 950 processed | 950 success | 0 failed | 100.0% success rate | 100.4/min
+[2025-11-05T05:43:32.445Z] 📊 Progress: 960 processed | 960 success | 0 failed | 100.0% success rate | 100.4/min
+[2025-11-05T05:43:38.493Z] 📊 Progress: 970 processed | 970 success | 0 failed | 100.0% success rate | 100.4/min
+[2025-11-05T05:43:44.637Z] 📊 Progress: 980 processed | 980 success | 0 failed | 100.0% success rate | 100.3/min
+[2025-11-05T05:43:50.523Z] 📊 Progress: 990 processed | 990 success | 0 failed | 100.0% success rate | 100.3/min
+[2025-11-05T05:43:56.583Z] 📊 Progress: 1000 processed | 1000 success | 0 failed | 100.0% success rate | 100.3/min
+[2025-11-05T05:43:56.599Z] 💾 Backup saved: embeddings-batch-1000-2025-11-05T05-43-56-584Z.json (100 records)
+[2025-11-05T05:44:02.660Z] 📊 Progress: 1010 processed | 1010 success | 0 failed | 100.0% success rate | 100.3/min
+[2025-11-05T05:44:08.626Z] 📊 Progress: 1020 processed | 1020 success | 0 failed | 100.0% success rate | 100.3/min
+[2025-11-05T05:44:14.579Z] 📊 Progress: 1030 processed | 1030 success | 0 failed | 100.0% success rate | 100.3/min
+[2025-11-05T05:44:20.800Z] 📊 Progress: 1040 processed | 1040 success | 0 failed | 100.0% success rate | 100.3/min
+[2025-11-05T05:44:26.724Z] 📊 Progress: 1050 processed | 1050 success | 0 failed | 100.0% success rate | 100.3/min
+[2025-11-05T05:44:32.796Z] 📊 Progress: 1060 processed | 1060 success | 0 failed | 100.0% success rate | 100.3/min
+[2025-11-05T05:44:38.976Z] 📊 Progress: 1070 processed | 1070 success | 0 failed | 100.0% success rate | 100.2/min
+[2025-11-05T05:44:44.825Z] 📊 Progress: 1080 processed | 1080 success | 0 failed | 100.0% success rate | 100.3/min
+[2025-11-05T05:44:50.899Z] 📊 Progress: 1090 processed | 1090 success | 0 failed | 100.0% success rate | 100.2/min
+[2025-11-05T05:44:56.977Z] 📊 Progress: 1100 processed | 1100 success | 0 failed | 100.0% success rate | 100.2/min
+[2025-11-05T05:44:56.993Z] 💾 Backup saved: embeddings-batch-1100-2025-11-05T05-44-56-978Z.json (100 records)
+[2025-11-05T05:45:03.110Z] 📊 Progress: 1110 processed | 1110 success | 0 failed | 100.0% success rate | 100.2/min
+[2025-11-05T05:45:09.368Z] 📊 Progress: 1120 processed | 1120 success | 0 failed | 100.0% success rate | 100.2/min
+[2025-11-05T05:45:15.344Z] 📊 Progress: 1130 processed | 1130 success | 0 failed | 100.0% success rate | 100.2/min
+[2025-11-05T05:45:21.765Z] 📊 Progress: 1140 processed | 1140 success | 0 failed | 100.0% success rate | 100.1/min
+[2025-11-05T05:45:27.787Z] 📊 Progress: 1150 processed | 1150 success | 0 failed | 100.0% success rate | 100.1/min
+[2025-11-05T05:45:33.772Z] 📊 Progress: 1160 processed | 1160 success | 0 failed | 100.0% success rate | 100.1/min
+[2025-11-05T05:45:39.921Z] 📊 Progress: 1170 processed | 1170 success | 0 failed | 100.0% success rate | 100.1/min
+[2025-11-05T05:45:45.907Z] 📊 Progress: 1180 processed | 1180 success | 0 failed | 100.0% success rate | 100.1/min
+[2025-11-05T05:45:51.975Z] 📊 Progress: 1190 processed | 1190 success | 0 failed | 100.0% success rate | 100.1/min
+[2025-11-05T05:45:57.841Z] 📊 Progress: 1200 processed | 1200 success | 0 failed | 100.0% success rate | 100.1/min
+[2025-11-05T05:45:57.856Z] 💾 Backup saved: embeddings-batch-1200-2025-11-05T05-45-57-841Z.json (100 records)
+[2025-11-05T05:46:04.057Z] 📊 Progress: 1210 processed | 1210 success | 0 failed | 100.0% success rate | 100.1/min
+[2025-11-05T05:46:10.521Z] 📊 Progress: 1220 processed | 1220 success | 0 failed | 100.0% success rate | 100.0/min
+[2025-11-05T05:46:16.514Z] 📊 Progress: 1230 processed | 1230 success | 0 failed | 100.0% success rate | 100.0/min
+[2025-11-05T05:46:22.541Z] 📊 Progress: 1240 processed | 1240 success | 0 failed | 100.0% success rate | 100.0/min
+[2025-11-05T05:46:28.338Z] 📊 Progress: 1250 processed | 1250 success | 0 failed | 100.0% success rate | 100.0/min
+[2025-11-05T05:46:34.135Z] 📊 Progress: 1260 processed | 1260 success | 0 failed | 100.0% success rate | 100.1/min
+[2025-11-05T05:46:40.101Z] 📊 Progress: 1270 processed | 1270 success | 0 failed | 100.0% success rate | 100.1/min
+[2025-11-05T05:46:46.047Z] 📊 Progress: 1280 processed | 1280 success | 0 failed | 100.0% success rate | 100.1/min
+[2025-11-05T05:46:52.300Z] 📊 Progress: 1290 processed | 1290 success | 0 failed | 100.0% success rate | 100.0/min
+[2025-11-05T05:46:58.326Z] 📊 Progress: 1300 processed | 1300 success | 0 failed | 100.0% success rate | 100.0/min
+[2025-11-05T05:46:58.345Z] 💾 Backup saved: embeddings-batch-1300-2025-11-05T05-46-58-327Z.json (100 records)
+[2025-11-05T05:47:04.823Z] 📊 Progress: 1310 processed | 1310 success | 0 failed | 100.0% success rate | 100.0/min
+[2025-11-05T05:47:10.800Z] 📊 Progress: 1320 processed | 1320 success | 0 failed | 100.0% success rate | 100.0/min
+[2025-11-05T05:47:16.720Z] 📊 Progress: 1330 processed | 1330 success | 0 failed | 100.0% success rate | 100.0/min
+[2025-11-05T05:47:22.745Z] 📊 Progress: 1340 processed | 1340 success | 0 failed | 100.0% success rate | 100.0/min
+[2025-11-05T05:47:28.704Z] 📊 Progress: 1350 processed | 1350 success | 0 failed | 100.0% success rate | 100.0/min
+[2025-11-05T05:47:34.582Z] 📊 Progress: 1360 processed | 1360 success | 0 failed | 100.0% success rate | 100.0/min
+[2025-11-05T05:47:40.431Z] 📊 Progress: 1370 processed | 1370 success | 0 failed | 100.0% success rate | 100.0/min
+[2025-11-05T05:47:46.490Z] 📊 Progress: 1380 processed | 1380 success | 0 failed | 100.0% success rate | 100.0/min
+[2025-11-05T05:47:52.354Z] 📊 Progress: 1390 processed | 1390 success | 0 failed | 100.0% success rate | 100.0/min
+[2025-11-05T05:47:58.188Z] 📊 Progress: 1400 processed | 1400 success | 0 failed | 100.0% success rate | 100.0/min
+[2025-11-05T05:47:58.206Z] 💾 Backup saved: embeddings-batch-1400-2025-11-05T05-47-58-188Z.json (100 records)
+[2025-11-05T05:48:04.016Z] 📊 Progress: 1410 processed | 1410 success | 0 failed | 100.0% success rate | 100.1/min
+[2025-11-05T05:48:10.096Z] 📊 Progress: 1420 processed | 1420 success | 0 failed | 100.0% success rate | 100.1/min
+[2025-11-05T05:48:15.947Z] 📊 Progress: 1430 processed | 1430 success | 0 failed | 100.0% success rate | 100.1/min
+[2025-11-05T05:48:21.950Z] 📊 Progress: 1440 processed | 1440 success | 0 failed | 100.0% success rate | 100.1/min
+[2025-11-05T05:48:27.992Z] 📊 Progress: 1450 processed | 1450 success | 0 failed | 100.0% success rate | 100.1/min
+[2025-11-05T05:48:33.806Z] 📊 Progress: 1460 processed | 1460 success | 0 failed | 100.0% success rate | 100.1/min
+[2025-11-05T05:48:39.949Z] 📊 Progress: 1470 processed | 1470 success | 0 failed | 100.0% success rate | 100.1/min
+[2025-11-05T05:48:46.112Z] 📊 Progress: 1480 processed | 1480 success | 0 failed | 100.0% success rate | 100.0/min
+[2025-11-05T05:48:52.123Z] 📊 Progress: 1490 processed | 1490 success | 0 failed | 100.0% success rate | 100.0/min
+[2025-11-05T05:48:58.099Z] 📊 Progress: 1500 processed | 1500 success | 0 failed | 100.0% success rate | 100.0/min
+[2025-11-05T05:48:58.117Z] 💾 Backup saved: embeddings-batch-1500-2025-11-05T05-48-58-100Z.json (100 records)
+[2025-11-05T05:49:04.101Z] 📊 Progress: 1510 processed | 1510 success | 0 failed | 100.0% success rate | 100.0/min
+[2025-11-05T05:49:10.126Z] 📊 Progress: 1520 processed | 1520 success | 0 failed | 100.0% success rate | 100.0/min
+[2025-11-05T05:49:16.091Z] 📊 Progress: 1530 processed | 1530 success | 0 failed | 100.0% success rate | 100.0/min
+[2025-11-05T05:49:22.116Z] 📊 Progress: 1540 processed | 1540 success | 0 failed | 100.0% success rate | 100.0/min
+[2025-11-05T05:49:28.327Z] 📊 Progress: 1550 processed | 1550 success | 0 failed | 100.0% success rate | 100.0/min
+[2025-11-05T05:49:34.346Z] 📊 Progress: 1560 processed | 1560 success | 0 failed | 100.0% success rate | 100.0/min
+[2025-11-05T05:49:40.219Z] 📊 Progress: 1570 processed | 1570 success | 0 failed | 100.0% success rate | 100.0/min
+[2025-11-05T05:49:46.313Z] 📊 Progress: 1580 processed | 1580 success | 0 failed | 100.0% success rate | 100.0/min
+[2025-11-05T05:49:52.325Z] 📊 Progress: 1590 processed | 1590 success | 0 failed | 100.0% success rate | 100.0/min
+[2025-11-05T05:49:58.435Z] 📊 Progress: 1600 processed | 1600 success | 0 failed | 100.0% success rate | 100.0/min
+[2025-11-05T05:49:58.451Z] 💾 Backup saved: embeddings-batch-1600-2025-11-05T05-49-58-436Z.json (100 records)
+[2025-11-05T05:50:04.419Z] 📊 Progress: 1610 processed | 1610 success | 0 failed | 100.0% success rate | 100.0/min
+[2025-11-05T05:50:10.337Z] 📊 Progress: 1620 processed | 1620 success | 0 failed | 100.0% success rate | 100.0/min
+[2025-11-05T05:50:16.195Z] 📊 Progress: 1630 processed | 1630 success | 0 failed | 100.0% success rate | 100.0/min
+[2025-11-05T05:50:22.157Z] 📊 Progress: 1640 processed | 1640 success | 0 failed | 100.0% success rate | 100.0/min
+[2025-11-05T05:50:28.113Z] 📊 Progress: 1650 processed | 1650 success | 0 failed | 100.0% success rate | 100.0/min
+[2025-11-05T05:50:34.065Z] 📊 Progress: 1660 processed | 1660 success | 0 failed | 100.0% success rate | 100.0/min
+[2025-11-05T05:50:39.960Z] 📊 Progress: 1670 processed | 1670 success | 0 failed | 100.0% success rate | 100.1/min
+[2025-11-05T05:50:46.011Z] 📊 Progress: 1680 processed | 1680 success | 0 failed | 100.0% success rate | 100.1/min
+[2025-11-05T05:50:52.059Z] 📊 Progress: 1690 processed | 1690 success | 0 failed | 100.0% success rate | 100.0/min
+[2025-11-05T05:50:57.857Z] 📊 Progress: 1700 processed | 1700 success | 0 failed | 100.0% success rate | 100.1/min
+[2025-11-05T05:50:57.874Z] 💾 Backup saved: embeddings-batch-1700-2025-11-05T05-50-57-857Z.json (100 records)
+[2025-11-05T05:51:03.621Z] 📊 Progress: 1710 processed | 1710 success | 0 failed | 100.0% success rate | 100.1/min
+[2025-11-05T05:51:09.664Z] 📊 Progress: 1720 processed | 1720 success | 0 failed | 100.0% success rate | 100.1/min
+[2025-11-05T05:51:15.613Z] 📊 Progress: 1730 processed | 1730 success | 0 failed | 100.0% success rate | 100.1/min
+[2025-11-05T05:51:21.411Z] 📊 Progress: 1740 processed | 1740 success | 0 failed | 100.0% success rate | 100.1/min
+[2025-11-05T05:51:27.251Z] 📊 Progress: 1750 processed | 1750 success | 0 failed | 100.0% success rate | 100.1/min
+[2025-11-05T05:51:33.025Z] 📊 Progress: 1760 processed | 1760 success | 0 failed | 100.0% success rate | 100.1/min
+[2025-11-05T05:51:39.112Z] 📊 Progress: 1770 processed | 1770 success | 0 failed | 100.0% success rate | 100.1/min
+[2025-11-05T05:51:45.403Z] 📊 Progress: 1780 processed | 1780 success | 0 failed | 100.0% success rate | 100.1/min
+[2025-11-05T05:51:51.407Z] 📊 Progress: 1790 processed | 1790 success | 0 failed | 100.0% success rate | 100.1/min
+[2025-11-05T05:51:57.475Z] 📊 Progress: 1800 processed | 1800 success | 0 failed | 100.0% success rate | 100.1/min
+[2025-11-05T05:51:57.491Z] 💾 Backup saved: embeddings-batch-1800-2025-11-05T05-51-57-476Z.json (100 records)
+[2025-11-05T05:52:03.300Z] 📊 Progress: 1810 processed | 1810 success | 0 failed | 100.0% success rate | 100.1/min
+[2025-11-05T05:52:09.181Z] 📊 Progress: 1820 processed | 1820 success | 0 failed | 100.0% success rate | 100.1/min
+[2025-11-05T05:52:15.309Z] 📊 Progress: 1830 processed | 1830 success | 0 failed | 100.0% success rate | 100.1/min
+[2025-11-05T05:52:21.252Z] 📊 Progress: 1840 processed | 1840 success | 0 failed | 100.0% success rate | 100.1/min
+[2025-11-05T05:52:27.299Z] 📊 Progress: 1850 processed | 1850 success | 0 failed | 100.0% success rate | 100.1/min
+[2025-11-05T05:52:33.469Z] 📊 Progress: 1860 processed | 1860 success | 0 failed | 100.0% success rate | 100.1/min
+[2025-11-05T05:52:39.517Z] 📊 Progress: 1870 processed | 1870 success | 0 failed | 100.0% success rate | 100.1/min
+[2025-11-05T05:52:45.774Z] 📊 Progress: 1880 processed | 1880 success | 0 failed | 100.0% success rate | 100.1/min
+[2025-11-05T05:52:52.174Z] 📊 Progress: 1890 processed | 1890 success | 0 failed | 100.0% success rate | 100.0/min
+[2025-11-05T05:52:58.431Z] 📊 Progress: 1900 processed | 1900 success | 0 failed | 100.0% success rate | 100.0/min
+[2025-11-05T05:52:58.447Z] 💾 Backup saved: embeddings-batch-1900-2025-11-05T05-52-58-432Z.json (100 records)
+[2025-11-05T05:53:05.047Z] 📊 Progress: 1910 processed | 1910 success | 0 failed | 100.0% success rate | 100.0/min
+[2025-11-05T05:53:10.976Z] 📊 Progress: 1920 processed | 1920 success | 0 failed | 100.0% success rate | 100.0/min
+[2025-11-05T05:53:17.155Z] 📊 Progress: 1930 processed | 1930 success | 0 failed | 100.0% success rate | 99.9/min
+[2025-11-05T05:53:22.980Z] 📊 Progress: 1940 processed | 1940 success | 0 failed | 100.0% success rate | 100.0/min
+[2025-11-05T05:53:29.003Z] 📊 Progress: 1950 processed | 1950 success | 0 failed | 100.0% success rate | 100.0/min
+[2025-11-05T05:53:35.023Z] 📊 Progress: 1960 processed | 1960 success | 0 failed | 100.0% success rate | 100.0/min
+[2025-11-05T05:53:40.798Z] 📊 Progress: 1970 processed | 1970 success | 0 failed | 100.0% success rate | 100.0/min
+[2025-11-05T05:53:46.673Z] 📊 Progress: 1980 processed | 1980 success | 0 failed | 100.0% success rate | 100.0/min
+[2025-11-05T05:53:52.625Z] 📊 Progress: 1990 processed | 1990 success | 0 failed | 100.0% success rate | 100.0/min
+[2025-11-05T05:53:58.737Z] 📊 Progress: 2000 processed | 2000 success | 0 failed | 100.0% success rate | 100.0/min
+[2025-11-05T05:53:58.753Z] 💾 Backup saved: embeddings-batch-2000-2025-11-05T05-53-58-738Z.json (100 records)
+[2025-11-05T05:54:04.993Z] 📊 Progress: 2010 processed | 2010 success | 0 failed | 100.0% success rate | 100.0/min
+[2025-11-05T05:54:11.035Z] 📊 Progress: 2020 processed | 2020 success | 0 failed | 100.0% success rate | 100.0/min
+[2025-11-05T05:54:16.899Z] 📊 Progress: 2030 processed | 2030 success | 0 failed | 100.0% success rate | 100.0/min
+[2025-11-05T05:54:22.889Z] 📊 Progress: 2040 processed | 2040 success | 0 failed | 100.0% success rate | 100.0/min
+[2025-11-05T05:54:28.739Z] 📊 Progress: 2050 processed | 2050 success | 0 failed | 100.0% success rate | 100.0/min
+[2025-11-05T05:54:34.759Z] 📊 Progress: 2060 processed | 2060 success | 0 failed | 100.0% success rate | 100.0/min
+[2025-11-05T05:54:40.535Z] 📊 Progress: 2070 processed | 2070 success | 0 failed | 100.0% success rate | 100.0/min
+[2025-11-05T05:54:46.350Z] 📊 Progress: 2080 processed | 2080 success | 0 failed | 100.0% success rate | 100.0/min
+[2025-11-05T05:54:52.068Z] 📊 Progress: 2090 processed | 2090 success | 0 failed | 100.0% success rate | 100.0/min
+[2025-11-05T05:54:57.840Z] 📊 Progress: 2100 processed | 2100 success | 0 failed | 100.0% success rate | 100.1/min
+[2025-11-05T05:54:57.856Z] 💾 Backup saved: embeddings-batch-2100-2025-11-05T05-54-57-841Z.json (100 records)
+[2025-11-05T05:55:03.575Z] 📊 Progress: 2110 processed | 2110 success | 0 failed | 100.0% success rate | 100.1/min
+[2025-11-05T05:55:09.438Z] 📊 Progress: 2120 processed | 2120 success | 0 failed | 100.0% success rate | 100.1/min
+[2025-11-05T05:55:15.382Z] 📊 Progress: 2130 processed | 2130 success | 0 failed | 100.0% success rate | 100.1/min
+[2025-11-05T05:55:21.139Z] 📊 Progress: 2140 processed | 2140 success | 0 failed | 100.0% success rate | 100.1/min
+[2025-11-05T05:55:27.135Z] 📊 Progress: 2150 processed | 2150 success | 0 failed | 100.0% success rate | 100.1/min
+[2025-11-05T05:55:33.023Z] 📊 Progress: 2160 processed | 2160 success | 0 failed | 100.0% success rate | 100.1/min
+[2025-11-05T05:55:38.753Z] 📊 Progress: 2170 processed | 2170 success | 0 failed | 100.0% success rate | 100.1/min
+[2025-11-05T05:55:44.585Z] 📊 Progress: 2180 processed | 2180 success | 0 failed | 100.0% success rate | 100.1/min
+[2025-11-05T05:55:50.400Z] 📊 Progress: 2190 processed | 2190 success | 0 failed | 100.0% success rate | 100.2/min
+[2025-11-05T05:55:56.489Z] 📊 Progress: 2200 processed | 2200 success | 0 failed | 100.0% success rate | 100.2/min
+[2025-11-05T05:55:56.505Z] 💾 Backup saved: embeddings-batch-2200-2025-11-05T05-55-56-490Z.json (100 records)
+[2025-11-05T05:56:02.647Z] 📊 Progress: 2210 processed | 2210 success | 0 failed | 100.0% success rate | 100.1/min
+[2025-11-05T05:56:08.561Z] 📊 Progress: 2220 processed | 2220 success | 0 failed | 100.0% success rate | 100.1/min
+[2025-11-05T05:56:29.366Z] 📊 Progress: 2230 processed | 2230 success | 0 failed | 100.0% success rate | 99.0/min
+[2025-11-05T05:56:35.246Z] 📊 Progress: 2240 processed | 2240 success | 0 failed | 100.0% success rate | 99.1/min
+[2025-11-05T05:56:41.276Z] 📊 Progress: 2250 processed | 2250 success | 0 failed | 100.0% success rate | 99.1/min
+[2025-11-05T05:56:47.192Z] 📊 Progress: 2260 processed | 2260 success | 0 failed | 100.0% success rate | 99.1/min
+[2025-11-05T05:56:52.963Z] 📊 Progress: 2270 processed | 2270 success | 0 failed | 100.0% success rate | 99.1/min
+[2025-11-05T05:56:58.745Z] 📊 Progress: 2280 processed | 2280 success | 0 failed | 100.0% success rate | 99.1/min
+[2025-11-05T05:57:04.552Z] 📊 Progress: 2290 processed | 2290 success | 0 failed | 100.0% success rate | 99.1/min
+[2025-11-05T05:57:10.322Z] 📊 Progress: 2300 processed | 2300 success | 0 failed | 100.0% success rate | 99.2/min
+[2025-11-05T05:57:10.338Z] 💾 Backup saved: embeddings-batch-2300-2025-11-05T05-57-10-323Z.json (100 records)
+[2025-11-05T05:57:16.242Z] 📊 Progress: 2310 processed | 2310 success | 0 failed | 100.0% success rate | 99.2/min
+[2025-11-05T05:57:22.165Z] 📊 Progress: 2320 processed | 2320 success | 0 failed | 100.0% success rate | 99.2/min
+[2025-11-05T05:57:28.138Z] 📊 Progress: 2330 processed | 2330 success | 0 failed | 100.0% success rate | 99.2/min
+[2025-11-05T05:57:34.005Z] 📊 Progress: 2340 processed | 2340 success | 0 failed | 100.0% success rate | 99.2/min
+[2025-11-05T05:57:39.926Z] 📊 Progress: 2350 processed | 2350 success | 0 failed | 100.0% success rate | 99.2/min
+[2025-11-05T05:57:46.457Z] 📊 Progress: 2360 processed | 2360 success | 0 failed | 100.0% success rate | 99.2/min
+[2025-11-05T05:57:52.339Z] 📊 Progress: 2370 processed | 2370 success | 0 failed | 100.0% success rate | 99.2/min
+[2025-11-05T05:57:58.234Z] 📊 Progress: 2380 processed | 2380 success | 0 failed | 100.0% success rate | 99.2/min
+[2025-11-05T05:58:04.342Z] 📊 Progress: 2390 processed | 2390 success | 0 failed | 100.0% success rate | 99.2/min
+[2025-11-05T05:58:10.134Z] 📊 Progress: 2400 processed | 2400 success | 0 failed | 100.0% success rate | 99.2/min
+[2025-11-05T05:58:10.153Z] 💾 Backup saved: embeddings-batch-2400-2025-11-05T05-58-10-135Z.json (100 records)
+[2025-11-05T05:58:15.984Z] 📊 Progress: 2410 processed | 2410 success | 0 failed | 100.0% success rate | 99.2/min
+[2025-11-05T05:58:21.883Z] 📊 Progress: 2420 processed | 2420 success | 0 failed | 100.0% success rate | 99.2/min
+[2025-11-05T05:58:27.699Z] 📊 Progress: 2430 processed | 2430 success | 0 failed | 100.0% success rate | 99.2/min
+[2025-11-05T05:58:33.675Z] 📊 Progress: 2440 processed | 2440 success | 0 failed | 100.0% success rate | 99.2/min
+[2025-11-05T05:58:39.441Z] 📊 Progress: 2450 processed | 2450 success | 0 failed | 100.0% success rate | 99.3/min
+[2025-11-05T05:58:45.549Z] 📊 Progress: 2460 processed | 2460 success | 0 failed | 100.0% success rate | 99.3/min
+[2025-11-05T05:58:51.708Z] 📊 Progress: 2470 processed | 2470 success | 0 failed | 100.0% success rate | 99.3/min
+[2025-11-05T05:58:57.871Z] 📊 Progress: 2480 processed | 2480 success | 0 failed | 100.0% success rate | 99.2/min
+[2025-11-05T05:59:03.760Z] 📊 Progress: 2490 processed | 2490 success | 0 failed | 100.0% success rate | 99.3/min
+[2025-11-05T05:59:09.594Z] 📊 Progress: 2500 processed | 2500 success | 0 failed | 100.0% success rate | 99.3/min
+[2025-11-05T05:59:09.612Z] 💾 Backup saved: embeddings-batch-2500-2025-11-05T05-59-09-594Z.json (100 records)
+[2025-11-05T05:59:15.421Z] 📊 Progress: 2510 processed | 2510 success | 0 failed | 100.0% success rate | 99.3/min
+[2025-11-05T05:59:21.330Z] 📊 Progress: 2520 processed | 2520 success | 0 failed | 100.0% success rate | 99.3/min
+[2025-11-05T05:59:27.229Z] 📊 Progress: 2530 processed | 2530 success | 0 failed | 100.0% success rate | 99.3/min
+[2025-11-05T05:59:33.125Z] 📊 Progress: 2540 processed | 2540 success | 0 failed | 100.0% success rate | 99.3/min
+[2025-11-05T05:59:39.147Z] 📊 Progress: 2550 processed | 2550 success | 0 failed | 100.0% success rate | 99.3/min
+[2025-11-05T05:59:45.182Z] 📊 Progress: 2560 processed | 2560 success | 0 failed | 100.0% success rate | 99.3/min
+[2025-11-05T05:59:51.073Z] 📊 Progress: 2570 processed | 2570 success | 0 failed | 100.0% success rate | 99.3/min
+[2025-11-05T05:59:56.887Z] 📊 Progress: 2580 processed | 2580 success | 0 failed | 100.0% success rate | 99.3/min
+[2025-11-05T06:00:03.221Z] 📊 Progress: 2590 processed | 2590 success | 0 failed | 100.0% success rate | 99.3/min
+[2025-11-05T06:00:09.095Z] 📊 Progress: 2600 processed | 2600 success | 0 failed | 100.0% success rate | 99.3/min
+[2025-11-05T06:00:09.113Z] 💾 Backup saved: embeddings-batch-2600-2025-11-05T06-00-09-096Z.json (100 records)
+[2025-11-05T06:00:15.090Z] 📊 Progress: 2610 processed | 2610 success | 0 failed | 100.0% success rate | 99.3/min
+[2025-11-05T06:00:21.256Z] 📊 Progress: 2620 processed | 2620 success | 0 failed | 100.0% success rate | 99.3/min
+[2025-11-05T06:00:27.356Z] 📊 Progress: 2630 processed | 2630 success | 0 failed | 100.0% success rate | 99.3/min
+[2025-11-05T06:00:33.450Z] 📊 Progress: 2640 processed | 2640 success | 0 failed | 100.0% success rate | 99.3/min
+[2025-11-05T06:00:39.359Z] 📊 Progress: 2650 processed | 2650 success | 0 failed | 100.0% success rate | 99.3/min
+[2025-11-05T06:00:45.580Z] 📊 Progress: 2660 processed | 2660 success | 0 failed | 100.0% success rate | 99.3/min
+[2025-11-05T06:00:51.436Z] 📊 Progress: 2670 processed | 2670 success | 0 failed | 100.0% success rate | 99.3/min
+[2025-11-05T06:00:57.337Z] 📊 Progress: 2680 processed | 2680 success | 0 failed | 100.0% success rate | 99.3/min
+[2025-11-05T06:01:06.342Z] 📊 Progress: 2690 processed | 2690 success | 0 failed | 100.0% success rate | 99.2/min
+[2025-11-05T06:01:12.311Z] 📊 Progress: 2700 processed | 2700 success | 0 failed | 100.0% success rate | 99.2/min
+[2025-11-05T06:01:12.328Z] 💾 Backup saved: embeddings-batch-2700-2025-11-05T06-01-12-311Z.json (100 records)
+[2025-11-05T06:01:19.086Z] 📊 Progress: 2710 processed | 2710 success | 0 failed | 100.0% success rate | 99.1/min
+[2025-11-05T06:01:25.076Z] 📊 Progress: 2720 processed | 2720 success | 0 failed | 100.0% success rate | 99.1/min
+[2025-11-05T06:01:31.162Z] 📊 Progress: 2730 processed | 2730 success | 0 failed | 100.0% success rate | 99.1/min
+[2025-11-05T06:01:37.050Z] 📊 Progress: 2740 processed | 2740 success | 0 failed | 100.0% success rate | 99.1/min
+[2025-11-05T06:01:42.990Z] 📊 Progress: 2750 processed | 2750 success | 0 failed | 100.0% success rate | 99.1/min
+[2025-11-05T06:01:48.846Z] 📊 Progress: 2760 processed | 2760 success | 0 failed | 100.0% success rate | 99.1/min
+[2025-11-05T06:01:54.734Z] 📊 Progress: 2770 processed | 2770 success | 0 failed | 100.0% success rate | 99.2/min
+[2025-11-05T06:02:00.829Z] 📊 Progress: 2780 processed | 2780 success | 0 failed | 100.0% success rate | 99.1/min
+[2025-11-05T06:02:06.794Z] 📊 Progress: 2790 processed | 2790 success | 0 failed | 100.0% success rate | 99.2/min
+[2025-11-05T06:02:12.820Z] 📊 Progress: 2800 processed | 2800 success | 0 failed | 100.0% success rate | 99.2/min
+[2025-11-05T06:02:12.839Z] 💾 Backup saved: embeddings-batch-2800-2025-11-05T06-02-12-821Z.json (100 records)
+[2025-11-05T06:02:18.998Z] 📊 Progress: 2810 processed | 2810 success | 0 failed | 100.0% success rate | 99.1/min
+[2025-11-05T06:02:25.554Z] 📊 Progress: 2820 processed | 2820 success | 0 failed | 100.0% success rate | 99.1/min
+[2025-11-05T06:02:31.729Z] 📊 Progress: 2830 processed | 2830 success | 0 failed | 100.0% success rate | 99.1/min
+[2025-11-05T06:02:37.841Z] 📊 Progress: 2840 processed | 2840 success | 0 failed | 100.0% success rate | 99.1/min
+[2025-11-05T06:02:44.233Z] 📊 Progress: 2850 processed | 2850 success | 0 failed | 100.0% success rate | 99.1/min
+[2025-11-05T06:02:50.405Z] 📊 Progress: 2860 processed | 2860 success | 0 failed | 100.0% success rate | 99.1/min
+[2025-11-05T06:02:56.535Z] 📊 Progress: 2870 processed | 2870 success | 0 failed | 100.0% success rate | 99.1/min
+[2025-11-05T06:03:02.468Z] 📊 Progress: 2880 processed | 2880 success | 0 failed | 100.0% success rate | 99.1/min
+[2025-11-05T06:03:08.594Z] 📊 Progress: 2890 processed | 2890 success | 0 failed | 100.0% success rate | 99.1/min
+[2025-11-05T06:03:14.626Z] 📊 Progress: 2900 processed | 2900 success | 0 failed | 100.0% success rate | 99.1/min
+[2025-11-05T06:03:14.645Z] 💾 Backup saved: embeddings-batch-2900-2025-11-05T06-03-14-627Z.json (100 records)
+[2025-11-05T06:03:20.689Z] 📊 Progress: 2910 processed | 2910 success | 0 failed | 100.0% success rate | 99.1/min
+[2025-11-05T06:03:26.817Z] 📊 Progress: 2920 processed | 2920 success | 0 failed | 100.0% success rate | 99.1/min
+[2025-11-05T06:03:32.948Z] 📊 Progress: 2930 processed | 2930 success | 0 failed | 100.0% success rate | 99.1/min
+[2025-11-05T06:03:39.049Z] 📊 Progress: 2940 processed | 2940 success | 0 failed | 100.0% success rate | 99.1/min
+[2025-11-05T06:03:45.149Z] 📊 Progress: 2950 processed | 2950 success | 0 failed | 100.0% success rate | 99.1/min
+[2025-11-05T06:03:50.993Z] 📊 Progress: 2960 processed | 2960 success | 0 failed | 100.0% success rate | 99.1/min
+[2025-11-05T06:03:57.146Z] 📊 Progress: 2970 processed | 2970 success | 0 failed | 100.0% success rate | 99.1/min
+[2025-11-05T06:04:03.321Z] 📊 Progress: 2980 processed | 2980 success | 0 failed | 100.0% success rate | 99.1/min
+[2025-11-05T06:04:09.465Z] 📊 Progress: 2990 processed | 2990 success | 0 failed | 100.0% success rate | 99.1/min
+[2025-11-05T06:04:15.601Z] 📊 Progress: 3000 processed | 3000 success | 0 failed | 100.0% success rate | 99.1/min
+[2025-11-05T06:04:15.626Z] 💾 Backup saved: embeddings-batch-3000-2025-11-05T06-04-15-602Z.json (100 records)
+[2025-11-05T06:04:21.799Z] 📊 Progress: 3010 processed | 3010 success | 0 failed | 100.0% success rate | 99.1/min
+[2025-11-05T06:04:27.834Z] 📊 Progress: 3020 processed | 3020 success | 0 failed | 100.0% success rate | 99.1/min
+[2025-11-05T06:04:33.816Z] 📊 Progress: 3030 processed | 3030 success | 0 failed | 100.0% success rate | 99.1/min
+[2025-11-05T06:04:40.056Z] 📊 Progress: 3040 processed | 3040 success | 0 failed | 100.0% success rate | 99.0/min
+[2025-11-05T06:04:46.076Z] 📊 Progress: 3050 processed | 3050 success | 0 failed | 100.0% success rate | 99.1/min
+[2025-11-05T06:04:52.424Z] 📊 Progress: 3060 processed | 3060 success | 0 failed | 100.0% success rate | 99.0/min
+[2025-11-05T06:04:58.640Z] 📊 Progress: 3070 processed | 3070 success | 0 failed | 100.0% success rate | 99.0/min
+[2025-11-05T06:05:04.749Z] 📊 Progress: 3080 processed | 3080 success | 0 failed | 100.0% success rate | 99.0/min
+[2025-11-05T06:05:10.711Z] 📊 Progress: 3090 processed | 3090 success | 0 failed | 100.0% success rate | 99.0/min
+[2025-11-05T06:05:16.653Z] 📊 Progress: 3100 processed | 3100 success | 0 failed | 100.0% success rate | 99.0/min
+[2025-11-05T06:05:16.678Z] 💾 Backup saved: embeddings-batch-3100-2025-11-05T06-05-16-654Z.json (100 records)
+[2025-11-05T06:05:22.582Z] 📊 Progress: 3110 processed | 3110 success | 0 failed | 100.0% success rate | 99.0/min
+[2025-11-05T06:05:29.627Z] 📊 Progress: 3120 processed | 3120 success | 0 failed | 100.0% success rate | 99.0/min
+[2025-11-05T06:05:35.936Z] 📊 Progress: 3130 processed | 3130 success | 0 failed | 100.0% success rate | 99.0/min
+[2025-11-05T06:05:42.994Z] 📊 Progress: 3140 processed | 3140 success | 0 failed | 100.0% success rate | 98.9/min
+[2025-11-05T06:05:49.124Z] 📊 Progress: 3150 processed | 3150 success | 0 failed | 100.0% success rate | 98.9/min
+[2025-11-05T06:05:55.227Z] 📊 Progress: 3160 processed | 3160 success | 0 failed | 100.0% success rate | 98.9/min
+[2025-11-05T06:06:01.348Z] 📊 Progress: 3170 processed | 3170 success | 0 failed | 100.0% success rate | 98.9/min
+[2025-11-05T06:06:07.200Z] 📊 Progress: 3180 processed | 3180 success | 0 failed | 100.0% success rate | 98.9/min
+[2025-11-05T06:06:13.473Z] 📊 Progress: 3190 processed | 3190 success | 0 failed | 100.0% success rate | 98.9/min
+[2025-11-05T06:06:19.747Z] 📊 Progress: 3200 processed | 3200 success | 0 failed | 100.0% success rate | 98.9/min
+[2025-11-05T06:06:19.772Z] 💾 Backup saved: embeddings-batch-3200-2025-11-05T06-06-19-748Z.json (100 records)
+[2025-11-05T06:06:25.742Z] 📊 Progress: 3210 processed | 3210 success | 0 failed | 100.0% success rate | 98.9/min
+[2025-11-05T06:06:31.614Z] 📊 Progress: 3220 processed | 3220 success | 0 failed | 100.0% success rate | 98.9/min
+[2025-11-05T06:06:37.638Z] 📊 Progress: 3230 processed | 3230 success | 0 failed | 100.0% success rate | 98.9/min
+[2025-11-05T06:06:43.526Z] 📊 Progress: 3240 processed | 3240 success | 0 failed | 100.0% success rate | 98.9/min
+[2025-11-05T06:06:49.379Z] 📊 Progress: 3250 processed | 3250 success | 0 failed | 100.0% success rate | 98.9/min
+[2025-11-05T06:06:55.187Z] 📊 Progress: 3260 processed | 3260 success | 0 failed | 100.0% success rate | 99.0/min
+[2025-11-05T06:07:01.071Z] 📊 Progress: 3270 processed | 3270 success | 0 failed | 100.0% success rate | 99.0/min
+[2025-11-05T06:07:06.912Z] 📊 Progress: 3280 processed | 3280 success | 0 failed | 100.0% success rate | 99.0/min
+[2025-11-05T06:07:12.774Z] 📊 Progress: 3290 processed | 3290 success | 0 failed | 100.0% success rate | 99.0/min
+[2025-11-05T06:07:18.494Z] 📊 Progress: 3300 processed | 3300 success | 0 failed | 100.0% success rate | 99.0/min
+[2025-11-05T06:07:18.519Z] 💾 Backup saved: embeddings-batch-3300-2025-11-05T06-07-18-494Z.json (100 records)
+[2025-11-05T06:07:24.347Z] 📊 Progress: 3310 processed | 3310 success | 0 failed | 100.0% success rate | 99.0/min
+[2025-11-05T06:07:30.320Z] 📊 Progress: 3320 processed | 3320 success | 0 failed | 100.0% success rate | 99.0/min
+[2025-11-05T06:07:36.172Z] 📊 Progress: 3330 processed | 3330 success | 0 failed | 100.0% success rate | 99.0/min
+[2025-11-05T06:07:41.968Z] 📊 Progress: 3340 processed | 3340 success | 0 failed | 100.0% success rate | 99.0/min
+[2025-11-05T06:07:48.096Z] 📊 Progress: 3350 processed | 3350 success | 0 failed | 100.0% success rate | 99.0/min
+[2025-11-05T06:07:53.936Z] 📊 Progress: 3360 processed | 3360 success | 0 failed | 100.0% success rate | 99.0/min
+[2025-11-05T06:07:59.852Z] 📊 Progress: 3370 processed | 3370 success | 0 failed | 100.0% success rate | 99.1/min
+[2025-11-05T06:08:05.796Z] 📊 Progress: 3380 processed | 3380 success | 0 failed | 100.0% success rate | 99.1/min
+[2025-11-05T06:08:11.746Z] 📊 Progress: 3390 processed | 3390 success | 0 failed | 100.0% success rate | 99.1/min
+[2025-11-05T06:08:17.774Z] 📊 Progress: 3400 processed | 3400 success | 0 failed | 100.0% success rate | 99.1/min
+[2025-11-05T06:08:17.792Z] 💾 Backup saved: embeddings-batch-3400-2025-11-05T06-08-17-775Z.json (100 records)
+[2025-11-05T06:08:23.694Z] 📊 Progress: 3410 processed | 3410 success | 0 failed | 100.0% success rate | 99.1/min
+[2025-11-05T06:08:29.548Z] 📊 Progress: 3420 processed | 3420 success | 0 failed | 100.0% success rate | 99.1/min
+[2025-11-05T06:08:35.459Z] 📊 Progress: 3430 processed | 3430 success | 0 failed | 100.0% success rate | 99.1/min
+[2025-11-05T06:08:41.452Z] 📊 Progress: 3440 processed | 3440 success | 0 failed | 100.0% success rate | 99.1/min
+[2025-11-05T06:08:47.420Z] 📊 Progress: 3450 processed | 3450 success | 0 failed | 100.0% success rate | 99.1/min
+[2025-11-05T06:08:53.258Z] 📊 Progress: 3460 processed | 3460 success | 0 failed | 100.0% success rate | 99.1/min
+[2025-11-05T06:08:59.386Z] 📊 Progress: 3470 processed | 3470 success | 0 failed | 100.0% success rate | 99.1/min
+[2025-11-05T06:09:05.222Z] 📊 Progress: 3480 processed | 3480 success | 0 failed | 100.0% success rate | 99.1/min
+[2025-11-05T06:09:11.687Z] 📊 Progress: 3490 processed | 3490 success | 0 failed | 100.0% success rate | 99.1/min
+[2025-11-05T06:09:17.637Z] 📊 Progress: 3500 processed | 3500 success | 0 failed | 100.0% success rate | 99.1/min
+[2025-11-05T06:09:17.657Z] 💾 Backup saved: embeddings-batch-3500-2025-11-05T06-09-17-638Z.json (100 records)
+[2025-11-05T06:09:24.060Z] 📊 Progress: 3510 processed | 3510 success | 0 failed | 100.0% success rate | 99.1/min
+[2025-11-05T06:09:29.967Z] 📊 Progress: 3520 processed | 3520 success | 0 failed | 100.0% success rate | 99.1/min
+[2025-11-05T06:09:35.855Z] 📊 Progress: 3530 processed | 3530 success | 0 failed | 100.0% success rate | 99.1/min
+[2025-11-05T06:09:41.803Z] 📊 Progress: 3540 processed | 3540 success | 0 failed | 100.0% success rate | 99.1/min
+[2025-11-05T06:09:47.826Z] 📊 Progress: 3550 processed | 3550 success | 0 failed | 100.0% success rate | 99.1/min
+[2025-11-05T06:09:54.033Z] 📊 Progress: 3560 processed | 3560 success | 0 failed | 100.0% success rate | 99.1/min
+[2025-11-05T06:10:00.331Z] 📊 Progress: 3570 processed | 3570 success | 0 failed | 100.0% success rate | 99.1/min
+[2025-11-05T06:10:06.735Z] 📊 Progress: 3580 processed | 3580 success | 0 failed | 100.0% success rate | 99.1/min
+[2025-11-05T06:10:12.615Z] 📊 Progress: 3590 processed | 3590 success | 0 failed | 100.0% success rate | 99.1/min
+[2025-11-05T06:10:18.402Z] 📊 Progress: 3600 processed | 3600 success | 0 failed | 100.0% success rate | 99.1/min
+[2025-11-05T06:10:18.422Z] 💾 Backup saved: embeddings-batch-3600-2025-11-05T06-10-18-403Z.json (100 records)
+[2025-11-05T06:11:10.284Z] 📊 Progress: 3610 processed | 3610 success | 0 failed | 100.0% success rate | 97.1/min
+[2025-11-05T06:11:16.131Z] 📊 Progress: 3620 processed | 3620 success | 0 failed | 100.0% success rate | 97.1/min
+[2025-11-05T06:11:22.005Z] 📊 Progress: 3630 processed | 3630 success | 0 failed | 100.0% success rate | 97.1/min
+[2025-11-05T06:11:37.976Z] 📊 Progress: 3640 processed | 3640 success | 0 failed | 100.0% success rate | 96.7/min
+[2025-11-05T06:11:43.783Z] 📊 Progress: 3650 processed | 3650 success | 0 failed | 100.0% success rate | 96.7/min
+[2025-11-05T06:11:49.821Z] 📊 Progress: 3660 processed | 3660 success | 0 failed | 100.0% success rate | 96.7/min
+[2025-11-05T06:11:56.019Z] 📊 Progress: 3670 processed | 3670 success | 0 failed | 100.0% success rate | 96.7/min
+[2025-11-05T06:12:03.572Z] 📊 Progress: 3680 processed | 3680 success | 0 failed | 100.0% success rate | 96.6/min
+[2025-11-05T06:12:09.491Z] 📊 Progress: 3690 processed | 3690 success | 0 failed | 100.0% success rate | 96.6/min
+[2025-11-05T06:12:16.150Z] 📊 Progress: 3700 processed | 3700 success | 0 failed | 100.0% success rate | 96.6/min
+[2025-11-05T06:12:16.168Z] 💾 Backup saved: embeddings-batch-3700-2025-11-05T06-12-16-151Z.json (100 records)
+[2025-11-05T06:12:21.982Z] 📊 Progress: 3710 processed | 3710 success | 0 failed | 100.0% success rate | 96.6/min
+[2025-11-05T06:12:27.821Z] 📊 Progress: 3720 processed | 3720 success | 0 failed | 100.0% success rate | 96.7/min
+[2025-11-05T06:12:33.626Z] 📊 Progress: 3730 processed | 3730 success | 0 failed | 100.0% success rate | 96.7/min
+[2025-11-05T06:12:39.469Z] 📊 Progress: 3740 processed | 3740 success | 0 failed | 100.0% success rate | 96.7/min
+[2025-11-05T06:12:45.382Z] 📊 Progress: 3750 processed | 3750 success | 0 failed | 100.0% success rate | 96.7/min
+[2025-11-05T06:12:51.157Z] 📊 Progress: 3760 processed | 3760 success | 0 failed | 100.0% success rate | 96.7/min
+[2025-11-05T06:12:56.936Z] 📊 Progress: 3770 processed | 3770 success | 0 failed | 100.0% success rate | 96.7/min
+[2025-11-05T06:13:02.765Z] 📊 Progress: 3780 processed | 3780 success | 0 failed | 100.0% success rate | 96.7/min
+[2025-11-05T06:13:08.692Z] 📊 Progress: 3790 processed | 3790 success | 0 failed | 100.0% success rate | 96.8/min
+[2025-11-05T06:13:14.644Z] 📊 Progress: 3800 processed | 3800 success | 0 failed | 100.0% success rate | 96.8/min
+[2025-11-05T06:13:14.663Z] 💾 Backup saved: embeddings-batch-3800-2025-11-05T06-13-14-644Z.json (100 records)
+[2025-11-05T06:13:21.518Z] 📊 Progress: 3810 processed | 3810 success | 0 failed | 100.0% success rate | 96.7/min
+[2025-11-05T06:13:42.612Z] 📊 Progress: 3820 processed | 3820 success | 0 failed | 100.0% success rate | 96.1/min
+[2025-11-05T06:13:48.545Z] 📊 Progress: 3830 processed | 3830 success | 0 failed | 100.0% success rate | 96.1/min
+[2025-11-05T06:13:54.333Z] 📊 Progress: 3840 processed | 3840 success | 0 failed | 100.0% success rate | 96.2/min
+[2025-11-05T06:14:00.097Z] 📊 Progress: 3850 processed | 3850 success | 0 failed | 100.0% success rate | 96.2/min
+[2025-11-05T06:14:05.935Z] 📊 Progress: 3860 processed | 3860 success | 0 failed | 100.0% success rate | 96.2/min
+[2025-11-05T06:14:11.684Z] 📊 Progress: 3870 processed | 3870 success | 0 failed | 100.0% success rate | 96.2/min
+[2025-11-05T06:14:17.573Z] 📊 Progress: 3880 processed | 3880 success | 0 failed | 100.0% success rate | 96.2/min
+[2025-11-05T06:14:23.706Z] 📊 Progress: 3890 processed | 3890 success | 0 failed | 100.0% success rate | 96.2/min
+[2025-11-05T06:14:29.653Z] 📊 Progress: 3900 processed | 3900 success | 0 failed | 100.0% success rate | 96.3/min
+[2025-11-05T06:14:29.671Z] 💾 Backup saved: embeddings-batch-3900-2025-11-05T06-14-29-654Z.json (100 records)
+[2025-11-05T06:14:35.695Z] 📊 Progress: 3910 processed | 3910 success | 0 failed | 100.0% success rate | 96.3/min
+[2025-11-05T06:14:41.699Z] 📊 Progress: 3920 processed | 3920 success | 0 failed | 100.0% success rate | 96.3/min
+[2025-11-05T06:14:47.607Z] 📊 Progress: 3930 processed | 3930 success | 0 failed | 100.0% success rate | 96.3/min
+[2025-11-05T06:14:53.838Z] 📊 Progress: 3940 processed | 3940 success | 0 failed | 100.0% success rate | 96.3/min
+[2025-11-05T06:14:59.824Z] 📊 Progress: 3950 processed | 3950 success | 0 failed | 100.0% success rate | 96.3/min
+[2025-11-05T06:15:05.854Z] 📊 Progress: 3960 processed | 3960 success | 0 failed | 100.0% success rate | 96.3/min
+[2025-11-05T06:15:11.682Z] 📊 Progress: 3970 processed | 3970 success | 0 failed | 100.0% success rate | 96.3/min
+[2025-11-05T06:15:18.478Z] 📊 Progress: 3980 processed | 3980 success | 0 failed | 100.0% success rate | 96.3/min
+[2025-11-05T06:15:24.460Z] 📊 Progress: 3990 processed | 3990 success | 0 failed | 100.0% success rate | 96.3/min
+[2025-11-05T06:15:30.328Z] 📊 Progress: 4000 processed | 4000 success | 0 failed | 100.0% success rate | 96.3/min
+[2025-11-05T06:15:30.346Z] 💾 Backup saved: embeddings-batch-4000-2025-11-05T06-15-30-329Z.json (100 records)
+[2025-11-05T06:15:36.147Z] 📊 Progress: 4010 processed | 4010 success | 0 failed | 100.0% success rate | 96.3/min
+[2025-11-05T06:15:42.022Z] 📊 Progress: 4020 processed | 4020 success | 0 failed | 100.0% success rate | 96.3/min
+[2025-11-05T06:15:47.982Z] 📊 Progress: 4030 processed | 4030 success | 0 failed | 100.0% success rate | 96.4/min
+[2025-11-05T06:15:53.852Z] 📊 Progress: 4040 processed | 4040 success | 0 failed | 100.0% success rate | 96.4/min
+[2025-11-05T06:15:59.728Z] 📊 Progress: 4050 processed | 4050 success | 0 failed | 100.0% success rate | 96.4/min
+[2025-11-05T06:16:05.850Z] 📊 Progress: 4060 processed | 4060 success | 0 failed | 100.0% success rate | 96.4/min
+[2025-11-05T06:16:11.698Z] 📊 Progress: 4070 processed | 4070 success | 0 failed | 100.0% success rate | 96.4/min
+[2025-11-05T06:16:17.904Z] 📊 Progress: 4080 processed | 4080 success | 0 failed | 100.0% success rate | 96.4/min
+[2025-11-05T06:16:23.701Z] 📊 Progress: 4090 processed | 4090 success | 0 failed | 100.0% success rate | 96.4/min
+[2025-11-05T06:16:29.508Z] 📊 Progress: 4100 processed | 4100 success | 0 failed | 100.0% success rate | 96.4/min
+[2025-11-05T06:16:29.524Z] 💾 Backup saved: embeddings-batch-4100-2025-11-05T06-16-29-509Z.json (100 records)
+[2025-11-05T06:16:35.324Z] 📊 Progress: 4110 processed | 4110 success | 0 failed | 100.0% success rate | 96.4/min
+[2025-11-05T06:16:41.171Z] 📊 Progress: 4120 processed | 4120 success | 0 failed | 100.0% success rate | 96.5/min
+[2025-11-05T06:16:47.260Z] 📊 Progress: 4130 processed | 4130 success | 0 failed | 100.0% success rate | 96.5/min
+[2025-11-05T06:16:53.105Z] 📊 Progress: 4140 processed | 4140 success | 0 failed | 100.0% success rate | 96.5/min
+[2025-11-05T06:16:59.003Z] 📊 Progress: 4150 processed | 4150 success | 0 failed | 100.0% success rate | 96.5/min
+[2025-11-05T06:17:04.785Z] 📊 Progress: 4160 processed | 4160 success | 0 failed | 100.0% success rate | 96.5/min
+[2025-11-05T06:17:10.726Z] 📊 Progress: 4170 processed | 4170 success | 0 failed | 100.0% success rate | 96.5/min
+[2025-11-05T06:17:16.562Z] 📊 Progress: 4180 processed | 4180 success | 0 failed | 100.0% success rate | 96.5/min
+[2025-11-05T06:17:22.298Z] 📊 Progress: 4190 processed | 4190 success | 0 failed | 100.0% success rate | 96.6/min
+[2025-11-05T06:17:28.163Z] 📊 Progress: 4200 processed | 4200 success | 0 failed | 100.0% success rate | 96.6/min
+[2025-11-05T06:17:28.180Z] 💾 Backup saved: embeddings-batch-4200-2025-11-05T06-17-28-164Z.json (100 records)
+[2025-11-05T06:17:34.574Z] 📊 Progress: 4210 processed | 4210 success | 0 failed | 100.0% success rate | 96.6/min
+[2025-11-05T06:17:40.328Z] 📊 Progress: 4220 processed | 4220 success | 0 failed | 100.0% success rate | 96.6/min
+[2025-11-05T06:17:46.160Z] 📊 Progress: 4230 processed | 4230 success | 0 failed | 100.0% success rate | 96.6/min
+[2025-11-05T06:17:51.924Z] 📊 Progress: 4240 processed | 4240 success | 0 failed | 100.0% success rate | 96.6/min
+[2025-11-05T06:17:57.705Z] 📊 Progress: 4250 processed | 4250 success | 0 failed | 100.0% success rate | 96.6/min
+[2025-11-05T06:18:03.590Z] 📊 Progress: 4260 processed | 4260 success | 0 failed | 100.0% success rate | 96.6/min
+[2025-11-05T06:18:09.398Z] 📊 Progress: 4270 processed | 4270 success | 0 failed | 100.0% success rate | 96.6/min
+[2025-11-05T06:18:15.317Z] 📊 Progress: 4280 processed | 4280 success | 0 failed | 100.0% success rate | 96.7/min
+[2025-11-05T06:18:21.126Z] 📊 Progress: 4290 processed | 4290 success | 0 failed | 100.0% success rate | 96.7/min
+[2025-11-05T06:18:26.910Z] 📊 Progress: 4300 processed | 4300 success | 0 failed | 100.0% success rate | 96.7/min
+[2025-11-05T06:18:26.925Z] 💾 Backup saved: embeddings-batch-4300-2025-11-05T06-18-26-911Z.json (100 records)
+[2025-11-05T06:18:32.824Z] 📊 Progress: 4310 processed | 4310 success | 0 failed | 100.0% success rate | 96.7/min
+[2025-11-05T06:18:38.586Z] 📊 Progress: 4320 processed | 4320 success | 0 failed | 100.0% success rate | 96.7/min
+[2025-11-05T06:18:44.549Z] 📊 Progress: 4330 processed | 4330 success | 0 failed | 100.0% success rate | 96.7/min
+[2025-11-05T06:18:50.515Z] 📊 Progress: 4340 processed | 4340 success | 0 failed | 100.0% success rate | 96.7/min
+[2025-11-05T06:18:56.449Z] 📊 Progress: 4350 processed | 4350 success | 0 failed | 100.0% success rate | 96.7/min
+[2025-11-05T06:19:02.223Z] 📊 Progress: 4360 processed | 4360 success | 0 failed | 100.0% success rate | 96.8/min
+[2025-11-05T06:19:07.977Z] 📊 Progress: 4370 processed | 4370 success | 0 failed | 100.0% success rate | 96.8/min
+[2025-11-05T06:19:13.818Z] 📊 Progress: 4380 processed | 4380 success | 0 failed | 100.0% success rate | 96.8/min
+[2025-11-05T06:19:20.020Z] 📊 Progress: 4390 processed | 4390 success | 0 failed | 100.0% success rate | 96.8/min
+[2025-11-05T06:19:26.625Z] 📊 Progress: 4400 processed | 4400 success | 0 failed | 100.0% success rate | 96.8/min
+[2025-11-05T06:19:26.640Z] 💾 Backup saved: embeddings-batch-4400-2025-11-05T06-19-26-625Z.json (100 records)
+[2025-11-05T06:19:32.602Z] 📊 Progress: 4410 processed | 4410 success | 0 failed | 100.0% success rate | 96.8/min
+[2025-11-05T06:19:38.367Z] 📊 Progress: 4420 processed | 4420 success | 0 failed | 100.0% success rate | 96.8/min
+[2025-11-05T06:19:44.192Z] 📊 Progress: 4430 processed | 4430 success | 0 failed | 100.0% success rate | 96.8/min
+[2025-11-05T06:19:49.992Z] 📊 Progress: 4440 processed | 4440 success | 0 failed | 100.0% success rate | 96.8/min
+[2025-11-05T06:19:55.829Z] 📊 Progress: 4450 processed | 4450 success | 0 failed | 100.0% success rate | 96.8/min
+[2025-11-05T06:20:01.661Z] 📊 Progress: 4460 processed | 4460 success | 0 failed | 100.0% success rate | 96.8/min
+[2025-11-05T06:20:07.610Z] 📊 Progress: 4470 processed | 4470 success | 0 failed | 100.0% success rate | 96.9/min
+[2025-11-05T06:20:13.441Z] 📊 Progress: 4480 processed | 4480 success | 0 failed | 100.0% success rate | 96.9/min
+[2025-11-05T06:20:19.334Z] 📊 Progress: 4490 processed | 4490 success | 0 failed | 100.0% success rate | 96.9/min
+[2025-11-05T06:20:25.165Z] 📊 Progress: 4500 processed | 4500 success | 0 failed | 100.0% success rate | 96.9/min
+[2025-11-05T06:20:25.181Z] 💾 Backup saved: embeddings-batch-4500-2025-11-05T06-20-25-165Z.json (100 records)
+[2025-11-05T06:20:31.331Z] 📊 Progress: 4510 processed | 4510 success | 0 failed | 100.0% success rate | 96.9/min
+[2025-11-05T06:20:37.204Z] 📊 Progress: 4520 processed | 4520 success | 0 failed | 100.0% success rate | 96.9/min
+[2025-11-05T06:20:42.996Z] 📊 Progress: 4530 processed | 4530 success | 0 failed | 100.0% success rate | 96.9/min
+[2025-11-05T06:20:48.751Z] 📊 Progress: 4540 processed | 4540 success | 0 failed | 100.0% success rate | 96.9/min
+[2025-11-05T06:20:54.547Z] 📊 Progress: 4550 processed | 4550 success | 0 failed | 100.0% success rate | 96.9/min
+[2025-11-05T06:21:00.293Z] 📊 Progress: 4560 processed | 4560 success | 0 failed | 100.0% success rate | 97.0/min
+[2025-11-05T06:21:06.086Z] 📊 Progress: 4570 processed | 4570 success | 0 failed | 100.0% success rate | 97.0/min
+[2025-11-05T06:21:11.852Z] 📊 Progress: 4580 processed | 4580 success | 0 failed | 100.0% success rate | 97.0/min
+[2025-11-05T06:21:17.678Z] 📊 Progress: 4590 processed | 4590 success | 0 failed | 100.0% success rate | 97.0/min
+[2025-11-05T06:21:23.476Z] 📊 Progress: 4600 processed | 4600 success | 0 failed | 100.0% success rate | 97.0/min
+[2025-11-05T06:21:23.491Z] 💾 Backup saved: embeddings-batch-4600-2025-11-05T06-21-23-477Z.json (100 records)
+[2025-11-05T06:21:29.320Z] 📊 Progress: 4610 processed | 4610 success | 0 failed | 100.0% success rate | 97.0/min
+[2025-11-05T06:21:35.318Z] 📊 Progress: 4620 processed | 4620 success | 0 failed | 100.0% success rate | 97.0/min
+[2025-11-05T06:21:41.146Z] 📊 Progress: 4630 processed | 4630 success | 0 failed | 100.0% success rate | 97.0/min
+[2025-11-05T06:21:47.084Z] 📊 Progress: 4640 processed | 4640 success | 0 failed | 100.0% success rate | 97.1/min
+[2025-11-05T06:21:53.050Z] 📊 Progress: 4650 processed | 4650 success | 0 failed | 100.0% success rate | 97.1/min
+[2025-11-05T06:21:59.012Z] 📊 Progress: 4660 processed | 4660 success | 0 failed | 100.0% success rate | 97.1/min
+[2025-11-05T06:22:05.218Z] 📊 Progress: 4670 processed | 4670 success | 0 failed | 100.0% success rate | 97.1/min
+[2025-11-05T06:22:11.220Z] 📊 Progress: 4680 processed | 4680 success | 0 failed | 100.0% success rate | 97.1/min
+[2025-11-05T06:22:17.227Z] 📊 Progress: 4690 processed | 4690 success | 0 failed | 100.0% success rate | 97.1/min
+[2025-11-05T06:22:22.994Z] 📊 Progress: 4700 processed | 4700 success | 0 failed | 100.0% success rate | 97.1/min
+[2025-11-05T06:22:23.018Z] 💾 Backup saved: embeddings-batch-4700-2025-11-05T06-22-22-995Z.json (100 records)
+[2025-11-05T06:22:28.845Z] 📊 Progress: 4710 processed | 4710 success | 0 failed | 100.0% success rate | 97.1/min
+[2025-11-05T06:22:34.599Z] 📊 Progress: 4720 processed | 4720 success | 0 failed | 100.0% success rate | 97.1/min
+[2025-11-05T06:22:40.474Z] 📊 Progress: 4730 processed | 4730 success | 0 failed | 100.0% success rate | 97.1/min
+[2025-11-05T06:22:46.318Z] 📊 Progress: 4740 processed | 4740 success | 0 failed | 100.0% success rate | 97.1/min
+[2025-11-05T06:22:52.271Z] 📊 Progress: 4750 processed | 4750 success | 0 failed | 100.0% success rate | 97.1/min
+[2025-11-05T06:22:58.145Z] 📊 Progress: 4760 processed | 4760 success | 0 failed | 100.0% success rate | 97.2/min
+[2025-11-05T06:23:03.978Z] 📊 Progress: 4770 processed | 4770 success | 0 failed | 100.0% success rate | 97.2/min
+[2025-11-05T06:23:09.767Z] 📊 Progress: 4780 processed | 4780 success | 0 failed | 100.0% success rate | 97.2/min
+[2025-11-05T06:23:15.606Z] 📊 Progress: 4790 processed | 4790 success | 0 failed | 100.0% success rate | 97.2/min
+[2025-11-05T06:23:21.608Z] 📊 Progress: 4800 processed | 4800 success | 0 failed | 100.0% success rate | 97.2/min
+[2025-11-05T06:23:21.633Z] 💾 Backup saved: embeddings-batch-4800-2025-11-05T06-23-21-609Z.json (100 records)
+[2025-11-05T06:23:27.440Z] 📊 Progress: 4810 processed | 4810 success | 0 failed | 100.0% success rate | 97.2/min
+[2025-11-05T06:23:33.265Z] 📊 Progress: 4820 processed | 4820 success | 0 failed | 100.0% success rate | 97.2/min
+[2025-11-05T06:23:39.070Z] 📊 Progress: 4830 processed | 4830 success | 0 failed | 100.0% success rate | 97.2/min
+[2025-11-05T06:23:45.028Z] 📊 Progress: 4840 processed | 4840 success | 0 failed | 100.0% success rate | 97.2/min
+[2025-11-05T06:23:50.839Z] 📊 Progress: 4850 processed | 4850 success | 0 failed | 100.0% success rate | 97.2/min
+[2025-11-05T06:23:56.671Z] 📊 Progress: 4860 processed | 4860 success | 0 failed | 100.0% success rate | 97.3/min
+[2025-11-05T06:24:02.609Z] 📊 Progress: 4870 processed | 4870 success | 0 failed | 100.0% success rate | 97.3/min
+[2025-11-05T06:24:08.451Z] 📊 Progress: 4880 processed | 4880 success | 0 failed | 100.0% success rate | 97.3/min
+[2025-11-05T06:24:14.281Z] 📊 Progress: 4890 processed | 4890 success | 0 failed | 100.0% success rate | 97.3/min
+[2025-11-05T06:24:20.162Z] 📊 Progress: 4900 processed | 4900 success | 0 failed | 100.0% success rate | 97.3/min
+[2025-11-05T06:24:20.187Z] 💾 Backup saved: embeddings-batch-4900-2025-11-05T06-24-20-163Z.json (100 records)
+[2025-11-05T06:24:25.947Z] 📊 Progress: 4910 processed | 4910 success | 0 failed | 100.0% success rate | 97.3/min
+[2025-11-05T06:24:31.863Z] 📊 Progress: 4920 processed | 4920 success | 0 failed | 100.0% success rate | 97.3/min
+[2025-11-05T06:24:37.637Z] 📊 Progress: 4930 processed | 4930 success | 0 failed | 100.0% success rate | 97.3/min
+[2025-11-05T06:24:43.633Z] 📊 Progress: 4940 processed | 4940 success | 0 failed | 100.0% success rate | 97.3/min
+[2025-11-05T06:24:49.425Z] 📊 Progress: 4950 processed | 4950 success | 0 failed | 100.0% success rate | 97.3/min
+[2025-11-05T06:24:55.229Z] 📊 Progress: 4960 processed | 4960 success | 0 failed | 100.0% success rate | 97.4/min
+[2025-11-05T06:25:01.148Z] 📊 Progress: 4970 processed | 4970 success | 0 failed | 100.0% success rate | 97.4/min
+[2025-11-05T06:25:06.986Z] 📊 Progress: 4980 processed | 4980 success | 0 failed | 100.0% success rate | 97.4/min
+[2025-11-05T06:25:12.850Z] 📊 Progress: 4990 processed | 4990 success | 0 failed | 100.0% success rate | 97.4/min
+[2025-11-05T06:25:18.726Z] 📊 Progress: 5000 processed | 5000 success | 0 failed | 100.0% success rate | 97.4/min
+[2025-11-05T06:25:18.756Z] 💾 Backup saved: embeddings-batch-5000-2025-11-05T06-25-18-727Z.json (100 records)
+[2025-11-05T06:25:24.742Z] 📊 Progress: 5010 processed | 5010 success | 0 failed | 100.0% success rate | 97.4/min
+[2025-11-05T06:25:30.580Z] 📊 Progress: 5020 processed | 5020 success | 0 failed | 100.0% success rate | 97.4/min
+[2025-11-05T06:25:36.392Z] 📊 Progress: 5030 processed | 5030 success | 0 failed | 100.0% success rate | 97.4/min
+[2025-11-05T06:25:42.359Z] 📊 Progress: 5040 processed | 5040 success | 0 failed | 100.0% success rate | 97.4/min
+[2025-11-05T06:25:48.131Z] 📊 Progress: 5050 processed | 5050 success | 0 failed | 100.0% success rate | 97.4/min
+[2025-11-05T06:25:54.168Z] 📊 Progress: 5060 processed | 5060 success | 0 failed | 100.0% success rate | 97.4/min
+[2025-11-05T06:26:00.053Z] 📊 Progress: 5070 processed | 5070 success | 0 failed | 100.0% success rate | 97.5/min
+[2025-11-05T06:26:05.892Z] 📊 Progress: 5080 processed | 5080 success | 0 failed | 100.0% success rate | 97.5/min
+[2025-11-05T06:26:11.741Z] 📊 Progress: 5090 processed | 5090 success | 0 failed | 100.0% success rate | 97.5/min
+[2025-11-05T06:26:17.488Z] 📊 Progress: 5100 processed | 5100 success | 0 failed | 100.0% success rate | 97.5/min
+[2025-11-05T06:26:17.517Z] 💾 Backup saved: embeddings-batch-5100-2025-11-05T06-26-17-489Z.json (100 records)
+[2025-11-05T06:26:23.282Z] 📊 Progress: 5110 processed | 5110 success | 0 failed | 100.0% success rate | 97.5/min
+[2025-11-05T06:26:29.078Z] 📊 Progress: 5120 processed | 5120 success | 0 failed | 100.0% success rate | 97.5/min
+[2025-11-05T06:26:34.847Z] 📊 Progress: 5130 processed | 5130 success | 0 failed | 100.0% success rate | 97.5/min
+[2025-11-05T06:26:40.927Z] 📊 Progress: 5140 processed | 5140 success | 0 failed | 100.0% success rate | 97.5/min
+[2025-11-05T06:26:46.794Z] 📊 Progress: 5150 processed | 5150 success | 0 failed | 100.0% success rate | 97.5/min
+[2025-11-05T06:26:52.727Z] 📊 Progress: 5160 processed | 5160 success | 0 failed | 100.0% success rate | 97.5/min
+[2025-11-05T06:26:58.662Z] 📊 Progress: 5170 processed | 5170 success | 0 failed | 100.0% success rate | 97.5/min
+[2025-11-05T06:27:04.508Z] 📊 Progress: 5180 processed | 5180 success | 0 failed | 100.0% success rate | 97.6/min
+[2025-11-05T06:27:10.484Z] 📊 Progress: 5190 processed | 5190 success | 0 failed | 100.0% success rate | 97.6/min
+[2025-11-05T06:27:16.314Z] 📊 Progress: 5200 processed | 5200 success | 0 failed | 100.0% success rate | 97.6/min
+[2025-11-05T06:27:16.340Z] 💾 Backup saved: embeddings-batch-5200-2025-11-05T06-27-16-314Z.json (100 records)
+[2025-11-05T06:27:22.236Z] 📊 Progress: 5210 processed | 5210 success | 0 failed | 100.0% success rate | 97.6/min
+[2025-11-05T06:27:28.180Z] 📊 Progress: 5220 processed | 5220 success | 0 failed | 100.0% success rate | 97.6/min
+[2025-11-05T06:27:33.985Z] 📊 Progress: 5230 processed | 5230 success | 0 failed | 100.0% success rate | 97.6/min
+[2025-11-05T06:27:39.764Z] 📊 Progress: 5240 processed | 5240 success | 0 failed | 100.0% success rate | 97.6/min
+[2025-11-05T06:27:45.606Z] 📊 Progress: 5250 processed | 5250 success | 0 failed | 100.0% success rate | 97.6/min
+[2025-11-05T06:27:51.850Z] 📊 Progress: 5260 processed | 5260 success | 0 failed | 100.0% success rate | 97.6/min
+[2025-11-05T06:27:57.695Z] 📊 Progress: 5270 processed | 5270 success | 0 failed | 100.0% success rate | 97.6/min
+[2025-11-05T06:28:03.436Z] 📊 Progress: 5280 processed | 5280 success | 0 failed | 100.0% success rate | 97.6/min
+[2025-11-05T06:28:09.243Z] 📊 Progress: 5290 processed | 5290 success | 0 failed | 100.0% success rate | 97.6/min
+[2025-11-05T06:28:15.107Z] 📊 Progress: 5300 processed | 5300 success | 0 failed | 100.0% success rate | 97.6/min
+[2025-11-05T06:28:15.123Z] 💾 Backup saved: embeddings-batch-5300-2025-11-05T06-28-15-108Z.json (100 records)
+[2025-11-05T06:28:20.927Z] 📊 Progress: 5310 processed | 5310 success | 0 failed | 100.0% success rate | 97.7/min
+[2025-11-05T06:28:26.759Z] 📊 Progress: 5320 processed | 5320 success | 0 failed | 100.0% success rate | 97.7/min
+[2025-11-05T06:28:32.680Z] 📊 Progress: 5330 processed | 5330 success | 0 failed | 100.0% success rate | 97.7/min
+[2025-11-05T06:28:38.500Z] 📊 Progress: 5340 processed | 5340 success | 0 failed | 100.0% success rate | 97.7/min
+[2025-11-05T06:28:44.398Z] 📊 Progress: 5350 processed | 5350 success | 0 failed | 100.0% success rate | 97.7/min
+[2025-11-05T06:28:50.218Z] 📊 Progress: 5360 processed | 5360 success | 0 failed | 100.0% success rate | 97.7/min
+[2025-11-05T06:28:56.149Z] 📊 Progress: 5370 processed | 5370 success | 0 failed | 100.0% success rate | 97.7/min
+[2025-11-05T06:29:01.991Z] 📊 Progress: 5380 processed | 5380 success | 0 failed | 100.0% success rate | 97.7/min
+[2025-11-05T06:29:08.063Z] 📊 Progress: 5390 processed | 5390 success | 0 failed | 100.0% success rate | 97.7/min
+[2025-11-05T06:29:13.794Z] 📊 Progress: 5400 processed | 5400 success | 0 failed | 100.0% success rate | 97.7/min
+[2025-11-05T06:29:13.810Z] 💾 Backup saved: embeddings-batch-5400-2025-11-05T06-29-13-795Z.json (100 records)
+[2025-11-05T06:29:19.666Z] 📊 Progress: 5410 processed | 5410 success | 0 failed | 100.0% success rate | 97.7/min
+[2025-11-05T06:29:25.410Z] 📊 Progress: 5420 processed | 5420 success | 0 failed | 100.0% success rate | 97.7/min
+[2025-11-05T06:29:31.310Z] 📊 Progress: 5430 processed | 5430 success | 0 failed | 100.0% success rate | 97.8/min
+[2025-11-05T06:29:37.037Z] 📊 Progress: 5440 processed | 5440 success | 0 failed | 100.0% success rate | 97.8/min
+[2025-11-05T06:29:42.867Z] 📊 Progress: 5450 processed | 5450 success | 0 failed | 100.0% success rate | 97.8/min
+[2025-11-05T06:29:48.719Z] 📊 Progress: 5460 processed | 5460 success | 0 failed | 100.0% success rate | 97.8/min
+[2025-11-05T06:29:54.574Z] 📊 Progress: 5470 processed | 5470 success | 0 failed | 100.0% success rate | 97.8/min
+[2025-11-05T06:30:00.361Z] 📊 Progress: 5480 processed | 5480 success | 0 failed | 100.0% success rate | 97.8/min
+[2025-11-05T06:30:06.224Z] 📊 Progress: 5490 processed | 5490 success | 0 failed | 100.0% success rate | 97.8/min
+[2025-11-05T06:30:12.279Z] 📊 Progress: 5500 processed | 5500 success | 0 failed | 100.0% success rate | 97.8/min
+[2025-11-05T06:30:12.294Z] 💾 Backup saved: embeddings-batch-5500-2025-11-05T06-30-12-279Z.json (100 records)
+[2025-11-05T06:30:18.295Z] 📊 Progress: 5510 processed | 5510 success | 0 failed | 100.0% success rate | 97.8/min
+[2025-11-05T06:30:24.159Z] 📊 Progress: 5520 processed | 5520 success | 0 failed | 100.0% success rate | 97.8/min
+[2025-11-05T06:30:29.955Z] 📊 Progress: 5530 processed | 5530 success | 0 failed | 100.0% success rate | 97.8/min
+[2025-11-05T06:30:35.799Z] 📊 Progress: 5540 processed | 5540 success | 0 failed | 100.0% success rate | 97.8/min
+[2025-11-05T06:30:41.632Z] 📊 Progress: 5550 processed | 5550 success | 0 failed | 100.0% success rate | 97.9/min
+[2025-11-05T06:30:47.674Z] 📊 Progress: 5560 processed | 5560 success | 0 failed | 100.0% success rate | 97.9/min
+[2025-11-05T06:30:53.532Z] 📊 Progress: 5570 processed | 5570 success | 0 failed | 100.0% success rate | 97.9/min
+[2025-11-05T06:30:59.258Z] 📊 Progress: 5580 processed | 5580 success | 0 failed | 100.0% success rate | 97.9/min
+[2025-11-05T06:31:05.049Z] 📊 Progress: 5590 processed | 5590 success | 0 failed | 100.0% success rate | 97.9/min
+[2025-11-05T06:31:10.934Z] 📊 Progress: 5600 processed | 5600 success | 0 failed | 100.0% success rate | 97.9/min
+[2025-11-05T06:31:10.950Z] 💾 Backup saved: embeddings-batch-5600-2025-11-05T06-31-10-934Z.json (100 records)
+[2025-11-05T06:31:16.817Z] 📊 Progress: 5610 processed | 5610 success | 0 failed | 100.0% success rate | 97.9/min
+[2025-11-05T06:31:22.613Z] 📊 Progress: 5620 processed | 5620 success | 0 failed | 100.0% success rate | 97.9/min
+[2025-11-05T06:31:28.387Z] 📊 Progress: 5630 processed | 5630 success | 0 failed | 100.0% success rate | 97.9/min
+[2025-11-05T06:31:34.133Z] 📊 Progress: 5640 processed | 5640 success | 0 failed | 100.0% success rate | 97.9/min
+[2025-11-05T06:31:39.918Z] 📊 Progress: 5650 processed | 5650 success | 0 failed | 100.0% success rate | 97.9/min
+[2025-11-05T06:31:45.686Z] 📊 Progress: 5660 processed | 5660 success | 0 failed | 100.0% success rate | 97.9/min
+[2025-11-05T06:31:51.548Z] 📊 Progress: 5670 processed | 5670 success | 0 failed | 100.0% success rate | 98.0/min
+[2025-11-05T06:31:57.342Z] 📊 Progress: 5680 processed | 5680 success | 0 failed | 100.0% success rate | 98.0/min
+[2025-11-05T06:32:03.202Z] 📊 Progress: 5690 processed | 5690 success | 0 failed | 100.0% success rate | 98.0/min
+[2025-11-05T06:32:08.999Z] 📊 Progress: 5700 processed | 5700 success | 0 failed | 100.0% success rate | 98.0/min
+[2025-11-05T06:32:09.019Z] 💾 Backup saved: embeddings-batch-5700-2025-11-05T06-32-08-999Z.json (100 records)
+[2025-11-05T06:32:14.916Z] 📊 Progress: 5710 processed | 5710 success | 0 failed | 100.0% success rate | 98.0/min
+[2025-11-05T06:32:20.726Z] 📊 Progress: 5720 processed | 5720 success | 0 failed | 100.0% success rate | 98.0/min
+[2025-11-05T06:32:26.597Z] 📊 Progress: 5730 processed | 5730 success | 0 failed | 100.0% success rate | 98.0/min
+[2025-11-05T06:32:32.544Z] 📊 Progress: 5740 processed | 5740 success | 0 failed | 100.0% success rate | 98.0/min
+[2025-11-05T06:32:38.771Z] 📊 Progress: 5750 processed | 5750 success | 0 failed | 100.0% success rate | 98.0/min
+[2025-11-05T06:32:44.991Z] 📊 Progress: 5760 processed | 5760 success | 0 failed | 100.0% success rate | 98.0/min
+[2025-11-05T06:32:50.718Z] 📊 Progress: 5770 processed | 5770 success | 0 failed | 100.0% success rate | 98.0/min
+[2025-11-05T06:32:56.468Z] 📊 Progress: 5780 processed | 5780 success | 0 failed | 100.0% success rate | 98.0/min
+[2025-11-05T06:33:02.242Z] 📊 Progress: 5790 processed | 5790 success | 0 failed | 100.0% success rate | 98.0/min
+[2025-11-05T06:33:07.912Z] 📊 Progress: 5800 processed | 5800 success | 0 failed | 100.0% success rate | 98.0/min
+[2025-11-05T06:33:07.928Z] 💾 Backup saved: embeddings-batch-5800-2025-11-05T06-33-07-913Z.json (100 records)
+[2025-11-05T06:33:13.669Z] 📊 Progress: 5810 processed | 5810 success | 0 failed | 100.0% success rate | 98.1/min
+[2025-11-05T06:33:19.349Z] 📊 Progress: 5820 processed | 5820 success | 0 failed | 100.0% success rate | 98.1/min
+[2025-11-05T06:33:25.158Z] 📊 Progress: 5830 processed | 5830 success | 0 failed | 100.0% success rate | 98.1/min
+[2025-11-05T06:33:30.980Z] 📊 Progress: 5840 processed | 5840 success | 0 failed | 100.0% success rate | 98.1/min
+[2025-11-05T06:33:36.919Z] 📊 Progress: 5850 processed | 5850 success | 0 failed | 100.0% success rate | 98.1/min
+[2025-11-05T06:33:42.857Z] 📊 Progress: 5860 processed | 5860 success | 0 failed | 100.0% success rate | 98.1/min
+[2025-11-05T06:33:49.002Z] 📊 Progress: 5870 processed | 5870 success | 0 failed | 100.0% success rate | 98.1/min
+[2025-11-05T06:33:54.991Z] 📊 Progress: 5880 processed | 5880 success | 0 failed | 100.0% success rate | 98.1/min
+[2025-11-05T06:34:00.923Z] 📊 Progress: 5890 processed | 5890 success | 0 failed | 100.0% success rate | 98.1/min
+[2025-11-05T06:34:07.025Z] 📊 Progress: 5900 processed | 5900 success | 0 failed | 100.0% success rate | 98.1/min
+[2025-11-05T06:34:07.041Z] 💾 Backup saved: embeddings-batch-5900-2025-11-05T06-34-07-025Z.json (100 records)
+[2025-11-05T06:34:12.995Z] 📊 Progress: 5910 processed | 5910 success | 0 failed | 100.0% success rate | 98.1/min
+[2025-11-05T06:34:19.006Z] 📊 Progress: 5920 processed | 5920 success | 0 failed | 100.0% success rate | 98.1/min
+[2025-11-05T06:34:25.073Z] 📊 Progress: 5930 processed | 5930 success | 0 failed | 100.0% success rate | 98.1/min
+[2025-11-05T06:34:30.987Z] 📊 Progress: 5940 processed | 5940 success | 0 failed | 100.0% success rate | 98.1/min
+[2025-11-05T06:34:37.131Z] 📊 Progress: 5950 processed | 5950 success | 0 failed | 100.0% success rate | 98.1/min
+[2025-11-05T06:34:43.173Z] 📊 Progress: 5960 processed | 5960 success | 0 failed | 100.0% success rate | 98.1/min
+[2025-11-05T06:34:49.296Z] 📊 Progress: 5970 processed | 5970 success | 0 failed | 100.0% success rate | 98.1/min
+[2025-11-05T06:34:55.512Z] 📊 Progress: 5980 processed | 5980 success | 0 failed | 100.0% success rate | 98.1/min
+[2025-11-05T06:35:02.167Z] 📊 Progress: 5990 processed | 5990 success | 0 failed | 100.0% success rate | 98.1/min
+[2025-11-05T06:35:08.313Z] 📊 Progress: 6000 processed | 6000 success | 0 failed | 100.0% success rate | 98.1/min
+[2025-11-05T06:35:08.330Z] 💾 Backup saved: embeddings-batch-6000-2025-11-05T06-35-08-314Z.json (100 records)
+[2025-11-05T06:35:14.261Z] 📊 Progress: 6010 processed | 6010 success | 0 failed | 100.0% success rate | 98.1/min
+[2025-11-05T06:35:20.383Z] 📊 Progress: 6020 processed | 6020 success | 0 failed | 100.0% success rate | 98.1/min
+[2025-11-05T06:35:26.461Z] 📊 Progress: 6030 processed | 6030 success | 0 failed | 100.0% success rate | 98.1/min
+[2025-11-05T06:35:32.500Z] 📊 Progress: 6040 processed | 6040 success | 0 failed | 100.0% success rate | 98.1/min
+[2025-11-05T06:35:38.541Z] 📊 Progress: 6050 processed | 6050 success | 0 failed | 100.0% success rate | 98.1/min
+[2025-11-05T06:35:44.715Z] 📊 Progress: 6060 processed | 6060 success | 0 failed | 100.0% success rate | 98.1/min
+[2025-11-05T06:35:51.286Z] 📊 Progress: 6070 processed | 6070 success | 0 failed | 100.0% success rate | 98.1/min
+[2025-11-05T06:35:57.467Z] 📊 Progress: 6080 processed | 6080 success | 0 failed | 100.0% success rate | 98.1/min
+[2025-11-05T06:36:03.635Z] 📊 Progress: 6090 processed | 6090 success | 0 failed | 100.0% success rate | 98.1/min
+[2025-11-05T06:36:10.213Z] 📊 Progress: 6100 processed | 6100 success | 0 failed | 100.0% success rate | 98.1/min
+[2025-11-05T06:36:10.229Z] 💾 Backup saved: embeddings-batch-6100-2025-11-05T06-36-10-214Z.json (100 records)
+[2025-11-05T06:36:16.517Z] 📊 Progress: 6110 processed | 6110 success | 0 failed | 100.0% success rate | 98.1/min
+[2025-11-05T06:36:22.706Z] 📊 Progress: 6120 processed | 6120 success | 0 failed | 100.0% success rate | 98.1/min
+[2025-11-05T06:36:28.850Z] 📊 Progress: 6130 processed | 6130 success | 0 failed | 100.0% success rate | 98.1/min
+[2025-11-05T06:36:34.789Z] 📊 Progress: 6140 processed | 6140 success | 0 failed | 100.0% success rate | 98.1/min
+[2025-11-05T06:36:40.794Z] 📊 Progress: 6150 processed | 6150 success | 0 failed | 100.0% success rate | 98.1/min
+[2025-11-05T06:36:47.112Z] 📊 Progress: 6160 processed | 6160 success | 0 failed | 100.0% success rate | 98.1/min
+[2025-11-05T06:36:54.109Z] 📊 Progress: 6170 processed | 6170 success | 0 failed | 100.0% success rate | 98.1/min
+[2025-11-05T06:37:00.287Z] 📊 Progress: 6180 processed | 6180 success | 0 failed | 100.0% success rate | 98.0/min
+[2025-11-05T06:37:24.778Z] 📊 Progress: 6190 processed | 6190 success | 0 failed | 100.0% success rate | 97.6/min
+[2025-11-05T06:37:30.959Z] 📊 Progress: 6200 processed | 6200 success | 0 failed | 100.0% success rate | 97.6/min
+[2025-11-05T06:37:30.974Z] 💾 Backup saved: embeddings-batch-6200-2025-11-05T06-37-30-959Z.json (100 records)
+[2025-11-05T06:37:37.356Z] 📊 Progress: 6210 processed | 6210 success | 0 failed | 100.0% success rate | 97.6/min
+[2025-11-05T06:37:43.625Z] 📊 Progress: 6220 processed | 6220 success | 0 failed | 100.0% success rate | 97.6/min
+[2025-11-05T06:37:49.644Z] 📊 Progress: 6230 processed | 6230 success | 0 failed | 100.0% success rate | 97.6/min
+[2025-11-05T06:37:55.686Z] 📊 Progress: 6240 processed | 6240 success | 0 failed | 100.0% success rate | 97.6/min
+[2025-11-05T06:38:01.830Z] 📊 Progress: 6250 processed | 6250 success | 0 failed | 100.0% success rate | 97.6/min
+[2025-11-05T06:38:07.871Z] 📊 Progress: 6260 processed | 6260 success | 0 failed | 100.0% success rate | 97.6/min
+[2025-11-05T06:38:13.827Z] 📊 Progress: 6270 processed | 6270 success | 0 failed | 100.0% success rate | 97.6/min
+[2025-11-05T06:38:19.906Z] 📊 Progress: 6280 processed | 6280 success | 0 failed | 100.0% success rate | 97.6/min
+[2025-11-05T06:38:26.072Z] 📊 Progress: 6290 processed | 6290 success | 0 failed | 100.0% success rate | 97.6/min
+[2025-11-05T06:38:32.243Z] 📊 Progress: 6300 processed | 6300 success | 0 failed | 100.0% success rate | 97.6/min
+[2025-11-05T06:38:32.260Z] 💾 Backup saved: embeddings-batch-6300-2025-11-05T06-38-32-244Z.json (100 records)
+[2025-11-05T06:38:38.361Z] 📊 Progress: 6310 processed | 6310 success | 0 failed | 100.0% success rate | 97.6/min
+[2025-11-05T06:38:44.509Z] 📊 Progress: 6320 processed | 6320 success | 0 failed | 100.0% success rate | 97.6/min
+[2025-11-05T06:38:50.529Z] 📊 Progress: 6330 processed | 6330 success | 0 failed | 100.0% success rate | 97.6/min
+[2025-11-05T06:38:56.597Z] 📊 Progress: 6340 processed | 6340 success | 0 failed | 100.0% success rate | 97.6/min
+[2025-11-05T06:39:02.758Z] 📊 Progress: 6350 processed | 6350 success | 0 failed | 100.0% success rate | 97.6/min
+[2025-11-05T06:39:08.902Z] 📊 Progress: 6360 processed | 6360 success | 0 failed | 100.0% success rate | 97.6/min
+[2025-11-05T06:39:15.046Z] 📊 Progress: 6370 processed | 6370 success | 0 failed | 100.0% success rate | 97.6/min
+[2025-11-05T06:39:21.190Z] 📊 Progress: 6380 processed | 6380 success | 0 failed | 100.0% success rate | 97.6/min
+[2025-11-05T06:39:27.318Z] 📊 Progress: 6390 processed | 6390 success | 0 failed | 100.0% success rate | 97.6/min
+[2025-11-05T06:39:33.468Z] 📊 Progress: 6400 processed | 6400 success | 0 failed | 100.0% success rate | 97.6/min
+[2025-11-05T06:39:33.484Z] 💾 Backup saved: embeddings-batch-6400-2025-11-05T06-39-33-469Z.json (100 records)
+[2025-11-05T06:39:39.623Z] 📊 Progress: 6410 processed | 6410 success | 0 failed | 100.0% success rate | 97.6/min
+[2025-11-05T06:39:45.783Z] 📊 Progress: 6420 processed | 6420 success | 0 failed | 100.0% success rate | 97.6/min
+[2025-11-05T06:39:52.116Z] 📊 Progress: 6430 processed | 6430 success | 0 failed | 100.0% success rate | 97.6/min
+[2025-11-05T06:39:58.260Z] 📊 Progress: 6440 processed | 6440 success | 0 failed | 100.0% success rate | 97.6/min
+[2025-11-05T06:40:04.393Z] 📊 Progress: 6450 processed | 6450 success | 0 failed | 100.0% success rate | 97.6/min
+[2025-11-05T06:40:10.255Z] 📊 Progress: 6460 processed | 6460 success | 0 failed | 100.0% success rate | 97.6/min
+[2025-11-05T06:40:16.367Z] 📊 Progress: 6470 processed | 6470 success | 0 failed | 100.0% success rate | 97.6/min
+[2025-11-05T06:40:22.506Z] 📊 Progress: 6480 processed | 6480 success | 0 failed | 100.0% success rate | 97.6/min
+[2025-11-05T06:40:28.775Z] 📊 Progress: 6490 processed | 6490 success | 0 failed | 100.0% success rate | 97.6/min
+[2025-11-05T06:40:34.893Z] 📊 Progress: 6500 processed | 6500 success | 0 failed | 100.0% success rate | 97.6/min
+[2025-11-05T06:40:34.909Z] 💾 Backup saved: embeddings-batch-6500-2025-11-05T06-40-34-894Z.json (100 records)
+[2025-11-05T06:40:41.103Z] 📊 Progress: 6510 processed | 6510 success | 0 failed | 100.0% success rate | 97.6/min
+[2025-11-05T06:40:47.310Z] 📊 Progress: 6520 processed | 6520 success | 0 failed | 100.0% success rate | 97.6/min
+[2025-11-05T06:40:53.454Z] 📊 Progress: 6530 processed | 6530 success | 0 failed | 100.0% success rate | 97.6/min
+[2025-11-05T06:40:59.495Z] 📊 Progress: 6540 processed | 6540 success | 0 failed | 100.0% success rate | 97.6/min
+[2025-11-05T06:41:05.715Z] 📊 Progress: 6550 processed | 6550 success | 0 failed | 100.0% success rate | 97.6/min
+[2025-11-05T06:41:12.562Z] 📊 Progress: 6560 processed | 6560 success | 0 failed | 100.0% success rate | 97.6/min
+[2025-11-05T06:41:18.752Z] 📊 Progress: 6570 processed | 6570 success | 0 failed | 100.0% success rate | 97.6/min
+[2025-11-05T06:41:24.891Z] 📊 Progress: 6580 processed | 6580 success | 0 failed | 100.0% success rate | 97.6/min
+[2025-11-05T06:41:31.137Z] 📊 Progress: 6590 processed | 6590 success | 0 failed | 100.0% success rate | 97.6/min
+[2025-11-05T06:41:37.228Z] 📊 Progress: 6600 processed | 6600 success | 0 failed | 100.0% success rate | 97.6/min
+[2025-11-05T06:41:37.249Z] 💾 Backup saved: embeddings-batch-6600-2025-11-05T06-41-37-229Z.json (100 records)
+[2025-11-05T06:41:43.323Z] 📊 Progress: 6610 processed | 6610 success | 0 failed | 100.0% success rate | 97.6/min
+[2025-11-05T06:41:49.979Z] 📊 Progress: 6620 processed | 6620 success | 0 failed | 100.0% success rate | 97.6/min
+[2025-11-05T06:41:56.048Z] 📊 Progress: 6630 processed | 6630 success | 0 failed | 100.0% success rate | 97.6/min
+[2025-11-05T06:42:02.164Z] 📊 Progress: 6640 processed | 6640 success | 0 failed | 100.0% success rate | 97.6/min
+[2025-11-05T06:42:08.226Z] 📊 Progress: 6650 processed | 6650 success | 0 failed | 100.0% success rate | 97.6/min
+[2025-11-05T06:42:14.351Z] 📊 Progress: 6660 processed | 6660 success | 0 failed | 100.0% success rate | 97.6/min
+[2025-11-05T06:42:20.494Z] 📊 Progress: 6670 processed | 6670 success | 0 failed | 100.0% success rate | 97.6/min
+[2025-11-05T06:42:26.814Z] 📊 Progress: 6680 processed | 6680 success | 0 failed | 100.0% success rate | 97.6/min
+[2025-11-05T06:42:32.856Z] 📊 Progress: 6690 processed | 6690 success | 0 failed | 100.0% success rate | 97.6/min
+[2025-11-05T06:42:39.541Z] 📊 Progress: 6700 processed | 6700 success | 0 failed | 100.0% success rate | 97.5/min
+[2025-11-05T06:42:39.557Z] 💾 Backup saved: embeddings-batch-6700-2025-11-05T06-42-39-541Z.json (100 records)
+[2025-11-05T06:42:45.787Z] 📊 Progress: 6710 processed | 6710 success | 0 failed | 100.0% success rate | 97.5/min
+[2025-11-05T06:42:51.931Z] 📊 Progress: 6720 processed | 6720 success | 0 failed | 100.0% success rate | 97.5/min
+[2025-11-05T06:42:58.075Z] 📊 Progress: 6730 processed | 6730 success | 0 failed | 100.0% success rate | 97.5/min
+[2025-11-05T06:43:04.219Z] 📊 Progress: 6740 processed | 6740 success | 0 failed | 100.0% success rate | 97.5/min
+[2025-11-05T06:43:10.225Z] 📊 Progress: 6750 processed | 6750 success | 0 failed | 100.0% success rate | 97.6/min
+[2025-11-05T06:43:16.406Z] 📊 Progress: 6760 processed | 6760 success | 0 failed | 100.0% success rate | 97.5/min
+[2025-11-05T06:43:22.307Z] 📊 Progress: 6770 processed | 6770 success | 0 failed | 100.0% success rate | 97.6/min
+[2025-11-05T06:43:28.489Z] 📊 Progress: 6780 processed | 6780 success | 0 failed | 100.0% success rate | 97.6/min
+[2025-11-05T06:43:34.456Z] 📊 Progress: 6790 processed | 6790 success | 0 failed | 100.0% success rate | 97.6/min
+[2025-11-05T06:43:40.216Z] 📊 Progress: 6800 processed | 6800 success | 0 failed | 100.0% success rate | 97.6/min
+[2025-11-05T06:43:40.234Z] 💾 Backup saved: embeddings-batch-6800-2025-11-05T06-43-40-217Z.json (100 records)
+[2025-11-05T06:43:46.100Z] 📊 Progress: 6810 processed | 6810 success | 0 failed | 100.0% success rate | 97.6/min
+[2025-11-05T06:43:51.996Z] 📊 Progress: 6820 processed | 6820 success | 0 failed | 100.0% success rate | 97.6/min
+[2025-11-05T06:43:57.867Z] 📊 Progress: 6830 processed | 6830 success | 0 failed | 100.0% success rate | 97.6/min
+[2025-11-05T06:44:03.717Z] 📊 Progress: 6840 processed | 6840 success | 0 failed | 100.0% success rate | 97.6/min
+[2025-11-05T06:44:09.641Z] 📊 Progress: 6850 processed | 6850 success | 0 failed | 100.0% success rate | 97.6/min
+[2025-11-05T06:44:15.477Z] 📊 Progress: 6860 processed | 6860 success | 0 failed | 100.0% success rate | 97.6/min
+[2025-11-05T06:44:21.609Z] 📊 Progress: 6870 processed | 6870 success | 0 failed | 100.0% success rate | 97.6/min
+[2025-11-05T06:44:27.499Z] 📊 Progress: 6880 processed | 6880 success | 0 failed | 100.0% success rate | 97.6/min
+[2025-11-05T06:44:33.517Z] 📊 Progress: 6890 processed | 6890 success | 0 failed | 100.0% success rate | 97.6/min
+[2025-11-05T06:44:39.309Z] 📊 Progress: 6900 processed | 6900 success | 0 failed | 100.0% success rate | 97.6/min
+[2025-11-05T06:44:39.328Z] 💾 Backup saved: embeddings-batch-6900-2025-11-05T06-44-39-309Z.json (100 records)
+[2025-11-05T06:44:45.118Z] 📊 Progress: 6910 processed | 6910 success | 0 failed | 100.0% success rate | 97.6/min
+[2025-11-05T06:44:50.944Z] 📊 Progress: 6920 processed | 6920 success | 0 failed | 100.0% success rate | 97.6/min
+[2025-11-05T06:44:56.694Z] 📊 Progress: 6930 processed | 6930 success | 0 failed | 100.0% success rate | 97.6/min
+[2025-11-05T06:45:02.472Z] 📊 Progress: 6940 processed | 6940 success | 0 failed | 100.0% success rate | 97.7/min
+[2025-11-05T06:45:08.238Z] 📊 Progress: 6950 processed | 6950 success | 0 failed | 100.0% success rate | 97.7/min
+[2025-11-05T06:45:13.982Z] 📊 Progress: 6960 processed | 6960 success | 0 failed | 100.0% success rate | 97.7/min
+[2025-11-05T06:45:19.699Z] 📊 Progress: 6970 processed | 6970 success | 0 failed | 100.0% success rate | 97.7/min
+[2025-11-05T06:45:25.539Z] 📊 Progress: 6980 processed | 6980 success | 0 failed | 100.0% success rate | 97.7/min
+[2025-11-05T06:45:31.406Z] 📊 Progress: 6990 processed | 6990 success | 0 failed | 100.0% success rate | 97.7/min
+[2025-11-05T06:45:37.280Z] 📊 Progress: 7000 processed | 7000 success | 0 failed | 100.0% success rate | 97.7/min
+[2025-11-05T06:45:37.297Z] 💾 Backup saved: embeddings-batch-7000-2025-11-05T06-45-37-281Z.json (100 records)
+[2025-11-05T06:45:43.193Z] 📊 Progress: 7010 processed | 7010 success | 0 failed | 100.0% success rate | 97.7/min
+[2025-11-05T06:45:49.149Z] 📊 Progress: 7020 processed | 7020 success | 0 failed | 100.0% success rate | 97.7/min
+[2025-11-05T06:45:55.075Z] 📊 Progress: 7030 processed | 7030 success | 0 failed | 100.0% success rate | 97.7/min
+[2025-11-05T06:46:01.083Z] 📊 Progress: 7040 processed | 7040 success | 0 failed | 100.0% success rate | 97.7/min
+[2025-11-05T06:46:07.545Z] 📊 Progress: 7050 processed | 7050 success | 0 failed | 100.0% success rate | 97.7/min
+[2025-11-05T06:46:13.576Z] 📊 Progress: 7060 processed | 7060 success | 0 failed | 100.0% success rate | 97.7/min
+[2025-11-05T06:46:19.586Z] 📊 Progress: 7070 processed | 7070 success | 0 failed | 100.0% success rate | 97.7/min
+[2025-11-05T06:46:25.570Z] 📊 Progress: 7080 processed | 7080 success | 0 failed | 100.0% success rate | 97.7/min
+[2025-11-05T06:46:31.456Z] 📊 Progress: 7090 processed | 7090 success | 0 failed | 100.0% success rate | 97.7/min
+[2025-11-05T06:46:37.589Z] 📊 Progress: 7100 processed | 7100 success | 0 failed | 100.0% success rate | 97.7/min
+[2025-11-05T06:46:37.606Z] 💾 Backup saved: embeddings-batch-7100-2025-11-05T06-46-37-589Z.json (100 records)
+[2025-11-05T06:46:43.494Z] 📊 Progress: 7110 processed | 7110 success | 0 failed | 100.0% success rate | 97.7/min
+[2025-11-05T06:46:49.288Z] 📊 Progress: 7120 processed | 7120 success | 0 failed | 100.0% success rate | 97.7/min
+[2025-11-05T06:46:55.173Z] 📊 Progress: 7130 processed | 7130 success | 0 failed | 100.0% success rate | 97.7/min
+[2025-11-05T06:47:01.046Z] 📊 Progress: 7140 processed | 7140 success | 0 failed | 100.0% success rate | 97.8/min
+[2025-11-05T06:47:06.851Z] 📊 Progress: 7150 processed | 7150 success | 0 failed | 100.0% success rate | 97.8/min
+[2025-11-05T06:47:12.705Z] 📊 Progress: 7160 processed | 7160 success | 0 failed | 100.0% success rate | 97.8/min
+[2025-11-05T06:47:18.657Z] 📊 Progress: 7170 processed | 7170 success | 0 failed | 100.0% success rate | 97.8/min
+[2025-11-05T06:47:24.489Z] 📊 Progress: 7180 processed | 7180 success | 0 failed | 100.0% success rate | 97.8/min
+[2025-11-05T06:47:30.574Z] 📊 Progress: 7190 processed | 7190 success | 0 failed | 100.0% success rate | 97.8/min
+[2025-11-05T06:47:36.460Z] 📊 Progress: 7200 processed | 7200 success | 0 failed | 100.0% success rate | 97.8/min
+[2025-11-05T06:47:36.479Z] 💾 Backup saved: embeddings-batch-7200-2025-11-05T06-47-36-461Z.json (100 records)
+[2025-11-05T06:47:42.303Z] 📊 Progress: 7210 processed | 7210 success | 0 failed | 100.0% success rate | 97.8/min
+[2025-11-05T06:47:48.216Z] 📊 Progress: 7220 processed | 7220 success | 0 failed | 100.0% success rate | 97.8/min
+[2025-11-05T06:47:54.019Z] 📊 Progress: 7230 processed | 7230 success | 0 failed | 100.0% success rate | 97.8/min
+[2025-11-05T06:48:00.075Z] 📊 Progress: 7240 processed | 7240 success | 0 failed | 100.0% success rate | 97.8/min
+[2025-11-05T06:48:05.903Z] 📊 Progress: 7250 processed | 7250 success | 0 failed | 100.0% success rate | 97.8/min
+[2025-11-05T06:48:11.655Z] 📊 Progress: 7260 processed | 7260 success | 0 failed | 100.0% success rate | 97.8/min
+[2025-11-05T06:48:17.396Z] 📊 Progress: 7270 processed | 7270 success | 0 failed | 100.0% success rate | 97.8/min
+[2025-11-05T06:48:23.384Z] 📊 Progress: 7280 processed | 7280 success | 0 failed | 100.0% success rate | 97.8/min
+[2025-11-05T06:48:29.193Z] 📊 Progress: 7290 processed | 7290 success | 0 failed | 100.0% success rate | 97.8/min
+[2025-11-05T06:48:34.969Z] 📊 Progress: 7300 processed | 7300 success | 0 failed | 100.0% success rate | 97.8/min
+[2025-11-05T06:48:34.987Z] 💾 Backup saved: embeddings-batch-7300-2025-11-05T06-48-34-969Z.json (100 records)
+[2025-11-05T06:48:40.794Z] 📊 Progress: 7310 processed | 7310 success | 0 failed | 100.0% success rate | 97.9/min
+[2025-11-05T06:48:46.645Z] 📊 Progress: 7320 processed | 7320 success | 0 failed | 100.0% success rate | 97.9/min
+[2025-11-05T06:48:52.464Z] 📊 Progress: 7330 processed | 7330 success | 0 failed | 100.0% success rate | 97.9/min
+[2025-11-05T06:48:58.239Z] 📊 Progress: 7340 processed | 7340 success | 0 failed | 100.0% success rate | 97.9/min
+[2025-11-05T06:49:04.086Z] 📊 Progress: 7350 processed | 7350 success | 0 failed | 100.0% success rate | 97.9/min
+[2025-11-05T06:49:09.871Z] 📊 Progress: 7360 processed | 7360 success | 0 failed | 100.0% success rate | 97.9/min
+[2025-11-05T06:49:15.683Z] 📊 Progress: 7370 processed | 7370 success | 0 failed | 100.0% success rate | 97.9/min
+[2025-11-05T06:49:21.495Z] 📊 Progress: 7380 processed | 7380 success | 0 failed | 100.0% success rate | 97.9/min
+[2025-11-05T06:49:27.419Z] 📊 Progress: 7390 processed | 7390 success | 0 failed | 100.0% success rate | 97.9/min
+[2025-11-05T06:49:33.260Z] 📊 Progress: 7400 processed | 7400 success | 0 failed | 100.0% success rate | 97.9/min
+[2025-11-05T06:49:33.275Z] 💾 Backup saved: embeddings-batch-7400-2025-11-05T06-49-33-260Z.json (100 records)
+[2025-11-05T06:49:39.099Z] 📊 Progress: 7410 processed | 7410 success | 0 failed | 100.0% success rate | 97.9/min
+[2025-11-05T06:49:45.019Z] 📊 Progress: 7420 processed | 7420 success | 0 failed | 100.0% success rate | 97.9/min
+[2025-11-05T06:49:50.847Z] 📊 Progress: 7430 processed | 7430 success | 0 failed | 100.0% success rate | 97.9/min
+[2025-11-05T06:49:56.625Z] 📊 Progress: 7440 processed | 7440 success | 0 failed | 100.0% success rate | 97.9/min
+[2025-11-05T06:50:02.539Z] 📊 Progress: 7450 processed | 7450 success | 0 failed | 100.0% success rate | 97.9/min
+[2025-11-05T06:50:08.413Z] 📊 Progress: 7460 processed | 7460 success | 0 failed | 100.0% success rate | 97.9/min
+[2025-11-05T06:50:14.222Z] 📊 Progress: 7470 processed | 7470 success | 0 failed | 100.0% success rate | 98.0/min
+[2025-11-05T06:50:20.159Z] 📊 Progress: 7480 processed | 7480 success | 0 failed | 100.0% success rate | 98.0/min
+[2025-11-05T06:50:25.954Z] 📊 Progress: 7490 processed | 7490 success | 0 failed | 100.0% success rate | 98.0/min
+[2025-11-05T06:50:31.810Z] 📊 Progress: 7500 processed | 7500 success | 0 failed | 100.0% success rate | 98.0/min
+[2025-11-05T06:50:31.826Z] 💾 Backup saved: embeddings-batch-7500-2025-11-05T06-50-31-811Z.json (100 records)
+[2025-11-05T06:50:37.698Z] 📊 Progress: 7510 processed | 7510 success | 0 failed | 100.0% success rate | 98.0/min
+[2025-11-05T06:50:43.565Z] 📊 Progress: 7520 processed | 7520 success | 0 failed | 100.0% success rate | 98.0/min
+[2025-11-05T06:50:49.381Z] 📊 Progress: 7530 processed | 7530 success | 0 failed | 100.0% success rate | 98.0/min
+[2025-11-05T06:50:55.230Z] 📊 Progress: 7540 processed | 7540 success | 0 failed | 100.0% success rate | 98.0/min
+[2025-11-05T06:51:01.044Z] 📊 Progress: 7550 processed | 7550 success | 0 failed | 100.0% success rate | 98.0/min
+[2025-11-05T06:51:06.906Z] 📊 Progress: 7560 processed | 7560 success | 0 failed | 100.0% success rate | 98.0/min
+[2025-11-05T06:51:12.760Z] 📊 Progress: 7570 processed | 7570 success | 0 failed | 100.0% success rate | 98.0/min
+[2025-11-05T06:51:18.526Z] 📊 Progress: 7580 processed | 7580 success | 0 failed | 100.0% success rate | 98.0/min
+[2025-11-05T06:51:24.365Z] 📊 Progress: 7590 processed | 7590 success | 0 failed | 100.0% success rate | 98.0/min
+[2025-11-05T06:51:30.247Z] 📊 Progress: 7600 processed | 7600 success | 0 failed | 100.0% success rate | 98.0/min
+[2025-11-05T06:51:30.263Z] 💾 Backup saved: embeddings-batch-7600-2025-11-05T06-51-30-248Z.json (100 records)
+[2025-11-05T06:51:36.063Z] 📊 Progress: 7610 processed | 7610 success | 0 failed | 100.0% success rate | 98.0/min
+[2025-11-05T06:51:41.805Z] 📊 Progress: 7620 processed | 7620 success | 0 failed | 100.0% success rate | 98.0/min
+[2025-11-05T06:51:47.651Z] 📊 Progress: 7630 processed | 7630 success | 0 failed | 100.0% success rate | 98.0/min
+[2025-11-05T06:51:53.494Z] 📊 Progress: 7640 processed | 7640 success | 0 failed | 100.0% success rate | 98.1/min
+[2025-11-05T06:51:59.177Z] 📊 Progress: 7650 processed | 7650 success | 0 failed | 100.0% success rate | 98.1/min
+[2025-11-05T06:52:05.060Z] 📊 Progress: 7660 processed | 7660 success | 0 failed | 100.0% success rate | 98.1/min
+[2025-11-05T06:52:10.810Z] 📊 Progress: 7670 processed | 7670 success | 0 failed | 100.0% success rate | 98.1/min
+[2025-11-05T06:52:16.579Z] 📊 Progress: 7680 processed | 7680 success | 0 failed | 100.0% success rate | 98.1/min
+[2025-11-05T06:52:22.426Z] 📊 Progress: 7690 processed | 7690 success | 0 failed | 100.0% success rate | 98.1/min
+[2025-11-05T06:52:28.203Z] 📊 Progress: 7700 processed | 7700 success | 0 failed | 100.0% success rate | 98.1/min
+[2025-11-05T06:52:28.219Z] 💾 Backup saved: embeddings-batch-7700-2025-11-05T06-52-28-204Z.json (100 records)
+[2025-11-05T06:52:33.994Z] 📊 Progress: 7710 processed | 7710 success | 0 failed | 100.0% success rate | 98.1/min
+[2025-11-05T06:52:39.735Z] 📊 Progress: 7720 processed | 7720 success | 0 failed | 100.0% success rate | 98.1/min
+[2025-11-05T06:52:45.643Z] 📊 Progress: 7730 processed | 7730 success | 0 failed | 100.0% success rate | 98.1/min
+[2025-11-05T06:52:51.419Z] 📊 Progress: 7740 processed | 7740 success | 0 failed | 100.0% success rate | 98.1/min
+[2025-11-05T06:52:57.267Z] 📊 Progress: 7750 processed | 7750 success | 0 failed | 100.0% success rate | 98.1/min
+[2025-11-05T06:53:03.041Z] 📊 Progress: 7760 processed | 7760 success | 0 failed | 100.0% success rate | 98.1/min
+[2025-11-05T06:53:09.039Z] 📊 Progress: 7770 processed | 7770 success | 0 failed | 100.0% success rate | 98.1/min
+[2025-11-05T06:53:14.849Z] 📊 Progress: 7780 processed | 7780 success | 0 failed | 100.0% success rate | 98.1/min
+[2025-11-05T06:53:20.630Z] 📊 Progress: 7790 processed | 7790 success | 0 failed | 100.0% success rate | 98.1/min
+[2025-11-05T06:53:26.414Z] 📊 Progress: 7800 processed | 7800 success | 0 failed | 100.0% success rate | 98.2/min
+[2025-11-05T06:53:26.430Z] 💾 Backup saved: embeddings-batch-7800-2025-11-05T06-53-26-414Z.json (100 records)
+[2025-11-05T06:53:32.298Z] 📊 Progress: 7810 processed | 7810 success | 0 failed | 100.0% success rate | 98.2/min
+[2025-11-05T06:53:38.287Z] 📊 Progress: 7820 processed | 7820 success | 0 failed | 100.0% success rate | 98.2/min
+[2025-11-05T06:53:44.099Z] 📊 Progress: 7830 processed | 7830 success | 0 failed | 100.0% success rate | 98.2/min
+[2025-11-05T06:53:49.928Z] 📊 Progress: 7840 processed | 7840 success | 0 failed | 100.0% success rate | 98.2/min
+[2025-11-05T06:53:55.713Z] 📊 Progress: 7850 processed | 7850 success | 0 failed | 100.0% success rate | 98.2/min
+[2025-11-05T06:54:01.611Z] 📊 Progress: 7860 processed | 7860 success | 0 failed | 100.0% success rate | 98.2/min
+[2025-11-05T06:54:07.551Z] 📊 Progress: 7870 processed | 7870 success | 0 failed | 100.0% success rate | 98.2/min
+[2025-11-05T06:54:13.555Z] 📊 Progress: 7880 processed | 7880 success | 0 failed | 100.0% success rate | 98.2/min
+[2025-11-05T06:54:19.397Z] 📊 Progress: 7890 processed | 7890 success | 0 failed | 100.0% success rate | 98.2/min
+[2025-11-05T06:54:25.288Z] 📊 Progress: 7900 processed | 7900 success | 0 failed | 100.0% success rate | 98.2/min
+[2025-11-05T06:54:25.303Z] 💾 Backup saved: embeddings-batch-7900-2025-11-05T06-54-25-288Z.json (100 records)
+[2025-11-05T06:54:31.066Z] 📊 Progress: 7910 processed | 7910 success | 0 failed | 100.0% success rate | 98.2/min
+[2025-11-05T06:54:36.882Z] 📊 Progress: 7920 processed | 7920 success | 0 failed | 100.0% success rate | 98.2/min
+[2025-11-05T06:54:42.724Z] 📊 Progress: 7930 processed | 7930 success | 0 failed | 100.0% success rate | 98.2/min
+[2025-11-05T06:54:48.600Z] 📊 Progress: 7940 processed | 7940 success | 0 failed | 100.0% success rate | 98.2/min
+[2025-11-05T06:54:54.566Z] 📊 Progress: 7950 processed | 7950 success | 0 failed | 100.0% success rate | 98.2/min
+[2025-11-05T06:55:00.511Z] 📊 Progress: 7960 processed | 7960 success | 0 failed | 100.0% success rate | 98.2/min
+[2025-11-05T06:55:06.543Z] 📊 Progress: 7970 processed | 7970 success | 0 failed | 100.0% success rate | 98.2/min
+[2025-11-05T06:55:12.554Z] 📊 Progress: 7980 processed | 7980 success | 0 failed | 100.0% success rate | 98.2/min
+[2025-11-05T06:55:18.623Z] 📊 Progress: 7990 processed | 7990 success | 0 failed | 100.0% success rate | 98.2/min
+[2025-11-05T06:55:24.911Z] 📊 Progress: 8000 processed | 8000 success | 0 failed | 100.0% success rate | 98.2/min
+[2025-11-05T06:55:24.925Z] 💾 Backup saved: embeddings-batch-8000-2025-11-05T06-55-24-911Z.json (100 records)
+[2025-11-05T06:55:30.895Z] 📊 Progress: 8010 processed | 8010 success | 0 failed | 100.0% success rate | 98.2/min
+[2025-11-05T06:55:36.892Z] 📊 Progress: 8020 processed | 8020 success | 0 failed | 100.0% success rate | 98.2/min
+[2025-11-05T06:55:42.933Z] 📊 Progress: 8030 processed | 8030 success | 0 failed | 100.0% success rate | 98.2/min
+[2025-11-05T06:55:49.077Z] 📊 Progress: 8040 processed | 8040 success | 0 failed | 100.0% success rate | 98.2/min
+[2025-11-05T06:55:55.081Z] 📊 Progress: 8050 processed | 8050 success | 0 failed | 100.0% success rate | 98.2/min
+[2025-11-05T06:56:01.128Z] 📊 Progress: 8060 processed | 8060 success | 0 failed | 100.0% success rate | 98.2/min
+[2025-11-05T06:56:07.242Z] 📊 Progress: 8070 processed | 8070 success | 0 failed | 100.0% success rate | 98.2/min
+[2025-11-05T06:56:13.962Z] 📊 Progress: 8080 processed | 8080 success | 0 failed | 100.0% success rate | 98.2/min
+[2025-11-05T06:56:20.160Z] 📊 Progress: 8090 processed | 8090 success | 0 failed | 100.0% success rate | 98.2/min
+[2025-11-05T06:56:26.352Z] 📊 Progress: 8100 processed | 8100 success | 0 failed | 100.0% success rate | 98.2/min
+[2025-11-05T06:56:26.368Z] 💾 Backup saved: embeddings-batch-8100-2025-11-05T06-56-26-352Z.json (100 records)
+[2025-11-05T06:56:32.675Z] 📊 Progress: 8110 processed | 8110 success | 0 failed | 100.0% success rate | 98.2/min
+[2025-11-05T06:56:39.065Z] 📊 Progress: 8120 processed | 8120 success | 0 failed | 100.0% success rate | 98.2/min
+[2025-11-05T06:56:45.766Z] 📊 Progress: 8130 processed | 8130 success | 0 failed | 100.0% success rate | 98.2/min
+[2025-11-05T06:56:51.602Z] 📊 Progress: 8140 processed | 8140 success | 0 failed | 100.0% success rate | 98.2/min
+[2025-11-05T06:56:57.352Z] 📊 Progress: 8150 processed | 8150 success | 0 failed | 100.0% success rate | 98.2/min
+[2025-11-05T06:57:03.079Z] 📊 Progress: 8160 processed | 8160 success | 0 failed | 100.0% success rate | 98.2/min
+[2025-11-05T06:57:09.038Z] 📊 Progress: 8170 processed | 8170 success | 0 failed | 100.0% success rate | 98.2/min
+[2025-11-05T06:57:14.875Z] 📊 Progress: 8180 processed | 8180 success | 0 failed | 100.0% success rate | 98.2/min
+[2025-11-05T06:57:20.880Z] 📊 Progress: 8190 processed | 8190 success | 0 failed | 100.0% success rate | 98.2/min
+[2025-11-05T06:57:26.697Z] 📊 Progress: 8200 processed | 8200 success | 0 failed | 100.0% success rate | 98.2/min
+[2025-11-05T06:57:26.714Z] 💾 Backup saved: embeddings-batch-8200-2025-11-05T06-57-26-698Z.json (100 records)
+[2025-11-05T06:57:32.539Z] 📊 Progress: 8210 processed | 8210 success | 0 failed | 100.0% success rate | 98.2/min
+[2025-11-05T06:57:38.369Z] 📊 Progress: 8220 processed | 8220 success | 0 failed | 100.0% success rate | 98.3/min
+[2025-11-05T06:57:44.259Z] 📊 Progress: 8230 processed | 8230 success | 0 failed | 100.0% success rate | 98.3/min
+[2025-11-05T06:57:50.201Z] 📊 Progress: 8240 processed | 8240 success | 0 failed | 100.0% success rate | 98.3/min
+[2025-11-05T06:57:56.055Z] 📊 Progress: 8250 processed | 8250 success | 0 failed | 100.0% success rate | 98.3/min
+[2025-11-05T06:58:01.849Z] 📊 Progress: 8260 processed | 8260 success | 0 failed | 100.0% success rate | 98.3/min
+[2025-11-05T06:58:07.681Z] 📊 Progress: 8270 processed | 8270 success | 0 failed | 100.0% success rate | 98.3/min
+[2025-11-05T06:58:13.521Z] 📊 Progress: 8280 processed | 8280 success | 0 failed | 100.0% success rate | 98.3/min
+[2025-11-05T06:58:19.618Z] 📊 Progress: 8290 processed | 8290 success | 0 failed | 100.0% success rate | 98.3/min
+[2025-11-05T06:58:25.433Z] 📊 Progress: 8300 processed | 8300 success | 0 failed | 100.0% success rate | 98.3/min
+[2025-11-05T06:58:25.452Z] 💾 Backup saved: embeddings-batch-8300-2025-11-05T06-58-25-433Z.json (100 records)
+[2025-11-05T06:58:31.232Z] 📊 Progress: 8310 processed | 8310 success | 0 failed | 100.0% success rate | 98.3/min
+[2025-11-05T06:58:35.257Z] 📊 Progress: 8317 processed | 8317 success | 0 failed | 100.0% success rate | 98.3/min
+[2025-11-05T06:58:35.266Z] 💾 Backup saved: embeddings-batch-8317-2025-11-05T06-58-35-257Z.json (17 records)
+[2025-11-05T06:58:35.567Z] 
+[2025-11-05T06:58:35.568Z] 🎉 === EMBEDDING GENERATION COMPLETE ===
+[2025-11-05T06:58:35.568Z] 📊 Final Statistics:
+[2025-11-05T06:58:35.569Z]    Total processed: 8317
+[2025-11-05T06:58:35.569Z]    Successful: 8317
+[2025-11-05T06:58:35.569Z]    Failed: 0
+[2025-11-05T06:58:35.569Z]    Success rate: 100.0%
+[2025-11-05T06:58:35.569Z]    Total time: 1h 24m 37s
+[2025-11-05T06:58:35.569Z]    Average rate: 98.3 apps/minute
+[2025-11-05T06:58:35.569Z] 📁 Backup files saved in: new_embeddings/
+[2025-11-05T06:58:35.569Z] 📋 Log file: embedding-generation-2025-11-05T05-33-58-527Z.log
