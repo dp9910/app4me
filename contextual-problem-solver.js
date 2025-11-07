@@ -239,13 +239,44 @@ Provide intelligent, specific search terms that would actually find helpful apps
   async handleGeneralQuery(userQuery) {
     console.log('ℹ️ GENERAL SEARCH MODE\n');
     
-    // Extract keywords for general search
+    // Try semantic search first for better relevance
+    let results = [];
+    
+    try {
+      console.log(`🔍 Searching semantically for: "${userQuery}"`);
+      results = await this.searchBySemanticSimilarity(userQuery, 12);
+      
+      if (results.length > 0) {
+        console.log(`✅ Found ${results.length} semantic matches`);
+        return {
+          query_type: 'general',
+          results: results.map(app => ({
+            ...app,
+            source: 'semantic_match',
+            relevance_score: app.similarity_score * 10,
+            search_term: userQuery
+          })),
+          total_apps: results.length
+        };
+      }
+    } catch (error) {
+      console.log(`❌ Semantic search failed: ${error.message}`);
+      console.log('🔄 Falling back to keyword search...');
+    }
+    
+    // Fallback to keyword search if semantic fails or returns no results
+    console.log('🔤 Using keyword search as fallback');
     const keywords = this.extractKeywords(userQuery);
-    const results = await this.searchByKeywords(keywords, 15);
+    results = await this.searchByKeywords(keywords, 15);
     
     return {
       query_type: 'general',
-      results,
+      results: results.map(app => ({
+        ...app,
+        source: 'keyword_match',
+        relevance_score: app.relevance * 10,
+        search_term: userQuery
+      })),
       total_apps: results.length
     };
   }

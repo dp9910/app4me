@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Test Contextual Flow</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; }
+        button { padding: 10px 20px; margin: 10px; cursor: pointer; }
+        .result { margin: 20px 0; padding: 15px; border: 1px solid #ddd; }
+        .debug { background: #f0f0f0; padding: 10px; margin: 10px 0; white-space: pre-wrap; }
+    </style>
+</head>
+<body>
+    <h1>Test Contextual Search Flow</h1>
+    
+    <button onclick="testProblemQuery()">Test Problem Query: "cant sleep, too much coffee"</button>
+    <button onclick="testGeneralQuery()">Test General Query: "fitness apps"</button>
+    
+    <div id="results"></div>
+
+    <script>
+        async function testProblemQuery() {
+            await testQuery("cant sleep, too much coffee", "Problem");
+        }
+        
+        async function testGeneralQuery() {
+            await testQuery("fitness apps", "General");
+        }
+        
+        async function testQuery(query, type) {
+            const resultsDiv = document.getElementById('results');
+            resultsDiv.innerHTML = `<div class="result">Testing ${type} Query: "${query}"...<br><br>Loading...</div>`;
+            
+            try {
+                const response = await fetch('/api/search/intent-driven', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ query, limit: 20 })
+                });
+
+                const data = await response.json();
+                
+                let html = `<div class="result">
+                    <h2>${type} Query Results</h2>
+                    <strong>Query:</strong> "${query}"<br>
+                    <strong>Success:</strong> ${data.success}<br>
+                    <strong>Query Type:</strong> ${data.metadata?.query_type}<br>
+                    <strong>Results Count:</strong> ${data.results?.length || 0}<br>
+                    <strong>Has Contextual Analysis:</strong> ${!!data.contextual_analysis}<br>
+                `;
+                
+                if (data.contextual_analysis) {
+                    html += `
+                    <br><strong>Contextual Analysis:</strong><br>
+                    - Analysis Type: ${data.contextual_analysis.query_type}<br>
+                    - User Situation: ${data.contextual_analysis.user_situation}<br>
+                    - Root Cause: ${data.contextual_analysis.root_cause}<br>
+                    - Urgency: ${data.contextual_analysis.urgency}<br>
+                    - Solution Steps: ${data.contextual_analysis.solution_steps?.length || 0}<br>
+                    
+                    <div class="debug">
+Should redirect to: /contextual-analysis?query=${encodeURIComponent(query)}
+                    </div>
+                    `;
+                }
+                
+                html += `<br><div class="debug">Full Response:\n${JSON.stringify(data, null, 2)}</div></div>`;
+                resultsDiv.innerHTML = html;
+                
+            } catch (error) {
+                resultsDiv.innerHTML = `<div class="result">Error: ${error.message}</div>`;
+            }
+        }
+    </script>
+</body>
+</html>
