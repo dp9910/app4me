@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { useAuth } from '@/lib/auth/auth-context';
 import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
@@ -51,10 +51,14 @@ export default function SwipePage() {
   const [sessionId, setSessionId] = useState<string | null>(null);
   const [sessionStartTime, setSessionStartTime] = useState<number | null>(null);
   const [isCompleting, setIsCompleting] = useState(false);
+  const isRedirectingRef = useRef<boolean>(false); // Track if we're redirecting to contextual analysis
+  const searchPerformed = useRef(false); // Track if search was performed to prevent duplicates
 
   useEffect(() => {
     const queryParam = searchParams.get('query');
-    if (queryParam) {
+    
+    if (queryParam && !searchPerformed.current) {
+      searchPerformed.current = true;
       setSearchQuery(decodeURIComponent(queryParam));
       handleSearchWithQuery(decodeURIComponent(queryParam));
     } else if (!loading && !user) {
@@ -69,8 +73,16 @@ export default function SwipePage() {
       if (sessionId && currentApp) {
         completeSwipeSessionIncomplete('user_stopped');
       }
+      
+      // DON'T clean up contextual analysis data if we're redirecting to it
+      if (!isRedirectingRef.current) {
+        sessionStorage.removeItem('contextualAnalysis');
+        sessionStorage.removeItem('searchResults');
+        sessionStorage.removeItem('useStoredResults');
+        sessionStorage.removeItem('skipContextualAnalysis');
+      }
     };
-  }, [sessionId, currentApp, swipedRightCards.length, swipedLeftCards.length, sessionStartTime]);
+  }, []); // Empty dependency array - only run on unmount
 
   const startSwipeSession = async (query: string, totalApps: number) => {
     if (!user) return null;
@@ -175,11 +187,70 @@ export default function SwipePage() {
   const handleSearchWithQuery = async (query: string) => {
     if (!query.trim()) return;
     
+    const trimmedQuery = query.trim();
+    
     // Update the search query state to match the actual query being used
-    setSearchQuery(query.trim());
+    setSearchQuery(trimmedQuery);
     setIsSearching(true);
     setSearchError(null);
     setHasSearched(true);
+    
+    // Check if we should use stored results instead of making a new API call
+    const useStored = sessionStorage.getItem('useStoredResults');
+    const storedResults = sessionStorage.getItem('searchResults');
+    
+    if (useStored && storedResults) {
+      try {
+        const parsed = JSON.parse(storedResults);
+        if (parsed.query === trimmedQuery && parsed.success && parsed.results) {
+          // Use stored results
+          sessionStorage.removeItem('useStoredResults');
+          sessionStorage.removeItem('searchResults');
+          
+          const normalizedResults = parsed.results.map((result: any) => ({
+            id: result.app_id,
+            app_id: result.app_id,
+            name: result.app_data.name,
+            artist: result.app_data.developer || 'Unknown Developer',
+            category: result.app_data.category,
+            primary_category: result.app_data.category,
+            icon: result.app_data.icon_url || '/default-app-icon.png',
+            icon_url: result.app_data.icon_url,
+            icon_url_512: result.app_data.icon_url,
+            url: result.app_data.url,
+            rating: result.app_data.rating || 0,
+            rating_average: result.app_data.rating,
+            description: result.app_data.description || 'No description available',
+            short_description: result.app_data.description,
+            full_description: result.app_data.description,
+            price: result.app_data.price || 'Free',
+            similarity_score: result.relevance_score / 10,
+            match_quality: result.search_method,
+            relevance_score: result.relevance_score,
+            personalized_one_liner: result.match_reason,
+            match_reason: result.match_reason,
+            matched_keywords: result.matched_keywords
+          }));
+
+          setSearchResults(normalizedResults);
+          setTotalCards(normalizedResults.length);
+          
+          if (normalizedResults.length > 0) {
+            setCurrentApp(normalizedResults[0]);
+            setAppStack(normalizedResults);
+            setCardIndex(1);
+            await startSwipeSession(query, normalizedResults.length);
+          } else {
+            setSearchError('No apps found matching your search.');
+          }
+          
+          setIsSearching(false);
+          return;
+        }
+      } catch (error) {
+        console.error('Error parsing stored results:', error);
+      }
+    }
     
     try {
       const response = await fetch('/api/search/intent-driven', {
@@ -188,7 +259,7 @@ export default function SwipePage() {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          query: query.trim(),
+          query: trimmedQuery,
           limit: 20
         }),
       });
@@ -197,6 +268,59 @@ export default function SwipePage() {
 
       if (!response.ok) {
         throw new Error(data.error || 'Search failed');
+      }
+
+      // Check if this is a problem query that should show contextual analysis
+      // BUT skip if user already went through contextual analysis for this session
+      const skipContextual = sessionStorage.getItem('skipContextualAnalysis');
+      
+      if (data.success && data.contextual_analysis && data.contextual_analysis.query_type === 'problem' && !skipContextual) {
+        // Mark that we're redirecting to prevent useEffect from re-triggering
+        isRedirectingRef.current = true;
+        
+        // Store the analysis data in session storage for the contextual analysis page
+        const analysisData = {
+          query: data.query,
+          contextual_analysis: data.contextual_analysis
+        };
+        
+        // Store the search results for later use (only essential parts to reduce size)
+        const essentialSearchData = {
+          query: data.query,
+          success: data.success,
+          results: data.results,
+          contextual_analysis: data.contextual_analysis
+        };
+        
+        try {
+          sessionStorage.setItem('contextualAnalysis', JSON.stringify(analysisData));
+          sessionStorage.setItem('searchResults', JSON.stringify(essentialSearchData));
+          
+          // Verify the data was stored
+          const verifyAnalysis = sessionStorage.getItem('contextualAnalysis');
+          const verifyResults = sessionStorage.getItem('searchResults');
+          
+          // Data stored successfully
+        } catch (error) {
+          console.error('❌ Failed to store session data:', error);
+          // Fallback: proceed without contextual analysis
+          isRedirectingRef.current = false;
+          return;
+        }
+        
+        // Add a small delay to ensure session storage is written before navigation
+        setTimeout(() => {
+          // Final verification before navigation
+          const finalCheck = sessionStorage.getItem('contextualAnalysis');
+          
+          if (finalCheck) {
+            router.push(`/contextual-analysis?query=${encodeURIComponent(trimmedQuery)}`);
+          } else {
+            isRedirectingRef.current = false;
+          }
+        }, 100);
+        
+        return;
       }
 
       if (data.success && data.results) {
@@ -234,7 +358,7 @@ export default function SwipePage() {
           setCardIndex(1);
           
           // Start a new swipe session
-          await startSwipeSession(query, normalizedResults.length);
+          await startSwipeSession(trimmedQuery, normalizedResults.length);
         } else {
           setSearchError('No apps found matching your search. Try different keywords or be more specific.');
         }
@@ -277,6 +401,13 @@ export default function SwipePage() {
       setIsCompleting(true);
       await completeSwipeSession('finished_all');
       setCurrentApp(null);
+      
+      // Clean up session storage to prevent re-triggering contextual analysis
+      sessionStorage.removeItem('contextualAnalysis');
+      sessionStorage.removeItem('searchResults');
+      sessionStorage.removeItem('useStoredResults');
+      sessionStorage.removeItem('skipContextualAnalysis');
+      
       // Show completion message then redirect
       setTimeout(() => {
         router.replace('/my-apps');
@@ -289,6 +420,16 @@ export default function SwipePage() {
     if (sessionId) {
       await completeSwipeSessionIncomplete('start_over');
     }
+    
+    // Clean up session storage
+    sessionStorage.removeItem('contextualAnalysis');
+    sessionStorage.removeItem('searchResults');
+    sessionStorage.removeItem('useStoredResults');
+    sessionStorage.removeItem('skipContextualAnalysis');
+    
+    // Clear search tracking
+    searchPerformed.current = false;
+    isRedirectingRef.current = false;
     
     setCurrentApp(null);
     setAppStack([]);
