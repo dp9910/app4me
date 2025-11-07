@@ -91,19 +91,19 @@ class ProcessedDataUploader {
   async getCurrentCounts() {
     console.log('📊 Getting current database counts...');
     
-    const [unifiedResult, featuresResult, embeddingsResult] = await Promise.all([
+    const [unifiedResult, featuresResult, newEmbeddingsResult] = await Promise.all([
       supabase.from('apps_unified').select('*', { count: 'exact', head: true }),
       supabase.from('app_features').select('*', { count: 'exact', head: true }),
-      supabase.from('app_embeddings').select('*', { count: 'exact', head: true })
+      supabase.from('new_embeddings').select('*', { count: 'exact', head: true })
     ]);
     
     const counts = {
       apps_unified: unifiedResult.count || 0,
       app_features: featuresResult.count || 0,
-      app_embeddings: embeddingsResult.count || 0
+      new_embeddings: newEmbeddingsResult.count || 0
     };
     
-    console.log(`  📊 Before upload - Apps: ${counts.apps_unified} | Features: ${counts.app_features} | Embeddings: ${counts.app_embeddings}`);
+    console.log(`  📊 Before upload - Apps: ${counts.apps_unified} | Features: ${counts.app_features} | Embeddings: ${counts.new_embeddings}`);
     
     return counts;
   }
@@ -247,7 +247,7 @@ class ProcessedDataUploader {
   }
 
   async uploadEmbeddings() {
-    console.log('🔢 Uploading embeddings to app_embeddings...');
+    console.log('🔢 Uploading embeddings to new_embeddings...');
 
     const embeddingsData = this.embeddings.map(embedding => {
       const appId = this.idMapping.get(embedding.bundle_id);
@@ -264,7 +264,7 @@ class ProcessedDataUploader {
 
     if (embeddingsData.length > 0) {
       const { error: embeddingsError } = await supabase
-        .from('app_embeddings')
+        .from('new_embeddings')
         .upsert(embeddingsData, { onConflict: 'app_id' });
       
       if (embeddingsError) throw embeddingsError;
@@ -279,16 +279,16 @@ class ProcessedDataUploader {
   async getFinalCounts() {
     console.log('📊 Getting final database counts...');
     
-    const [finalUnifiedResult, finalFeaturesResult, finalEmbeddingsResult] = await Promise.all([
+    const [finalUnifiedResult, finalFeaturesResult, finalNewEmbeddingsResult] = await Promise.all([
       supabase.from('apps_unified').select('*', { count: 'exact', head: true }),
       supabase.from('app_features').select('*', { count: 'exact', head: true }),
-      supabase.from('app_embeddings').select('*', { count: 'exact', head: true })
+      supabase.from('new_embeddings').select('*', { count: 'exact', head: true })
     ]);
     
     const finalCounts = {
       apps_unified: finalUnifiedResult.count || 0,
       app_features: finalFeaturesResult.count || 0,
-      app_embeddings: finalEmbeddingsResult.count || 0
+      new_embeddings: finalNewEmbeddingsResult.count || 0
     };
     
     return finalCounts;
@@ -324,7 +324,7 @@ class ProcessedDataUploader {
       console.log(`📊 Final tally:`);
       console.log(`  Apps unified:  ${beforeCounts.apps_unified} → ${afterCounts.apps_unified} (+${afterCounts.apps_unified - beforeCounts.apps_unified})`);
       console.log(`  App features:  ${beforeCounts.app_features} → ${afterCounts.app_features} (+${afterCounts.app_features - beforeCounts.app_features})`);
-      console.log(`  App embeddings: ${beforeCounts.app_embeddings} → ${afterCounts.app_embeddings} (+${afterCounts.app_embeddings - beforeCounts.app_embeddings})`);
+      console.log(`  New embeddings: ${beforeCounts.new_embeddings} → ${afterCounts.new_embeddings} (+${afterCounts.new_embeddings - beforeCounts.new_embeddings})`);
 
       console.log(`\n✅ Successfully uploaded chemistry apps to the database!`);
 

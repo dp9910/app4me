@@ -124,73 +124,118 @@ class ManualAppSearcher {
   }
 
   /**
-   * STEP 4: Check against existing apps_unified table (using local backup)
+   * STEP 4: Comprehensive duplicate check against all database tables
    */
   async checkExistingApps() {
-    console.log('\n🔍 Checking against existing apps_unified table (local backup)...');
+    console.log('\n🔍 Checking for duplicates across all database tables...');
     
     try {
-      // Load from local backup instead of database query
-      const backupPath = 'data-scraping/table-backups/apps_unified_2025-10-31T16-33-58-923Z.json';
+      // Get all apps from database to get their IDs for feature/embedding checks
+      console.log('  📊 Fetching apps from apps_unified...');
+      const { data: existingApps, error: appsError } = await supabase
+        .from('apps_unified')
+        .select('id, bundle_id, title');
       
-      if (!fs.existsSync(backupPath)) {
-        console.log('  ⚠️  Local backup not found, falling back to database query...');
-        const { data: existingApps, error } = await supabase
-          .from('apps_unified')
-          .select('bundle_id, title');
-        
-        if (error) throw error;
-        
-        existingApps.forEach(app => {
-          if (app.bundle_id) {
-            this.existingApps.add(app.bundle_id);
-          }
-          if (app.title) {
-            this.existingApps.add(app.title.toLowerCase().replace(/[^a-z0-9]/g, ''));
-          }
-        });
-        
-        console.log(`  Found ${existingApps.length} existing apps from database`);
-      } else {
-        // Load from local backup
-        console.log('  📁 Loading from local backup...');
-        const backupData = JSON.parse(fs.readFileSync(backupPath, 'utf-8'));
-        const existingApps = backupData.data || backupData;
-        
-        // Create set of existing bundle_ids and normalized titles
-        existingApps.forEach(app => {
-          if (app.bundle_id) {
-            this.existingApps.add(app.bundle_id);
-          }
-          if (app.title) {
-            this.existingApps.add(app.title.toLowerCase().replace(/[^a-z0-9]/g, ''));
-          }
-        });
-        
-        console.log(`  Found ${existingApps.length} existing apps from backup`);
-      }
+      if (appsError) throw appsError;
       
-      // Filter out existing apps with detailed logging
+      // Create lookup maps
+      const bundleIdToAppId = new Map();
+      const existingBundleIds = new Set();
+      const existingTitles = new Set();
+      
+      existingApps.forEach(app => {
+        if (app.bundle_id) {
+          existingBundleIds.add(app.bundle_id);
+          bundleIdToAppId.set(app.bundle_id, app.id);
+        }
+        if (app.title) {
+          existingTitles.add(app.title.toLowerCase().replace(/[^a-z0-9]/g, ''));
+        }
+      });
+      
+      console.log(`  ✅ Found ${existingApps.length} existing apps in database`);
+      
+      // Check which of our scraped apps already exist
+      const appsToCheck = [];
       this.newApps = this.combinedResults.filter(app => {
         const bundleKey = app.bundle_id;
         const titleKey = app.title?.toLowerCase().replace(/[^a-z0-9]/g, '');
         
-        const bundleExists = bundleKey && this.existingApps.has(bundleKey);
-        const titleExists = titleKey && this.existingApps.has(titleKey);
+        const bundleExists = bundleKey && existingBundleIds.has(bundleKey);
+        const titleExists = titleKey && existingTitles.has(titleKey);
         const isExisting = bundleExists || titleExists;
         
         if (isExisting) {
-          console.log(`    ⚠️  Skipping duplicate: "${app.title}" (${bundleExists ? 'bundle_id' : 'title'} match)`);
+          console.log(`    ⚠️  App exists: "${app.title}" (${bundleExists ? 'bundle_id' : 'title'} match)`);
+          // Still check if features/embeddings exist for this app
+          if (bundleExists) {
+            appsToCheck.push({
+              bundle_id: bundleKey,
+              app_id: bundleIdToAppId.get(bundleKey),
+              title: app.title
+            });
+          }
         }
         
         return !isExisting;
       });
       
-      console.log(`  New apps to process: ${this.newApps.length}`);
-      console.log(`  Duplicates skipped: ${this.combinedResults.length - this.newApps.length}`);
+      console.log(`  🆕 Truly new apps: ${this.newApps.length}`);
+      console.log(`  🔍 Checking features/embeddings for ${appsToCheck.length} existing apps...`);
+      
+      // For existing apps, check if features and embeddings already exist
+      if (appsToCheck.length > 0) {
+        const appIds = appsToCheck.map(app => app.app_id);
+        
+        // Check existing features
+        const { data: existingFeatures, error: featuresError } = await supabase
+          .from('app_features')
+          .select('app_id')
+          .in('app_id', appIds);
+        
+        if (featuresError) throw featuresError;
+        
+        // Check existing embeddings
+        const { data: existingEmbeddings, error: embeddingsError } = await supabase
+          .from('new_embeddings')
+          .select('app_id')
+          .in('app_id', appIds);
+        
+        if (embeddingsError) throw embeddingsError;
+        
+        const appsWithFeatures = new Set(existingFeatures.map(f => f.app_id));
+        const appsWithEmbeddings = new Set(existingEmbeddings.map(e => e.app_id));
+        
+        // Log what data already exists for each app
+        appsToCheck.forEach(app => {
+          const hasFeatures = appsWithFeatures.has(app.app_id);
+          const hasEmbeddings = appsWithEmbeddings.has(app.app_id);
+          
+          let status = [];
+          if (hasFeatures) status.push('features exist');
+          if (hasEmbeddings) status.push('embeddings exist');
+          
+          if (status.length > 0) {
+            console.log(`    📋 "${app.title}": ${status.join(', ')} - skipping generation`);
+          } else {
+            console.log(`    🔄 "${app.title}": missing data - needs processing`);
+            // Add back to newApps for feature/embedding generation only
+            // But mark as existing app so we don't add to apps_unified
+            this.newApps.push({
+              ...this.combinedResults.find(r => r.bundle_id === app.bundle_id),
+              _existingApp: true,
+              _needsFeatures: !hasFeatures,
+              _needsEmbeddings: !hasEmbeddings
+            });
+          }
+        });
+      }
+      
+      console.log(`  📊 Final processing queue: ${this.newApps.length} apps`);
+      console.log(`  💰 Estimated API calls saved: ${(this.combinedResults.length - this.newApps.length) * 2} (features + embeddings)`);
       
     } catch (error) {
-      console.error('❌ Error checking existing apps:', error);
+      console.error('❌ Error checking existing data:', error);
       throw error;
     }
   }
@@ -269,17 +314,32 @@ Return only the JSON object:`;
   }
 
   /**
-   * STEP 6: Generate embeddings using Gemini
+   * STEP 6: Generate embeddings using new embedding generation approach
    */
   async generateEmbedding(app) {
     console.log(`  🔢 Generating embedding for: ${app.title}`);
     
     try {
-      const model = genAI.getGenerativeModel({ model: 'text-embedding-004' });
-      const text = `${app.title} ${app.developer} ${app.category} ${app.description}`.slice(0, 1000);
+      const embeddingModel = genAI.getGenerativeModel({ model: 'text-embedding-004' });
       
-      const result = await model.embedContent(text);
-      return result.embedding.values;
+      // Use the same rich text creation approach as the new embedding system
+      const embeddingText = this.createEmbeddingText(app);
+      
+      // Generate embedding with validation
+      if (embeddingText.length < 10) {
+        console.log(`    ⚠️ Embedding text too short for ${app.title}`);
+        return null;
+      }
+      
+      const result = await embeddingModel.embedContent(embeddingText);
+      const embedding = result.embedding.values;
+      
+      // Verify embedding is correct size
+      if (embedding.length !== 768) {
+        throw new Error(`Invalid embedding size: ${embedding.length}, expected 768`);
+      }
+      
+      return embedding;
     } catch (error) {
       console.error(`    ❌ Embedding generation failed for ${app.title}:`, error.message);
       return null;
@@ -287,15 +347,110 @@ Return only the JSON object:`;
   }
 
   /**
+   * Generate embedding with retry logic (same as new system)
+   */
+  async generateEmbeddingWithRetry(app, maxRetries = 3) {
+    let embedding = null;
+    let attempt = 0;
+    
+    while (attempt < maxRetries && !embedding) {
+      try {
+        embedding = await this.generateEmbedding(app);
+        break; // Success
+      } catch (error) {
+        attempt++;
+        console.log(`    ⚠️  Attempt ${attempt}/${maxRetries} failed for ${app.title}: ${error.message}`);
+        
+        if (attempt < maxRetries) {
+          // Wait longer for rate limit errors
+          const delay = error.message.includes('429') ? 5000 : 200 * attempt;
+          await new Promise(resolve => setTimeout(resolve, delay));
+        }
+      }
+    }
+    
+    return embedding;
+  }
+
+  /**
+   * Create rich embedding text from app metadata (same as new system)
+   */
+  createEmbeddingText(app) {
+    const parts = [];
+    
+    // 1. App name (most important for matching)
+    if (app.title) {
+      parts.push(`App: ${app.title}`);
+    }
+    
+    // 2. Primary category (helps with classification)
+    if (app.category) {
+      parts.push(`Category: ${app.category}`);
+    }
+    
+    // 3. Full description (detailed functionality) - truncated to avoid token limits
+    if (app.description && app.description.trim()) {
+      // Clean up description text
+      let description = app.description
+        .replace(/\n+/g, ' ')  // Replace newlines with spaces
+        .replace(/\s+/g, ' ')  // Normalize whitespace
+        .trim();
+      
+      // Truncate to keep under token limits
+      description = description.substring(0, 2000);
+      parts.push(description);
+    }
+    
+    // 4. Developer name (can indicate app type/quality)
+    if (app.developer && app.developer.trim()) {
+      parts.push(`Developer: ${app.developer.trim()}`);
+    }
+    
+    // 5. Rating context (helps with quality indication)
+    if (app.rating && app.rating_count) {
+      const rating = parseFloat(app.rating);
+      const count = parseInt(app.rating_count);
+      
+      if (rating > 0 && count > 0) {
+        let ratingContext = `Rated ${rating}/5`;
+        if (count >= 1000) {
+          ratingContext += ` (${Math.round(count/1000)}k reviews)`;
+        } else if (count >= 100) {
+          ratingContext += ` (${count} reviews)`;
+        }
+        parts.push(ratingContext);
+      }
+    }
+    
+    // 6. Price context (free vs paid can indicate app type)
+    if (app.price !== undefined) {
+      if (app.price === 0) {
+        parts.push('Free app');
+      } else {
+        parts.push(`Paid app ($${app.price})`);
+      }
+    }
+    
+    // Join with double newlines for clarity
+    const text = parts.join('\n\n').trim();
+    
+    // Final length limit to ensure we don't exceed token limits
+    return text.substring(0, 5000);
+  }
+
+  /**
    * STEP 5: Save unique apps locally first
    */
   saveUniqueAppsLocally() {
-    if (this.newApps.length === 0) {
-      console.log('\n✅ No new apps to save');
+    // Filter out existing apps (those with _existingApp flag) - only save truly new apps
+    const trulyNewApps = this.newApps.filter(app => !app._existingApp);
+    
+    if (trulyNewApps.length === 0) {
+      console.log('\n✅ No truly new apps to save');
       return null;
     }
     
-    console.log(`\n💾 Saving ${this.newApps.length} unique apps locally...`);
+    console.log(`\n💾 Saving ${trulyNewApps.length} truly new apps locally...`);
     
     // Create new-apps directory if it doesn't exist
     const newAppsDir = 'data-scraping/new-apps';
@@ -313,9 +468,9 @@ Return only the JSON object:`;
       search_term: this.searchTerm,
       timestamp: new Date().toISOString(),
       total_found: this.combinedResults.length,
-      duplicates_skipped: this.combinedResults.length - this.newApps.length,
-      unique_apps_count: this.newApps.length,
-      apps: this.newApps
+      duplicates_skipped: this.combinedResults.length - trulyNewApps.length,
+      unique_apps_count: trulyNewApps.length,
+      apps: trulyNewApps
     };
     
     fs.writeFileSync(filename, JSON.stringify(uniqueAppsData, null, 2));
@@ -411,6 +566,13 @@ Return only the JSON object:`;
     
     for (let i = 0; i < this.newApps.length; i++) {
       const app = this.newApps[i];
+      
+      // Skip feature generation if app already has features
+      if (app._existingApp && app._needsFeatures === false) {
+        console.log(`\n[${i + 1}/${this.newApps.length}] Skipping features for: ${app.title} (already exists)`);
+        continue;
+      }
+      
       console.log(`\n[${i + 1}/${this.newApps.length}] Generating features for: ${app.title}`);
       
       try {
@@ -478,27 +640,36 @@ Return only the JSON object:`;
     
     for (let i = 0; i < this.newApps.length; i++) {
       const app = this.newApps[i];
+      
+      // Skip embedding generation if app already has embeddings
+      if (app._existingApp && app._needsEmbeddings === false) {
+        console.log(`\n[${i + 1}/${this.newApps.length}] Skipping embeddings for: ${app.title} (already exists)`);
+        continue;
+      }
+      
       console.log(`\n[${i + 1}/${this.newApps.length}] Generating embedding for: ${app.title}`);
       
       try {
-        const embedding = await this.generateEmbedding(app);
+        const embedding = await this.generateEmbeddingWithRetry(app);
         
         if (embedding) {
           const embeddingRecord = {
             bundle_id: app.bundle_id,
             title: app.title,
             embedding: embedding,
+            embedding_model: 'text-embedding-004',
+            text_used: this.createEmbeddingText(app).substring(0, 500), // Store sample for debugging
             generated_at: new Date().toISOString()
           };
           
           newEmbeddings.push(embeddingRecord);
-          console.log(`    ✅ Embedding generated successfully`);
+          console.log(`    ✅ Embedding generated successfully (${embedding.length} dimensions)`);
         } else {
           console.log(`    ⚠️ No embedding generated`);
         }
         
-        // Small delay to avoid rate limits
-        await new Promise(resolve => setTimeout(resolve, 1000));
+        // Rate limiting with exponential backoff
+        await new Promise(resolve => setTimeout(resolve, 200));
         
       } catch (error) {
         console.error(`    ❌ Failed to generate embedding for ${app.title}:`, error.message);
