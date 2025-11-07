@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 
-// Import the state-of-art search class
-const StateOfArtSearch = require('../../../../../data-scraping/scripts/state-of-art-search.js');
+// Import the contextual problem solver
+const ContextualProblemSolver = require('../../../../../contextual-problem-solver.js');
 
 export async function POST(request: NextRequest) {
   try {
@@ -32,47 +32,44 @@ export async function POST(request: NextRequest) {
     
     const startTime = Date.now();
     
-    console.log(`🔍 Intent-driven search (state-of-art) request: "${query}" (limit: ${limit})`);
+    console.log(`🧠 Contextual problem solver request: "${query}" (limit: ${limit})`);
     
-    // Initialize and perform state-of-art search
-    const stateOfArtSearch = new StateOfArtSearch();
-    const searchResponse = await stateOfArtSearch.search(query.trim(), Math.min(limit, 50));
+    // Initialize and perform contextual search
+    const solver = new ContextualProblemSolver();
+    const searchResponse = await solver.solveUserQuery(query.trim());
     
     const searchTime = Date.now() - startTime;
     
-    console.log(`✅ Intent-driven search completed in ${searchTime}ms: ${searchResponse.results?.length || 0} results`);
+    console.log(`✅ Contextual search completed in ${searchTime}ms: ${searchResponse.query_type} query`);
     
-    // Convert state-of-art results to expected format
-    const formattedResults = (searchResponse.results || []).map(result => ({
-      app_id: result.id,
-      app_data: {
-        name: result.title,
-        category: result.primary_category,
-        rating: result.rating,
-        icon_url: result.icon_url,
-        description: result.description,
-        developer: 'Unknown Developer',
-        price: 'Free',
-        url: null
-      },
-      relevance_score: result.relevance_score || 5,
-      match_reason: result.feature_match ? 
-        `Feature match: ${result.feature_match.use_case}` : 
-        `${result.search_method} match`,
-      matched_keywords: result.matched_keywords || [],
-      search_method: result.search_method || 'state_of_art'
-    }));
+    // Convert contextual search results to expected format
+    const formattedResults = await formatContextualResults(searchResponse, limit);
 
     // Prepare response
     const response = {
       success: true,
       query: query.trim(),
       results: formattedResults,
+      // Include guidance analysis for problem queries
+      contextual_analysis: searchResponse.query_type === 'problem' ? {
+        query_type: searchResponse.query_type,
+        user_situation: searchResponse.analysis?.user_situation,
+        root_cause: searchResponse.analysis?.root_cause,
+        urgency: searchResponse.analysis?.urgency,
+        emotional_state: searchResponse.analysis?.emotional_state,
+        solution_steps: searchResponse.solution_steps?.map((step: any) => ({
+          step_number: step.step,
+          step_name: step.step_name,
+          focus: step.focus,
+          app_count: step.apps?.length || 0
+        }))
+      } : null,
       metadata: {
         count: formattedResults.length,
         searchTime: `${searchTime}ms`,
-        searchType: 'state-of-art',
-        intent: searchResponse.intent,
+        searchType: 'contextual',
+        query_type: searchResponse.query_type,
+        intent: searchResponse.analysis?.user_situation || 'General search',
         timestamp: new Date().toISOString()
       }
     };
@@ -81,7 +78,7 @@ export async function POST(request: NextRequest) {
     const headers = new Headers();
     headers.set('X-Search-Time', `${searchTime}ms`);
     headers.set('X-Result-Count', formattedResults.length.toString());
-    headers.set('X-Search-Type', 'state-of-art');
+    headers.set('X-Search-Type', 'contextual');
     
     return NextResponse.json(response, { headers });
     
@@ -126,26 +123,25 @@ export async function GET(request: NextRequest) {
       );
     }
     
-    // Perform quick search with state-of-art algorithm
-    const stateOfArtSearch = new StateOfArtSearch();
-    const searchResponse = await stateOfArtSearch.search(query, Math.min(limit, 20));
+    // Perform quick search with contextual solver
+    const solver = new ContextualProblemSolver();
+    const searchResponse = await solver.solveUserQuery(query);
     
     // Simplified response for GET
+    const formattedResults = await formatContextualResults(searchResponse, Math.min(limit, 20));
     const response = {
       success: true,
       query,
-      results: (searchResponse.results || []).map(r => ({
-        app_id: r.id,
-        name: r.title,
-        category: r.primary_category,
-        rating: r.rating,
-        icon_url: r.icon_url,
+      results: formattedResults.map(r => ({
+        app_id: r.app_id,
+        name: r.app_data.name,
+        category: r.app_data.category,
+        rating: r.app_data.rating,
+        icon_url: r.app_data.icon_url,
         relevance_score: r.relevance_score || 5,
-        match_reason: r.feature_match ? 
-          `Feature match: ${r.feature_match.use_case}` : 
-          `${r.search_method} match`
+        match_reason: r.match_reason
       })),
-      count: searchResponse.results?.length || 0
+      count: formattedResults.length
     };
     
     return NextResponse.json(response);
@@ -162,6 +158,80 @@ export async function GET(request: NextRequest) {
       { status: 500 }
     );
   }
+}
+
+/**
+ * Format contextual search results for swipe interface
+ */
+async function formatContextualResults(searchResponse: any, limit: number) {
+  let allApps: any[] = [];
+  
+  if (searchResponse.query_type === 'problem') {
+    // For problem queries, collect apps from all solution steps
+    for (const step of searchResponse.solution_steps || []) {
+      if (step.apps && step.apps.length > 0) {
+        const stepApps = step.apps.map((app: any) => ({
+          app_id: app.app_id,
+          app_data: {
+            name: app.title,
+            category: app.primary_category || 'Apps',
+            rating: app.rating || 0,
+            icon_url: app.icon_url || '/default-app-icon.png',
+            description: app.description || 'No description available',
+            developer: app.developer || 'Unknown Developer',
+            price: app.price || 'Free',
+            url: null
+          },
+          relevance_score: app.relevance_score || 7,
+          match_reason: `Step ${step.step}: ${step.focus} - ${app.source === 'keyword_match' ? 'Perfect match' : 'Recommended'}`,
+          matched_keywords: [app.search_term || step.step_name],
+          search_method: 'contextual_guidance',
+          step_context: {
+            step_number: step.step,
+            step_focus: step.focus,
+            step_description: step.step_name
+          }
+        }));
+        
+        allApps.push(...stepApps);
+      }
+    }
+  } else {
+    // For general queries, use main recommendations
+    allApps = (searchResponse.results || []).map((app: any) => ({
+      app_id: app.app_id,
+      app_data: {
+        name: app.title,
+        category: app.primary_category || 'Apps',
+        rating: app.rating || 0,
+        icon_url: app.icon_url || '/default-app-icon.png',
+        description: app.description || 'No description available',
+        developer: app.developer || 'Unknown Developer',
+        price: app.price || 'Free',
+        url: null
+      },
+      relevance_score: Math.round((app.relevance || 0.5) * 10),
+      match_reason: app.source === 'keyword_match' ? 'Direct match for your search' : 'Recommended based on your query',
+      matched_keywords: [app.search_term || 'general'],
+      search_method: 'contextual_general'
+    }));
+  }
+  
+  // Remove duplicates and return top results
+  const uniqueApps = allApps.reduce((acc, app) => {
+    const existingIndex = acc.findIndex(existing => existing.app_id === app.app_id);
+    if (existingIndex === -1) {
+      acc.push(app);
+    } else if (app.relevance_score > acc[existingIndex].relevance_score) {
+      acc[existingIndex] = app; // Replace with higher relevance
+    }
+    return acc;
+  }, []);
+  
+  // Sort by relevance score and return limited results
+  return uniqueApps
+    .sort((a, b) => b.relevance_score - a.relevance_score)
+    .slice(0, limit);
 }
 
 /**
