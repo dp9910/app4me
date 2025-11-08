@@ -383,18 +383,22 @@ Provide intelligent, specific search terms that would actually find helpful apps
       const queryEmbedding = embeddingResponse.embedding.values;
       console.log(`🔍 DEBUG: Generated embedding with ${queryEmbedding.length} dimensions`);
 
-      // 3. Get embeddings only for candidate apps
-      const candidateIds = candidateApps.map(app => app.app_id);
+      // 2.5. Apply feature-based filtering
+      const featureFilteredApps = await this.applyFeatureFiltering(candidateApps, queryText);
+      console.log(`🔍 DEBUG: After feature filtering: ${featureFilteredApps.length} apps`);
+
+      // 3. Get embeddings only for feature-filtered apps
+      const finalCandidateIds = featureFilteredApps.map(app => app.app_id);
       const { data: candidateEmbeddings, error: fetchError } = await this.supabase
         .from('new_embeddings')
         .select('app_id, embedding')
-        .in('app_id', candidateIds);
+        .in('app_id', finalCandidateIds);
 
       if (fetchError) {
         throw new Error(`Error fetching embeddings: ${fetchError.message}`);
       }
 
-      console.log(`🔍 DEBUG: Fetched ${candidateEmbeddings.length} embeddings for candidates`);
+      console.log(`🔍 DEBUG: Fetched ${candidateEmbeddings.length} embeddings for feature-filtered candidates`);
 
       // 4. Calculate similarities only for candidates
       const similarities = [];
@@ -428,10 +432,21 @@ Provide intelligent, specific search terms that would actually find helpful apps
         }));
       }
 
-      // 6. Combine with app details from candidates
+      // 6. Combine with app details and apply feature-aware ranking boosts
+      const detectedIntents = await this.detectQueryIntent(queryText);
       const combinedResults = topSimilarities.map(sim => {
-        const candidateApp = candidateApps.find(app => app.app_id === sim.app_id);
+        const candidateApp = featureFilteredApps.find(app => app.app_id === sim.app_id);
         if (!candidateApp) return null;
+        
+        let boostedSimilarity = sim.similarity;
+        let boostReasons = [];
+        
+        // Apply feature-based boosts if we have intent detection
+        if (detectedIntents.length > 0) {
+          const boostInfo = this.calculateFeatureBoosts(candidateApp, detectedIntents, queryText);
+          boostedSimilarity = sim.similarity * boostInfo.multiplier;
+          boostReasons = boostInfo.reasons;
+        }
         
         return {
           app_id: candidateApp.app_id,
@@ -442,10 +457,15 @@ Provide intelligent, specific search terms that would actually find helpful apps
           icon_url: candidateApp.icon_url,
           price: candidateApp.price,
           primary_category: candidateApp.primary_category,
-          similarity_score: sim.similarity,
-          relevance: sim.similarity
+          similarity_score: boostedSimilarity,
+          relevance: boostedSimilarity,
+          boost_applied: boostReasons.length > 0,
+          boost_reasons: boostReasons
         };
       }).filter(Boolean);
+
+      // Sort by boosted similarity scores
+      combinedResults.sort((a, b) => b.similarity_score - a.similarity_score);
 
       return combinedResults;
 
@@ -600,6 +620,415 @@ Provide intelligent, specific search terms that would actually find helpful apps
       console.error(`Full semantic search failed: ${error.message}`);
       return [];
     }
+  }
+
+  /**
+   * Apply feature-based filtering to candidates based on query intent
+   */
+  async applyFeatureFiltering(candidates, queryText) {
+    try {
+      // Detect user intents from query
+      const intents = await this.detectQueryIntent(queryText);
+      console.log(`🔍 DEBUG: Detected intents: ${intents.join(', ')}`);
+      
+      if (intents.length === 0) {
+        return candidates; // No specific intents detected, return all candidates
+      }
+      
+      // Get candidate IDs for feature lookup
+      const candidateIds = candidates.map(app => app.app_id);
+      
+      // Fetch features for candidates (using actual schema)
+      const { data: features, error: featuresError } = await this.supabase
+        .from('app_features')
+        .select('app_id, primary_use_case, target_user, key_benefit, complexity, category_classification, quality_signals')
+        .in('app_id', candidateIds);
+      
+      if (featuresError || !features) {
+        console.log(`⚠️ Warning: Could not fetch features for filtering: ${featuresError?.message || 'No features found'}`);
+        return candidates; // Fallback to all candidates
+      }
+      
+      // Create feature lookup map
+      const featureMap = new Map();
+      features.forEach(feature => {
+        featureMap.set(feature.app_id, feature);
+      });
+      
+      // Filter candidates based on detected intents
+      const filteredCandidates = candidates.filter(candidate => {
+        const appFeatures = featureMap.get(candidate.app_id);
+        if (!appFeatures) return true; // Keep if no features data
+        
+        return this.matchesIntents(appFeatures, intents, queryText);
+      });
+      
+      console.log(`🔍 DEBUG: Feature filtering: ${candidates.length} → ${filteredCandidates.length} candidates`);
+      
+      // If filtering removes too many candidates, relax the filtering
+      if (filteredCandidates.length < Math.max(3, candidates.length * 0.3)) {
+        console.log(`🔍 DEBUG: Feature filtering too restrictive, using relaxed filtering`);
+        return this.applyRelaxedFeatureFiltering(candidates, featureMap, intents, queryText);
+      }
+      
+      return filteredCandidates;
+      
+    } catch (error) {
+      console.error(`Feature filtering failed: ${error.message}`);
+      return candidates; // Fallback to original candidates
+    }
+  }
+
+  /**
+   * Detect user intents from query text
+   */
+  async detectQueryIntent(queryText) {
+    const query = queryText.toLowerCase();
+    const intents = [];
+    
+    // Pricing intent
+    if (query.match(/\b(free|no cost|without cost|gratis)\b/)) {
+      intents.push('free');
+    }
+    if (query.match(/\b(paid|premium|pro|subscription|buy)\b/)) {
+      intents.push('paid');
+    }
+    
+    // Difficulty/Learning curve intent
+    if (query.match(/\b(easy|simple|beginner|basic|straightforward|user-friendly)\b/)) {
+      intents.push('easy');
+    }
+    if (query.match(/\b(advanced|complex|professional|expert|sophisticated)\b/)) {
+      intents.push('advanced');
+    }
+    
+    // Connectivity intent
+    if (query.match(/\b(offline|without internet|no connection|no wifi|airplane mode)\b/)) {
+      intents.push('offline');
+    }
+    
+    // Social intent
+    if (query.match(/\b(share|social|friends|community|collaborate|team|group)\b/)) {
+      intents.push('social');
+    }
+    
+    // Customization intent
+    if (query.match(/\b(customize|personalize|configure|settings|options|flexible)\b/)) {
+      intents.push('customizable');
+    }
+    
+    // Privacy intent
+    if (query.match(/\b(private|privacy|secure|confidential|anonymous)\b/)) {
+      intents.push('privacy');
+    }
+    
+    // Content type intents
+    if (query.match(/\b(photo|image|picture|visual|camera)\b/)) {
+      intents.push('visual');
+    }
+    if (query.match(/\b(text|writing|document|note|word)\b/)) {
+      intents.push('text');
+    }
+    if (query.match(/\b(audio|music|sound|voice|podcast)\b/)) {
+      intents.push('audio');
+    }
+    
+    return intents;
+  }
+
+  /**
+   * Check if app features match detected intents (updated for actual schema)
+   */
+  matchesIntents(features, intents, queryText) {
+    for (const intent of intents) {
+      switch (intent) {
+        case 'free':
+          // Check if primary_use_case or key_benefit mentions free
+          const freeText = `${features.primary_use_case || ''} ${features.key_benefit || ''}`.toLowerCase();
+          if (!freeText.includes('free') && !freeText.includes('no cost')) {
+            // For now, don't filter based on free since we don't have pricing_model
+            // This could be enhanced later with price data from apps_unified table
+          }
+          break;
+          
+        case 'easy':
+          if (features.complexity && features.complexity.toLowerCase() !== 'simple') {
+            return false;
+          }
+          break;
+          
+        case 'advanced':
+          if (features.complexity && features.complexity.toLowerCase() === 'simple') {
+            return false;
+          }
+          break;
+          
+        case 'social':
+          // Check if primary_use_case or key_benefit mentions social features
+          const socialText = `${features.primary_use_case || ''} ${features.key_benefit || ''}`.toLowerCase();
+          if (!socialText.match(/\b(social|share|community|friend|collaborate|team)\b/)) {
+            return false;
+          }
+          break;
+          
+        case 'visual':
+          // Check if use case involves visual/photo/image content
+          const visualText = `${features.primary_use_case || ''} ${features.key_benefit || ''}`.toLowerCase();
+          if (!visualText.match(/\b(photo|image|picture|visual|camera|edit|filter)\b/)) {
+            return false;
+          }
+          break;
+          
+        case 'audio':
+          // Check if use case involves audio/music content
+          const audioText = `${features.primary_use_case || ''} ${features.key_benefit || ''}`.toLowerCase();
+          if (!audioText.match(/\b(music|audio|sound|voice|song|listen|play)\b/)) {
+            return false;
+          }
+          break;
+          
+        case 'offline':
+          // Check if key benefit mentions offline capability
+          const offlineText = `${features.key_benefit || ''}`.toLowerCase();
+          if (!offlineText.includes('offline') && !offlineText.includes('without internet')) {
+            // For now, don't strictly filter since we don't have offline_capability field
+          }
+          break;
+          
+        // Skip filtering for other intents if we don't have the data
+        default:
+          break;
+      }
+    }
+    
+    return true; // Matches all intents (or no strict filtering applied)
+  }
+
+  /**
+   * Apply relaxed feature filtering when strict filtering is too restrictive
+   */
+  applyRelaxedFeatureFiltering(candidates, featureMap, intents, queryText) {
+    // Score candidates based on partial intent matching
+    const scoredCandidates = candidates.map(candidate => {
+      const appFeatures = featureMap.get(candidate.app_id);
+      if (!appFeatures) {
+        return { candidate, score: 0.5 }; // Neutral score for apps without features
+      }
+      
+      let score = 0.5; // Base score
+      let matches = 0;
+      
+      for (const intent of intents) {
+        if (this.partiallyMatchesIntent(appFeatures, intent)) {
+          matches++;
+          score += 0.3; // Boost for each matching intent
+        }
+      }
+      
+      // Bonus for apps that match multiple intents
+      if (matches > 1) {
+        score += 0.2;
+      }
+      
+      return { candidate, score };
+    });
+    
+    // Sort by score and return top candidates
+    scoredCandidates.sort((a, b) => b.score - a.score);
+    
+    // Return top 70% of candidates
+    const keepCount = Math.max(5, Math.ceil(candidates.length * 0.7));
+    return scoredCandidates.slice(0, keepCount).map(item => item.candidate);
+  }
+
+  /**
+   * Check if features partially match intent (more lenient, updated for actual schema)
+   */
+  partiallyMatchesIntent(features, intent) {
+    switch (intent) {
+      case 'easy':
+        return features.complexity && features.complexity.toLowerCase() === 'simple';
+      case 'advanced':
+        return features.complexity && features.complexity.toLowerCase() !== 'simple';
+      case 'social':
+        const socialText = `${features.primary_use_case || ''} ${features.key_benefit || ''}`.toLowerCase();
+        return socialText.match(/\b(social|share|community|friend)\b/) !== null;
+      case 'visual':
+        const visualText = `${features.primary_use_case || ''} ${features.key_benefit || ''}`.toLowerCase();
+        return visualText.match(/\b(photo|image|picture|visual|camera)\b/) !== null;
+      case 'audio':
+        const audioText = `${features.primary_use_case || ''} ${features.key_benefit || ''}`.toLowerCase();
+        return audioText.match(/\b(music|audio|sound|voice|song)\b/) !== null;
+      case 'free':
+        const freeText = `${features.primary_use_case || ''} ${features.key_benefit || ''}`.toLowerCase();
+        return freeText.match(/\b(free|no cost)\b/) !== null;
+      default:
+        return false;
+    }
+  }
+
+  /**
+   * Calculate feature-based ranking boosts for an app
+   */
+  calculateFeatureBoosts(app, intents, queryText) {
+    let multiplier = 1.0;
+    const reasons = [];
+    
+    // We need to get the app's features for boost calculation
+    // Since we already fetched features in filtering, we should pass them through
+    // For now, implement basic boosts based on app metadata
+    
+    // Quality boost based on rating
+    if (app.rating && app.rating >= 4.5) {
+      multiplier *= 1.1;
+      reasons.push('High rating (4.5+)');
+    } else if (app.rating && app.rating >= 4.0) {
+      multiplier *= 1.05;
+      reasons.push('Good rating (4.0+)');
+    }
+    
+    // Category alignment boosts
+    for (const intent of intents) {
+      switch (intent) {
+        case 'social':
+          if (app.primary_category === 'Social Networking') {
+            multiplier *= 1.15;
+            reasons.push('Social networking app');
+          }
+          break;
+          
+        case 'visual':
+          if (['Photography', 'Graphics & Design', 'Photo & Video'].includes(app.primary_category)) {
+            multiplier *= 1.15;
+            reasons.push('Visual/photo app category');
+          }
+          break;
+          
+        case 'audio':
+          if (['Music', 'Entertainment'].includes(app.primary_category)) {
+            multiplier *= 1.15;
+            reasons.push('Music/audio app category');
+          }
+          break;
+          
+        case 'easy':
+          // Boost apps with simpler titles (often indicates ease of use)
+          if (app.title && app.title.split(' ').length <= 3) {
+            multiplier *= 1.05;
+            reasons.push('Simple app name');
+          }
+          break;
+      }
+    }
+    
+    // Title relevance boost
+    const titleLower = (app.title || '').toLowerCase();
+    const queryLower = queryText.toLowerCase();
+    
+    // Exact keyword matches in title get higher boost
+    const queryWords = queryLower.split(/\s+/);
+    const titleWords = titleLower.split(/\s+/);
+    let exactMatches = 0;
+    
+    for (const queryWord of queryWords) {
+      if (queryWord.length > 2 && titleWords.some(titleWord => titleWord.includes(queryWord))) {
+        exactMatches++;
+      }
+    }
+    
+    if (exactMatches >= 2) {
+      multiplier *= 1.1;
+      reasons.push(`${exactMatches} keyword matches in title`);
+    }
+    
+    // Cap the maximum boost to prevent over-boosting
+    multiplier = Math.min(multiplier, 1.5);
+    
+    return {
+      multiplier,
+      reasons
+    };
+  }
+
+  /**
+   * Enhanced feature boost calculation with actual feature data
+   */
+  async calculateAdvancedFeatureBoosts(app, features, intents, queryText) {
+    let multiplier = 1.0;
+    const reasons = [];
+    
+    if (!features) {
+      return this.calculateFeatureBoosts(app, intents, queryText);
+    }
+    
+    // Intent-based feature boosts
+    for (const intent of intents) {
+      switch (intent) {
+        case 'easy':
+          if (features.complexity === 'simple') {
+            multiplier *= 1.2;
+            reasons.push('Simple complexity');
+          }
+          break;
+          
+        case 'social':
+          const socialText = `${features.primary_use_case || ''} ${features.key_benefit || ''}`.toLowerCase();
+          if (socialText.match(/\b(social|share|community|friend|collaborate)\b/)) {
+            multiplier *= 1.2;
+            reasons.push('Social features mentioned');
+          }
+          break;
+          
+        case 'visual':
+          const visualText = `${features.primary_use_case || ''} ${features.key_benefit || ''}`.toLowerCase();
+          if (visualText.match(/\b(photo|image|picture|visual|camera|edit)\b/)) {
+            multiplier *= 1.2;
+            reasons.push('Visual/photo features');
+          }
+          break;
+          
+        case 'audio':
+          const audioText = `${features.primary_use_case || ''} ${features.key_benefit || ''}`.toLowerCase();
+          if (audioText.match(/\b(music|audio|sound|voice|song|listen|play)\b/)) {
+            multiplier *= 1.2;
+            reasons.push('Audio/music features');
+          }
+          break;
+      }
+    }
+    
+    // Quality signals boost
+    if (features.quality_signals && features.quality_signals >= 0.8) {
+      multiplier *= 1.15;
+      reasons.push('High quality signals');
+    } else if (features.quality_signals && features.quality_signals >= 0.6) {
+      multiplier *= 1.05;
+      reasons.push('Good quality signals');
+    }
+    
+    // Target user alignment
+    if (features.target_user) {
+      const targetLower = features.target_user.toLowerCase();
+      const queryLower = queryText.toLowerCase();
+      
+      if (queryLower.includes('beginner') && targetLower.includes('beginner')) {
+        multiplier *= 1.1;
+        reasons.push('Beginner-friendly');
+      }
+    }
+    
+    // Apply base boosts from simpler method
+    const baseBoost = this.calculateFeatureBoosts(app, intents, queryText);
+    multiplier *= baseBoost.multiplier;
+    reasons.push(...baseBoost.reasons);
+    
+    // Cap the maximum boost
+    multiplier = Math.min(multiplier, 1.8);
+    
+    return {
+      multiplier,
+      reasons: [...new Set(reasons)] // Remove duplicates
+    };
   }
 
   /**
