@@ -38,21 +38,8 @@ class LLMAnalyzer {
         console.log('🔍 Getting detailed problem analysis...');
         analysis = await this.getDetailedAnalysis(userQuery);
       } else {
-        const keywords = this.extractBasicKeywords(userQuery);
-        analysis = {
-          query_type: 'general',
-          user_situation: `Looking for ${userQuery} apps`,
-          root_cause: null,
-          urgency: null,
-          keywords: keywords,
-          weighted_keywords: {
-            problem: { weight: 1.0, keywords: keywords.slice(0, 3) },
-            solution: { weight: 0.9, keywords: [] },
-            cause: { weight: 0.7, keywords: [] },
-            context: { weight: 0.5, keywords: keywords.slice(3) }
-          },
-          search_strategy: 'General app search - focusing on main query terms'
-        };
+        console.log('🔍 Getting detailed general search analysis...');
+        analysis = await this.getDetailedGeneralAnalysis(userQuery);
       }
       
       console.log('\n📊 Analysis Results:');
@@ -276,6 +263,224 @@ Focus on keywords that would actually find relevant apps in app stores. Think ab
         search_strategy: 'Basic keyword extraction fallback - prioritizing main terms from query'
       };
     }
+  }
+
+  /**
+   * Detailed general query analysis using Gemini with category-aware keyword extraction
+   */
+  async getDetailedGeneralAnalysis(userQuery) {
+    const generalPrompt = `You are an expert app store curator helping users find the perfect apps. Analyze this general app search query: "${userQuery}"
+
+Your job is to understand what the user wants and create smart keyword categories for effective app discovery.
+
+CATEGORIZE KEYWORDS BY PURPOSE:
+
+**PRIMARY Keywords (Weight 1.0 - HIGHEST PRIORITY)**
+- Main category or functionality the user wants
+- Core app purpose or domain
+- Examples: "plants", "fitness", "photo editing", "meditation", "budget"
+
+**FUNCTIONAL Keywords (Weight 0.9 - VERY HIGH PRIORITY)** 
+- Specific features or actions they want to perform
+- What the app should DO or ENABLE
+- Examples: "care guide", "track workouts", "edit photos", "manage money"
+
+**DESCRIPTIVE Keywords (Weight 0.7 - MEDIUM PRIORITY)**
+- Qualifiers, styles, or specific requirements
+- How they want it done or what type
+- Examples: "beginner friendly", "professional", "simple", "advanced"
+
+**CONTEXT Keywords (Weight 0.5 - LOW PRIORITY)**
+- Related concepts and broader category terms
+- Supporting information
+- Examples: "lifestyle", "productivity", "entertainment", "health"
+
+THINK STRATEGICALLY:
+- Primary keywords find apps in the right category/domain
+- Functional keywords find apps with specific helpful features  
+- Descriptive keywords help filter for the right style/level
+- Context keywords provide fallback options if needed
+
+Return JSON:
+{
+  "query_type": "general",
+  "user_intent": "clear description of what the user is looking for",
+  "app_category": "primary category or domain (e.g., 'plant care', 'fitness', 'photo editing')",
+  "search_focus": "specific focus or functionality they want",
+  "weighted_keywords": {
+    "primary": {
+      "weight": 1.0,
+      "keywords": ["main", "category", "terms"]
+    },
+    "functional": {
+      "weight": 0.9, 
+      "keywords": ["features", "actions", "functions"]
+    },
+    "descriptive": {
+      "weight": 0.7,
+      "keywords": ["qualifiers", "style", "requirements"] 
+    },
+    "context": {
+      "weight": 0.5,
+      "keywords": ["related", "broader", "terms"]
+    }
+  },
+  "search_strategy": "brief explanation of how to find the best apps using these keywords"
+}
+
+Focus on keywords that would actually find relevant apps in app stores. Think about app titles, descriptions, and categories.`;
+
+    try {
+      const result = await Promise.race([
+        this.geminiModel.generateContent({
+          contents: [{ role: "user", parts: [{ text: generalPrompt }] }],
+          generationConfig: {
+            maxOutputTokens: 500,
+            temperature: 0.3
+          }
+        }),
+        new Promise((_, reject) => 
+          setTimeout(() => reject(new Error('General analysis timeout')), 8000)
+        )
+      ]);
+
+      const content = result.response.text();
+      
+      // Extract JSON from response
+      let jsonMatch = content.match(/```json\s*(\{[\s\S]*?\})\s*```/);
+      let jsonText;
+      
+      if (jsonMatch) {
+        jsonText = jsonMatch[1];
+      } else {
+        const plainMatch = content.match(/\{[\s\S]*\}/);
+        jsonText = plainMatch ? plainMatch[0] : null;
+      }
+      
+      if (jsonText) {
+        const analysis = JSON.parse(jsonText);
+        
+        // Process weighted keywords structure for compatibility
+        if (analysis.weighted_keywords) {
+          // Flatten all keywords for backward compatibility
+          const allKeywords = [];
+          Object.values(analysis.weighted_keywords).forEach(category => {
+            if (category.keywords) {
+              allKeywords.push(...category.keywords);
+            }
+          });
+          analysis.keywords = [...new Set(allKeywords)]; // Remove duplicates
+        }
+        
+        // Set default values
+        analysis.urgency = analysis.urgency || null;
+        analysis.root_cause = null; // General queries don't have root causes
+        analysis.user_situation = analysis.user_intent || `Looking for ${userQuery} apps`;
+        
+        return analysis;
+      } else {
+        throw new Error('Could not extract JSON from general analysis response');
+      }
+      
+    } catch (error) {
+      console.error('⚠️ General analysis failed:', error.message);
+      
+      // Fallback with enhanced keyword extraction for general queries
+      const keywords = this.extractSmartGeneralKeywords(userQuery);
+      return {
+        query_type: 'general',
+        user_situation: `User is looking for ${userQuery} apps`,
+        user_intent: `Find apps related to ${userQuery}`,
+        app_category: this.detectAppCategory(keywords),
+        search_focus: keywords[0] || userQuery,
+        root_cause: null,
+        urgency: null,
+        keywords: keywords,
+        weighted_keywords: {
+          primary: { weight: 1.0, keywords: keywords.slice(0, 2) },
+          functional: { weight: 0.9, keywords: [] },
+          descriptive: { weight: 0.7, keywords: keywords.slice(2, 4) },
+          context: { weight: 0.5, keywords: keywords.slice(4) }
+        },
+        search_strategy: 'Enhanced general search - prioritizing main category and functional terms',
+        fallback: true
+      };
+    }
+  }
+
+  /**
+   * Extract smart keywords for general queries
+   */
+  extractSmartGeneralKeywords(query) {
+    const stopWords = new Set(['i', 'want', 'need', 'help', 'me', 'to', 'a', 'an', 'the', 'and', 'or', 'but', 'app', 'apps', 'for', 'of', 'with', 'my', 'that', 'can']);
+    
+    // Extract base words
+    const words = query
+      .toLowerCase()
+      .replace(/[^\w\s]/g, ' ')
+      .split(/\s+/)
+      .filter(word => word.length > 2 && !stopWords.has(word));
+
+    // Category-specific keyword mapping
+    const categoryKeywords = {
+      plant: ['plant', 'garden', 'flower', 'care', 'grow', 'water', 'indoor', 'gardening'],
+      fitness: ['fitness', 'workout', 'exercise', 'health', 'gym', 'training', 'run', 'cycling'],
+      photo: ['photo', 'image', 'picture', 'camera', 'edit', 'filter', 'photography'],
+      music: ['music', 'song', 'audio', 'sound', 'playlist', 'radio', 'streaming'],
+      food: ['food', 'recipe', 'cook', 'cooking', 'kitchen', 'meal', 'restaurant'],
+      finance: ['money', 'budget', 'expense', 'financial', 'bank', 'payment', 'investment'],
+      travel: ['travel', 'trip', 'hotel', 'flight', 'booking', 'vacation', 'tourism'],
+      education: ['learn', 'study', 'education', 'course', 'lesson', 'tutorial', 'language']
+    };
+
+    // Identify primary category
+    let primaryCategory = null;
+    for (const [category, catWords] of Object.entries(categoryKeywords)) {
+      if (words.some(word => catWords.includes(word))) {
+        primaryCategory = category;
+        break;
+      }
+    }
+
+    // Build smart keyword list
+    const smartKeywords = [];
+    
+    // Add original words first
+    smartKeywords.push(...words.slice(0, 3));
+    
+    // Add category-specific synonyms if we detected a category
+    if (primaryCategory && categoryKeywords[primaryCategory]) {
+      const relevantSynonyms = categoryKeywords[primaryCategory]
+        .filter(syn => !smartKeywords.includes(syn))
+        .slice(0, 2);
+      smartKeywords.push(...relevantSynonyms);
+    }
+    
+    return [...new Set(smartKeywords)]; // Remove duplicates
+  }
+
+  /**
+   * Detect app category from keywords
+   */
+  detectAppCategory(keywords) {
+    const categoryMap = {
+      'plant care': ['plant', 'garden', 'flower', 'care', 'grow'],
+      'fitness': ['fitness', 'workout', 'exercise', 'health', 'gym'],
+      'photography': ['photo', 'image', 'picture', 'camera', 'edit'],
+      'music': ['music', 'song', 'audio', 'sound', 'playlist'],
+      'cooking': ['food', 'recipe', 'cook', 'cooking', 'kitchen'],
+      'finance': ['money', 'budget', 'expense', 'financial', 'bank'],
+      'travel': ['travel', 'trip', 'hotel', 'flight', 'vacation'],
+      'education': ['learn', 'study', 'education', 'course', 'lesson']
+    };
+
+    for (const [category, terms] of Object.entries(categoryMap)) {
+      if (keywords.some(keyword => terms.some(term => keyword.includes(term)))) {
+        return category;
+      }
+    }
+    
+    return 'general';
   }
 
   /**

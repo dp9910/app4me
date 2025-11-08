@@ -49,7 +49,7 @@ class KeywordProcessor {
       // Process weighted keywords if available
       let processedKeywords;
       if (analysis.weighted_keywords) {
-        processedKeywords = this.processWeightedKeywords(analysis.weighted_keywords);
+        processedKeywords = this.processWeightedKeywords(analysis.weighted_keywords, analysis.query_type);
         console.log('✅ Using weighted keyword analysis');
       } else {
         // Fallback to old method
@@ -92,13 +92,14 @@ class KeywordProcessor {
   }
 
   /**
-   * Process weighted keywords from LLM analysis
+   * Process weighted keywords from LLM analysis (handles both problem and general queries)
    */
-  processWeightedKeywords(weightedKeywords) {
+  processWeightedKeywords(weightedKeywords, queryType = 'problem') {
     const processed = {
       weighted_categories: {},
       all_keywords: [],
-      primary_domain: null
+      primary_domain: null,
+      query_type: queryType
     };
     
     // Process each weighted category
@@ -115,9 +116,16 @@ class KeywordProcessor {
       processed.all_keywords.push(...keywords);
     });
     
-    // Detect primary domain from problem keywords
-    const problemKeywords = processed.weighted_categories.problem?.keywords || [];
-    processed.primary_domain = this.detectDomainFromKeywords(problemKeywords);
+    // Domain detection differs by query type
+    if (queryType === 'problem') {
+      // For problem queries, detect domain from problem keywords
+      const problemKeywords = processed.weighted_categories.problem?.keywords || [];
+      processed.primary_domain = this.detectDomainFromKeywords(problemKeywords);
+    } else {
+      // For general queries, detect domain from primary keywords
+      const primaryKeywords = processed.weighted_categories.primary?.keywords || [];
+      processed.primary_domain = this.detectDomainFromKeywords(primaryKeywords, 'general');
+    }
     
     // Remove duplicates
     processed.all_keywords = [...new Set(processed.all_keywords)];
@@ -135,14 +143,21 @@ class KeywordProcessor {
   }
 
   /**
-   * Detect domain from problem keywords
+   * Detect domain from keywords (handles both problem and general queries)
    */
-  detectDomainFromKeywords(keywords) {
+  detectDomainFromKeywords(keywords, queryType = 'problem') {
     const domainMap = {
       sleep: ['sleep', 'insomnia', 'rest', 'bedtime', 'dream'],
       finance: ['budget', 'money', 'expense', 'financial', 'spending'],
       fitness: ['fitness', 'workout', 'exercise', 'health', 'gym'],
-      productivity: ['productivity', 'focus', 'distraction', 'time management']
+      productivity: ['productivity', 'focus', 'distraction', 'time management'],
+      // Additional domains for general queries
+      'plant care': ['plants', 'plant', 'garden', 'gardening', 'flower', 'care', 'grow'],
+      photography: ['photo', 'image', 'picture', 'camera', 'edit', 'photography'],
+      music: ['music', 'song', 'audio', 'sound', 'playlist', 'radio'],
+      cooking: ['food', 'recipe', 'cook', 'cooking', 'kitchen', 'meal'],
+      travel: ['travel', 'trip', 'hotel', 'flight', 'vacation', 'tourism'],
+      education: ['learn', 'study', 'education', 'course', 'lesson', 'tutorial']
     };
     
     for (const [domain, terms] of Object.entries(domainMap)) {
@@ -152,30 +167,36 @@ class KeywordProcessor {
       }
     }
     
-    return 'general';
+    return queryType === 'general' ? 'general' : 'general';
   }
 
   /**
-   * Generate weighted search terms for database filtering
+   * Generate weighted search terms for database filtering (handles both problem and general queries)
    */
   generateWeightedSearchTerms(processedKeywords, strategy) {
     const categories = processedKeywords.weighted_categories || {};
+    const queryType = processedKeywords.query_type || 'problem';
     
-    // High priority: Problem + Solution keywords (weights 1.0, 0.9)
-    const highPriority = [
-      ...(categories.problem?.keywords || []),
-      ...(categories.solution?.keywords || [])
-    ];
+    let highPriority, mediumPriority, lowPriority;
     
-    // Medium priority: Cause keywords (weight 0.7)
-    const mediumPriority = [
-      ...(categories.cause?.keywords || [])
-    ];
-    
-    // Low priority: Context keywords (weight 0.5)
-    const lowPriority = [
-      ...(categories.context?.keywords || [])
-    ];
+    if (queryType === 'problem') {
+      // Problem query structure: PROBLEM + SOLUTION (high), CAUSE (medium), CONTEXT (low)
+      highPriority = [
+        ...(categories.problem?.keywords || []),
+        ...(categories.solution?.keywords || [])
+      ];
+      mediumPriority = [...(categories.cause?.keywords || [])];
+      lowPriority = [...(categories.context?.keywords || [])];
+      
+    } else {
+      // General query structure: PRIMARY + FUNCTIONAL (high), DESCRIPTIVE (medium), CONTEXT (low)
+      highPriority = [
+        ...(categories.primary?.keywords || []),
+        ...(categories.functional?.keywords || [])
+      ];
+      mediumPriority = [...(categories.descriptive?.keywords || [])];
+      lowPriority = [...(categories.context?.keywords || [])];
+    }
     
     // Generate specific search strategies for each priority level
     const searchTerms = {
@@ -192,7 +213,9 @@ class KeywordProcessor {
         high: 1.0,
         medium: 0.7,
         low: 0.5
-      }
+      },
+      
+      query_type: queryType
     };
     
     return searchTerms;

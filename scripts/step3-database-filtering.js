@@ -31,11 +31,23 @@ class DatabaseFilter {
       console.log(`🎯 Primary Domain: ${primaryDomain || 'general'}`);
       console.log(`⚖️ Using weighted priority search hierarchy`);
       
-      // PRIORITY LEVEL 1: PROBLEM + SOLUTION (Weights 1.0, 0.9) 
-      const highPriorityKeywords = [
-        ...(weightedKeywords.problem?.keywords || []),
-        ...(weightedKeywords.solution?.keywords || [])
-      ];
+      // PRIORITY LEVEL 1: Adapt based on query type
+      let highPriorityKeywords;
+      const queryType = keywordData.original_analysis?.query_type || 'problem';
+      
+      if (queryType === 'problem') {
+        // PROBLEM + SOLUTION (Weights 1.0, 0.9)
+        highPriorityKeywords = [
+          ...(weightedKeywords.problem?.keywords || []),
+          ...(weightedKeywords.solution?.keywords || [])
+        ];
+      } else {
+        // PRIMARY + FUNCTIONAL (Weights 1.0, 0.9) for general queries
+        highPriorityKeywords = [
+          ...(weightedKeywords.primary?.keywords || []),
+          ...(weightedKeywords.functional?.keywords || [])
+        ];
+      }
       
       console.log(`\n🔥 HIGH PRIORITY: ${highPriorityKeywords.slice(0, 5).join(', ')}${highPriorityKeywords.length > 5 ? '...' : ''}`);
       const highPriorityCandidates = await this.searchWithKeywords(highPriorityKeywords, 'HIGH', 30);
@@ -43,9 +55,16 @@ class DatabaseFilter {
       let allCandidates = [...highPriorityCandidates];
       console.log(`✅ Found ${highPriorityCandidates.length} HIGH priority candidates`);
       
-      // PRIORITY LEVEL 2: CAUSE (Weight 0.7) - Only if we need more results
+      // PRIORITY LEVEL 2: Adapt medium priority based on query type
       if (allCandidates.length < 20) {
-        const mediumPriorityKeywords = weightedKeywords.cause?.keywords || [];
+        let mediumPriorityKeywords;
+        if (queryType === 'problem') {
+          // CAUSE (Weight 0.7) for problem queries
+          mediumPriorityKeywords = weightedKeywords.cause?.keywords || [];
+        } else {
+          // DESCRIPTIVE (Weight 0.7) for general queries  
+          mediumPriorityKeywords = weightedKeywords.descriptive?.keywords || [];
+        }
         
         if (mediumPriorityKeywords.length > 0) {
           console.log(`\n🔶 MEDIUM PRIORITY: ${mediumPriorityKeywords.join(', ')}`);
