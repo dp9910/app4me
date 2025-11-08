@@ -266,20 +266,13 @@ Provide intelligent, specific search terms that would actually find helpful apps
       console.log('🔄 Falling back to keyword search...');
     }
     
-    // Fallback to keyword search if semantic fails or returns no results
-    console.log('🔤 Using keyword search as fallback');
-    const keywords = this.extractKeywords(userQuery);
-    results = await this.searchByKeywords(keywords, 15);
+    // If semantic search fails or returns no results, return empty instead of using old keyword search
+    console.log('⚠️ No semantic results found and no fallback needed - improved search already includes keyword filtering');
     
     return {
       query_type: 'general',
-      results: results.map(app => ({
-        ...app,
-        source: 'keyword_match',
-        relevance_score: app.relevance * 10,
-        search_term: userQuery
-      })),
-      total_apps: results.length
+      results: [],
+      total_apps: 0
     };
   }
 
@@ -721,7 +714,16 @@ Provide intelligent, specific search terms that would actually find helpful apps
       // Filter candidates based on detected intents
       const filteredCandidates = candidates.filter(candidate => {
         const appFeatures = featureMap.get(candidate.app_id);
-        if (!appFeatures) return true; // Keep if no features data
+        
+        // For domain-specific searches, require feature data for better precision
+        const domainIntents = intents.filter(intent => ['finance', 'fitness', 'photo', 'plant', 'music'].includes(intent));
+        if (domainIntents.length > 0 && !appFeatures) {
+          console.log(`🔍 DEBUG: Excluding ${candidate.title} - no feature data for domain search`);
+          return false; // Exclude apps without features for domain searches
+        }
+        
+        // For general searches, keep apps without features
+        if (!appFeatures) return true;
         
         return this.matchesIntents(appFeatures, intents, queryText);
       });
@@ -1687,9 +1689,8 @@ Provide intelligent, specific search terms that would actually find helpful apps
       // Step 1: Analyze query context
       const analysis = await this.analyzeQueryContext(userQuery);
       if (!analysis) {
-        // Fallback to general search if analysis fails
-        const keywords = this.extractKeywords(userQuery);
-        const results = await this.searchByKeywords(keywords, 15);
+        // Fallback to improved hybrid search if analysis fails
+        const results = await this.searchBySemanticSimilarity(userQuery, 15);
         return {
           query_type: 'general',
           results,
@@ -1709,9 +1710,8 @@ Provide intelligent, specific search terms that would actually find helpful apps
       
     } catch (error) {
       console.error('❌ Contextual solver error:', error);
-      // Fallback to simple search
-      const keywords = this.extractKeywords(userQuery);
-      const results = await this.searchByKeywords(keywords, 15);
+      // Fallback to improved hybrid search
+      const results = await this.searchBySemanticSimilarity(userQuery, 15);
       return {
         query_type: 'general',
         results,
