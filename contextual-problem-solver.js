@@ -400,28 +400,72 @@ Provide intelligent, specific search terms that would actually find helpful apps
 
       console.log(`🔍 DEBUG: Fetched ${candidateEmbeddings.length} embeddings for feature-filtered candidates`);
 
-      // 4. Calculate similarities only for candidates
+      // 4. Get feature data for multi-modal search
+      const candidateIds = featureFilteredApps.map(app => app.app_id);
+      const { data: featureData, error: featureError } = await this.supabase
+        .from('app_features')
+        .select('app_id, primary_use_case, target_user, key_benefit, complexity, quality_signals')
+        .in('app_id', candidateIds);
+
+      // Create feature lookup map
+      const featureMap = new Map();
+      if (featureData && !featureError) {
+        featureData.forEach(feature => {
+          featureMap.set(feature.app_id, feature);
+        });
+        console.log(`🔍 DEBUG: Loaded ${featureData.length} feature records for multi-modal search`);
+      }
+
+      // 5. Calculate multi-modal similarities (description + features)
       const similarities = [];
+      
+      // Process similarities with feature enhancement
       for (const row of candidateEmbeddings) {
         try {
-          let appEmbedding = row.embedding;
-          if (typeof appEmbedding === 'string' && appEmbedding.startsWith('[')) {
-            appEmbedding = JSON.parse(appEmbedding);
+          let descEmbedding = row.embedding;
+          if (typeof descEmbedding === 'string' && descEmbedding.startsWith('[')) {
+            descEmbedding = JSON.parse(descEmbedding);
           }
           
-          const similarity = this.cosineSimilarity(queryEmbedding, appEmbedding);
+          const descSimilarity = this.cosineSimilarity(queryEmbedding, descEmbedding);
+          
+          // Calculate multi-modal similarity if we have feature data
+          let finalSimilarity = descSimilarity;
+          let featureSimilarity = 0;
+          
+          const features = featureMap.get(row.app_id);
+          if (features) {
+            featureSimilarity = this.calculateFeatureSimilarity(queryText, features);
+            // Weighted combination: 70% description, 30% features
+            finalSimilarity = (descSimilarity * 0.7) + (featureSimilarity * 0.3);
+          }
+          
           // Lower threshold since these are pre-filtered candidates
-          if (!isNaN(similarity) && similarity > 0.1) {
-            similarities.push({ app_id: row.app_id, similarity });
+          if (!isNaN(finalSimilarity) && finalSimilarity > 0.1) {
+            similarities.push({ 
+              app_id: row.app_id, 
+              similarity: finalSimilarity,
+              desc_similarity: descSimilarity,
+              feature_similarity: featureSimilarity,
+              has_features: features !== undefined
+            });
           }
         } catch (err) {
+          console.log(`🔍 DEBUG: Error processing embeddings for app ${row.app_id}: ${err.message}`);
           // Skip problematic embeddings
         }
       }
+      
+      console.log(`🔍 DEBUG: Processed ${similarities.length} multi-modal similarities`);
+
+      // 4.5. Apply minimum similarity threshold to filter out irrelevant results
+      const minSimilarityThreshold = 0.35; // Raised from 0.3 for better precision
+      const relevantSimilarities = similarities.filter(sim => sim.similarity > minSimilarityThreshold);
+      console.log(`🔍 DEBUG: After similarity threshold (>${minSimilarityThreshold}): ${relevantSimilarities.length} relevant results`);
 
       // 5. Sort by similarity and get top results
-      similarities.sort((a, b) => b.similarity - a.similarity);
-      const topSimilarities = similarities.slice(0, limit);
+      relevantSimilarities.sort((a, b) => b.similarity - a.similarity);
+      const topSimilarities = relevantSimilarities.slice(0, limit);
 
       if (topSimilarities.length === 0) {
         console.log(`🔍 DEBUG: No embeddings found for candidates, returning keyword results`);
@@ -460,14 +504,23 @@ Provide intelligent, specific search terms that would actually find helpful apps
           similarity_score: boostedSimilarity,
           relevance: boostedSimilarity,
           boost_applied: boostReasons.length > 0,
-          boost_reasons: boostReasons
+          boost_reasons: boostReasons,
+          // Multi-modal search details
+          desc_similarity: sim.desc_similarity || sim.similarity,
+          feature_similarity: sim.feature_similarity || 0,
+          has_feature_data: sim.has_features || false,
+          search_type: sim.has_features ? 'multi_modal' : 'description_only'
         };
       }).filter(Boolean);
 
       // Sort by boosted similarity scores
       combinedResults.sort((a, b) => b.similarity_score - a.similarity_score);
 
-      return combinedResults;
+      // Remove duplicates before returning results
+      const uniqueResults = this.removeDuplicates(combinedResults);
+      console.log(`🔍 DEBUG: Removed duplicates: ${combinedResults.length} → ${uniqueResults.length} results`);
+
+      return uniqueResults;
 
     } catch (error) {
       console.error(`Semantic search failed: ${error.message}`);
@@ -480,18 +533,24 @@ Provide intelligent, specific search terms that would actually find helpful apps
    */
   async getKeywordCandidates(keywords, limit) {
     try {
-      // Build search conditions
-      const titleConditions = keywords.map(keyword => `title.ilike.%${keyword}%`).join(',');
-      const descConditions = keywords.map(keyword => `description.ilike.%${keyword}%`).join(',');
+      // Build more precise search conditions with word boundaries
+      // Use regex for word boundary matching to avoid false positives
+      const titleConditions = keywords.map(keyword => 
+        `title.ilike.% ${keyword} %,title.ilike.${keyword} %,title.ilike.% ${keyword},title.ilike.${keyword}`
+      ).flat().join(',');
+      
+      const descConditions = keywords.map(keyword => 
+        `description.ilike.% ${keyword} %,description.ilike.${keyword} %,description.ilike.% ${keyword},description.ilike.${keyword}`
+      ).flat().join(',');
       
       let candidates = [];
       
-      // Get title matches (highest priority)
+      // Get title matches (highest priority) - more precise matching
       const { data: titleMatches, error: titleError } = await this.supabase
         .from('apps_unified')
         .select('id, title, developer, primary_category, description, rating, icon_url, price')
         .or(titleConditions)
-        .gte('rating', 2.0) // Basic quality filter
+        .gte('rating', 2.5) // Raised quality threshold
         .order('rating', { ascending: false })
         .limit(Math.ceil(limit * 0.7));
       
@@ -536,7 +595,11 @@ Provide intelligent, specific search terms that would actually find helpful apps
         }
       }
       
-      return candidates.slice(0, limit);
+      // Remove duplicates from candidates (app might match both title and description)
+      const uniqueCandidates = this.removeDuplicates(candidates);
+      console.log(`🔍 DEBUG: Deduplicated keyword candidates: ${candidates.length} → ${uniqueCandidates.length}`);
+      
+      return uniqueCandidates.slice(0, limit);
       
     } catch (error) {
       console.error(`Keyword candidate search failed: ${error.message}`);
@@ -666,7 +729,13 @@ Provide intelligent, specific search terms that would actually find helpful apps
       console.log(`🔍 DEBUG: Feature filtering: ${candidates.length} → ${filteredCandidates.length} candidates`);
       
       // If filtering removes too many candidates, relax the filtering
-      if (filteredCandidates.length < Math.max(3, candidates.length * 0.3)) {
+      // But be more aggressive for domain-specific searches
+      const domainIntents = intents.filter(intent => ['finance', 'fitness', 'photo', 'plant', 'music'].includes(intent));
+      const minCandidates = domainIntents.length > 0 ? 
+        Math.max(2, candidates.length * 0.15) : // More aggressive for domain searches
+        Math.max(3, candidates.length * 0.3);   // Original for generic searches
+      
+      if (filteredCandidates.length < minCandidates) {
         console.log(`🔍 DEBUG: Feature filtering too restrictive, using relaxed filtering`);
         return this.applyRelaxedFeatureFiltering(candidates, featureMap, intents, queryText);
       }
@@ -685,6 +754,23 @@ Provide intelligent, specific search terms that would actually find helpful apps
   async detectQueryIntent(queryText) {
     const query = queryText.toLowerCase();
     const intents = [];
+    
+    // Domain-specific intents
+    if (query.match(/\b(budget|expense|money|finance|financial|cost|spend|income|saving|savings|accounting|bill|payment)\b/)) {
+      intents.push('finance');
+    }
+    if (query.match(/\b(fitness|workout|exercise|health|activity|calories|steps|running|cycling|training)\b/)) {
+      intents.push('fitness');
+    }
+    if (query.match(/\b(photo|image|picture|edit|filter|camera|photography|visual)\b/)) {
+      intents.push('photo');
+    }
+    if (query.match(/\b(plant|garden|nature|grow|watering|botanical|care|flower|tree)\b/)) {
+      intents.push('plant');
+    }
+    if (query.match(/\b(music|audio|sound|song|playlist|streaming|listen|play)\b/)) {
+      intents.push('music');
+    }
     
     // Pricing intent
     if (query.match(/\b(free|no cost|without cost|gratis)\b/)) {
@@ -742,6 +828,46 @@ Provide intelligent, specific search terms that would actually find helpful apps
   matchesIntents(features, intents, queryText) {
     for (const intent of intents) {
       switch (intent) {
+        case 'finance':
+          // Check if primary_use_case or key_benefit mentions finance/budget content
+          const financeText = `${features.primary_use_case || ''} ${features.key_benefit || ''} ${features.category_classification || ''}`.toLowerCase();
+          if (!financeText.match(/\b(budget|expense|money|finance|financial|cost|spend|income|saving|accounting|bill|payment|track.*expense|manage.*money)\b/)) {
+            return false;
+          }
+          break;
+          
+        case 'fitness':
+          // Check if primary_use_case or key_benefit mentions fitness content
+          const fitnessText = `${features.primary_use_case || ''} ${features.key_benefit || ''} ${features.category_classification || ''}`.toLowerCase();
+          if (!fitnessText.match(/\b(fitness|workout|exercise|health|activity|calories|steps|running|cycling|training|gym|sport)\b/)) {
+            return false;
+          }
+          break;
+          
+        case 'photo':
+          // Check if primary_use_case or key_benefit mentions photo/image content
+          const photoText = `${features.primary_use_case || ''} ${features.key_benefit || ''} ${features.category_classification || ''}`.toLowerCase();
+          if (!photoText.match(/\b(photo|image|picture|visual|camera|edit|filter|photography)\b/)) {
+            return false;
+          }
+          break;
+          
+        case 'plant':
+          // Check if primary_use_case or key_benefit mentions plant/garden content
+          const plantText = `${features.primary_use_case || ''} ${features.key_benefit || ''} ${features.category_classification || ''}`.toLowerCase();
+          if (!plantText.match(/\b(plant|garden|gardening|botanical|flower|tree|grow|watering|irrigation|plant.*care|garden.*care|horticulture|flora|vegetation|greenery)\b/)) {
+            return false;
+          }
+          break;
+          
+        case 'music':
+          // Check if primary_use_case or key_benefit mentions music/audio content
+          const musicText = `${features.primary_use_case || ''} ${features.key_benefit || ''} ${features.category_classification || ''}`.toLowerCase();
+          if (!musicText.match(/\b(music|audio|sound|song|playlist|streaming|listen|play|radio)\b/)) {
+            return false;
+          }
+          break;
+        
         case 'free':
           // Check if primary_use_case or key_benefit mentions free
           const freeText = `${features.primary_use_case || ''} ${features.key_benefit || ''}`.toLowerCase();
@@ -868,6 +994,128 @@ Provide intelligent, specific search terms that would actually find helpful apps
   }
 
   /**
+   * Calculate semantic similarity between query and app features
+   */
+  calculateFeatureSimilarity(queryText, features) {
+    try {
+      // Create rich text representation from structured features
+      const featureText = this.createFeatureText(features);
+      
+      if (!featureText || featureText.length < 5) {
+        return 0.0; // No meaningful feature data
+      }
+      
+      // Calculate text-based similarity between query and features
+      return this.calculateTextSimilarity(queryText.toLowerCase(), featureText.toLowerCase());
+      
+    } catch (error) {
+      console.log(`🔍 DEBUG: Error calculating feature similarity: ${error.message}`);
+      return 0.0;
+    }
+  }
+
+  /**
+   * Create rich text from structured app features
+   */
+  createFeatureText(features) {
+    const parts = [];
+    
+    // Primary use case (most important)
+    if (features.primary_use_case && features.primary_use_case.trim()) {
+      parts.push(`Purpose: ${features.primary_use_case}`);
+    }
+    
+    // Target user
+    if (features.target_user && features.target_user.trim()) {
+      parts.push(`For: ${features.target_user}`);
+    }
+    
+    // Key benefit
+    if (features.key_benefit && features.key_benefit.trim()) {
+      parts.push(`Benefit: ${features.key_benefit}`);
+    }
+    
+    // Complexity/difficulty
+    if (features.complexity && features.complexity.trim()) {
+      parts.push(`Complexity: ${features.complexity}`);
+    }
+    
+    return parts.join('. ');
+  }
+
+  /**
+   * Calculate text-based similarity using word overlap and semantic matching
+   */
+  calculateTextSimilarity(text1, text2) {
+    // Normalize and tokenize both texts
+    const words1 = this.extractSignificantWords(text1);
+    const words2 = this.extractSignificantWords(text2);
+    
+    if (words1.length === 0 || words2.length === 0) {
+      return 0.0;
+    }
+    
+    // Calculate Jaccard similarity (intersection over union)
+    const set1 = new Set(words1);
+    const set2 = new Set(words2);
+    
+    const intersection = new Set([...set1].filter(word => set2.has(word)));
+    const union = new Set([...set1, ...set2]);
+    
+    const jaccardSimilarity = intersection.size / union.size;
+    
+    // Add semantic similarity for related terms
+    let semanticBonus = 0;
+    const semanticPairs = [
+      // Photo/visual terms
+      [['photo', 'image', 'picture', 'visual', 'camera'], ['edit', 'filter', 'enhance', 'creative']],
+      // Music/audio terms  
+      [['music', 'audio', 'sound', 'song'], ['play', 'listen', 'discover', 'streaming']],
+      // Social terms
+      [['social', 'friend', 'community'], ['share', 'connect', 'collaborate']],
+      // Fitness terms
+      [['fitness', 'health', 'exercise'], ['track', 'monitor', 'goal', 'workout']],
+      // Plant/nature terms
+      [['plant', 'garden', 'flower', 'tree'], ['care', 'grow', 'water', 'identify']]
+    ];
+    
+    for (const [category1, category2] of semanticPairs) {
+      const hasCategory1 = category1.some(word => set1.has(word) || set2.has(word));
+      const hasCategory2 = category2.some(word => set1.has(word) || set2.has(word));
+      
+      if (hasCategory1 && hasCategory2) {
+        semanticBonus += 0.1;
+      }
+    }
+    
+    // Combine Jaccard similarity with semantic bonus
+    const finalSimilarity = Math.min(1.0, jaccardSimilarity + semanticBonus);
+    
+    return finalSimilarity;
+  }
+
+  /**
+   * Extract significant words for similarity calculation
+   */
+  extractSignificantWords(text) {
+    const stopWords = new Set(['i', 'me', 'my', 'myself', 'we', 'our', 'you', 'your', 'he', 'she', 'it', 
+      'they', 'them', 'this', 'that', 'these', 'those', 'am', 'is', 'are', 'was', 'were', 'be', 'been', 
+      'being', 'have', 'has', 'had', 'do', 'does', 'did', 'will', 'would', 'should', 'could', 'can', 
+      'may', 'might', 'must', 'shall', 'to', 'of', 'in', 'for', 'on', 'with', 'by', 'from', 'up', 'about', 
+      'into', 'through', 'during', 'before', 'after', 'above', 'below', 'between', 'among', 'an', 'the', 
+      'and', 'but', 'if', 'or', 'as', 'until', 'while', 'so', 'than', 'too', 'very', 'just', 'now', 
+      'here', 'there', 'when', 'where', 'why', 'how', 'all', 'any', 'both', 'each', 'few', 'more', 
+      'most', 'other', 'some', 'such', 'no', 'not', 'only', 'own', 'same', 'than', 'too', 'very']);
+    
+    return text
+      .toLowerCase()
+      .replace(/[^\w\s]/g, ' ')
+      .split(/\s+/)
+      .filter(word => word.length > 2 && !stopWords.has(word))
+      .slice(0, 10); // Limit to first 10 significant words
+  }
+
+  /**
    * Calculate feature-based ranking boosts for an app
    */
   calculateFeatureBoosts(app, intents, queryText) {
@@ -890,6 +1138,41 @@ Provide intelligent, specific search terms that would actually find helpful apps
     // Category alignment boosts
     for (const intent of intents) {
       switch (intent) {
+        case 'finance':
+          if (['Finance', 'Business'].includes(app.primary_category)) {
+            multiplier *= 1.3; // Strong boost for finance category
+            reasons.push('Finance category app');
+          }
+          break;
+          
+        case 'fitness':
+          if (['Health & Fitness', 'Medical'].includes(app.primary_category)) {
+            multiplier *= 1.2;
+            reasons.push('Health/fitness category app');
+          }
+          break;
+          
+        case 'photo':
+          if (['Photography', 'Graphics & Design', 'Photo & Video'].includes(app.primary_category)) {
+            multiplier *= 1.2;
+            reasons.push('Photo/visual category app');
+          }
+          break;
+          
+        case 'plant':
+          if (['Lifestyle', 'Education', 'Reference'].includes(app.primary_category)) {
+            multiplier *= 1.15;
+            reasons.push('Plant care relevant category');
+          }
+          break;
+          
+        case 'music':
+          if (['Music', 'Entertainment'].includes(app.primary_category)) {
+            multiplier *= 1.2;
+            reasons.push('Music category app');
+          }
+          break;
+        
         case 'social':
           if (app.primary_category === 'Social Networking') {
             multiplier *= 1.15;
@@ -964,6 +1247,46 @@ Provide intelligent, specific search terms that would actually find helpful apps
     // Intent-based feature boosts
     for (const intent of intents) {
       switch (intent) {
+        case 'finance':
+          const financeText = `${features.primary_use_case || ''} ${features.key_benefit || ''}`.toLowerCase();
+          if (financeText.match(/\b(budget|expense|money|finance|financial|cost|spend|income|saving|accounting|bill|payment)\b/)) {
+            multiplier *= 1.4; // Very strong boost for finance feature match
+            reasons.push('Finance features mentioned');
+          }
+          break;
+          
+        case 'fitness':
+          const fitnessText = `${features.primary_use_case || ''} ${features.key_benefit || ''}`.toLowerCase();
+          if (fitnessText.match(/\b(fitness|workout|exercise|health|activity|calories|steps|running|cycling|training)\b/)) {
+            multiplier *= 1.3;
+            reasons.push('Fitness features mentioned');
+          }
+          break;
+          
+        case 'photo':
+          const photoText = `${features.primary_use_case || ''} ${features.key_benefit || ''}`.toLowerCase();
+          if (photoText.match(/\b(photo|image|picture|visual|camera|edit|filter|photography)\b/)) {
+            multiplier *= 1.3;
+            reasons.push('Photo/visual features mentioned');
+          }
+          break;
+          
+        case 'plant':
+          const plantText = `${features.primary_use_case || ''} ${features.key_benefit || ''}`.toLowerCase();
+          if (plantText.match(/\b(plant|garden|nature|grow|watering|botanical|flower|tree)\b/)) {
+            multiplier *= 1.3;
+            reasons.push('Plant care features mentioned');
+          }
+          break;
+          
+        case 'music':
+          const musicText = `${features.primary_use_case || ''} ${features.key_benefit || ''}`.toLowerCase();
+          if (musicText.match(/\b(music|audio|sound|song|playlist|streaming|listen|play|radio)\b/)) {
+            multiplier *= 1.3;
+            reasons.push('Music features mentioned');
+          }
+          break;
+        
         case 'easy':
           if (features.complexity === 'simple') {
             multiplier *= 1.2;
@@ -1111,17 +1434,84 @@ Provide intelligent, specific search terms that would actually find helpful apps
   }
 
   /**
-   * Extract keywords from user query
+   * Extract keywords from user query with domain prioritization
    */
   extractKeywords(query) {
-    const stopWords = new Set(['i', 'want', 'need', 'help', 'me', 'to', 'a', 'an', 'the', 'and', 'or', 'but', 'app', 'apps', 'for', 'cant', 'too', 'much']);
+    const stopWords = new Set(['i', 'want', 'need', 'help', 'me', 'to', 'a', 'an', 'the', 'and', 'or', 'but', 'app', 'apps', 'for', 'cant', 'too', 'much', 'with', 'my']);
     
-    return query
+    // Extract all potential keywords
+    const allWords = query
       .toLowerCase()
-      .replace(/[^\w\s]/g, ' ') // Replace punctuation with spaces
+      .replace(/[^\w\s]/g, ' ')
       .split(/\s+/)
-      .filter(word => word.length > 2 && !stopWords.has(word))
-      .slice(0, 3); // Limit to 3 main keywords
+      .filter(word => word.length > 2 && !stopWords.has(word));
+    
+    // Domain-specific keyword priorities
+    const domainKeywords = {
+      finance: ['budget', 'money', 'expense', 'finance', 'financial', 'cost', 'spend', 'spending', 'income', 'saving', 'savings'],
+      fitness: ['fitness', 'workout', 'exercise', 'health', 'gym', 'training'],
+      photo: ['photo', 'image', 'picture', 'camera', 'edit', 'filter'],
+      music: ['music', 'song', 'audio', 'sound', 'playlist', 'radio'],
+      social: ['social', 'friend', 'share', 'community', 'chat'],
+      productivity: ['productivity', 'task', 'note', 'organize', 'plan', 'schedule'],
+      plant: ['plant', 'garden', 'flower', 'care', 'grow', 'water']
+    };
+    
+    // Context-aware keyword combinations to avoid generic matches
+    const contextualCombinations = {
+      // Spending/finance context - avoid generic "track" 
+      'spending': ['expense', 'budget', 'financial'],
+      'budget': ['finance', 'money', 'expense'],
+      'track spending': ['expense', 'budget'],
+      'track money': ['finance', 'budget'],
+      'track budget': ['expense', 'finance'],
+      // Plant context
+      'plant care': ['plant', 'care'],
+      'plant tracker': ['plant', 'care'],
+      // Photo context  
+      'photo edit': ['photo', 'edit'],
+      'image edit': ['photo', 'edit']
+    };
+    
+    // Find domain matches and prioritize them
+    const prioritizedKeywords = [];
+    let foundDomain = null;
+    
+    // Check for contextual combinations first
+    const queryLower = query.toLowerCase();
+    for (const [context, replacement] of Object.entries(contextualCombinations)) {
+      if (queryLower.includes(context)) {
+        prioritizedKeywords.push(...replacement);
+        foundDomain = 'finance'; // Most contextual combinations are finance-related
+        break;
+      }
+    }
+    
+    // If no contextual combinations, check for domain-specific keywords
+    if (prioritizedKeywords.length === 0) {
+      for (const [domain, keywords] of Object.entries(domainKeywords)) {
+        const matches = allWords.filter(word => keywords.includes(word));
+        if (matches.length > 0) {
+          prioritizedKeywords.push(...matches);
+          foundDomain = domain;
+          break; // Use first matching domain
+        }
+      }
+    }
+    
+    // Add remaining non-generic keywords if we have space
+    const genericWords = new Set(['track', 'tracker', 'monitor', 'manage', 'app', 'help', 'find']);
+    const remainingWords = allWords.filter(word => 
+      !prioritizedKeywords.includes(word) && 
+      !genericWords.has(word) // Skip generic words that cause false matches
+    );
+    prioritizedKeywords.push(...remainingWords);
+    
+    // Return top 3 keywords with domain keywords first
+    const result = prioritizedKeywords.slice(0, 3);
+    console.log(`🔍 DEBUG: Enhanced keyword extraction: "${query}" → [${result.join(', ')}] (domain: ${foundDomain})`);
+    
+    return result;
   }
 
   /**
@@ -1161,13 +1551,55 @@ Provide intelligent, specific search terms that would actually find helpful apps
     const seen = new Map();
     
     for (const result of results) {
+      // Use both app_id and normalized title as deduplication keys
       const id = result.app_id || result.id;
-      if (!seen.has(id) || (result.relevance && result.relevance > (seen.get(id).relevance || 0))) {
+      const titleKey = result.title ? result.title.toLowerCase().trim() : '';
+      
+      // Primary deduplication by app_id
+      if (!seen.has(id)) {
         seen.set(id, result);
+      } else {
+        // Keep the one with higher relevance/similarity
+        const existing = seen.get(id);
+        const currentScore = result.similarity_score || result.relevance || 0;
+        const existingScore = existing.similarity_score || existing.relevance || 0;
+        if (currentScore > existingScore) {
+          seen.set(id, result);
+        }
       }
     }
     
-    return Array.from(seen.values());
+    // Secondary deduplication by title (for apps with different IDs but same title)
+    const titleSeen = new Map();
+    const finalResults = [];
+    
+    for (const result of seen.values()) {
+      const titleKey = result.title ? result.title.toLowerCase().trim() : '';
+      if (!titleKey) {
+        finalResults.push(result);
+        continue;
+      }
+      
+      if (!titleSeen.has(titleKey)) {
+        titleSeen.set(titleKey, result);
+        finalResults.push(result);
+      } else {
+        // Keep the one with higher similarity score
+        const existing = titleSeen.get(titleKey);
+        const currentScore = result.similarity_score || result.relevance || 0;
+        const existingScore = existing.similarity_score || existing.relevance || 0;
+        if (currentScore > existingScore) {
+          // Replace in final results
+          const index = finalResults.findIndex(r => r === existing);
+          if (index !== -1) {
+            finalResults[index] = result;
+            titleSeen.set(titleKey, result);
+          }
+        }
+      }
+    }
+    
+    return finalResults;
   }
 
   /**

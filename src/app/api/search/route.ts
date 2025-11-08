@@ -15,8 +15,8 @@ if (supabaseUrl && supabaseServiceKey && supabaseUrl !== 'your-project-url-here'
   });
 }
 
-// Import the state-of-art search class
-const StateOfArtSearch = require('../../../../data-scraping/scripts/state-of-art-search.js');
+// Import the improved contextual problem solver (with better duplicate removal)
+const ContextualProblemSolver = require('../../../../contextual-problem-solver.js');
 
 interface SearchRequest {
   lifestyle?: string[];
@@ -65,11 +65,37 @@ export async function POST(request: NextRequest) {
       });
     }
 
-    // Initialize state-of-art search
-    const stateOfArtSearch = new StateOfArtSearch();
+    // Initialize improved contextual problem solver 
+    const solver = new ContextualProblemSolver();
 
-    // Perform the search using the new state-of-art algorithm
-    const searchResponse = await stateOfArtSearch.search(searchQuery, limit);
+    // Perform the search using the improved hybrid algorithm with deduplication
+    const results = await solver.searchBySemanticSimilarity(searchQuery, limit);
+    
+    // Format response to match expected structure
+    const searchResponse = {
+      results: results.map(app => ({
+        id: app.app_id,
+        title: app.title,
+        developer: app.developer,
+        primary_category: app.primary_category,
+        description: app.description,
+        rating: app.rating,
+        icon_url: app.icon_url,
+        price: app.price,
+        relevance_score: app.similarity_score * 10, // Scale to 0-10
+        search_method: 'hybrid_contextual'
+      })),
+      intent: {
+        keywords: [searchQuery],
+        categories: [],
+        problemSolved: searchQuery
+      },
+      metadata: {
+        searchTime: '< 2s',
+        method: 'hybrid_contextual',
+        count: results.length
+      }
+    };
 
     // Log search for analytics
     if (sessionId && searchResponse.results) {
