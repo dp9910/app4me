@@ -36,13 +36,14 @@ class KeywordProcessor {
   /**
    * Process weighted analysis and generate prioritized search keywords
    */
-  processAnalysis(analysisFile = './temp-analysis.json') {
+  processAnalysis(analysis) {
     console.log('🔍 Processing weighted keywords from LLM analysis...');
     console.log('=' .repeat(60));
     
     try {
-      // Load analysis
-      const analysis = JSON.parse(fs.readFileSync(analysisFile, 'utf8'));
+      if (!analysis) {
+        throw new Error('Analysis object must be provided to processAnalysis.');
+      }
       console.log(`📋 Query Type: ${analysis.query_type}`);
       console.log(`📝 User Situation: ${analysis.user_situation.substring(0, 100)}...`);
       

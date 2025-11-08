@@ -66,7 +66,7 @@ class MasterPipeline {
       console.log('-' .repeat(50));
       const step2Start = Date.now();
       
-      const keywordData = this.keywordProcessor.processAnalysis();
+      const keywordData = this.keywordProcessor.processAnalysis(analysis);
       pipeline.steps.keyword_processing = {
         duration: Date.now() - step2Start,
         result: keywordData,
@@ -82,7 +82,7 @@ class MasterPipeline {
       console.log('-' .repeat(50));
       const step3Start = Date.now();
       
-      const candidates = await this.databaseFilter.filterApps();
+      const candidates = await this.databaseFilter.filterApps(keywordData);
       pipeline.steps.database_filtering = {
         duration: Date.now() - step3Start,
         result: candidates,
@@ -99,7 +99,7 @@ class MasterPipeline {
       console.log('-' .repeat(50));
       const step4Start = Date.now();
       
-      const finalResults = await this.semanticSearch.searchCandidates('./temp-candidates.json', userQuery);
+      const finalResults = await this.semanticSearch.searchCandidates(candidates, userQuery);
       pipeline.steps.semantic_search = {
         duration: Date.now() - step4Start,
         result: finalResults,

@@ -66,3 +66,23 @@ Query Type: general
  GET /default-app-icon.png 404 in 191ms
  GET /default-app-icon.png 404 in 19ms
  ✓ Compiled in 64ms
+ ✓ Compiled in 298ms (358 modules)
+ ✓ Compiled in 168ms (358 modules)
+ ✓ Compiled in 242ms (358 modules)
+ ✓ Compiled in 123ms (358 modules)
+ ✓ Compiled in 129ms (358 modules)
+ ✓ Compiled in 164ms (358 modules)
+ ✓ Compiled in 122ms (358 modules)
+ ✓ Compiled in 113ms (358 modules)
+ ✓ Compiled in 224ms (358 modules)
+ ✓ Compiled in 136ms (358 modules)
+ ✓ Compiled in 149ms (358 modules)
+ ✓ Compiled in 126ms (358 modules)
+ ✓ Compiled in 134ms (358 modules)
+ ✓ Compiled in 156ms (358 modules)
+ ✓ Compiled in 145ms (358 modules)
+ ✓ Compiled in 153ms (358 modules)
+ ✓ Compiled in 188ms (358 modules)
+<w> [webpack.cache.PackFileCacheStrategy] Caching failed for pack: Error: ENOENT: no such file or directory, rename '/Users/pddev/Desktop/app_dev_work/app4me/.next/cache/webpack/client-development/5.pack.gz_' -> '/Users/pddev/Desktop/app_dev_work/app4me/.next/cache/webpack/client-development/5.pack.gz'
+ ✓ Compiled in 652ms (358 modules)
+ ✓ Compiled in 619ms (358 modules)

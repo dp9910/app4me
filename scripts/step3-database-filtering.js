@@ -18,13 +18,15 @@ class DatabaseFilter {
   /**
    * Filter apps using weighted priority hierarchy
    */
-  async filterApps(keywordsFile = './temp-keywords.json') {
+  async filterApps(keywordData) {
     console.log('🗃️ Filtering apps from database...');
     console.log('=' .repeat(60));
     
     try {
+      if (!keywordData) {
+        throw new Error('Keyword data object must be provided to filterApps.');
+      }
       // Load processed keywords with weighted categories
-      const keywordData = JSON.parse(fs.readFileSync(keywordsFile, 'utf8'));
       const weightedKeywords = keywordData.original_analysis?.weighted_keywords || {};
       const primaryDomain = keywordData.processed_keywords.primary_domain;
       

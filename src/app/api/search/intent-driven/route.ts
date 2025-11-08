@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 
-// Import the contextual problem solver
-const ContextualProblemSolver = require('../../../../../contextual-problem-solver.js');
+// Import the enhanced weighted search pipeline
+const MasterPipeline = require('../../../../../scripts/master-pipeline.js');
 
 export async function POST(request: NextRequest) {
   try {
@@ -32,44 +32,55 @@ export async function POST(request: NextRequest) {
     
     const startTime = Date.now();
     
-    console.log(`🧠 Contextual problem solver request: "${query}" (limit: ${limit})`);
+    console.log(`🧠 Weighted pipeline request: "${query}" (limit: ${limit})`);
     
-    // Initialize and perform contextual search
-    const solver = new ContextualProblemSolver();
-    const searchResponse = await solver.solveUserQuery(query.trim());
+    // Initialize and perform weighted search
+    const pipeline = new MasterPipeline();
+    const pipelineResult = await pipeline.runPipeline(query.trim(), {
+      limit,
+      saveIntermediateFiles: false,
+      showDetailedLogs: false
+    });
     
     const searchTime = Date.now() - startTime;
     
-    console.log(`✅ Contextual search completed in ${searchTime}ms: ${searchResponse.query_type} query`);
+    // Check for pipeline errors
+    if (pipelineResult.error) {
+      console.error('❌ Pipeline error:', pipelineResult.error);
+      return NextResponse.json(
+        { 
+          success: false, 
+          error: `Search pipeline failed: ${pipelineResult.error}` 
+        },
+        { status: 500 }
+      );
+    }
     
-    // Convert contextual search results to expected format
-    const formattedResults = await formatContextualResults(searchResponse, limit);
+    console.log(`✅ Weighted search completed in ${searchTime}ms: ${pipelineResult.steps?.llm_analysis?.result?.query_type || 'unknown'} query`);
+    
+    // Convert pipeline results to expected format
+    const formattedResults = await formatContextualResults(pipelineResult, limit);
 
     // Prepare response
     const response = {
       success: true,
       query: query.trim(),
       results: formattedResults,
-      // Include guidance analysis for problem queries
-      contextual_analysis: searchResponse.query_type === 'problem' ? {
-        query_type: searchResponse.query_type,
-        user_situation: searchResponse.analysis?.user_situation,
-        root_cause: searchResponse.analysis?.root_cause,
-        urgency: searchResponse.analysis?.urgency,
-        emotional_state: searchResponse.analysis?.emotional_state,
-        solution_steps: searchResponse.solution_steps?.map((step: any) => ({
-          step_number: step.step,
-          step_name: step.step_name,
-          focus: step.focus,
-          app_count: step.apps?.length || 0
-        }))
-      } : null,
+      // Include analysis from the weighted pipeline
+      contextual_analysis: {
+        query_type: pipelineResult.steps?.llm_analysis?.result?.query_type || 'unknown',
+        user_situation: pipelineResult.steps?.llm_analysis?.result?.user_situation,
+        root_cause: pipelineResult.steps?.llm_analysis?.result?.root_cause,
+        urgency: pipelineResult.steps?.llm_analysis?.result?.urgency,
+        weighted_keywords: pipelineResult.steps?.llm_analysis?.result?.weighted_keywords,
+        search_strategy: pipelineResult.steps?.llm_analysis?.result?.search_strategy
+      },
       metadata: {
         count: formattedResults.length,
         searchTime: `${searchTime}ms`,
-        searchType: 'contextual',
-        query_type: searchResponse.query_type,
-        intent: searchResponse.analysis?.user_situation || 'General search',
+        searchType: 'weighted_pipeline',
+        query_type: pipelineResult.steps?.llm_analysis?.result?.query_type || 'unknown',
+        intent: pipelineResult.steps?.llm_analysis?.result?.user_situation || 'General search',
         timestamp: new Date().toISOString()
       }
     };
@@ -123,12 +134,16 @@ export async function GET(request: NextRequest) {
       );
     }
     
-    // Perform quick search with contextual solver
-    const solver = new ContextualProblemSolver();
-    const searchResponse = await solver.solveUserQuery(query);
+    // Perform quick search with weighted pipeline
+    const pipeline = new MasterPipeline();
+    const pipelineResult = await pipeline.runPipeline(query, {
+      limit: Math.min(limit, 20),
+      saveIntermediateFiles: false,
+      showDetailedLogs: false
+    });
     
     // Simplified response for GET
-    const formattedResults = await formatContextualResults(searchResponse, Math.min(limit, 20));
+    const formattedResults = await formatContextualResults(pipelineResult, Math.min(limit, 20));
     const response = {
       success: true,
       query,
@@ -161,77 +176,50 @@ export async function GET(request: NextRequest) {
 }
 
 /**
- * Format contextual search results for swipe interface
+ * Format weighted pipeline results for swipe interface
  */
-async function formatContextualResults(searchResponse: any, limit: number) {
+async function formatContextualResults(pipelineResult: any, limit: number) {
   let allApps: any[] = [];
   
-  if (searchResponse.query_type === 'problem') {
-    // For problem queries, collect apps from all solution steps
-    for (const step of searchResponse.solution_steps || []) {
-      if (step.apps && step.apps.length > 0) {
-        const stepApps = step.apps.map((app: any) => ({
-          app_id: app.app_id,
-          app_data: {
-            name: app.title,
-            category: app.primary_category || 'Apps',
-            rating: app.rating || 0,
-            icon_url: app.icon_url || '/default-app-icon.png',
-            description: app.description || 'No description available',
-            developer: app.developer || 'Unknown Developer',
-            price: app.price || 'Free',
-            url: null
-          },
-          relevance_score: app.relevance_score || 7,
-          match_reason: `Step ${step.step}: ${step.focus} - ${app.source === 'keyword_match' ? 'Perfect match' : 'Recommended'}`,
-          matched_keywords: [app.search_term || step.step_name],
-          search_method: 'contextual_guidance',
-          step_context: {
-            step_number: step.step,
-            step_focus: step.focus,
-            step_description: step.step_name
-          }
-        }));
-        
-        allApps.push(...stepApps);
-      }
+  // Extract results from the weighted pipeline
+  const results = pipelineResult.final_results?.results || [];
+  const queryType = pipelineResult.steps?.llm_analysis?.result?.query_type || 'unknown';
+  
+  // Format apps from the weighted pipeline
+  allApps = results.map((app: any) => ({
+    app_id: app.id || app.app_id,
+    app_data: {
+      name: app.title,
+      category: app.primary_category || 'Apps',
+      rating: app.rating || 0,
+      icon_url: app.icon_url || '/default-app-icon.png',
+      description: app.description || 'No description available',
+      developer: app.developer || 'Unknown Developer',
+      price: app.price || 'Free',
+      url: null
+    },
+    relevance_score: Math.round((app.weighted_similarity || app.similarity_score || 0.5) * 10),
+    match_reason: app.weight_applied ? 
+      `Smart match with weighted keywords: ${app.boost_reasons?.[0] || 'Enhanced ranking'}` : 
+      'Semantic similarity match',
+    matched_keywords: app.boost_reasons || ['semantic'],
+    search_method: 'weighted_pipeline',
+    weighted_info: {
+      query_type: queryType,
+      weight_applied: app.weight_applied || false,
+      original_similarity: app.original_similarity || app.similarity_score,
+      weighted_similarity: app.weighted_similarity || app.similarity_score,
+      boost_reasons: app.boost_reasons || []
     }
-  } else {
-    // For general queries, use main recommendations
-    allApps = (searchResponse.results || []).map((app: any) => ({
-      app_id: app.app_id,
-      app_data: {
-        name: app.title,
-        category: app.primary_category || 'Apps',
-        rating: app.rating || 0,
-        icon_url: app.icon_url || '/default-app-icon.png',
-        description: app.description || 'No description available',
-        developer: app.developer || 'Unknown Developer',
-        price: app.price || 'Free',
-        url: null
-      },
-      relevance_score: Math.round((app.relevance || 0.5) * 10),
-      match_reason: app.source === 'keyword_match' ? 'Direct match for your search' : 'Recommended based on your query',
-      matched_keywords: [app.search_term || 'general'],
-      search_method: 'contextual_general'
-    }));
-  }
+  }));
   
   // Remove duplicates and return top results
-  const uniqueApps = allApps.reduce((acc, app) => {
-    const existingIndex = acc.findIndex(existing => existing.app_id === app.app_id);
-    if (existingIndex === -1) {
-      acc.push(app);
-    } else if (app.relevance_score > acc[existingIndex].relevance_score) {
-      acc[existingIndex] = app; // Replace with higher relevance
-    }
-    return acc;
-  }, []);
+  const uniqueApps = Array.from(new Map(allApps.map(app => [app.app_id, app])).values());
   
-  // Sort by relevance score and return limited results
-  return uniqueApps
-    .sort((a, b) => b.relevance_score - a.relevance_score)
-    .slice(0, limit);
+  // Sort by relevance score
+  uniqueApps.sort((a, b) => b.relevance_score - a.relevance_score);
+  
+  return uniqueApps.slice(0, limit);
 }
 
 /**

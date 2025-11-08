@@ -279,12 +279,6 @@ export default function SwipePage() {
         isRedirectingRef.current = true;
         
         // Store the analysis data in session storage for the contextual analysis page
-        const analysisData = {
-          query: data.query,
-          contextual_analysis: data.contextual_analysis
-        };
-        
-        // Store the search results for later use (only essential parts to reduce size)
         const essentialSearchData = {
           query: data.query,
           success: data.success,
@@ -293,7 +287,7 @@ export default function SwipePage() {
         };
         
         try {
-          sessionStorage.setItem('contextualAnalysis', JSON.stringify(analysisData));
+          sessionStorage.setItem('contextualAnalysis', JSON.stringify(essentialSearchData));
           sessionStorage.setItem('searchResults', JSON.stringify(essentialSearchData));
           
           // Verify the data was stored

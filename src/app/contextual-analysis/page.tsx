@@ -13,20 +13,10 @@ interface AnalysisData {
     user_situation: string;
     root_cause: string;
     urgency: string;
-    solution_steps: Array<{
-      step_number: number;
-      step_name: string;
-      focus: string;
-      app_count: number;
-    }>;
+    weighted_keywords: Record<string, { keywords: string[]; weight: number }>;
+    search_strategy: string;
   };
-}
-
-interface LoadingState {
-  query: boolean;
-  analysis: boolean;
-  steps: boolean;
-  complete: boolean;
+  results: any[];
 }
 
 export default function ContextualAnalysisPage() {
@@ -34,12 +24,6 @@ export default function ContextualAnalysisPage() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [analysisData, setAnalysisData] = useState<AnalysisData | null>(null);
-  const [loadingState, setLoadingState] = useState<LoadingState>({
-    query: true,
-    analysis: true,
-    steps: true,
-    complete: false
-  });
 
   useEffect(() => {
     if (!loading && !user) {
@@ -53,21 +37,12 @@ export default function ContextualAnalysisPage() {
       return;
     }
 
-    // Try to get stored analysis data first
     const storedData = sessionStorage.getItem('contextualAnalysis');
-    
     if (storedData) {
       try {
         const parsed = JSON.parse(storedData);
-        
         if (parsed.query === query && parsed.contextual_analysis) {
           setAnalysisData(parsed);
-          setLoadingState({
-            query: false,
-            analysis: false,
-            steps: false,
-            complete: true
-          });
           return;
         }
       } catch (error) {
@@ -75,39 +50,39 @@ export default function ContextualAnalysisPage() {
       }
     }
 
-    // If no stored data, redirect back to search (shouldn't happen in normal flow)
     router.push(`/swipe?query=${encodeURIComponent(query)}`);
   }, [loading, user, router, searchParams]);
 
   const proceedToRecommendations = () => {
     if (analysisData) {
-      // Mark that we should use stored results instead of searching again
       sessionStorage.setItem('useStoredResults', 'true');
-      // Prevent re-triggering contextual analysis if user comes back
       sessionStorage.setItem('skipContextualAnalysis', 'true');
       router.push(`/swipe?query=${encodeURIComponent(analysisData.query)}`);
     }
   };
 
-  if (loading) {
+  if (loading || !analysisData) {
     return (
       <div className="min-h-screen bg-white dark:bg-gray-950">
         <Navigation />
         <div className="flex items-center justify-center min-h-screen pt-20">
           <div className="text-center space-y-6">
             <div className="animate-spin rounded-full h-8 w-8 border-2 border-black dark:border-white border-t-transparent mx-auto"></div>
-            <p className="text-gray-600 dark:text-gray-400">Loading...</p>
+            <p className="text-gray-600 dark:text-gray-400">Loading Analysis...</p>
           </div>
         </div>
       </div>
     );
   }
 
-  if (!analysisData) {
-    return null;
-  }
+  const { contextual_analysis, results } = analysisData;
 
-  const { contextual_analysis } = analysisData;
+  const KeywordCategory = ({ category, keywords, weight, color }) => (
+    <div className={`bg-${color}-50 dark:bg-${color}-900/20 p-4 rounded-lg`}>
+      <h4 className={`font-bold text-sm uppercase text-${color}-600 dark:text-${color}-400 mb-2`}>{category} (Weight: {weight})</h4>
+      <p className={`text-sm text-${color}-800 dark:text-${color}-200`}>{keywords.join(', ')}</p>
+    </div>
+  );
 
   return (
     <div className="min-h-screen bg-white dark:bg-gray-950">
@@ -115,7 +90,6 @@ export default function ContextualAnalysisPage() {
       
       <main className="pt-20 pb-12 px-6">
         <div className="max-w-4xl mx-auto">
-          {/* AI Disclaimer */}
           <div className="mb-12 p-6 rounded-2xl bg-gradient-to-r from-amber-50 to-orange-50 dark:from-amber-900/20 dark:to-orange-900/20 border border-amber-200 dark:border-amber-800">
             <div className="flex items-center gap-3">
               <div className="text-2xl">⚠️</div>
@@ -125,7 +99,6 @@ export default function ContextualAnalysisPage() {
             </div>
           </div>
 
-          {/* Proceed Button - Top */}
           <div className="text-center mb-16">
             <button
               onClick={proceedToRecommendations}
@@ -135,9 +108,7 @@ export default function ContextualAnalysisPage() {
             </button>
           </div>
 
-          {/* Story Content */}
           <div className="space-y-20">
-            {/* Your Query Section */}
             <div className="text-center">
               <div className="inline-flex items-center gap-2 bg-green-100 dark:bg-green-900/20 px-4 py-2 rounded-full mb-6">
                 <span className="text-2xl">💬</span>
@@ -150,7 +121,6 @@ export default function ContextualAnalysisPage() {
               </div>
             </div>
 
-            {/* AI Analysis Section */}
             <div>
               <div className="text-center mb-12">
                 <div className="inline-flex items-center gap-2 bg-gradient-to-r from-emerald-100 to-green-100 dark:from-emerald-900/20 dark:to-green-900/20 px-6 py-3 rounded-full mb-6">
@@ -158,124 +128,50 @@ export default function ContextualAnalysisPage() {
                   <span className="text-emerald-800 dark:text-emerald-300 font-semibold">AI Analysis</span>
                 </div>
               </div>
-
               <div className="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto">
-                {/* Situation Card */}
                 <div className="bg-gradient-to-br from-green-50 to-emerald-50 dark:from-green-900/20 dark:to-emerald-900/20 rounded-3xl p-8 border border-green-200 dark:border-green-800">
                   <div className="flex items-center gap-3 mb-6">
-                    <div className="w-12 h-12 bg-green-500 rounded-full flex items-center justify-center">
-                      <span className="text-white text-xl">📍</span>
-                    </div>
+                    <div className="w-12 h-12 bg-green-500 rounded-full flex items-center justify-center"><span className="text-white text-xl">📍</span></div>
                     <h3 className="text-xl font-bold text-green-800 dark:text-green-300">Your Situation</h3>
                   </div>
-                  <div className="space-y-3">
-                    {contextual_analysis.user_situation.split('. ').filter(s => s.length > 10).map((sentence, idx) => (
-                      <div key={idx} className="flex items-start gap-3">
-                        <div className="w-2 h-2 bg-green-500 rounded-full mt-3 flex-shrink-0"></div>
-                        <p className="text-green-700 dark:text-green-200 font-medium">{sentence.trim()}.</p>
-                      </div>
-                    ))}
-                  </div>
+                  <p className="text-green-700 dark:text-green-200 font-medium">{contextual_analysis.user_situation}</p>
                 </div>
-
-                {/* Root Cause Card */}
                 <div className="bg-gradient-to-br from-emerald-50 to-green-50 dark:from-green-900/15 dark:to-emerald-900/15 rounded-3xl p-8 border border-emerald-200 dark:border-emerald-800">
                   <div className="flex items-center gap-3 mb-6">
-                    <div className="w-12 h-12 bg-emerald-500 rounded-full flex items-center justify-center">
-                      <span className="text-white text-xl">🎯</span>
-                    </div>
+                    <div className="w-12 h-12 bg-emerald-500 rounded-full flex items-center justify-center"><span className="text-white text-xl">🎯</span></div>
                     <h3 className="text-xl font-bold text-emerald-800 dark:text-emerald-300">Root Cause</h3>
                   </div>
-                  <div className="space-y-3">
-                    {contextual_analysis.root_cause.split('. ').filter(s => s.length > 10).map((sentence, idx) => (
-                      <div key={idx} className="flex items-start gap-3">
-                        <div className="w-2 h-2 bg-emerald-500 rounded-full mt-3 flex-shrink-0"></div>
-                        <p className="text-emerald-700 dark:text-emerald-200 font-medium">{sentence.trim()}.</p>
-                      </div>
-                    ))}
-                  </div>
+                  <p className="text-emerald-700 dark:text-emerald-200 font-medium">{contextual_analysis.root_cause}</p>
                 </div>
               </div>
             </div>
 
-            {/* 4-Step Solution Plan */}
             <div>
               <div className="text-center mb-12">
-                <h2 className="text-3xl font-light text-gray-900 dark:text-white mb-4">
-                  Your Action Plan
-                </h2>
-                <p className="text-lg text-gray-600 dark:text-gray-400">Simple, actionable steps designed just for you</p>
+                <h2 className="text-3xl font-light text-gray-900 dark:text-white mb-4">Search Strategy Breakdown</h2>
+                <p className="text-lg text-gray-600 dark:text-gray-400">How the AI is finding your apps.</p>
               </div>
-
-              <div className="space-y-6 max-w-4xl mx-auto">
-                {contextual_analysis.solution_steps.map((step, index) => {
-                  const stepColors = [
-                    { 
-                      bg: 'bg-gray-50 dark:bg-gray-800/50',
-                      border: 'border-gray-200 dark:border-gray-700',
-                      icon: 'bg-slate-600',
-                      text: 'text-slate-700 dark:text-slate-300'
-                    },
-                    { 
-                      bg: 'bg-stone-50 dark:bg-stone-800/50',
-                      border: 'border-stone-200 dark:border-stone-700',
-                      icon: 'bg-stone-600',
-                      text: 'text-stone-700 dark:text-stone-300'
-                    },
-                    { 
-                      bg: 'bg-neutral-50 dark:bg-neutral-800/50',
-                      border: 'border-neutral-200 dark:border-neutral-700',
-                      icon: 'bg-neutral-600',
-                      text: 'text-neutral-700 dark:text-neutral-300'
-                    },
-                    { 
-                      bg: 'bg-zinc-50 dark:bg-zinc-800/50',
-                      border: 'border-zinc-200 dark:border-zinc-700',
-                      icon: 'bg-zinc-600',
-                      text: 'text-zinc-700 dark:text-zinc-300'
-                    }
-                  ];
-                  
-                  const color = stepColors[index];
-
-                  return (
-                    <div
-                      key={step.step_number}
-                      className={`${color.bg} ${color.border} border rounded-lg p-6 transition-all duration-200 hover:shadow-md`}
-                    >
-                      <div className="flex items-start gap-4">
-                        <div className={`flex-shrink-0 w-10 h-10 ${color.icon} rounded-lg flex items-center justify-center`}>
-                          <span className="text-white font-semibold">{step.step_number}</span>
-                        </div>
-                        <div className="flex-1">
-                          <div className="flex items-center gap-3 mb-3">
-                            <h3 className={`text-xl font-semibold ${color.text}`}>
-                              {step.step_name}
-                            </h3>
-                            <span className="text-sm text-gray-500 dark:text-gray-400">
-                              {step.app_count} apps
-                            </span>
-                          </div>
-                          <p className="text-gray-600 dark:text-gray-400 leading-relaxed">
-                            {step.focus}
-                          </p>
-                        </div>
-                      </div>
-                    </div>
-                  );
-                })}
+              <div className="space-y-8 max-w-4xl mx-auto bg-gray-50 dark:bg-gray-800/50 p-8 rounded-2xl border border-gray-200 dark:border-gray-700">
+                <div>
+                  <h3 className="text-xl font-semibold text-gray-800 dark:text-gray-200 mb-4">Weighted Keywords</h3>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    {contextual_analysis.weighted_keywords && Object.entries(contextual_analysis.weighted_keywords).map(([category, data]) => (
+                      <KeywordCategory key={category} category={category} keywords={data.keywords} weight={data.weight} color="slate" />
+                    ))}
+                  </div>
+                </div>
+                <div>
+                  <h3 className="text-xl font-semibold text-gray-800 dark:text-gray-200 mb-4">Search Strategy</h3>
+                  <p className="text-gray-600 dark:text-gray-400 leading-relaxed">{contextual_analysis.search_strategy}</p>
+                </div>
               </div>
             </div>
 
-            {/* Final CTA Section */}
             <div className="text-center py-16">
-              <h2 className="text-3xl font-light text-gray-900 dark:text-white mb-4">
-                Ready to see your apps?
-              </h2>
+              <h2 className="text-3xl font-light text-gray-900 dark:text-white mb-4">Ready to see your apps?</h2>
               <p className="text-lg text-gray-600 dark:text-gray-400 mb-8 max-w-2xl mx-auto">
-                We found {contextual_analysis.solution_steps.reduce((total, step) => total + step.app_count, 0)} apps that can help with your situation.
+                We found {results?.length || 0} apps that can help with your situation.
               </p>
-              
               <div className="space-y-4">
                 <button
                   onClick={proceedToRecommendations}
@@ -283,12 +179,8 @@ export default function ContextualAnalysisPage() {
                 >
                   View App Recommendations
                 </button>
-                
                 <div className="text-center">
-                  <Link 
-                    href="/swipe"
-                    className="text-gray-500 dark:text-gray-500 hover:text-gray-700 dark:hover:text-gray-300 font-medium transition-colors"
-                  >
+                  <Link href="/swipe" className="text-gray-500 dark:text-gray-500 hover:text-gray-700 dark:hover:text-gray-300 font-medium transition-colors">
                     Try different search
                   </Link>
                 </div>

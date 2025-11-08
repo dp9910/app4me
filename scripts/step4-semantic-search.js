@@ -22,13 +22,15 @@ class SemanticSearchFiltered {
   /**
    * Perform semantic search on filtered candidates
    */
-  async searchCandidates(candidatesFile = './temp-candidates.json', originalQuery) {
+  async searchCandidates(candidateData, originalQuery) {
     console.log('🔍 Performing semantic search on filtered candidates...');
     console.log('=' .repeat(60));
     
     try {
-      // Load filtered candidates
-      const candidateData = JSON.parse(fs.readFileSync(candidatesFile, 'utf8'));
+      if (!candidateData || !originalQuery) {
+        throw new Error('Candidate data and original query must be provided.');
+      }
+
       const candidates = candidateData.candidates;
       
       console.log(`📊 Total candidates: ${candidates.length}`);

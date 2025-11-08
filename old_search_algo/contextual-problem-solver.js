@@ -317,27 +317,119 @@ Provide intelligent, specific search terms that would actually find helpful apps
    * Search for apps for a specific solution step using semantic search
    */
   async searchForStep(step) {
-    console.log(`  🔍 Searching semantically for: "${step.focus}"`);
+    console.log(`  🔍 Searching for step: "${step.focus}"`);
     try {
-      const results = await this.searchBySemanticSimilarity(step.focus, 3);
+      // Use the pre-defined search terms instead of the focus description for better results
+      const searchTerms = step.search_terms || [step.focus];
+      console.log(`  🔍 Using search terms: [${searchTerms.join(', ')}]`);
+      
+      // Search with the first (most specific) search term
+      const primaryTerm = searchTerms[0];
+      const results = await this.searchBySemanticSimilarity(primaryTerm, 4); // Get a few more candidates
+      
       if (results.length > 0) {
-        console.log(`    ✅ Found ${results.length} matches`);
-        return results.map(app => ({
+        // Filter results to ensure they're relevant to the problem domain
+        const relevantResults = this.filterStepResults(results, step, searchTerms);
+        console.log(`    ✅ Found ${relevantResults.length} relevant matches (filtered from ${results.length})`);
+        
+        return relevantResults.slice(0, 3).map(app => ({
           ...app,
           source: 'semantic_match',
           relevance_score: app.similarity_score * 10, // Scale to 0-10
-          search_term: step.focus
+          search_term: primaryTerm
         }));
       }
-      return [];
+      
+      // Fallback: try direct keyword search with step terms
+      console.log('    🔄 No semantic results, trying keyword fallback...');
+      return await this.searchStepWithKeywords(step);
+      
     } catch (error) {
-      console.log(`    ❌ Error searching semantically: ${error.message}`);
-      // Fallback to keyword search if semantic fails
-      console.log('    🔄 Falling back to keyword search...');
-      const coreKeywords = this.extractCoreKeywords(step.search_terms);
-      const searchTerms = coreKeywords.slice(0, 2);
-      const results = [];
-      for (const term of searchTerms) {
+      console.log(`    ❌ Error in step search: ${error.message}`);
+      return await this.searchStepWithKeywords(step);
+    }
+  }
+  
+  /**
+   * Filter step search results to ensure relevance to the problem domain
+   */
+  filterStepResults(results, step, searchTerms) {
+    return results.filter(app => {
+      const title = app.title.toLowerCase();
+      const description = (app.description || '').toLowerCase();
+      const category = (app.primary_category || '').toLowerCase();
+      
+      // For sleep-related steps, ensure apps are actually about sleep/health, not random topics
+      if (searchTerms.some(term => term.toLowerCase().includes('sleep'))) {
+        // Must be health/lifestyle related OR explicitly mention sleep/rest/relax
+        const isHealthRelated = ['health', 'lifestyle', 'medical', 'fitness'].some(cat => category.includes(cat));
+        const mentionsSleepConcepts = [
+          'sleep', 'rest', 'relax', 'meditation', 'calm', 'pillow', 'night', 'bed', 
+          'insomnia', 'dream', 'wake', 'tired', 'fatigue', 'nap'
+        ].some(concept => title.includes(concept) || description.includes(concept));
+        
+        if (!isHealthRelated && !mentionsSleepConcepts) {
+          console.log(`      🚫 Filtered out: ${title} - not sleep/health related`);
+          return false;
+        }
+      }
+      
+      // For relaxation/meditation steps
+      if (searchTerms.some(term => term.toLowerCase().includes('relax') || term.toLowerCase().includes('meditat'))) {
+        const isRelaxationApp = [
+          'meditat', 'mindful', 'calm', 'relax', 'stress', 'anxiety', 'zen', 'peaceful', 'breath',
+          'sleep', 'rest', 'sound', 'music', 'nature', 'white noise'
+        ].some(concept => title.includes(concept) || description.includes(concept));
+        
+        if (!isRelaxationApp) {
+          console.log(`      🚫 Filtered out: ${title} - not relaxation related`);
+          return false;
+        }
+      }
+      
+      // Filter out obviously irrelevant categories and apps
+      const irrelevantPatterns = [
+        // Exam/education apps that aren't health related
+        /ielts|exam|test|study|learn|course|tutor/i,
+        // Random business/location apps
+        /restaurant|bar|shop|store|business|location|map/i,
+        // Document/office apps
+        /document|office|excel|word|pdf|file/i,
+        // Gaming apps (unless specifically sleep-related)
+        /game|play(?!list)|arcade|puzzle/i
+      ];
+      
+      const isIrrelevant = irrelevantPatterns.some(pattern => {
+        const matchesPattern = pattern.test(title) || pattern.test(description);
+        if (matchesPattern) {
+          // Double-check: allow if it's actually sleep/health related despite the pattern
+          const isSleepHealth = ['sleep', 'health', 'relax', 'meditation'].some(concept => 
+            title.includes(concept) || description.includes(concept)
+          );
+          return !isSleepHealth; // Only filter out if it matches pattern AND is not sleep/health related
+        }
+        return false;
+      });
+      
+      if (isIrrelevant) {
+        console.log(`      🚫 Filtered out: ${title} - matches irrelevant pattern`);
+        return false;
+      }
+      
+      return true;
+    });
+  }
+  
+  /**
+   * Fallback keyword search for step results
+   */
+  async searchStepWithKeywords(step) {
+    const coreKeywords = this.extractCoreKeywords(step.search_terms || [step.focus]);
+    const searchTerms = coreKeywords.slice(0, 2);
+    const results = [];
+    
+    for (const term of searchTerms) {
+      try {
         const matches = await this.searchByKeywords([term], 3);
         if (matches.length > 0) {
           results.push(...matches.map(app => ({
@@ -347,10 +439,13 @@ Provide intelligent, specific search terms that would actually find helpful apps
             search_term: term
           })));
         }
+      } catch (error) {
+        console.log(`    ⚠️ Keyword search failed for "${term}": ${error.message}`);
       }
-      const uniqueResults = this.removeDuplicates(results);
-      return uniqueResults.slice(0, 3);
     }
+    
+    const uniqueResults = this.removeDuplicates(results);
+    return uniqueResults.slice(0, 3);
   }
 
   /**
@@ -526,50 +621,109 @@ Provide intelligent, specific search terms that would actually find helpful apps
    */
   async getKeywordCandidates(keywords, limit) {
     try {
-      // Build more precise search conditions with word boundaries
-      // Use regex for word boundary matching to avoid false positives
-      const titleConditions = keywords.map(keyword => 
-        `title.ilike.% ${keyword} %,title.ilike.${keyword} %,title.ilike.% ${keyword},title.ilike.${keyword}`
-      ).flat().join(',');
+      // Prioritize keywords based on domain specificity
+      const domainKeywords = ['sleep', 'insomnia', 'budget', 'expense', 'plant', 'fitness', 'photo'];
+      const primaryKeywords = keywords.filter(k => domainKeywords.includes(k));
+      const secondaryKeywords = keywords.filter(k => !domainKeywords.includes(k));
       
-      const descConditions = keywords.map(keyword => 
-        `description.ilike.% ${keyword} %,description.ilike.${keyword} %,description.ilike.% ${keyword},description.ilike.${keyword}`
-      ).flat().join(',');
+      console.log(`🔍 DEBUG: Prioritized keywords - Primary: [${primaryKeywords.join(', ')}], Secondary: [${secondaryKeywords.join(', ')}]`);
       
       let candidates = [];
       
-      // Get title matches (highest priority) - more precise matching
-      const { data: titleMatches, error: titleError } = await this.supabase
-        .from('apps_unified')
-        .select('id, title, developer, primary_category, description, rating, icon_url, price')
-        .or(titleConditions)
-        .gte('rating', 2.5) // Raised quality threshold
-        .order('rating', { ascending: false })
-        .limit(Math.ceil(limit * 0.7));
-      
-      if (!titleError && titleMatches) {
-        candidates.push(...titleMatches.map(app => ({
-          app_id: app.id,
-          title: app.title,
-          developer: app.developer,
-          primary_category: app.primary_category,
-          description: app.description,
-          rating: app.rating,
-          icon_url: app.icon_url,
-          price: app.price,
-          relevance: 0.9
-        })));
+      // Stage 1: Primary domain keyword matches (highest priority)
+      if (primaryKeywords.length > 0) {
+        const primaryConditions = primaryKeywords.map(keyword => 
+          `title.ilike.% ${keyword} %,title.ilike.${keyword} %,title.ilike.% ${keyword},title.ilike.${keyword}`
+        ).flat().join(',');
+        
+        const { data: primaryMatches, error: primaryError } = await this.supabase
+          .from('apps_unified')
+          .select('id, title, developer, primary_category, description, rating, icon_url, price')
+          .or(primaryConditions)
+          .gte('rating', 2.0) // Lower threshold for domain-specific matches
+          .order('rating', { ascending: false })
+          .limit(Math.ceil(limit * 0.8));
+        
+        if (!primaryError && primaryMatches) {
+          candidates.push(...primaryMatches.map(app => ({
+            app_id: app.id,
+            title: app.title,
+            developer: app.developer,
+            primary_category: app.primary_category,
+            description: app.description,
+            rating: app.rating,
+            icon_url: app.icon_url,
+            price: app.price,
+            relevance: 0.95, // High relevance for primary keywords
+            keyword_type: 'primary'
+          })));
+          console.log(`🔍 DEBUG: Found ${primaryMatches.length} primary keyword matches`);
+        }
       }
       
-      // Get description matches if we need more
+      // Stage 2: Secondary keyword matches (if we need more results)
+      if (candidates.length < limit && secondaryKeywords.length > 0) {
+        const existingIds = candidates.map(app => app.app_id);
+        const secondaryConditions = secondaryKeywords.map(keyword => 
+          `title.ilike.% ${keyword} %,title.ilike.${keyword} %,title.ilike.% ${keyword},title.ilike.${keyword}`
+        ).flat().join(',');
+        
+        const { data: secondaryMatches, error: secondaryError } = await this.supabase
+          .from('apps_unified')
+          .select('id, title, developer, primary_category, description, rating, icon_url, price')
+          .or(secondaryConditions)
+          .not('id', 'in', existingIds.length > 0 ? `(${existingIds.map(id => `"${id}"`).join(',')})` : '()')
+          .gte('rating', 3.0) // Higher threshold for secondary keywords to filter noise
+          .order('rating', { ascending: false })
+          .limit(limit - candidates.length);
+        
+        if (!secondaryError && secondaryMatches) {
+          // Filter secondary matches to avoid irrelevant apps
+          const filteredSecondary = secondaryMatches.filter(app => {
+            const title = app.title.toLowerCase();
+            const category = (app.primary_category || '').toLowerCase();
+            
+            // Skip obviously irrelevant categories for certain secondary keywords
+            if (secondaryKeywords.includes('night')) {
+              // For "night", skip games and astronomy unless it's clearly sleep-related
+              if ((category.includes('game') || category.includes('reference')) && 
+                  !title.includes('sleep') && !title.includes('rest') && !title.includes('pillow')) {
+                return false;
+              }
+            }
+            
+            return true;
+          });
+          
+          candidates.push(...filteredSecondary.map(app => ({
+            app_id: app.id,
+            title: app.title,
+            developer: app.developer,
+            primary_category: app.primary_category,
+            description: app.description,
+            rating: app.rating,
+            icon_url: app.icon_url,
+            price: app.price,
+            relevance: 0.7, // Lower relevance for secondary keywords
+            keyword_type: 'secondary'
+          })));
+          console.log(`🔍 DEBUG: Found ${filteredSecondary.length} relevant secondary keyword matches`);
+        }
+      }
+      
+      // Stage 3: Description matches (if still need more)
       if (candidates.length < limit) {
         const existingIds = candidates.map(app => app.app_id);
+        const allKeywordConditions = keywords.map(keyword => 
+          `description.ilike.% ${keyword} %,description.ilike.${keyword} %,description.ilike.% ${keyword},description.ilike.${keyword}`
+        ).flat().join(',');
+        
         const { data: descMatches, error: descError } = await this.supabase
           .from('apps_unified')
           .select('id, title, developer, primary_category, description, rating, icon_url, price')
-          .or(descConditions)
+          .or(allKeywordConditions)
           .not('id', 'in', existingIds.length > 0 ? `(${existingIds.map(id => `"${id}"`).join(',')})` : '()')
-          .gte('rating', 1.5)
+          .gte('rating', 2.5)
           .order('rating', { ascending: false })
           .limit(limit - candidates.length);
         
@@ -583,14 +737,25 @@ Provide intelligent, specific search terms that would actually find helpful apps
             rating: app.rating,
             icon_url: app.icon_url,
             price: app.price,
-            relevance: 0.7
+            relevance: 0.6, // Lower relevance for description matches
+            keyword_type: 'description'
           })));
+          console.log(`🔍 DEBUG: Found ${descMatches.length} description matches`);
         }
       }
       
-      // Remove duplicates from candidates (app might match both title and description)
+      // Remove duplicates from candidates
       const uniqueCandidates = this.removeDuplicates(candidates);
       console.log(`🔍 DEBUG: Deduplicated keyword candidates: ${candidates.length} → ${uniqueCandidates.length}`);
+      
+      // Sort by relevance and keyword type priority  
+      uniqueCandidates.sort((a, b) => {
+        if (a.keyword_type !== b.keyword_type) {
+          const typeOrder = { 'primary': 3, 'secondary': 2, 'description': 1 };
+          return typeOrder[b.keyword_type] - typeOrder[a.keyword_type];
+        }
+        return b.relevance - a.relevance;
+      });
       
       return uniqueCandidates.slice(0, limit);
       
@@ -1450,6 +1615,7 @@ Provide intelligent, specific search terms that would actually find helpful apps
     
     // Domain-specific keyword priorities
     const domainKeywords = {
+      sleep: ['sleep', 'insomnia', 'sleepy', 'sleepless', 'bedtime', 'nap', 'rest', 'tired', 'fatigue'],
       finance: ['budget', 'money', 'expense', 'finance', 'financial', 'cost', 'spend', 'spending', 'income', 'saving', 'savings'],
       fitness: ['fitness', 'workout', 'exercise', 'health', 'gym', 'training'],
       photo: ['photo', 'image', 'picture', 'camera', 'edit', 'filter'],
@@ -1459,8 +1625,16 @@ Provide intelligent, specific search terms that would actually find helpful apps
       plant: ['plant', 'garden', 'flower', 'care', 'grow', 'water']
     };
     
-    // Context-aware keyword combinations to avoid generic matches
+    // Context-aware keyword combinations to avoid generic matches and prioritize problem domains
     const contextualCombinations = {
+      // Sleep problems - prioritize sleep over coffee/phone triggers
+      'cant sleep': ['sleep', 'insomnia'],
+      'sleep problem': ['sleep', 'insomnia'],
+      'sleep issue': ['sleep', 'insomnia'],
+      'sleep trouble': ['sleep', 'insomnia'],
+      'cant rest': ['sleep', 'rest'],
+      'sleep at night': ['sleep', 'insomnia'],
+      'sleep well': ['sleep', 'insomnia'],
       // Spending/finance context - avoid generic "track" 
       'spending': ['expense', 'budget', 'financial'],
       'budget': ['finance', 'money', 'expense'],
@@ -1475,21 +1649,55 @@ Provide intelligent, specific search terms that would actually find helpful apps
       'image edit': ['photo', 'edit']
     };
     
+    // Problem-context filtering: remove trigger words when main issue is detected
+    const problemContexts = {
+      sleep: {
+        primaryKeywords: ['sleep', 'insomnia', 'rest', 'tired'],
+        triggerWords: ['coffee', 'phone', 'caffeine', 'screen'], // These are causes, not solutions
+        contextPhrases: ['cant sleep', 'sleep problem', 'sleep trouble', 'sleep at night']
+      }
+    };
+    
     // Find domain matches and prioritize them
     const prioritizedKeywords = [];
     let foundDomain = null;
     
-    // Check for contextual combinations first
+    // Check for contextual combinations first (highest priority)
     const queryLower = query.toLowerCase();
     for (const [context, replacement] of Object.entries(contextualCombinations)) {
       if (queryLower.includes(context)) {
         prioritizedKeywords.push(...replacement);
-        foundDomain = 'finance'; // Most contextual combinations are finance-related
+        foundDomain = context.includes('sleep') ? 'sleep' : 
+                     context.includes('plant') ? 'plant' :
+                     context.includes('photo') ? 'photo' : 'finance';
         break;
       }
     }
     
-    // If no contextual combinations, check for domain-specific keywords
+    // Check for problem contexts and filter out trigger words
+    if (prioritizedKeywords.length === 0) {
+      for (const [problemDomain, context] of Object.entries(problemContexts)) {
+        const hasProblemPhrase = context.contextPhrases.some(phrase => queryLower.includes(phrase));
+        const hasPrimaryKeyword = allWords.some(word => context.primaryKeywords.includes(word));
+        
+        if (hasProblemPhrase || hasPrimaryKeyword) {
+          // Prioritize problem domain keywords over trigger words
+          const problemWords = allWords.filter(word => context.primaryKeywords.includes(word));
+          prioritizedKeywords.push(...problemWords);
+          foundDomain = problemDomain;
+          
+          // Add non-trigger words as secondary keywords
+          const nonTriggerWords = allWords.filter(word => 
+            !context.primaryKeywords.includes(word) && 
+            !context.triggerWords.includes(word)
+          );
+          prioritizedKeywords.push(...nonTriggerWords.slice(0, 2));
+          break;
+        }
+      }
+    }
+    
+    // If no problem contexts, check for domain-specific keywords
     if (prioritizedKeywords.length === 0) {
       for (const [domain, keywords] of Object.entries(domainKeywords)) {
         const matches = allWords.filter(word => keywords.includes(word));

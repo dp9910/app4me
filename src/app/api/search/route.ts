@@ -15,8 +15,8 @@ if (supabaseUrl && supabaseServiceKey && supabaseUrl !== 'your-project-url-here'
   });
 }
 
-// Import the improved contextual problem solver (with better duplicate removal)
-const ContextualProblemSolver = require('../../../../contextual-problem-solver.js');
+// Import the enhanced weighted search pipeline
+const MasterPipeline = require('../../../../scripts/master-pipeline.js');
 
 interface SearchRequest {
   lifestyle?: string[];
@@ -65,16 +65,35 @@ export async function POST(request: NextRequest) {
       });
     }
 
-    // Initialize improved contextual problem solver 
-    const solver = new ContextualProblemSolver();
+    // Initialize enhanced weighted search pipeline 
+    const pipeline = new MasterPipeline();
 
-    // Perform the search using the improved hybrid algorithm with deduplication
-    const results = await solver.searchBySemanticSimilarity(searchQuery, limit);
+    // Perform the search using the new weighted search algorithm
+    const pipelineResult = await pipeline.runPipeline(searchQuery, {
+      limit,
+      saveIntermediateFiles: false,
+      showDetailedLogs: false
+    });
     
-    // Format response to match expected structure
+    // Check for pipeline errors
+    if (pipelineResult.error) {
+      console.error('❌ Pipeline error:', pipelineResult.error);
+      return NextResponse.json(
+        { 
+          success: false, 
+          error: `Search pipeline failed: ${pipelineResult.error}` 
+        },
+        { status: 500 }
+      );
+    }
+    
+    // Extract results from pipeline response
+    const results = pipelineResult.final_results?.results || [];
+    
+    // Format response to match expected structure  
     const searchResponse = {
       results: results.map(app => ({
-        id: app.app_id,
+        id: app.id || app.app_id,
         title: app.title,
         developer: app.developer,
         primary_category: app.primary_category,
@@ -82,8 +101,10 @@ export async function POST(request: NextRequest) {
         rating: app.rating,
         icon_url: app.icon_url,
         price: app.price,
-        relevance_score: app.similarity_score * 10, // Scale to 0-10
-        search_method: 'hybrid_contextual'
+        relevance_score: (app.weighted_similarity || app.similarity_score || 0) * 10, // Scale to 0-10
+        search_method: 'weighted_pipeline',
+        weight_applied: app.weight_applied || false,
+        boost_reasons: app.boost_reasons || []
       })),
       intent: {
         keywords: [searchQuery],
@@ -91,9 +112,16 @@ export async function POST(request: NextRequest) {
         problemSolved: searchQuery
       },
       metadata: {
-        searchTime: '< 2s',
-        method: 'hybrid_contextual',
-        count: results.length
+        searchTime: `${Math.round(pipelineResult.total_duration || 0)}ms`,
+        method: 'weighted_pipeline',
+        count: results.length,
+        query_type: pipelineResult.steps?.llm_analysis?.result?.query_type || 'unknown',
+        pipeline_steps: {
+          llm_analysis: pipelineResult.steps?.llm_analysis?.duration || 0,
+          keyword_processing: pipelineResult.steps?.keyword_processing?.duration || 0,
+          database_filtering: pipelineResult.steps?.database_filtering?.duration || 0,
+          semantic_search: pipelineResult.steps?.semantic_search?.duration || 0
+        }
       }
     };
 
