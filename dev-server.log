@@ -4,10 +4,65 @@
 
  ⚠ Port 3000 is in use, trying 3001 instead.
  ⚠ Port 3001 is in use, trying 3002 instead.
+ ⚠ Port 3002 is in use, trying 3003 instead.
   ▲ Next.js 14.2.33
-  - Local:        http://localhost:3002
+  - Local:        http://localhost:3003
   - Environments: .env.local
 
  ✓ Starting...
- ✓ Ready in 950ms
-[?25h
+ ✓ Ready in 913ms
+ ✓ Compiled /src/middleware in 115ms (157 modules)
+ ○ Compiling /swipe ...
+
+warn - As of Tailwind CSS v3.3, the `@tailwindcss/line-clamp` plugin is now included by default.
+warn - Remove it from the `plugins` array in your configuration to eliminate this warning.
+ ✓ Compiled /home in 1721ms (713 modules)
+ ✓ Compiled /api/personalization in 194ms (483 modules)
+ ✓ Compiled (486 modules)
+Authorization header: Present
+Token length: 1283
+Authenticated user: 912b298c-8797-495b-b5e7-ea83f4b16b99 pratdat90@gmail.com
+ GET /api/personalization 200 in 967ms
+ GET /api/user-app-interactions 200 in 982ms
+Authorization header: Present
+Token length: 1283
+Authenticated user: 912b298c-8797-495b-b5e7-ea83f4b16b99 pratdat90@gmail.com
+ GET /api/personalization 200 in 251ms
+ GET /api/user-app-interactions 200 in 236ms
+ ✓ Compiled /api/search/intent-driven in 230ms (578 modules)
+[dotenv@17.2.3] injecting env (0) from .env.local -- tip: 📡 add observability to secrets: https://dotenvx.com/ops
+🧠 Contextual problem solver request: "app to take care of plants" (limit: 20)
+🚀 Contextual Problem Solver: "app to take care of plants"
+
+================================================================================
+🧠 DEBUG: Starting analyzeQueryContext...
+🧠 Analyzing query for guidance counseling...
+
+🧠 DEBUG: About to make DeepSeek API call...
+🧠 DEBUG: DeepSeek API call completed in 1757ms
+🧠 DEBUG: Response received: {"query_type": "general"}...
+🧠 DEBUG: Parsing JSON response...
+📋 Query Analysis:
+Query Type: general
+🧠 DEBUG: General query analysis completed
+================================================================================
+🔍 DEBUG: Starting searchForApps...
+🔍 Searching for guidance apps...
+
+🔍 DEBUG: Handling as general query...
+ℹ️ GENERAL SEARCH MODE
+
+🔍 Searching semantically for: "app to take care of plants"
+🔍 DEBUG: Starting searchBySemanticSimilarity with query: app to take care of plants
+🔍 DEBUG: Generated embedding with 768 dimensions
+🔍 DEBUG: Fetched 1000 embeddings
+🔍 DEBUG: Returning 12 semantic matches
+✅ Found 12 semantic matches
+================================================================================
+🎯 Total Apps Found: 12
+✅ Contextual search completed in 3348ms: general query
+ POST /api/search/intent-driven 200 in 3650ms
+ ✓ Compiled /_not-found in 133ms (925 modules)
+ GET /default-app-icon.png 404 in 191ms
+ GET /default-app-icon.png 404 in 19ms
+ ✓ Compiled in 64ms

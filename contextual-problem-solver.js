@@ -258,6 +258,8 @@ Provide intelligent, specific search terms that would actually find helpful apps
           })),
           total_apps: results.length
         };
+      } else {
+        console.log('⚠️ No semantic results found, trying keyword fallback...');
       }
     } catch (error) {
       console.log(`❌ Semantic search failed: ${error.message}`);
@@ -359,28 +361,187 @@ Provide intelligent, specific search terms that would actually find helpful apps
   }
 
   /**
-   * Search apps by semantic similarity using JavaScript-based calculation
+   * Search apps by hybrid approach: keyword filter first, then semantic similarity
    */
   async searchBySemanticSimilarity(queryText, limit) {
-    console.log(`🔍 DEBUG: Starting searchBySemanticSimilarity with query: ${queryText}`);
+    console.log(`🔍 DEBUG: Starting hybrid search with query: ${queryText}`);
     try {
-      // 1. Generate embedding for the query text
+      // 1. First, get keyword-relevant apps as candidates
+      const keywords = this.extractKeywords(queryText);
+      console.log(`🔍 DEBUG: Extracted keywords: ${keywords.join(', ')}`);
+      
+      const candidateApps = await this.getKeywordCandidates(keywords, limit * 3); // Get more candidates than needed
+      console.log(`🔍 DEBUG: Found ${candidateApps.length} keyword-relevant candidates`);
+      
+      if (candidateApps.length === 0) {
+        console.log(`🔍 DEBUG: No keyword candidates found, falling back to full search`);
+        return await this.searchBySemanticSimilarityFull(queryText, limit);
+      }
+
+      // 2. Generate embedding for the query text
       const embeddingResponse = await this.embeddingModel.embedContent(queryText);
       const queryEmbedding = embeddingResponse.embedding.values;
       console.log(`🔍 DEBUG: Generated embedding with ${queryEmbedding.length} dimensions`);
 
-      // 2. Get all embeddings from new_embeddings table
-      const { data: allEmbeddings, error: fetchError } = await this.supabase
+      // 3. Get embeddings only for candidate apps
+      const candidateIds = candidateApps.map(app => app.app_id);
+      const { data: candidateEmbeddings, error: fetchError } = await this.supabase
         .from('new_embeddings')
-        .select('app_id, embedding');
+        .select('app_id, embedding')
+        .in('app_id', candidateIds);
 
       if (fetchError) {
         throw new Error(`Error fetching embeddings: ${fetchError.message}`);
       }
 
-      console.log(`🔍 DEBUG: Fetched ${allEmbeddings.length} embeddings`);
+      console.log(`🔍 DEBUG: Fetched ${candidateEmbeddings.length} embeddings for candidates`);
 
-      // 3. Calculate similarities in JavaScript
+      // 4. Calculate similarities only for candidates
+      const similarities = [];
+      for (const row of candidateEmbeddings) {
+        try {
+          let appEmbedding = row.embedding;
+          if (typeof appEmbedding === 'string' && appEmbedding.startsWith('[')) {
+            appEmbedding = JSON.parse(appEmbedding);
+          }
+          
+          const similarity = this.cosineSimilarity(queryEmbedding, appEmbedding);
+          // Lower threshold since these are pre-filtered candidates
+          if (!isNaN(similarity) && similarity > 0.1) {
+            similarities.push({ app_id: row.app_id, similarity });
+          }
+        } catch (err) {
+          // Skip problematic embeddings
+        }
+      }
+
+      // 5. Sort by similarity and get top results
+      similarities.sort((a, b) => b.similarity - a.similarity);
+      const topSimilarities = similarities.slice(0, limit);
+
+      if (topSimilarities.length === 0) {
+        console.log(`🔍 DEBUG: No embeddings found for candidates, returning keyword results`);
+        return candidateApps.slice(0, limit).map(app => ({
+          ...app,
+          similarity_score: 0.5,
+          relevance: 0.5
+        }));
+      }
+
+      // 6. Combine with app details from candidates
+      const combinedResults = topSimilarities.map(sim => {
+        const candidateApp = candidateApps.find(app => app.app_id === sim.app_id);
+        if (!candidateApp) return null;
+        
+        return {
+          app_id: candidateApp.app_id,
+          title: candidateApp.title,
+          developer: candidateApp.developer,
+          description: candidateApp.description,
+          rating: candidateApp.rating,
+          icon_url: candidateApp.icon_url,
+          price: candidateApp.price,
+          primary_category: candidateApp.primary_category,
+          similarity_score: sim.similarity,
+          relevance: sim.similarity
+        };
+      }).filter(Boolean);
+
+      return combinedResults;
+
+    } catch (error) {
+      console.error(`Semantic search failed: ${error.message}`);
+      throw error;
+    }
+  }
+
+  /**
+   * Get keyword-relevant apps as candidates for semantic search
+   */
+  async getKeywordCandidates(keywords, limit) {
+    try {
+      // Build search conditions
+      const titleConditions = keywords.map(keyword => `title.ilike.%${keyword}%`).join(',');
+      const descConditions = keywords.map(keyword => `description.ilike.%${keyword}%`).join(',');
+      
+      let candidates = [];
+      
+      // Get title matches (highest priority)
+      const { data: titleMatches, error: titleError } = await this.supabase
+        .from('apps_unified')
+        .select('id, title, developer, primary_category, description, rating, icon_url, price')
+        .or(titleConditions)
+        .gte('rating', 2.0) // Basic quality filter
+        .order('rating', { ascending: false })
+        .limit(Math.ceil(limit * 0.7));
+      
+      if (!titleError && titleMatches) {
+        candidates.push(...titleMatches.map(app => ({
+          app_id: app.id,
+          title: app.title,
+          developer: app.developer,
+          primary_category: app.primary_category,
+          description: app.description,
+          rating: app.rating,
+          icon_url: app.icon_url,
+          price: app.price,
+          relevance: 0.9
+        })));
+      }
+      
+      // Get description matches if we need more
+      if (candidates.length < limit) {
+        const existingIds = candidates.map(app => app.app_id);
+        const { data: descMatches, error: descError } = await this.supabase
+          .from('apps_unified')
+          .select('id, title, developer, primary_category, description, rating, icon_url, price')
+          .or(descConditions)
+          .not('id', 'in', existingIds.length > 0 ? `(${existingIds.map(id => `"${id}"`).join(',')})` : '()')
+          .gte('rating', 1.5)
+          .order('rating', { ascending: false })
+          .limit(limit - candidates.length);
+        
+        if (!descError && descMatches) {
+          candidates.push(...descMatches.map(app => ({
+            app_id: app.id,
+            title: app.title,
+            developer: app.developer,
+            primary_category: app.primary_category,
+            description: app.description,
+            rating: app.rating,
+            icon_url: app.icon_url,
+            price: app.price,
+            relevance: 0.7
+          })));
+        }
+      }
+      
+      return candidates.slice(0, limit);
+      
+    } catch (error) {
+      console.error(`Keyword candidate search failed: ${error.message}`);
+      return [];
+    }
+  }
+
+  /**
+   * Fallback to full semantic search if no keyword candidates
+   */
+  async searchBySemanticSimilarityFull(queryText, limit) {
+    // This is the old implementation for fallback
+    try {
+      const embeddingResponse = await this.embeddingModel.embedContent(queryText);
+      const queryEmbedding = embeddingResponse.embedding.values;
+
+      const { data: allEmbeddings, error: fetchError } = await this.supabase
+        .from('new_embeddings')
+        .select('app_id, embedding')
+        .limit(500); // Limit for performance
+
+      if (fetchError) {
+        throw new Error(`Error fetching embeddings: ${fetchError.message}`);
+      }
+
       const similarities = [];
       for (const row of allEmbeddings) {
         try {
@@ -398,7 +559,6 @@ Provide intelligent, specific search terms that would actually find helpful apps
         }
       }
 
-      // 4. Sort by similarity and get top results
       similarities.sort((a, b) => b.similarity - a.similarity);
       const topSimilarities = similarities.slice(0, limit);
 
@@ -406,7 +566,6 @@ Provide intelligent, specific search terms that would actually find helpful apps
         return [];
       }
 
-      // 5. Get app details
       const appIds = topSimilarities.map(s => s.app_id);
       const { data: appDetails, error: detailsError } = await this.supabase
         .from('apps_unified')
@@ -417,21 +576,8 @@ Provide intelligent, specific search terms that would actually find helpful apps
         throw new Error(`Error fetching app details: ${detailsError.message}`);
       }
 
-      // 6. Fetch app features for additional context
-      const { data: features, error: featuresError } = await this.supabase
-        .from('app_features')
-        .select('app_id, primary_use_case, key_benefit')
-        .in('app_id', appIds);
-
-      if (featuresError) {
-        console.log(`⚠️ Warning: Could not fetch app features: ${featuresError.message}`);
-      }
-
-      // 7. Combine the results
-      const combinedResults = topSimilarities.map(sim => {
+      const results = topSimilarities.map(sim => {
         const app = appDetails.find(a => a.id === sim.app_id);
-        const appFeatures = features ? features.find(f => f.app_id === sim.app_id) : null;
-        
         if (!app) return null;
         
         return {
@@ -443,19 +589,16 @@ Provide intelligent, specific search terms that would actually find helpful apps
           icon_url: app.icon_url,
           price: app.price,
           primary_category: app.primary_category,
-          primary_use_case: appFeatures ? appFeatures.primary_use_case : null,
-          key_benefit: appFeatures ? appFeatures.key_benefit : null,
           similarity_score: sim.similarity,
           relevance: sim.similarity
         };
       }).filter(Boolean);
 
-      console.log(`🔍 DEBUG: Returning ${combinedResults.length} semantic matches`);
-      return combinedResults;
+      return results;
 
     } catch (error) {
-      console.error(`Semantic search failed: ${error.message}`);
-      throw error;
+      console.error(`Full semantic search failed: ${error.message}`);
+      return [];
     }
   }
 
@@ -596,6 +739,55 @@ Provide intelligent, specific search terms that would actually find helpful apps
     }
     
     return Array.from(seen.values());
+  }
+
+  /**
+   * Filter out obviously irrelevant apps based on query context
+   */
+  isIrrelevantApp(app, queryText) {
+    const query = queryText.toLowerCase();
+    const title = (app.title || '').toLowerCase();
+    const description = (app.description || '').toLowerCase();
+    const category = (app.primary_category || '').toLowerCase();
+    
+    // Define irrelevant patterns for different query types
+    const irrelevantPatterns = [
+      // Chinese/Non-English apps (unless specifically searching for them)
+      /[\u4e00-\u9fff]/,
+      // Beauty/cosmetics apps when searching for plants/nature
+      /nail|manicure|makeup|beauty|cosmetic/,
+      // Network/utility apps when searching for specific domains
+      /airport|utility|wi-fi|network|router/,
+      // Document/office apps when searching for specific domains
+      /document|office|excel|word|pdf/,
+      // Photo printing when not searching for photos
+      /photo.*print|print.*photo/
+    ];
+    
+    // Check if query is about plants/gardening
+    if (query.includes('plant') || query.includes('garden') || query.includes('flower')) {
+      // Allow plant-related, garden, nature, education apps
+      if (title.includes('plant') || title.includes('garden') || title.includes('flower') || 
+          title.includes('tree') || title.includes('leaf') || title.includes('botanical') ||
+          category.includes('education') || category.includes('reference')) {
+        return false; // Keep relevant apps
+      }
+      
+      // Filter out clearly unrelated apps
+      if (title.includes('nail') || title.includes('airport') || title.includes('document') ||
+          /[\u4e00-\u9fff]/.test(title)) {
+        return true; // Remove irrelevant apps
+      }
+    }
+    
+    // General filtering for all queries
+    for (const pattern of irrelevantPatterns) {
+      if (pattern.test(title) || pattern.test(description)) {
+        return true; // Remove if matches irrelevant pattern
+      }
+    }
+    
+    return false; // Keep by default
   }
 
   /**

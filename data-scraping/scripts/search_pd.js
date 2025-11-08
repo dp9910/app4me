@@ -491,18 +491,18 @@ Return only the JSON object:`;
     
     console.log(`\n🔄 Merging unique apps with apps_unified table...`);
     
-    // Load current apps_unified backup
-    const backupPath = 'data-scraping/table-backups/apps_unified_2025-10-31T16-33-58-923Z.json';
-    let currentApps = [];
+    // Query live database for current apps
+    console.log('  📊 Fetching current apps from live database...');
+    const { data: currentApps, error: appsError } = await supabase
+      .from('apps_unified')
+      .select('*');
     
-    if (fs.existsSync(backupPath)) {
-      console.log('  📁 Loading current apps_unified backup...');
-      const backupData = JSON.parse(fs.readFileSync(backupPath, 'utf-8'));
-      currentApps = backupData.data || backupData;
-      console.log(`  📊 Current apps in unified table: ${currentApps.length}`);
-    } else {
-      console.log('  ⚠️ No local backup found, starting with empty table');
+    if (appsError) {
+      console.error('❌ Error fetching current apps:', appsError);
+      throw appsError;
     }
+    
+    console.log(`  📊 Current apps in unified table: ${currentApps.length}`);
     
     // Prepare new apps for unified table
     const newUnifiedApps = this.newApps.map(app => ({
