@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { useAuth } from '@/lib/auth/auth-context';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import Navigation from '@/components/ui/Navigation';
 
 interface SwipeAnalytics {
@@ -91,6 +91,7 @@ export default function MyAppsPage() {
   const [analytics, setAnalytics] = useState<SwipeAnalytics | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [selectedQuery, setSelectedQuery] = useState<string | null>(null);
+  const searchParams = useSearchParams();
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
@@ -100,9 +101,13 @@ export default function MyAppsPage() {
     }
 
     if (user) {
+      const initialQuery = searchParams.get('query');
+      if (initialQuery) {
+        setSelectedQuery(decodeURIComponent(initialQuery));
+      }
       fetchAnalytics();
     }
-  }, [user, loading, router]);
+  }, [user, loading, router, searchParams]);
 
   const fetchAnalytics = async () => {
     if (!user) return;
@@ -478,115 +483,142 @@ export default function MyAppsPage() {
       
       {/* Main Content */}
       <main className="flex-1 p-4 sm:p-6 lg:p-8 bg-gray-50 dark:bg-gray-900 overflow-y-auto">
-          <div className="flex flex-wrap justify-between gap-3 items-center mb-8">
-            <h1 className="text-gray-900 dark:text-white text-4xl font-black leading-tight tracking-[-0.033em]">
-              My Apps
-            </h1>
-            
-            {/* Enhanced Quick Stats */}
-            {analytics?.sessionStats && analytics?.allApps && (
-              <div className="flex gap-4">
-                <div className="text-center">
-                  <div className="text-2xl font-bold text-primary">
-                    {analytics.sessionStats.total_likes}
-                  </div>
-                  <div className="text-sm text-gray-500 dark:text-gray-400">Liked Apps</div>
-                </div>
-                <div className="text-center">
-                  <div className="text-2xl font-bold text-green-500">
-                    {Math.round(analytics.sessionStats.completion_rate)}%
-                  </div>
-                  <div className="text-sm text-gray-500 dark:text-gray-400">Completion Rate</div>
-                </div>
-                <div className="text-center">
-                  <div className="text-2xl font-bold text-blue-500">
-                    {Math.round(analytics.sessionStats.like_rate)}%
-                  </div>
-                  <div className="text-sm text-gray-500 dark:text-gray-400">Like Rate</div>
-                </div>
-                <div className="text-center">
-                  <div className="text-2xl font-bold text-amber-500">
-                    {(() => {
-                      const appsWithRating = analytics.allApps.filter(app => app.rating && app.rating > 0);
-                      const avgRating = appsWithRating.length > 0 ? 
-                        appsWithRating.reduce((sum, app) => sum + (app.rating || 0), 0) / appsWithRating.length : 0;
-                      return avgRating > 0 ? avgRating.toFixed(1) : 'N/A';
-                    })()}
-                  </div>
-                  <div className="text-sm text-gray-500 dark:text-gray-400">Avg Rating</div>
-                </div>
-                <div className="text-center">
-                  <div className="text-2xl font-bold text-purple-500">
-                    {analytics.allApps.filter(app => app.developer).length}
-                  </div>
-                  <div className="text-sm text-gray-500 dark:text-gray-400">With Developer</div>
-                </div>
+        <div className="mx-auto max-w-7xl">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 xl:gap-12">
+            {/* Left Column - Main Dashboard Content */}
+            <div className="lg:col-span-2 flex flex-col gap-8">
+              {/* Page Heading */}
+              <div className="flex flex-wrap justify-between gap-3 items-center">
+                <h1 className="text-gray-900 dark:text-white text-4xl font-black leading-tight tracking-[-0.033em]">
+                  My Dashboard
+                </h1>
               </div>
-            )}
-          </div>
 
-          {/* Empty State */}
-          {!analytics?.allApps.length ? (
-            <div className="flex flex-col items-center justify-center p-12 bg-white dark:bg-gray-800 rounded-xl border border-dashed border-gray-300 dark:border-gray-600">
-              <div className="p-4 bg-primary/10 rounded-full mb-4">
-                <span className="text-5xl">🔍</span>
-              </div>
-              <h3 className="text-xl font-bold text-gray-900 dark:text-white">Your App Collection is Empty</h3>
-              <p className="text-gray-500 dark:text-gray-400 mt-2 max-w-md text-center">
-                Start discovering new apps! As you 'like' apps during swipe sessions, they'll appear here, organized by your search queries.
-              </p>
-              <button
-                onClick={() => router.push('/swipe')}
-                className="mt-6 flex cursor-pointer items-center justify-center overflow-hidden rounded-lg h-12 bg-primary text-white gap-2 text-base font-bold leading-normal tracking-[0.015em] min-w-0 px-6 hover:bg-primary/90 transition-colors"
-              >
-                Start Discovering
-              </button>
+              {/* Quick Stats Section */}
+              {analytics?.sessionStats && analytics?.allApps && (
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4">
+                  {/* Total Liked Apps */}
+                  <div className="bg-white dark:bg-gray-800 rounded-xl p-4 shadow-sm border border-gray-200 dark:border-gray-700 flex flex-col items-center justify-center">
+                    <div className="text-3xl font-bold text-primary mb-1">
+                      {analytics.sessionStats.total_likes}
+                    </div>
+                    <div className="text-sm text-gray-500 dark:text-gray-400 text-center">Liked Apps</div>
+                  </div>
+                  {/* Completion Rate */}
+                  <div className="bg-white dark:bg-gray-800 rounded-xl p-4 shadow-sm border border-gray-200 dark:border-gray-700 flex flex-col items-center justify-center">
+                    <div className="text-3xl font-bold text-green-500 mb-1">
+                      {Math.round(analytics.sessionStats.completion_rate)}%
+                    </div>
+                    <div className="text-sm text-gray-500 dark:text-gray-400 text-center">Completion Rate</div>
+                  </div>
+                  {/* Like Rate */}
+                  <div className="bg-white dark:bg-gray-800 rounded-xl p-4 shadow-sm border border-gray-200 dark:border-gray-700 flex flex-col items-center justify-center">
+                    <div className="text-3xl font-bold text-blue-500 mb-1">
+                      {Math.round(analytics.sessionStats.like_rate)}%
+                    </div>
+                    <div className="text-sm text-gray-500 dark:text-gray-400 text-center">Like Rate</div>
+                  </div>
+                  {/* Avg Rating */}
+                  <div className="bg-white dark:bg-gray-800 rounded-xl p-4 shadow-sm border border-gray-200 dark:border-gray-700 flex flex-col items-center justify-center">
+                    <div className="text-3xl font-bold text-amber-500 mb-1">
+                      {(() => {
+                        const appsWithRating = analytics.allApps.filter(app => app.rating && app.rating > 0);
+                        const avgRating = appsWithRating.length > 0 ? 
+                          appsWithRating.reduce((sum, app) => sum + (app.rating || 0), 0) / appsWithRating.length : 0;
+                        return avgRating > 0 ? avgRating.toFixed(1) : 'N/A';
+                      })()}
+                    </div>
+                    <div className="text-sm text-gray-500 dark:text-gray-400 text-center">Avg Rating</div>
+                  </div>
+                  {/* Total Sessions */}
+                  <div className="bg-white dark:bg-gray-800 rounded-xl p-4 shadow-sm border border-gray-200 dark:border-gray-700 flex flex-col items-center justify-center">
+                    <div className="text-3xl font-bold text-purple-500 mb-1">
+                      {analytics.sessionStats.total_sessions}
+                    </div>
+                    <div className="text-sm text-gray-500 dark:text-gray-400 text-center">Total Sessions</div>
+                  </div>
+                </div>
+              )}
+
+              {/* Empty State */}
+              {!analytics?.allApps.length ? (
+                <div className="flex flex-col items-center justify-center p-12 bg-white dark:bg-gray-800 rounded-xl border border-dashed border-gray-300 dark:border-gray-600">
+                  <div className="p-4 bg-primary/10 rounded-full mb-4">
+                    <span className="text-5xl">🔍</span>
+                  </div>
+                  <h3 className="text-xl font-bold text-gray-900 dark:text-white">Your App Collection is Empty</h3>
+                  <p className="text-gray-500 dark:text-gray-400 mt-2 max-w-md text-center">
+                    Start discovering new apps! As you 'like' apps during swipe sessions, they'll appear here, organized by your search queries.
+                  </p>
+                  <button
+                    onClick={() => router.push('/swipe')}
+                    className="mt-6 flex cursor-pointer items-center justify-center overflow-hidden rounded-lg h-12 bg-primary text-white gap-2 text-base font-bold leading-normal tracking-[0.015em] min-w-0 px-6 hover:bg-primary/90 transition-colors"
+                  >
+                    Start Discovering
+                  </button>
+                </div>
+              ) : selectedQuery ? (
+                /* Selected Query View */
+                <div className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm border border-gray-200 dark:border-gray-700">
+                  <button
+                    onClick={() => setSelectedQuery(null)}
+                    className="flex items-center gap-2 mb-6 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors"
+                  >
+                    <span className="text-xl">←</span>
+                    Back to queries
+                  </button>
+                  
+                  <h2 className="text-gray-900 dark:text-white text-3xl font-bold mb-6">
+                    "{formatCategoryName(selectedQuery)}" Apps
+                  </h2>
+                  
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                    {getAppsForQuery(selectedQuery).map((app) => (
+                      <AppCard 
+                        key={`${app.session_id}-${app.app_id}`} 
+                        app={app} 
+                        onRemove={removeApp}
+                      />
+                    ))}
+                  </div>
+                </div>
+              ) : (
+                /* Queries Grid View */
+                <div className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm border border-gray-200 dark:border-gray-700">
+                  <h2 className="text-gray-900 dark:text-white text-2xl font-bold mb-6">
+                    Your Search Queries
+                  </h2>
+                  
+                  <div className="space-y-4">
+                    {analytics?.queries.map((query) => (
+                      <QueryCard 
+                        key={query.search_query} 
+                        query={query} 
+                        onSelect={() => setSelectedQuery(query.search_query)}
+                        analytics={analytics}
+                      />
+                    ))}
+                  </div>
+                </div>
+              )}
             </div>
-          ) : selectedQuery ? (
-            /* Selected Query View */
-            <div>
-              <button
-                onClick={() => setSelectedQuery(null)}
-                className="flex items-center gap-2 mb-6 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors"
-              >
-                <span className="text-xl">←</span>
-                Back to queries
-              </button>
-              
-              <h2 className="text-gray-900 dark:text-white text-3xl font-bold mb-6">
-                "{formatCategoryName(selectedQuery)}" Apps
-              </h2>
-              
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-                {getAppsForQuery(selectedQuery).map((app) => (
-                  <AppCard 
-                    key={`${app.session_id}-${app.app_id}`} 
-                    app={app} 
-                    onRemove={removeApp}
-                  />
-                ))}
-              </div>
-            </div>
-          ) : (
-            /* Queries Grid View */
-            <div>
-              <h2 className="text-gray-900 dark:text-white text-2xl font-bold mb-6">
-                Your Search Queries
-              </h2>
-              
-              <div className="space-y-4">
-                {analytics?.queries.map((query) => (
-                  <QueryCard 
-                    key={query.search_query} 
-                    query={query} 
-                    onSelect={() => setSelectedQuery(query.search_query)}
-                    analytics={analytics}
-                  />
-                ))}
-              </div>
-            </div>
-          )}
-        </main>
+
+            {/* Right Column - Recent Activity */}
+            <aside className="lg:col-span-1 flex flex-col gap-8">
+              {analytics?.recentActivity && analytics.recentActivity.length > 0 && (
+                <div className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm border border-gray-200 dark:border-gray-700">
+                  <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-4">Recent Activity</h3>
+                  <div className="space-y-4">
+                    {analytics.recentActivity.map((activity, index) => (
+                      <ActivityItem key={index} activity={activity} />
+                    ))}
+                  </div>
+                </div>
+              )}
+            </aside>
+          </div>
+        </div>
+      </main>
     </div>
   );
 }
@@ -620,78 +652,37 @@ function QueryCard({ query, onSelect, analytics }: { query: QueryStats; onSelect
   
   return (
     <div 
-      onClick={onSelect}
-      className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-6 cursor-pointer hover:shadow-lg transition-all duration-300 hover:scale-[1.02] hover:border-primary/50"
+      onClick={onSelect} // Moved onClick to the main div
+      className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-6 cursor-pointer hover:shadow-lg transition-all duration-300 hover:scale-[1.02]"
     >
-      <div className="flex items-center justify-between">
-        <div className="flex items-center gap-4">
-          <span className="text-4xl">{getCategoryIcon(query.search_query)}</span>
-          <div>
-            <h3 className="text-gray-900 dark:text-white text-2xl font-bold">
-              {formatCategoryName(query.search_query)}
-            </h3>
-            <p className="text-gray-500 dark:text-gray-400 text-sm mt-1">
-              Last searched {new Date(query.last_searched).toLocaleDateString()}
-            </p>
-            
-            {/* Query Insights */}
-            <div className="flex items-center gap-4 mt-2">
-              {avgRating > 0 && (
-                <div className="flex items-center gap-1">
-                  <span className="text-amber-500 text-sm">⭐</span>
-                  <span className="text-gray-600 dark:text-gray-400 text-sm">
-                    {avgRating.toFixed(1)} avg
-                  </span>
-                </div>
-              )}
-              
-              {topCategory && (
-                <div className="flex items-center gap-1">
-                  <span className="text-sm">{getCategoryIcon(topCategory[0])}</span>
-                  <span className="text-gray-600 dark:text-gray-400 text-sm">
-                    {topCategory[0]}
-                  </span>
-                </div>
-              )}
-              
-              <div className="flex items-center gap-1">
-                <span className="text-blue-500 text-sm">📱</span>
-                <span className="text-gray-600 dark:text-gray-400 text-sm">
-                  {query.total_count} apps total
-                </span>
-              </div>
+      <div className="flex flex-col gap-4">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-4">
+            <span className="text-4xl">{getCategoryIcon(query.search_query)}</span>
+            <div>
+              <h3 className="text-gray-900 dark:text-white text-2xl font-bold">
+                {formatCategoryName(query.search_query)}
+              </h3>
+              <p className="text-gray-500 dark:text-gray-400 text-sm mt-1">
+                Last searched {new Date(query.last_searched).toLocaleDateString()}
+              </p>
             </div>
           </div>
+          {/* Removed View Apps Button */}
         </div>
         
-        <div className="flex items-center gap-6">
-          <div className="text-center">
-            <div className="flex items-center gap-2 mb-1">
-              <span className="text-green-500 text-2xl">👍</span>
-              <span className="text-green-500 font-bold text-2xl">{query.liked_count}</span>
-            </div>
-            <span className="text-gray-500 dark:text-gray-400 text-sm">Liked</span>
+        <div className="grid grid-cols-3 gap-4 text-center border-t border-gray-200 dark:border-gray-700 pt-4">
+          <div>
+            <div className="text-2xl font-bold text-green-500">{query.liked_count}</div>
+            <div className="text-sm text-gray-500 dark:text-gray-400">Liked</div>
           </div>
-          
-          <div className="text-center">
-            <div className="flex items-center gap-2 mb-1">
-              <span className="text-red-500 text-2xl">👎</span>
-              <span className="text-red-500 font-bold text-2xl">{query.disliked_count}</span>
-            </div>
-            <span className="text-gray-500 dark:text-gray-400 text-sm">Passed</span>
+          <div>
+            <div className="text-2xl font-bold text-red-500">{query.disliked_count}</div>
+            <div className="text-sm text-gray-500 dark:text-gray-400">Passed</div>
           </div>
-          
-          <div className="text-center">
-            <div className="text-xl font-bold text-gray-700 dark:text-gray-300 mb-1">
-              {query.total_count}
-            </div>
-            <span className="text-gray-500 dark:text-gray-400 text-sm">Total</span>
-          </div>
-          
-          <div className="text-gray-400 dark:text-gray-500">
-            <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 20 20">
-              <path fillRule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clipRule="evenodd" />
-            </svg>
+          <div>
+            <div className="text-2xl font-bold text-gray-700 dark:text-gray-300">{query.total_count}</div>
+            <div className="text-sm text-gray-500 dark:text-gray-400">Total</div>
           </div>
         </div>
       </div>
@@ -710,17 +701,16 @@ function AppCard({ app, onRemove }: { app: SwipedApp; onRemove: (sessionId: stri
     return Math.round(bytes / Math.pow(1024, i) * 10) / 10 + ' ' + sizes[i];
   };
   
-  // Simplified without features data
-  const topCategory = null;
-  
   return (
-    <div className={`flex h-full w-full flex-col gap-4 rounded-xl shadow-sm border group transition-transform duration-300 hover:scale-105 ${
-      isLiked 
-        ? 'bg-green-50 dark:bg-green-900/20 border-green-200 dark:border-green-700' 
-        : 'bg-red-50 dark:bg-red-900/20 border-red-200 dark:border-red-700'
-    }`}>
+    <div 
+      onClick={() => router.push(`/app/${app.app_id}?query=${encodeURIComponent(app.search_query)}`)} // Moved onClick to the main div
+      className={`flex h-full flex-col rounded-xl shadow-sm border group transition-transform duration-300 hover:scale-105 cursor-pointer ${
+        isLiked 
+          ? 'bg-green-50 dark:bg-green-900/20 border-green-200 dark:border-green-700' 
+          : 'bg-red-50 dark:bg-red-900/20 border-red-200 dark:border-red-700'
+      }`}>
       <div 
-        className="w-full bg-center bg-no-repeat aspect-video bg-cover rounded-t-xl flex items-center justify-center relative"
+        className="w-full bg-center bg-no-repeat aspect-video bg-cover rounded-t-xl flex items-center justify-center relative p-4"
         style={{ 
           backgroundColor: '#f3f4f6'
         }}
@@ -748,58 +738,27 @@ function AppCard({ app, onRemove }: { app: SwipedApp; onRemove: (sessionId: stri
           </div>
         )}
         
-        {/* Quality Score Badge */}
-        {app.quality_signals && app.quality_signals > 0.7 && (
-          <div className="absolute top-2 left-2 bg-green-500 text-white text-xs font-bold px-2 py-1 rounded-full">
-            ⭐ {Math.round(app.quality_signals * 100)}%
-          </div>
-        )}
+        {/* Interaction Type */}
+        <div className="absolute top-2 left-2 text-2xl">
+          {isLiked ? '👍' : '👎'}
+        </div>
       </div>
       
       <div className="flex flex-col flex-1 justify-between p-4 pt-0 gap-3">
         <div>
-          <div className="flex items-center justify-between mb-2">
-            <p className="text-gray-900 dark:text-white text-base font-medium leading-normal">
-              {app.app_name}
-            </p>
-            <span className={`text-xl ${isLiked ? 'text-green-500' : 'text-red-500'}`}>
-              {isLiked ? '👍' : '👎'}
-            </span>
-          </div>
+          <p className="text-gray-900 dark:text-white text-lg font-bold leading-normal line-clamp-1">
+            {app.app_name}
+          </p>
           
           {/* Developer */}
           {app.developer && (
-            <p className="text-primary text-sm font-medium">
+            <p className="text-primary text-sm font-medium line-clamp-1">
               {app.developer}
             </p>
           )}
           
-          {/* Description fallback */}
-          {app.description && (
-            <p className="text-gray-600 dark:text-gray-400 text-sm mt-1 line-clamp-2">
-              {app.description.substring(0, 100)}...
-            </p>
-          )}
-          
-          {/* Category & Rating Row */}
+          {/* Rating & Category */}
           <div className="flex items-center justify-between mt-2">
-            <div className="flex items-center gap-2">
-              {topCategory && (
-                <div className="flex items-center gap-1">
-                  <span className="text-sm">{topCategory.icon}</span>
-                  <span className="text-xs text-gray-500 dark:text-gray-400">
-                    {topCategory.value?.toFixed(1)}
-                  </span>
-                </div>
-              )}
-              {app.version && (
-                <span className="text-xs bg-gray-200 dark:bg-gray-700 text-gray-600 dark:text-gray-400 px-2 py-1 rounded">
-                  v{app.version}
-                </span>
-              )}
-            </div>
-            
-            {/* Rating */}
             {app.rating && app.rating > 0 && (
               <div className="flex items-center gap-1">
                 <span className="text-amber-500 text-sm">⭐</span>
@@ -813,37 +772,33 @@ function AppCard({ app, onRemove }: { app: SwipedApp; onRemove: (sessionId: stri
                 )}
               </div>
             )}
+            {app.primary_category && (
+              <span className="text-xs bg-gray-200 dark:bg-gray-700 text-gray-600 dark:text-gray-400 px-2 py-1 rounded-full">
+                {app.primary_category}
+              </span>
+            )}
           </div>
+          
+          {/* Description */}
+          {app.description && (
+            <p className="text-gray-600 dark:text-gray-400 text-sm mt-2 line-clamp-2">
+              {app.description.substring(0, 100)}...
+            </p>
+          )}
           
           {/* Keywords/Tags */}
           {app.llm_best_for_keywords && app.llm_best_for_keywords.length > 0 && (
             <div className="flex flex-wrap gap-1 mt-2">
-              {app.llm_best_for_keywords.slice(0, 3).map((keyword, index) => (
+              {app.llm_best_for_keywords.slice(0, 2).map((keyword, index) => (
                 <span key={index} className="text-xs bg-primary/20 text-primary px-2 py-1 rounded-full">
                   {keyword}
                 </span>
               ))}
             </div>
           )}
-          
-          {/* Additional Info Row */}
-          <div className="flex items-center justify-between mt-2 text-xs text-gray-400 dark:text-gray-500">
-            <span>
-              {isLiked ? 'Liked' : 'Passed'} {new Date(app.swiped_at).toLocaleDateString()}
-            </span>
-            {formatFileSize(app.size_bytes) && (
-              <span>{formatFileSize(app.size_bytes)}</span>
-            )}
-          </div>
         </div>
         
-        <div className="flex gap-2">
-          <button 
-            onClick={() => router.push(`/app/${app.app_id}`)}
-            className="flex flex-1 min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 px-4 bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-white text-sm font-bold leading-normal tracking-[0.015em] hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors"
-          >
-            <span className="truncate">View Details</span>
-          </button>
+        <div className="flex gap-2 mt-auto">
           <button 
             onClick={() => onRemove(app.session_id, app.app_id)}
             className="flex size-10 cursor-pointer items-center justify-center overflow-hidden rounded-lg text-gray-500 dark:text-gray-400 hover:bg-red-500/10 hover:text-red-500 transition-colors"

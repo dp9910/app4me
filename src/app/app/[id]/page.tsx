@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { useAuth } from '@/lib/auth/auth-context';
-import { useRouter, useParams } from 'next/navigation';
+import { useRouter, useParams, useSearchParams } from 'next/navigation';
 import Navigation from '@/components/ui/Navigation';
 import { supabase } from '@/lib/supabase/client';
 
@@ -70,6 +70,9 @@ export default function AppSpotlightPage() {
   const params = useParams();
   const appId = params.id as string;
   
+  const searchParams = useSearchParams();
+  const searchQuery = searchParams.get('query'); // Get the query parameter
+  
   const [appDetails, setAppDetails] = useState<AppDetails | null>(null);
   const [appFeatures, setAppFeatures] = useState<AppFeatures | null>(null);
   const [keywords, setKeywords] = useState<KeywordData[]>([]);
@@ -90,7 +93,6 @@ export default function AppSpotlightPage() {
   const fetchAppDetails = async () => {
     try {
       setError(null);
-      
       
       // Fetch app details from apps_unified table
       const { data: appData, error: appError } = await supabase
@@ -272,6 +274,20 @@ export default function AppSpotlightPage() {
       
       <main className="flex-1 px-4 sm:px-6 lg:px-8 py-8">
         <div className="mx-auto max-w-7xl">
+          <button
+            onClick={() => {
+              if (searchQuery) {
+                router.push(`/my-apps?query=${encodeURIComponent(searchQuery)}`);
+              } else {
+                router.push('/my-apps'); // Fallback if no query is present
+              }
+            }}
+            className="flex items-center gap-2 mb-6 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors"
+          >
+            <span className="text-xl">←</span>
+            Go back
+          </button>
+
           {/* Breadcrumbs */}
           <div className="flex flex-wrap gap-2 pb-6">
             <button
