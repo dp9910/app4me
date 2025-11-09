@@ -719,7 +719,7 @@ export default function SwipePage() {
             {swipedLeftCards.length > 0 && (
               <div className="absolute left-12 top-1/3 transform -translate-y-1/2 z-1">
                 <div 
-                  className="w-72 h-96 rounded-xl bg-white/75 dark:bg-gray-800/75 border border-gray-200 dark:border-gray-700 shadow-lg pointer-events-none"
+                  className="w-64 h-96 rounded-xl bg-white/75 dark:bg-gray-800/75 border border-gray-200 dark:border-gray-700 shadow-lg pointer-events-none"
                   style={{
                     transform: 'scale(0.8) rotate(-8deg)',
                     filter: 'blur(1px)',
@@ -762,7 +762,7 @@ export default function SwipePage() {
             {swipedRightCards.length > 0 && (
               <div className="absolute right-12 top-1/3 transform -translate-y-1/2 z-1">
                 <div 
-                  className="w-72 h-96 rounded-xl bg-white/75 dark:bg-gray-800/75 border border-gray-200 dark:border-gray-700 shadow-lg pointer-events-none"
+                  className="w-64 h-96 rounded-xl bg-white/75 dark:bg-gray-800/75 border border-gray-200 dark:border-gray-700 shadow-lg pointer-events-none"
                   style={{
                     transform: 'scale(0.8) rotate(8deg)',
                     filter: 'blur(1px)',
@@ -802,7 +802,7 @@ export default function SwipePage() {
             )}
 
             {/* Center Active Card */}
-            <div className="relative w-80 h-[600px]">
+            <div className="relative w-full max-w-md h-[600px]">
               <SwipeCard 
                 app={currentApp} 
                 onLike={() => handleAction('like')} 
