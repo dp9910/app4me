@@ -510,11 +510,12 @@ export default function SwipePage() {
               <div className="flex flex-col sm:flex-row items-center justify-center gap-3 mb-8 w-full max-w-3xl mx-auto">
                 {/* TextField */}
                 <label className="flex flex-col w-full flex-1">
-                  <input 
-                    className="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-xl text-gray-900 dark:text-white focus:outline-0 focus:ring-2 focus:ring-primary/50 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 focus:border-primary dark:focus:border-primary h-14 placeholder:text-gray-400 dark:placeholder:text-gray-500 p-[15px] text-base font-normal leading-normal transition-all"
+                  <textarea
+                    className="form-input flex w-full min-w-0 flex-1 rounded-xl text-gray-900 dark:text-white focus:outline-0 focus:ring-2 focus:ring-primary/50 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 focus:border-primary dark:focus:border-primary min-h-[104px] resize-y placeholder:text-gray-400 dark:placeholder:text-gray-500 p-[15px] text-base font-normal leading-normal transition-all"
                     placeholder="e.g., apps to help me take care of plants, or a simple budget tracker"
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
+                    rows={1}
                   />
                 </label>
                 {/* SingleButton */}
