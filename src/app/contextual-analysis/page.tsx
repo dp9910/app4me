@@ -12,6 +12,7 @@ interface ProgressStep {
   status: 'pending' | 'running' | 'completed' | 'error';
   data?: any;
   timestamp?: number;
+  description?: string; // Added description field
 }
 
 interface ProgressData {
@@ -32,13 +33,13 @@ interface ProgressData {
   elapsed: number;
 }
 
-const stepIcons = {
-  'query_analysis': '🔍',
-  'keyword_processing': '🏷️',
-  'diversified_search': '🎯',
-  'category_filtering': '🔧',
+const stepIcons: Record<string, string> = {
+  'query_analysis': '🧠', // More distinct emoji
+  'keyword_processing': '🔑', // More distinct emoji
+  'diversified_search': '🌐', // More distinct emoji
+  'category_filtering': '🗂️', // More distinct emoji
   'semantic_ranking': '✨',
-  'final_selection': '🏆'
+  'final_selection': '✅' // More distinct emoji
 };
 
 export default function ContextualAnalysisPage() {
@@ -74,6 +75,12 @@ export default function ContextualAnalysisPage() {
       if (result.success && result.contextual_analysis) {
         sessionStorage.setItem('contextualAnalysis', JSON.stringify(result));
         sessionStorage.setItem('useStoredResults', 'true');
+        sessionStorage.setItem('searchResults', JSON.stringify({
+            query: searchQuery,
+            success: result.success,
+            results: result.results,
+            contextual_analysis: result.contextual_analysis
+        }));
         
         const mockProgress: ProgressData = {
           sessionId: 'completed_' + Date.now(),
@@ -81,7 +88,12 @@ export default function ContextualAnalysisPage() {
           totalSteps: 6,
           elapsed: 6000,
           steps: [
-            { id: 'query_analysis', name: 'Query Interpretation', icon: 'search', status: 'completed', 
+            { 
+              id: 'query_analysis', 
+              name: 'Query Interpretation', 
+              icon: stepIcons['query_analysis'], 
+              status: 'completed', 
+              description: 'Understanding your request as a problem or general query, identifying key themes and context.',
               data: { 
                 query_type: result.contextual_analysis.query_type,
                 user_situation: result.contextual_analysis.user_situation,
@@ -90,11 +102,41 @@ export default function ContextualAnalysisPage() {
                 categories: result.contextual_analysis.weighted_keywords 
               } 
             },
-            { id: 'keyword_processing', name: 'Keyword Extraction', icon: 'label', status: 'completed' },
-            { id: 'diversified_search', name: 'Database Query', icon: 'hub', status: 'completed' },
-            { id: 'category_filtering', name: 'Initial Filtering', icon: 'filter_alt', status: 'completed' },
-            { id: 'semantic_ranking', name: 'AI Re-ranking', icon: 'auto_awesome', status: 'completed' },
-            { id: 'final_selection', name: 'Final Selection', icon: 'verified', status: 'completed' }
+            { 
+              id: 'keyword_processing', 
+              name: 'Keyword Extraction', 
+              icon: stepIcons['keyword_processing'], 
+              status: 'completed',
+              description: 'Organizing search terms by importance and creating targeted search strategies for each category.'
+            },
+            { 
+              id: 'diversified_search', 
+              name: 'Database Query', 
+              icon: stepIcons['diversified_search'], 
+              status: 'completed',
+              description: 'Searching across multiple app categories simultaneously to ensure comprehensive coverage.'
+            },
+            { 
+              id: 'category_filtering', 
+              name: 'Initial Filtering', 
+              icon: stepIcons['category_filtering'], 
+              status: 'completed',
+              description: 'Removing duplicates and organizing results by relevance across different solution types.'
+            },
+            { 
+              id: 'semantic_ranking', 
+              name: 'AI Re-ranking', 
+              icon: stepIcons['semantic_ranking'], 
+              status: 'completed',
+              description: 'Using AI to understand the meaning behind your query and rank apps by true relevance.'
+            },
+            { 
+              id: 'final_selection', 
+              name: 'Final Selection', 
+              icon: stepIcons['final_selection'], 
+              status: 'completed',
+              description: 'Combining all signals to deliver the most helpful app recommendations for your specific need.'
+            }
           ],
           data: {
             query: searchQuery,
@@ -141,7 +183,12 @@ export default function ContextualAnalysisPage() {
             totalSteps: 6,
             elapsed: 0,
             steps: [
-              { id: 'query_analysis', name: 'Query Interpretation', icon: 'search', status: 'completed', 
+              { 
+                id: 'query_analysis', 
+                name: 'Query Interpretation', 
+                icon: stepIcons['query_analysis'], 
+                status: 'completed', 
+                description: 'Understanding your request as a problem or general query, identifying key themes and context.',
                 data: { 
                   query_type: parsed.contextual_analysis.query_type,
                   user_situation: parsed.contextual_analysis.user_situation,
@@ -150,11 +197,41 @@ export default function ContextualAnalysisPage() {
                   categories: parsed.contextual_analysis.weighted_keywords 
                 } 
               },
-              { id: 'keyword_processing', name: 'Keyword Extraction', icon: 'label', status: 'completed' },
-              { id: 'diversified_search', name: 'Database Query', icon: 'hub', status: 'completed' },
-              { id: 'category_filtering', name: 'Initial Filtering', icon: 'filter_alt', status: 'completed' },
-              { id: 'semantic_ranking', name: 'AI Re-ranking', icon: 'auto_awesome', status: 'completed' },
-              { id: 'final_selection', name: 'Final Selection', icon: 'verified', status: 'completed' }
+              { 
+                id: 'keyword_processing', 
+                name: 'Keyword Extraction', 
+                icon: stepIcons['keyword_processing'], 
+                status: 'completed',
+                description: 'Organizing search terms by importance and creating targeted search strategies for each category.'
+              },
+              { 
+                id: 'diversified_search', 
+                name: 'Database Query', 
+                icon: stepIcons['diversified_search'], 
+                status: 'completed',
+                description: 'Searching across multiple app categories simultaneously to ensure comprehensive coverage.'
+              },
+              { 
+                id: 'category_filtering', 
+                name: 'Initial Filtering', 
+                icon: stepIcons['category_filtering'], 
+                status: 'completed',
+                description: 'Removing duplicates and organizing results by relevance across different solution types.'
+              },
+              { 
+                id: 'semantic_ranking', 
+                name: 'AI Re-ranking', 
+                icon: stepIcons['semantic_ranking'], 
+                status: 'completed',
+                description: 'Using AI to understand the meaning behind your query and rank apps by true relevance.'
+              },
+              { 
+                id: 'final_selection', 
+                name: 'Final Selection', 
+                icon: stepIcons['final_selection'], 
+                status: 'completed',
+                description: 'Combining all signals to deliver the most helpful app recommendations for your specific need.'
+              }
             ],
             data: {
               query: parsed.query,
@@ -168,6 +245,13 @@ export default function ContextualAnalysisPage() {
           };
           
           setProgressData(mockProgress);
+          sessionStorage.setItem('useStoredResults', 'true'); // Add this line
+          sessionStorage.setItem('searchResults', JSON.stringify({
+              query: query,
+              success: parsed.success,
+              results: parsed.results,
+              contextual_analysis: parsed.contextual_analysis
+          }));
           return;
         }
       } catch (error) {
@@ -239,7 +323,7 @@ export default function ContextualAnalysisPage() {
   const { data: analysisData } = progressData;
 
   return (
-    <div className="min-h-screen bg-background-light dark:bg-background-dark font-display text-[#343A40] dark:text-white">
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 font-sans text-gray-800 dark:text-gray-200">
       <Navigation />
       
       <main className="w-full grow px-4 sm:px-6 lg:px-8 py-8 md:py-12 pt-20">
@@ -253,68 +337,43 @@ export default function ContextualAnalysisPage() {
                 {/* Page Heading */}
                 <div className="flex flex-wrap justify-between gap-3 px-4">
                   <div className="flex min-w-72 flex-col gap-2">
-                    <p className="text-gray-900 dark:text-white text-4xl font-black leading-tight tracking-[-0.033em]">AI Reasoning Trace</p>
-                    <p className="text-gray-500 dark:text-gray-400 text-base font-normal leading-normal">
-                      Showing thought process for query: '{analysisData.query}'
+                    <p className="text-gray-900 dark:text-white text-4xl font-extrabold leading-tight tracking-[-0.033em]">AI Reasoning Trace</p>
+                    <p className="text-gray-600 dark:text-gray-400 text-base font-normal leading-normal">
+                      Showing thought process for query: '<span className="font-medium text-gray-800 dark:text-gray-300">{analysisData.query}</span>'
                     </p>
                   </div>
                 </div>
 
-                {/* Toolbar */}
-                <div className="flex justify-between items-center gap-4 px-4 py-3 border border-gray-200 dark:border-white/10 rounded-xl bg-white/50 dark:bg-black/20">
-                  <div className="flex items-center gap-2">
-                    <button className="p-2 text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-white/10 rounded-lg">
-                      <span className="text-xl">⚙️</span>
-                    </button>
-                    <div className="w-px h-6 bg-gray-200 dark:bg-white/10"></div>
-                    <button className="p-2 text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-white/10 rounded-lg">
-                      <span className="text-xl">🔍</span>
-                    </button>
-                    <button className="p-2 text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-white/10 rounded-lg">
-                      <span className="text-xl">📊</span>
-                    </button>
-                  </div>
-                  <div className="flex gap-2 flex-wrap">
-                    <div className="flex h-8 shrink-0 items-center justify-center gap-x-2 rounded-full bg-blue-500/10 dark:bg-blue-500/20 pl-3 pr-3">
-                      <p className="text-blue-600 dark:text-blue-300 text-sm font-medium leading-normal">INFO</p>
-                    </div>
-                    <div className="flex h-8 shrink-0 items-center justify-center gap-x-2 rounded-full bg-purple-500/10 dark:bg-purple-500/20 pl-3 pr-3">
-                      <p className="text-purple-600 dark:text-purple-300 text-sm font-medium leading-normal">DEBUG</p>
-                    </div>
-                    <div className="flex h-8 shrink-0 items-center justify-center gap-x-2 rounded-full bg-amber-500/10 dark:bg-amber-500/20 pl-3 pr-3">
-                      <p className="text-amber-600 dark:text-amber-300 text-sm font-medium leading-normal">WARN</p>
-                    </div>
-                  </div>
-                </div>
+                
 
                 {/* Timeline - Modern Card Layout */}
                 <div className="space-y-4 px-4">
                   {progressData.steps.map((step, index) => (
                     <div 
                       key={step.id}
-                      className={`relative overflow-hidden rounded-2xl border transition-all duration-300 ${
+                      className={`relative overflow-hidden rounded-2xl border transition-all duration-300 hover:shadow-lg ${
                         step.status === 'completed' 
-                          ? 'bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-950/30 dark:to-indigo-950/30 border-blue-200 dark:border-blue-800/50 shadow-sm' 
+                          ? 'bg-gradient-to-r from-gray-50 to-green-50 dark:from-gray-800/30 dark:to-green-950/30 border-gray-200 dark:border-gray-700 shadow-sm' 
                           : step.status === 'running'
-                          ? 'bg-gradient-to-r from-purple-50 to-blue-50 dark:from-purple-950/30 dark:to-blue-950/30 border-purple-200 dark:border-purple-800/50 shadow-md'
-                          : 'bg-white dark:bg-gray-800/50 border-gray-200 dark:border-gray-700'
+                          ? 'bg-gradient-to-r from-orange-50 to-yellow-50 dark:from-orange-950/40 dark:to-yellow-950/40 border-orange-300 dark:border-orange-700 shadow-lg ring-2 ring-orange-500 ring-opacity-50 animate-pulse' // Enhanced running state
+                          : 'bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 shadow-sm'
                       }`}
                     >
                       {/* Completion indicator */}
                       {step.status === 'completed' && (
-                        <div className="absolute top-0 left-0 h-1 w-full bg-gradient-to-r from-blue-500 to-indigo-500"></div>
+                        <div className="absolute top-0 left-0 h-1 w-full bg-gradient-to-r from-green-500 to-teal-500"></div>
                       )}
                       
                       <div className="flex items-start gap-4 p-6">
                         {/* Icon */}
-                        <div className={`flex items-center justify-center w-12 h-12 rounded-full flex-shrink-0 ${
+                        <div className={`flex items-center justify-center w-12 h-12 rounded-full flex-shrink-0 text-2xl ${
                           step.status === 'completed' 
-                            ? 'bg-blue-500 text-white shadow-lg' 
+                            ? 'bg-green-500 text-white shadow-lg' 
                             : step.status === 'running'
-                            ? 'bg-purple-500 text-white shadow-lg animate-pulse'
+                            ? 'bg-orange-500 text-white shadow-lg animate-bounce' // Added bounce animation
                             : 'bg-gray-100 dark:bg-gray-700 text-gray-400 dark:text-gray-500'
                         }`}>
-                          <span className="text-xl">{stepIcons[step.id]}</span>
+                          {step.icon}
                         </div>
 
                         {/* Content */}
@@ -326,9 +385,9 @@ export default function ContextualAnalysisPage() {
                             </h3>
                             <div className={`px-3 py-1 rounded-full text-xs font-medium ${
                               step.status === 'completed' 
-                                ? 'bg-blue-100 dark:bg-blue-900/50 text-blue-700 dark:text-blue-300'
+                                ? 'bg-green-100 dark:bg-green-900/50 text-green-700 dark:text-green-300'
                                 : step.status === 'running'
-                                ? 'bg-purple-100 dark:bg-purple-900/50 text-purple-700 dark:text-purple-300'
+                                ? 'bg-orange-100 dark:bg-orange-900/50 text-orange-700 dark:text-orange-300'
                                 : 'bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-400'
                             }`}>
                               {step.status === 'completed' ? '✓ Complete' : 
@@ -338,33 +397,22 @@ export default function ContextualAnalysisPage() {
 
                           {/* Step Description */}
                           <p className="text-gray-600 dark:text-gray-300 text-sm leading-relaxed mb-4">
-                            {step.id === 'query_analysis' && step.data ? 
-                              `Understanding your request as a ${step.data.query_type} with ${step.data.urgency} priority, identifying key themes and context.` :
-                              step.id === 'keyword_processing' ? 
-                              'Organizing search terms by importance and creating targeted search strategies for each category.' :
-                              step.id === 'diversified_search' ? 
-                              'Searching across multiple app categories simultaneously to ensure comprehensive coverage.' :
-                              step.id === 'category_filtering' ? 
-                              'Removing duplicates and organizing results by relevance across different solution types.' :
-                              step.id === 'semantic_ranking' ? 
-                              'Using AI to understand the meaning behind your query and rank apps by true relevance.' :
-                              'Combining all signals to deliver the most helpful app recommendations for your specific need.'
-                            }
+                            {step.description}
                           </p>
 
                           {/* Step Details for Query Analysis */}
                           {step.data && step.id === 'query_analysis' && (
-                            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-                              <div className="bg-white/80 dark:bg-gray-800/80 rounded-lg p-3 border border-gray-200/50 dark:border-gray-600/50">
+                            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mt-4">
+                              <div className="bg-white dark:bg-gray-700 rounded-lg p-3 border border-gray-200 dark:border-gray-600 shadow-sm">
                                 <span className="text-xs text-gray-500 dark:text-gray-400 uppercase tracking-wider">Type</span>
                                 <p className="text-sm font-medium text-gray-900 dark:text-white capitalize mt-1">{step.data.query_type}</p>
                               </div>
-                              <div className="bg-white/80 dark:bg-gray-800/80 rounded-lg p-3 border border-gray-200/50 dark:border-gray-600/50">
+                              <div className="bg-white dark:bg-gray-700 rounded-lg p-3 border border-gray-200 dark:border-gray-600 shadow-sm">
                                 <span className="text-xs text-gray-500 dark:text-gray-400 uppercase tracking-wider">Priority</span>
                                 <p className="text-sm font-medium text-gray-900 dark:text-white capitalize mt-1">{step.data.urgency}</p>
                               </div>
                               {step.data.categories && (
-                                <div className="bg-white/80 dark:bg-gray-800/80 rounded-lg p-3 border border-gray-200/50 dark:border-gray-600/50">
+                                <div className="bg-white dark:bg-gray-700 rounded-lg p-3 border border-gray-200 dark:border-gray-600 shadow-sm">
                                   <span className="text-xs text-gray-500 dark:text-gray-400 uppercase tracking-wider">Categories</span>
                                   <p className="text-sm font-medium text-gray-900 dark:text-white mt-1">
                                     {Object.keys(step.data.categories).length} groups
@@ -383,20 +431,24 @@ export default function ContextualAnalysisPage() {
 
             {/* Side Panel: Results */}
             <aside className="lg:col-span-1 lg:sticky top-24 self-start">
-              <div className="bg-white dark:bg-black/20 border border-gray-200 dark:border-white/10 rounded-xl p-6">
-                <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-4">Search Analysis</h3>
+              <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl p-6 shadow-lg">
+                <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-6">Search Analysis</h3>
                 
                 {/* AI Understanding */}
                 {analysisData.user_situation && (
-                  <div className="space-y-4 mb-6">
+                  <div className="space-y-5 mb-6 pb-6 border-b border-gray-200 dark:border-gray-700">
                     <div>
-                      <h4 className="font-semibold text-gray-900 dark:text-white mb-2">Your Situation</h4>
-                      <p className="text-sm text-gray-600 dark:text-gray-400">{analysisData.user_situation}</p>
+                      <h4 className="font-semibold text-gray-900 dark:text-white mb-2 flex items-center">
+                        <span className="text-xl mr-2">💡</span> Your Situation
+                      </h4>
+                      <p className="text-sm text-gray-600 dark:text-gray-400 leading-relaxed">{analysisData.user_situation}</p>
                     </div>
                     {analysisData.root_cause && (
                       <div>
-                        <h4 className="font-semibold text-gray-900 dark:text-white mb-2">Root Cause</h4>
-                        <p className="text-sm text-gray-600 dark:text-gray-400">{analysisData.root_cause}</p>
+                        <h4 className="font-semibold text-gray-900 dark:text-white mb-2 flex items-center">
+                          <span className="text-xl mr-2">🌿</span> Root Cause
+                        </h4>
+                        <p className="text-sm text-gray-600 dark:text-gray-400 leading-relaxed">{analysisData.root_cause}</p>
                       </div>
                     )}
                   </div>
@@ -404,36 +456,42 @@ export default function ContextualAnalysisPage() {
 
                 {/* Keyword Categories */}
                 {analysisData.categories && (
-                  <div className="space-y-4 mb-6">
-                    <h4 className="font-semibold text-gray-900 dark:text-white">Search Keywords</h4>
-                    <div className="space-y-3">
+                  <div className="space-y-4 mb-6 pb-6 border-b border-gray-200 dark:border-gray-700">
+                    <h4 className="font-semibold text-gray-900 dark:text-white flex items-center">
+                      <span className="text-xl mr-2">🏷️</span> Search Keywords
+                    </h4>
+                    <div className="flex flex-wrap gap-2">
                       {Object.entries(analysisData.categories).map(([category, data]) => (
-                        <div key={category} className="bg-gray-50 dark:bg-gray-800/50 rounded-lg p-3">
-                          <h5 className="text-sm font-medium text-gray-900 dark:text-white capitalize mb-1">
-                            {category}
-                          </h5>
-                          <p className="text-xs text-gray-600 dark:text-gray-400">
-                            {data.keywords.slice(0, 4).join(', ')}
-                            {data.keywords.length > 4 && ` +${data.keywords.length - 4} more`}
-                          </p>
-                        </div>
+                        <span key={category} className="bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-300 text-xs font-medium px-3 py-1 rounded-full">
+                          {category} ({data.keywords.length})
+                        </span>
                       ))}
+                    </div>
+                    <div className="mt-4 text-sm text-gray-600 dark:text-gray-400">
+                      <p className="font-medium mb-2">Detailed Keywords:</p>
+                      <ul className="list-disc list-inside space-y-1">
+                        {Object.entries(analysisData.categories).map(([category, data]) => (
+                          <li key={category}>
+                            <span className="font-semibold capitalize">{category}:</span> {data.keywords.join(', ')}
+                          </li>
+                        ))}
+                      </ul>
                     </div>
                   </div>
                 )}
 
                 {/* Results Summary */}
                 {analysisData.final_results && (
-                  <div className="text-center py-4 border-t border-gray-200 dark:border-white/10">
-                    <div className="text-2xl font-bold text-gray-900 dark:text-white mb-1">
+                  <div className="text-center py-4">
+                    <div className="text-5xl font-extrabold text-gray-700 dark:text-gray-300 mb-2 animate-fade-in">
                       {analysisData.final_results.length}
                     </div>
-                    <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">
-                      Apps found using diversified search
+                    <p className="text-md text-gray-600 dark:text-gray-400 mb-6">
+                      Relevant apps found for your query
                     </p>
                     <button
                       onClick={proceedToRecommendations}
-                      className="w-full px-4 py-2 bg-primary text-white rounded-lg font-medium hover:bg-primary/90 transition-colors"
+                      className="w-full px-6 py-3 bg-gray-700 text-white rounded-lg font-semibold text-lg hover:bg-gray-800 transition-all duration-300 transform hover:scale-105 shadow-lg"
                       disabled={isSearching}
                     >
                       View Recommendations

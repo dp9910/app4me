@@ -52,40 +52,42 @@ export default function SwipePage() {
   const [sessionStartTime, setSessionStartTime] = useState<number | null>(null);
   const [isCompleting, setIsCompleting] = useState(false);
   const isRedirectingRef = useRef<boolean>(false); // Track if we're redirecting to contextual analysis
-  const searchPerformed = useRef(false); // Track if search was performed to prevent duplicates
 
   useEffect(() => {
     const queryParam = searchParams.get('query');
+    const swipeInitialSearchDone = sessionStorage.getItem('swipeInitialSearchDone');
+    console.log('SwipePage useEffect - queryParam:', queryParam);
+    console.log('SwipePage useEffect - loading:', loading);
+    console.log('SwipePage useEffect - user:', user);
+    console.log('SwipePage useEffect - swipeInitialSearchDone:', swipeInitialSearchDone);
     
-    if (queryParam && !searchPerformed.current) {
-      searchPerformed.current = true;
+    if (queryParam && swipeInitialSearchDone !== queryParam) { // Check if search done for THIS query
+      sessionStorage.setItem('swipeInitialSearchDone', queryParam); // Mark as done for this query
       setSearchQuery(decodeURIComponent(queryParam));
+      console.log('SwipePage useEffect - Calling handleSearchWithQuery with:', decodeURIComponent(queryParam));
       handleSearchWithQuery(decodeURIComponent(queryParam));
     } else if (!loading && !user) {
+      console.log('SwipePage useEffect - Redirecting to signin');
       router.push('/auth/signin');
     }
-  }, [searchParams, user, loading, router]);
+  }, [searchParams, user, loading, router]); // Removed hasInitialSearchRun from dependencies
 
+  // Cleanup effect to handle session completion when leaving the page
   // Cleanup effect to handle session completion when leaving the page
   useEffect(() => {
     return () => {
       // Complete session when component unmounts (navigation to other pages)
       if (sessionId && currentApp) {
+        console.log('SwipePage cleanup - Completing incomplete swipe session');
         completeSwipeSessionIncomplete('user_stopped');
       }
-      
-      // DON'T clean up contextual analysis data if we're redirecting to it
-      if (!isRedirectingRef.current) {
-        sessionStorage.removeItem('contextualAnalysis');
-        sessionStorage.removeItem('searchResults');
-        sessionStorage.removeItem('useStoredResults');
-        sessionStorage.removeItem('skipContextualAnalysis');
-      }
+      // Session storage is NOT cleared here to allow contextual analysis flow
     };
   }, []); // Empty dependency array - only run on unmount
 
   const startSwipeSession = async (query: string, totalApps: number) => {
     if (!user) return null;
+    console.log('startSwipeSession - Starting new swipe session for query:', query);
     
     try {
       const startTime = Date.now();
@@ -108,6 +110,7 @@ export default function SwipePage() {
       }
 
       setSessionId(data.id);
+      console.log('startSwipeSession - Session started with ID:', data.id);
       return data.id;
     } catch (error) {
       console.error('Error starting swipe session:', error);
@@ -117,6 +120,7 @@ export default function SwipePage() {
 
   const logSwipeInteraction = async (app: App, action: 'like' | 'pass', cardPosition: number) => {
     if (!user || !sessionId) return;
+    console.log('logSwipeInteraction - Logging swipe:', app.name, action, cardPosition);
     
     try {
       const swipeStartTime = sessionStartTime || Date.now();
@@ -142,6 +146,7 @@ export default function SwipePage() {
 
   const completeSwipeSession = async (reason: 'finished_all' | 'user_stopped' | 'start_over') => {
     if (!sessionId || !sessionStartTime) return;
+    console.log('completeSwipeSession - Completing swipe session with reason:', reason);
     
     try {
       const totalDuration = Date.now() - sessionStartTime;
@@ -164,6 +169,7 @@ export default function SwipePage() {
 
   const completeSwipeSessionIncomplete = async (reason: 'user_stopped' | 'start_over') => {
     if (!sessionId || !sessionStartTime) return;
+    console.log('completeSwipeSessionIncomplete - Completing incomplete swipe session with reason:', reason);
     
     try {
       const totalDuration = Date.now() - sessionStartTime;
@@ -185,7 +191,11 @@ export default function SwipePage() {
   };
 
   const handleSearchWithQuery = async (query: string) => {
-    if (!query.trim()) return;
+    console.log('handleSearchWithQuery - Called with query:', query);
+    if (!query.trim()) {
+      console.log('handleSearchWithQuery - Query is empty, returning.');
+      return;
+    }
     
     const trimmedQuery = query.trim();
     
@@ -198,11 +208,14 @@ export default function SwipePage() {
     // Check if we should use stored results instead of making a new API call
     const useStored = sessionStorage.getItem('useStoredResults');
     const storedResults = sessionStorage.getItem('searchResults');
+    console.log('handleSearchWithQuery - useStored:', useStored, 'storedResults:', storedResults ? 'present' : 'absent');
     
     if (useStored && storedResults) {
       try {
         const parsed = JSON.parse(storedResults);
+        console.log('handleSearchWithQuery - Parsed stored results:', parsed);
         if (parsed.query === trimmedQuery && parsed.success && parsed.results) {
+          console.log('handleSearchWithQuery - Using stored results!');
           // Use stored results
           sessionStorage.removeItem('useStoredResults');
           sessionStorage.removeItem('searchResults');
@@ -245,13 +258,21 @@ export default function SwipePage() {
           }
           
           setIsSearching(false);
+          console.log('handleSearchWithQuery - Successfully used stored results, returning.');
           return;
+        } else {
+          console.log('handleSearchWithQuery - Stored results condition not met:', {
+            queryMatch: parsed.query === trimmedQuery,
+            success: parsed.success,
+            resultsPresent: !!parsed.results
+          });
         }
       } catch (error) {
-        console.error('Error parsing stored results:', error);
+        console.error('handleSearchWithQuery - Error parsing stored results:', error);
       }
     }
     
+    console.log('handleSearchWithQuery - Making new API call to /api/search/intent-driven');
     try {
       const response = await fetch('/api/search/intent-driven', {
         method: 'POST',
@@ -273,8 +294,10 @@ export default function SwipePage() {
       // Check if this is a problem query that should show contextual analysis
       // BUT skip if user already went through contextual analysis for this session
       const skipContextual = sessionStorage.getItem('skipContextualAnalysis');
+      console.log('handleSearchWithQuery - API call result. skipContextual:', skipContextual, 'contextual_analysis:', data.contextual_analysis);
       
       if (data.success && data.contextual_analysis && data.contextual_analysis.query_type === 'problem' && !skipContextual) {
+        console.log('handleSearchWithQuery - Redirecting to contextual analysis page.');
         // Mark that we're redirecting to prevent useEffect from re-triggering
         isRedirectingRef.current = true;
         
@@ -293,6 +316,7 @@ export default function SwipePage() {
           // Verify the data was stored
           const verifyAnalysis = sessionStorage.getItem('contextualAnalysis');
           const verifyResults = sessionStorage.getItem('searchResults');
+          console.log('handleSearchWithQuery - Stored contextualAnalysis:', verifyAnalysis ? 'present' : 'absent', 'searchResults:', verifyResults ? 'present' : 'absent');
           
           // Data stored successfully
         } catch (error) {
@@ -318,6 +342,7 @@ export default function SwipePage() {
       }
 
       if (data.success && data.results) {
+        console.log('handleSearchWithQuery - Processing API results for swipe cards.');
         const normalizedResults = data.results.map((result: any) => ({
           id: result.app_id,
           app_id: result.app_id,
@@ -360,15 +385,17 @@ export default function SwipePage() {
         setSearchError(data.error || 'No results found');
       }
     } catch (error) {
-      console.error('Search error:', error);
+      console.error('handleSearchWithQuery - Search error:', error);
       setSearchError(error instanceof Error ? error.message : 'Search failed. Please try again.');
     } finally {
       setIsSearching(false);
+      console.log('handleSearchWithQuery - Finished search process.');
     }
   };
 
   const handleSearch = async () => {
     if (!searchQuery.trim()) return;
+    sessionStorage.removeItem('skipContextualAnalysis'); // Clear before new search
     await handleSearchWithQuery(searchQuery);
   };
 
@@ -401,6 +428,7 @@ export default function SwipePage() {
       sessionStorage.removeItem('searchResults');
       sessionStorage.removeItem('useStoredResults');
       sessionStorage.removeItem('skipContextualAnalysis');
+      sessionStorage.removeItem('swipeInitialSearchDone'); // Clear initial search flag
       
       // Show completion message then redirect
       setTimeout(() => {
@@ -419,11 +447,12 @@ export default function SwipePage() {
     sessionStorage.removeItem('contextualAnalysis');
     sessionStorage.removeItem('searchResults');
     sessionStorage.removeItem('useStoredResults');
+    sessionStorage.removeItem('skipContextualAnalysis'); // Ensure this is cleared on reset
     sessionStorage.removeItem('skipContextualAnalysis');
     
     // Clear search tracking
-    searchPerformed.current = false;
     isRedirectingRef.current = false;
+    sessionStorage.removeItem('swipeInitialSearchDone'); // Clear initial search flag
     
     setCurrentApp(null);
     setAppStack([]);

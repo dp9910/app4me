@@ -1,21 +1,49 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Test Contextual Flow</title>
+    <!-- Tailwind CSS CDN for quick prototyping -->
+    <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        body { font-family: Arial, sans-serif; padding: 20px; }
-        button { padding: 10px 20px; margin: 10px; cursor: pointer; }
-        .result { margin: 20px 0; padding: 15px; border: 1px solid #ddd; }
-        .debug { background: #f0f0f0; padding: 10px; margin: 10px 0; white-space: pre-wrap; }
+        /* Custom styles or overrides can go here if needed */
+        .debug-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out;
+        }
+        .debug-content.expanded {
+            max-height: 500px; /* Adjust as needed */
+            transition: max-height 0.3s ease-in;
+        }
     </style>
 </head>
-<body>
-    <h1>Test Contextual Search Flow</h1>
-    
-    <button onclick="testProblemQuery()">Test Problem Query: "cant sleep, too much coffee"</button>
-    <button onclick="testGeneralQuery()">Test General Query: "fitness apps"</button>
-    
-    <div id="results"></div>
+<body class="bg-gray-100 text-gray-900 font-sans antialiased">
+    <div class="container mx-auto p-4 sm:p-6 lg:p-8">
+        <header class="mb-8">
+            <h1 class="text-4xl font-bold text-center text-blue-700">Contextual Search Flow Tester</h1>
+        </header>
+        
+        <main class="bg-white shadow-lg rounded-lg p-6">
+            <section class="mb-6 text-center">
+                <h2 class="text-2xl font-semibold mb-4">Simulate Queries</h2>
+                <div class="flex flex-wrap justify-center gap-4">
+                    <button onclick="testProblemQuery()" class="bg-red-500 hover:bg-red-600 text-white font-bold py-3 px-6 rounded-lg shadow-md transition duration-300 ease-in-out transform hover:-translate-y-1">
+                        Test Problem Query: "cant sleep, too much coffee"
+                    </button>
+                    <button onclick="testGeneralQuery()" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-3 px-6 rounded-lg shadow-md transition duration-300 ease-in-out transform hover:-translate-y-1">
+                        Test General Query: "fitness apps"
+                    </button>
+                </div>
+            </section>
+            
+            <section id="results" class="mt-8">
+                <!-- Results will be loaded here -->
+                <p class="text-center text-gray-500">Click a button above to run a query and see results.</p>
+            </section>
+        </main>
+    </div>
 
     <script>
         async function testProblemQuery() {
@@ -28,7 +56,13 @@
         
         async function testQuery(query, type) {
             const resultsDiv = document.getElementById('results');
-            resultsDiv.innerHTML = `<div class="result">Testing ${type} Query: "${query}"...<br><br>Loading...</div>`;
+            resultsDiv.innerHTML = `
+                <div class="bg-blue-50 border-l-4 border-blue-400 text-blue-800 p-4 mb-4 rounded-md shadow-sm" role="alert">
+                    <p class="font-bold">Testing ${type} Query:</p>
+                    <p>"${query}"</p>
+                    <p class="mt-2">Loading...</p>
+                </div>
+            `;
             
             try {
                 const response = await fetch('/api/search/intent-driven', {
@@ -39,35 +73,71 @@
 
                 const data = await response.json();
                 
-                let html = `<div class="result">
-                    <h2>${type} Query Results</h2>
-                    <strong>Query:</strong> "${query}"<br>
-                    <strong>Success:</strong> ${data.success}<br>
-                    <strong>Query Type:</strong> ${data.metadata?.query_type}<br>
-                    <strong>Results Count:</strong> ${data.results?.length || 0}<br>
-                    <strong>Has Contextual Analysis:</strong> ${!!data.contextual_analysis}<br>
+                let html = `
+                    <div class="bg-white shadow-lg rounded-lg p-6 mb-6 border-t-4 border-blue-500">
+                        <h2 class="text-3xl font-bold text-blue-700 mb-4">${type} Query Results</h2>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+                            <div><strong class="text-gray-700">Query:</strong> <span class="text-gray-600">"${query}"</span></div>
+                            <div><strong class="text-gray-700">Success:</strong> <span class="${data.success ? 'text-green-600' : 'text-red-600'}">${data.success}</span></div>
+                            <div><strong class="text-gray-700">Query Type:</strong> <span class="text-gray-600">${data.metadata?.query_type || 'N/A'}</span></div>
+                            <div><strong class="text-gray-700">Results Count:</strong> <span class="text-gray-600">${data.results?.length || 0}</span></div>
+                            <div><strong class="text-gray-700">Has Contextual Analysis:</strong> <span class="${data.contextual_analysis ? 'text-green-600' : 'text-red-600'}">${!!data.contextual_analysis}</span></div>
+                        </div>
                 `;
                 
                 if (data.contextual_analysis) {
                     html += `
-                    <br><strong>Contextual Analysis:</strong><br>
-                    - Analysis Type: ${data.contextual_analysis.query_type}<br>
-                    - User Situation: ${data.contextual_analysis.user_situation}<br>
-                    - Root Cause: ${data.contextual_analysis.root_cause}<br>
-                    - Urgency: ${data.contextual_analysis.urgency}<br>
-                    - Solution Steps: ${data.contextual_analysis.solution_steps?.length || 0}<br>
-                    
-                    <div class="debug">
-Should redirect to: /contextual-analysis?query=${encodeURIComponent(query)}
-                    </div>
+                        <div class="bg-blue-50 border-l-4 border-blue-400 text-blue-800 p-4 mb-6 rounded-md">
+                            <h3 class="text-xl font-semibold mb-3 flex items-center">
+                                <svg class="w-6 h-6 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 8h10M7 12h10m-9 4h9m-6 4h6a2 2 0 002-2V6a2 2 0 00-2-2H7a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+                                Contextual Analysis
+                            </h3>
+                            <ul class="list-disc list-inside space-y-1 text-gray-700">
+                                <li><strong>Analysis Type:</strong> ${data.contextual_analysis.query_type}</li>
+                                <li><strong>User Situation:</strong> ${data.contextual_analysis.user_situation}</li>
+                                <li><strong>Root Cause:</strong> ${data.contextual_analysis.root_cause}</li>
+                                <li><strong>Urgency:</strong> ${data.contextual_analysis.urgency}</li>
+                                <li><strong>Solution Steps:</strong> ${data.contextual_analysis.solution_steps?.length || 0}</li>
+                            </ul>
+                            <p class="mt-4 text-sm text-gray-600">
+                                <strong class="font-medium">Suggested Redirect:</strong> 
+                                <a href="/contextual-analysis?query=${encodeURIComponent(query)}" class="text-blue-600 hover:underline">
+                                    /contextual-analysis?query=${encodeURIComponent(query)}
+                                </a>
+                            </p>
+                        </div>
                     `;
                 }
                 
-                html += `<br><div class="debug">Full Response:\n${JSON.stringify(data, null, 2)}</div></div>`;
+                html += `
+                        <div class="mt-6">
+                            <button class="debug-toggle bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold py-2 px-4 rounded inline-flex items-center text-sm" onclick="toggleDebug(this)">
+                                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                                Show Full Response (Debug)
+                            </button>
+                            <pre class="debug-content bg-gray-800 text-white p-4 rounded-md mt-2 text-xs overflow-auto">${JSON.stringify(data, null, 2)}</pre>
+                        </div>
+                    </div>
+                `;
                 resultsDiv.innerHTML = html;
                 
             } catch (error) {
-                resultsDiv.innerHTML = `<div class="result">Error: ${error.message}</div>`;
+                resultsDiv.innerHTML = `
+                    <div class="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 rounded-md shadow-sm" role="alert">
+                        <p class="font-bold">Error:</p>
+                        <p>${error.message}</p>
+                    </div>
+                `;
+            }
+        }
+
+        function toggleDebug(button) {
+            const debugContent = button.nextElementSibling;
+            debugContent.classList.toggle('expanded');
+            if (debugContent.classList.contains('expanded')) {
+                button.innerHTML = '<svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7"></path></svg> Hide Full Response (Debug)';
+            } else {
+                button.innerHTML = '<svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg> Show Full Response (Debug)';
             }
         }
     </script>
