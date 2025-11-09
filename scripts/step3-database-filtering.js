@@ -23,86 +23,45 @@ class DatabaseFilter {
     console.log('=' .repeat(60));
     
     try {
-      if (!keywordData) {
-        throw new Error('Keyword data object must be provided to filterApps.');
+      if (!keywordData || !keywordData.search_terms) {
+        throw new Error('Keyword data with search_terms must be provided to filterApps.');
       }
-      // Load processed keywords with weighted categories
-      const weightedKeywords = keywordData.original_analysis?.weighted_keywords || {};
+
+      const { high_priority, medium_priority, low_priority } = keywordData.search_terms;
       const primaryDomain = keywordData.processed_keywords.primary_domain;
       
       console.log(`🎯 Primary Domain: ${primaryDomain || 'general'}`);
       console.log(`⚖️ Using weighted priority search hierarchy`);
       
-      // PRIORITY LEVEL 1: Adapt based on query type
-      let highPriorityKeywords;
-      const queryType = keywordData.original_analysis?.query_type || 'problem';
+      console.log(`🔥 HIGH PRIORITY: ${high_priority.slice(0, 5).join(', ')}${high_priority.length > 5 ? '...' : ''}`);
+      const highPriorityCandidates = await this.searchWithKeywords(high_priority, 'HIGH', 10); // Fetch 10 high priority
       
-      if (queryType === 'problem') {
-        // PROBLEM + SOLUTION (Weights 1.0, 0.9)
-        highPriorityKeywords = [
-          ...(weightedKeywords.problem?.keywords || []),
-          ...(weightedKeywords.solution?.keywords || [])
-        ];
-      } else {
-        // PRIMARY + FUNCTIONAL (Weights 1.0, 0.9) for general queries
-        highPriorityKeywords = [
-          ...(weightedKeywords.primary?.keywords || []),
-          ...(weightedKeywords.functional?.keywords || [])
-        ];
-      }
-      
-      console.log(`\n🔥 HIGH PRIORITY: ${highPriorityKeywords.slice(0, 5).join(', ')}${highPriorityKeywords.length > 5 ? '...' : ''}`);
-      const highPriorityCandidates = await this.searchWithKeywords(highPriorityKeywords, 'HIGH', 30);
-      
-      let allCandidates = [...highPriorityCandidates];
       console.log(`✅ Found ${highPriorityCandidates.length} HIGH priority candidates`);
       
-      // PRIORITY LEVEL 2: Adapt medium priority based on query type
-      if (allCandidates.length < 20) {
-        let mediumPriorityKeywords;
-        if (queryType === 'problem') {
-          // CAUSE (Weight 0.7) for problem queries
-          mediumPriorityKeywords = weightedKeywords.cause?.keywords || [];
-        } else {
-          // DESCRIPTIVE (Weight 0.7) for general queries  
-          mediumPriorityKeywords = weightedKeywords.descriptive?.keywords || [];
-        }
-        
-        if (mediumPriorityKeywords.length > 0) {
-          console.log(`\n🔶 MEDIUM PRIORITY: ${mediumPriorityKeywords.join(', ')}`);
-          const mediumPriorityCandidates = await this.searchWithKeywords(mediumPriorityKeywords, 'MEDIUM', 15);
-          
-          // Combine and deduplicate
-          allCandidates = this.combineAndDeduplicate([
-            ...allCandidates.map(app => ({ ...app, priority_level: 'HIGH' })),
-            ...mediumPriorityCandidates.map(app => ({ ...app, priority_level: 'MEDIUM' }))
-          ]);
-          
-          console.log(`✅ Added ${mediumPriorityCandidates.length} MEDIUM priority candidates (Total: ${allCandidates.length})`);
-        }
-      }
+      console.log(`
+🔶 MEDIUM PRIORITY: ${medium_priority.join(', ')}`);
+      const mediumPriorityCandidates = await this.searchWithKeywords(medium_priority, 'MEDIUM', 10); // Fetch 10 medium priority
       
-      // PRIORITY LEVEL 3: CONTEXT (Weight 0.5) - Only as last resort
-      if (allCandidates.length < 15) {
-        const lowPriorityKeywords = weightedKeywords.context?.keywords || [];
-        
-        if (lowPriorityKeywords.length > 0) {
-          console.log(`\n🔹 LOW PRIORITY: ${lowPriorityKeywords.slice(0, 3).join(', ')}`);
-          const lowPriorityCandidates = await this.searchWithKeywords(lowPriorityKeywords, 'LOW', 10);
-          
-          allCandidates = this.combineAndDeduplicate([
-            ...allCandidates.map(app => ({ ...app, priority_level: app.priority_level || 'HIGH' })),
-            ...lowPriorityCandidates.map(app => ({ ...app, priority_level: 'LOW' }))
-          ]);
-          
-          console.log(`✅ Added ${lowPriorityCandidates.length} LOW priority candidates (Total: ${allCandidates.length})`);
-        }
-      }
+      console.log(`✅ Found ${mediumPriorityCandidates.length} MEDIUM priority candidates`);
+
+      console.log(`
+🔹 LOW PRIORITY: ${low_priority.slice(0, 3).join(', ')}${low_priority.length > 3 ? '...' : ''}`);
+      const lowPriorityCandidates = await this.searchWithKeywords(low_priority, 'LOW', 10); // Fetch 10 low priority
+      
+      console.log(`✅ Found ${lowPriorityCandidates.length} LOW priority candidates`);
+
+      let allCandidates = [
+        ...highPriorityCandidates.map(app => ({ ...app, priority_level: 'HIGH' })),
+        ...mediumPriorityCandidates.map(app => ({ ...app, priority_level: 'MEDIUM' })),
+        ...lowPriorityCandidates.map(app => ({ ...app, priority_level: 'LOW' }))
+      ];
+      allCandidates = this.combineAndDeduplicate(allCandidates);
       
       // Sort by priority level and rating
       const sortedCandidates = this.prioritizeAndSortWeighted(allCandidates);
       
-      console.log(`\n📊 Total unique candidate apps: ${sortedCandidates.length}`);
+      console.log(`
+📊 Total unique candidate apps: ${sortedCandidates.length}`);
       
       // Show priority breakdown
       const priorityBreakdown = {
@@ -114,7 +73,8 @@ class DatabaseFilter {
       console.log(`📊 Priority Breakdown: HIGH: ${priorityBreakdown.HIGH}, MEDIUM: ${priorityBreakdown.MEDIUM}, LOW: ${priorityBreakdown.LOW}`);
       
       if (sortedCandidates.length > 0) {
-        console.log('\n🎯 Top candidates:');
+        console.log('
+🎯 Top candidates:');
         sortedCandidates.slice(0, 10).forEach((app, i) => {
           const priorityIcon = app.priority_level === 'HIGH' ? '🔥' : app.priority_level === 'MEDIUM' ? '🔶' : '🔹';
           console.log(`   ${i+1}. ${app.title} (${app.source}) ${priorityIcon} ${app.priority_level} - Rating: ${app.rating} - Cat: ${app.primary_category}`);
@@ -127,7 +87,6 @@ class DatabaseFilter {
         primary_domain: primaryDomain,
         candidates: sortedCandidates,
         priority_breakdown: priorityBreakdown,
-        weighted_keywords: weightedKeywords,
         stats: {
           high_priority_matches: priorityBreakdown.HIGH,
           medium_priority_matches: priorityBreakdown.MEDIUM,
@@ -154,22 +113,44 @@ class DatabaseFilter {
     console.log(`🔍 Searching app titles for: ${titleKeywords.join(', ')}`);
     
     try {
-      // Build title search conditions with word boundaries
-      const titleConditions = titleKeywords.map(keyword => 
+      // Build title search conditions for each original keyword as a phrase
+      const phraseConditions = titleKeywords.map(keyword => 
         `title.ilike.%${keyword}%`
       ).join(',');
       
-      const { data: titleMatches, error } = await this.supabase
+      let { data: titleMatches, error } = await this.supabase
         .from('apps_unified')
         .select('id, title, developer, primary_category, description, rating, icon_url, price')
-        .or(titleConditions)
+        .or(phraseConditions)
         .gte('rating', 2.0) // Quality filter
         .order('rating', { ascending: false })
         .limit(limit);
       
       if (error) {
-        console.error('❌ Title search error:', error.message);
+        console.error('❌ Title phrase search error:', error.message);
         return [];
+      }
+
+      // If no matches found with phrases, try individual words (more flexible)
+      if (!titleMatches || titleMatches.length === 0) {
+        console.log('⚠️ No phrase matches found, trying individual word search for titles.');
+        const individualWordConditions = titleKeywords.flatMap(keyword => 
+          keyword.split(/\s+/).map(word => `title.ilike.%${word}%`)
+        ).join(',');
+
+        let { data: wordMatches, error: wordError } = await this.supabase
+          .from('apps_unified')
+          .select('id, title, developer, primary_category, description, rating, icon_url, price')
+          .or(individualWordConditions)
+          .gte('rating', 2.0) // Quality filter
+          .order('rating', { ascending: false })
+          .limit(limit);
+
+        if (wordError) {
+          console.error('❌ Title individual word search error:', wordError.message);
+          return [];
+        }
+        return wordMatches || [];
       }
       
       return titleMatches || [];
@@ -289,9 +270,9 @@ class DatabaseFilter {
       if (!seen.has(id)) {
         seen.set(id, app);
       } else {
-        // Keep the one with higher priority
+        // Keep the one with higher search priority (e.g., title match > description match)
         const existing = seen.get(id);
-        if (app.priority > existing.priority) {
+        if ((app.search_priority || 0) > (existing.search_priority || 0)) {
           seen.set(id, app);
         }
       }
@@ -318,8 +299,8 @@ class DatabaseFilter {
       allResults.push(...featureResults.map(app => ({ ...app, source: 'features', search_priority: 2 })));
     }
     
-    // Search descriptions only if we still need more
-    if (allResults.length < limit * 0.5) {
+    // Search descriptions only if we still need more, and not for HIGH priority searches
+    if (priorityLevel !== 'HIGH' && allResults.length < limit * 0.5) {
       const descResults = await this.searchAppsByDescription(keywords.slice(0, 2), Math.min(limit - allResults.length, 10));
       allResults.push(...descResults.map(app => ({ ...app, source: 'description', search_priority: 1 })));
     }
@@ -367,7 +348,7 @@ class DatabaseFilter {
       // Then by rating
       const ratingA = a.rating || 0;
       const ratingB = b.rating || 0;
-      return ratingB - ratingA;
+      return ratingB - a.rating;
     });
   }
 
@@ -387,7 +368,8 @@ class DatabaseFilter {
         .select('*', { count: 'exact', head: true })
         .then(result => result, () => ({ count: 0 }));
       
-      console.log(`\n📊 Database Stats:`);
+      console.log(`
+📊 Database Stats:`);
       console.log(`   Total Apps: ${totalApps || 0}`);
       console.log(`   Apps with Features: ${totalFeatures || 0}`);
       
@@ -414,7 +396,8 @@ async function testDatabaseFiltering() {
     
     // Save filtered candidates for next step
     fs.writeFileSync('./temp-candidates.json', JSON.stringify(result, null, 2));
-    console.log('\n💾 Filtered candidates saved to temp-candidates.json');
+    console.log('
+💾 Filtered candidates saved to temp-candidates.json');
     
     return result;
     

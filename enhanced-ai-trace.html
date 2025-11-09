@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html class="" lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>AI Discovery Platform - Real-time Search Trace</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com" rel="preconnect"/>
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300..700&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet"/>
+    <style>
+        .material-symbols-outlined {
+            font-variation-settings:
+            'FILL' 0,
+            'wght' 400,
+            'GRAD' 0,
+            'opsz' 24
+        }
+        .pulse-animation {
+            animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+        .progress-bar {
+            transition: width 0.5s ease-in-out;
+        }
+        .category-bar {
+            transition: all 0.3s ease-in-out;
+        }
+    </style>
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#3b19e6",
+                        "background-light": "#f6f6f8",
+                        "background-dark": "#141121",
+                    },
+                    fontFamily: {
+                        "display": ["Space Grotesk", "sans-serif"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display text-[#343A40] dark:text-white">
+    <div class="relative flex h-auto min-h-screen w-full flex-col">
+        <!-- Header -->
+        <header class="sticky top-0 z-10 flex items-center justify-between whitespace-nowrap border-b border-solid border-gray-200/80 dark:border-white/10 bg-background-light/80 dark:bg-background-dark/80 px-6 md:px-10 py-3 backdrop-blur-sm">
+            <div class="flex items-center gap-4">
+                <div class="size-6 text-primary">
+                    <svg fill="none" viewbox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M6 6H42L36 24L42 42H6L12 24L6 6Z" fill="currentColor"></path>
+                    </svg>
+                </div>
+                <h2 class="text-lg font-bold leading-tight tracking-[-0.015em] text-gray-900 dark:text-white">AI Discovery Platform</h2>
+            </div>
+            <div class="hidden md:flex items-center gap-9">
+                <a class="text-sm font-medium leading-normal text-gray-600 dark:text-gray-300 hover:text-primary dark:hover:text-white" href="#">Dashboard</a>
+                <a class="text-sm font-medium leading-normal text-gray-600 dark:text-gray-300 hover:text-primary dark:hover:text-white" href="#">App Search</a>
+                <a class="text-sm font-medium leading-normal text-primary dark:text-white" href="#">AI Trace</a>
+            </div>
+            <div class="flex items-center justify-end gap-4">
+                <button id="new-search-btn" class="hidden md:flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 px-4 bg-primary text-white text-sm font-bold leading-normal tracking-[0.015em]">
+                    <span class="truncate">New Search</span>
+                </button>
+                <div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-10" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuCWPcDB5twC8Md0DMoGaOcOsVTVATs051ew48MiWwhZ9Ro0Vk5F5jJBzxuLS2qIRLW099gQuBi-I_Qsr96tbSs_4vHJGub-S-XzxP-o9z_WHsO_NV5UmXMq5LNwLuC_lAS_sqs5886ZxxtylIcXasccWrDRiiRj1c9XY59hfpmHFW0HgJNQIWUKl33KQRebgkQot4mB8EQZxUMjymupJ8gFVzP_kjYQkX_ettisdzFLlLx_cQ--GyQnoWuRsNLpTiOpOALyo1Ye_eAQ");'></div>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="w-full grow px-4 sm:px-6 lg:px-8 py-8 md:py-12">
+            <div class="mx-auto max-w-7xl">
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 xl:gap-12">
+                    <!-- Left: AI Process Timeline -->
+                    <div class="lg:col-span-2">
+                        <div class="flex flex-col gap-8">
+                            <!-- Page Heading -->
+                            <div class="flex flex-wrap justify-between gap-3 px-4">
+                                <div class="flex min-w-72 flex-col gap-2">
+                                    <p class="text-gray-900 dark:text-white text-4xl font-black leading-tight tracking-[-0.033em]">AI Reasoning Trace</p>
+                                    <p id="query-display" class="text-gray-500 dark:text-gray-400 text-base font-normal leading-normal">Waiting for search query...</p>
+                                </div>
+                            </div>
+
+                            <!-- Overall Progress Bar -->
+                            <div class="px-4">
+                                <div class="flex justify-between items-center mb-2">
+                                    <span class="text-sm font-medium text-gray-900 dark:text-white">Search Progress</span>
+                                    <span id="progress-percentage" class="text-sm text-gray-500 dark:text-gray-400">0%</span>
+                                </div>
+                                <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
+                                    <div id="progress-bar" class="bg-primary h-2 rounded-full progress-bar" style="width: 0%"></div>
+                                </div>
+                                <div class="flex justify-between items-center mt-1">
+                                    <span id="current-step" class="text-xs text-gray-500 dark:text-gray-400">Ready to start</span>
+                                    <span id="elapsed-time" class="text-xs text-gray-500 dark:text-gray-400">0s</span>
+                                </div>
+                            </div>
+
+                            <!-- Search Input -->
+                            <div id="search-input-section" class="px-4">
+                                <div class="flex gap-4">
+                                    <input 
+                                        id="search-input" 
+                                        type="text" 
+                                        placeholder="Enter your search query (e.g., 'i cant sleep at night, too much coffee')"
+                                        class="flex-1 px-4 py-3 border border-gray-200 dark:border-white/10 rounded-lg bg-white dark:bg-black/20 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+                                    />
+                                    <button id="start-search-btn" class="px-6 py-3 bg-primary text-white rounded-lg font-medium hover:bg-primary/90 transition-colors">
+                                        Start Search
+                                    </button>
+                                </div>
+                            </div>
+
+                            <!-- Category Breakdown -->
+                            <div id="category-breakdown" class="px-4 hidden">
+                                <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">Category Distribution</h3>
+                                <div class="grid grid-cols-2 gap-4">
+                                    <div id="problem-category" class="category-card">
+                                        <div class="flex items-center justify-between mb-2">
+                                            <span class="text-sm font-medium text-red-600 dark:text-red-400">⚠️ PROBLEM</span>
+                                            <span class="category-count text-sm text-gray-500">0 apps</span>
+                                        </div>
+                                        <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-1">
+                                            <div class="category-bar bg-red-500 h-1 rounded-full" style="width: 0%"></div>
+                                        </div>
+                                    </div>
+                                    <div id="solution-category" class="category-card">
+                                        <div class="flex items-center justify-between mb-2">
+                                            <span class="text-sm font-medium text-green-600 dark:text-green-400">✅ SOLUTION</span>
+                                            <span class="category-count text-sm text-gray-500">0 apps</span>
+                                        </div>
+                                        <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-1">
+                                            <div class="category-bar bg-green-500 h-1 rounded-full" style="width: 0%"></div>
+                                        </div>
+                                    </div>
+                                    <div id="cause-category" class="category-card">
+                                        <div class="flex items-center justify-between mb-2">
+                                            <span class="text-sm font-medium text-orange-600 dark:text-orange-400">🎯 CAUSE</span>
+                                            <span class="category-count text-sm text-gray-500">0 apps</span>
+                                        </div>
+                                        <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-1">
+                                            <div class="category-bar bg-orange-500 h-1 rounded-full" style="width: 0%"></div>
+                                        </div>
+                                    </div>
+                                    <div id="context-category" class="category-card">
+                                        <div class="flex items-center justify-between mb-2">
+                                            <span class="text-sm font-medium text-blue-600 dark:text-blue-400">💡 CONTEXT</span>
+                                            <span class="category-count text-sm text-gray-500">0 apps</span>
+                                        </div>
+                                        <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-1">
+                                            <div class="category-bar bg-blue-500 h-1 rounded-full" style="width: 0%"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Timeline -->
+                            <div id="timeline" class="grid grid-cols-[auto_1fr] gap-x-4 px-4">
+                                <!-- Timeline items will be inserted here -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Right: Results Panel -->
+                    <aside class="lg:col-span-1 lg:sticky top-24 self-start">
+                        <div class="bg-white dark:bg-black/20 border border-gray-200 dark:border-white/10 rounded-xl p-6">
+                            <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-4">Search Results</h3>
+                            
+                            <!-- Search Stats -->
+                            <div id="search-stats" class="mb-6 hidden">
+                                <div class="grid grid-cols-2 gap-4 text-center">
+                                    <div class="bg-gray-50 dark:bg-gray-800 rounded-lg p-3">
+                                        <div id="total-apps" class="text-2xl font-bold text-gray-900 dark:text-white">0</div>
+                                        <div class="text-xs text-gray-500 dark:text-gray-400">Total Apps</div>
+                                    </div>
+                                    <div class="bg-gray-50 dark:bg-gray-800 rounded-lg p-3">
+                                        <div id="avg-score" class="text-2xl font-bold text-gray-900 dark:text-white">0.0</div>
+                                        <div class="text-xs text-gray-500 dark:text-gray-400">Avg Score</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Top Results -->
+                            <div id="results-container" class="flex flex-col gap-4">
+                                <div class="text-center text-gray-500 dark:text-gray-400 py-8">
+                                    <span class="material-symbols-outlined text-4xl mb-2">search</span>
+                                    <p>Start a search to see results</p>
+                                </div>
+                            </div>
+                        </div>
+                    </aside>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // Configuration
+        const API_BASE = 'http://localhost:3001/api';
+        let currentSession = null;
+        let pollingInterval = null;
+
+        // DOM elements
+        const searchInput = document.getElementById('search-input');
+        const startSearchBtn = document.getElementById('start-search-btn');
+        const newSearchBtn = document.getElementById('new-search-btn');
+        const progressBar = document.getElementById('progress-bar');
+        const progressPercentage = document.getElementById('progress-percentage');
+        const currentStepEl = document.getElementById('current-step');
+        const elapsedTimeEl = document.getElementById('elapsed-time');
+        const queryDisplay = document.getElementById('query-display');
+        const timeline = document.getElementById('timeline');
+        const resultsContainer = document.getElementById('results-container');
+        const categoryBreakdown = document.getElementById('category-breakdown');
+        const searchStats = document.getElementById('search-stats');
+
+        // Step configuration
+        const stepConfig = [
+            { id: 'query_analysis', name: 'Query Analysis & Classification', icon: 'psychology', description: 'Analyzing query type and extracting weighted keywords' },
+            { id: 'keyword_processing', name: 'Weighted Keyword Processing', icon: 'label', description: 'Processing keywords by priority and category' },
+            { id: 'diversified_search', name: 'Diversified Category Search', icon: 'hub', description: 'Searching each category independently' },
+            { id: 'category_filtering', name: 'Category-Specific Filtering', icon: 'filter_alt', description: 'Filtering and deduplicating results' },
+            { id: 'semantic_ranking', name: 'AI Semantic Ranking', icon: 'auto_awesome', description: 'Ranking results by semantic similarity' },
+            { id: 'final_selection', name: 'Weighted Final Selection', icon: 'verified', description: 'Applying final weighted ranking' }
+        ];
+
+        // Initialize timeline
+        function initializeTimeline() {
+            timeline.innerHTML = '';
+            stepConfig.forEach((step, index) => {
+                const isLast = index === stepConfig.length - 1;
+                
+                timeline.innerHTML += `
+                    <div class="flex flex-col items-center gap-1 ${isLast ? 'pb-3' : ''}" data-step="${step.id}">
+                        <div class="w-px bg-gray-300 dark:bg-white/20 h-full grow ${index === 0 ? 'hidden' : ''}"></div>
+                        <div class="flex items-center justify-center size-10 rounded-full bg-gray-100 dark:bg-white/10 text-gray-500 dark:text-gray-400 step-icon">
+                            <span class="material-symbols-outlined text-xl">${step.icon}</span>
+                        </div>
+                        ${!isLast ? '<div class="w-px bg-gray-300 dark:bg-white/20 h-full grow"></div>' : ''}
+                    </div>
+                    <div class="flex flex-1 flex-col py-3 step-content">
+                        <p class="text-gray-900 dark:text-white text-base font-medium leading-normal">${step.name}</p>
+                        <p class="text-gray-500 dark:text-gray-400 text-base font-normal leading-normal">${step.description}</p>
+                        <div class="step-details mt-2 hidden"></div>
+                    </div>
+                `;
+            });
+        }
+
+        // Start search
+        async function startSearch() {
+            const query = searchInput.value.trim();
+            if (!query) return;
+
+            try {
+                startSearchBtn.disabled = true;
+                startSearchBtn.textContent = 'Starting...';
+                
+                const response = await fetch(`${API_BASE}/search`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ query, options: { limit: 15 } })
+                });
+
+                const data = await response.json();
+                
+                if (data.sessionId) {
+                    currentSession = data.sessionId;
+                    queryDisplay.textContent = `Real-time search progress for: "${query}"`;
+                    document.getElementById('search-input-section').style.display = 'none';
+                    categoryBreakdown.classList.remove('hidden');
+                    searchStats.classList.remove('hidden');
+                    
+                    // Start polling for progress
+                    startPolling();
+                }
+                
+            } catch (error) {
+                console.error('Failed to start search:', error);
+                alert('Failed to start search. Please try again.');
+            } finally {
+                startSearchBtn.disabled = false;
+                startSearchBtn.textContent = 'Start Search';
+            }
+        }
+
+        // Start new search
+        function startNewSearch() {
+            if (pollingInterval) {
+                clearInterval(pollingInterval);
+            }
+            currentSession = null;
+            
+            // Reset UI
+            document.getElementById('search-input-section').style.display = 'block';
+            categoryBreakdown.classList.add('hidden');
+            searchStats.classList.add('hidden');
+            searchInput.value = '';
+            queryDisplay.textContent = 'Waiting for search query...';
+            
+            // Reset progress
+            progressBar.style.width = '0%';
+            progressPercentage.textContent = '0%';
+            currentStepEl.textContent = 'Ready to start';
+            elapsedTimeEl.textContent = '0s';
+            
+            // Reset timeline
+            initializeTimeline();
+            
+            // Reset results
+            resultsContainer.innerHTML = `
+                <div class="text-center text-gray-500 dark:text-gray-400 py-8">
+                    <span class="material-symbols-outlined text-4xl mb-2">search</span>
+                    <p>Start a search to see results</p>
+                </div>
+            `;
+        }
+
+        // Poll for progress updates
+        async function startPolling() {
+            pollingInterval = setInterval(async () => {
+                if (!currentSession) return;
+
+                try {
+                    const response = await fetch(`${API_BASE}/progress/${currentSession}`);
+                    const progress = await response.json();
+                    
+                    updateProgress(progress);
+                    
+                    if (progress.status === 'completed' || progress.status === 'error') {
+                        clearInterval(pollingInterval);
+                    }
+                    
+                } catch (error) {
+                    console.error('Failed to fetch progress:', error);
+                }
+            }, 1000);
+        }
+
+        // Update progress display
+        function updateProgress(progress) {
+            if (!progress.steps) return;
+
+            // Update overall progress
+            const percentage = Math.round((progress.currentStep / progress.totalSteps) * 100);
+            progressBar.style.width = `${percentage}%`;
+            progressPercentage.textContent = `${percentage}%`;
+            
+            // Update elapsed time
+            if (progress.elapsed) {
+                elapsedTimeEl.textContent = `${Math.round(progress.elapsed / 1000)}s`;
+            }
+
+            // Update current step
+            const currentStep = progress.steps[progress.currentStep];
+            if (currentStep) {
+                currentStepEl.textContent = currentStep.name;
+            }
+
+            // Update timeline
+            progress.steps.forEach((step, index) => {
+                const stepElement = timeline.querySelector(`[data-step="${step.id}"]`);
+                const contentElement = stepElement?.nextElementSibling;
+                
+                if (stepElement && contentElement) {
+                    const icon = stepElement.querySelector('.step-icon');
+                    
+                    // Update step status
+                    if (step.status === 'completed') {
+                        icon.className = 'flex items-center justify-center size-10 rounded-full bg-green-500 text-white';
+                    } else if (step.status === 'running') {
+                        icon.className = 'flex items-center justify-center size-10 rounded-full bg-primary text-white pulse-animation';
+                    } else if (step.status === 'error') {
+                        icon.className = 'flex items-center justify-center size-10 rounded-full bg-red-500 text-white';
+                    }
+                    
+                    // Update step details
+                    if (step.data) {
+                        const detailsEl = contentElement.querySelector('.step-details');
+                        detailsEl.innerHTML = getStepDetails(step);
+                        detailsEl.classList.remove('hidden');
+                    }
+                }
+            });
+
+            // Update category breakdown
+            if (progress.data?.category_breakdown) {
+                updateCategoryBreakdown(progress.data.category_breakdown);
+            }
+
+            // Update results
+            if (progress.data?.final_results) {
+                updateResults(progress.data.final_results);
+            }
+        }
+
+        // Get step-specific details
+        function getStepDetails(step) {
+            const data = step.data || {};
+            
+            switch (step.id) {
+                case 'query_analysis':
+                    return `
+                        <div class="text-sm space-y-1">
+                            <div><strong>Type:</strong> ${data.query_type || 'Unknown'}</div>
+                            <div><strong>Urgency:</strong> ${data.urgency || 'N/A'}</div>
+                            ${data.categories ? `<div><strong>Categories:</strong> ${Object.keys(data.categories).length}</div>` : ''}
+                        </div>
+                    `;
+                case 'keyword_processing':
+                    return `
+                        <div class="text-sm space-y-1">
+                            <div><strong>High Priority:</strong> ${data.high_priority_count || 0} keywords</div>
+                            <div><strong>Medium Priority:</strong> ${data.medium_priority_count || 0} keywords</div>
+                            <div><strong>Low Priority:</strong> ${data.low_priority_count || 0} keywords</div>
+                        </div>
+                    `;
+                case 'category_filtering':
+                    return `
+                        <div class="text-sm space-y-1">
+                            <div><strong>Candidates Found:</strong> ${data.candidates_found || 0}</div>
+                            <div><strong>Diversified Search:</strong> ${data.diversified_search ? 'Yes' : 'No'}</div>
+                        </div>
+                    `;
+                case 'semantic_ranking':
+                    return `
+                        <div class="text-sm space-y-1">
+                            <div><strong>Results:</strong> ${data.semantic_results || 0}</div>
+                            <div><strong>Top Score:</strong> ${data.top_similarity_score?.toFixed(4) || '0.0000'}</div>
+                            <div><strong>Average:</strong> ${data.average_similarity || '0.0000'}</div>
+                        </div>
+                    `;
+                default:
+                    return '';
+            }
+        }
+
+        // Update category breakdown
+        function updateCategoryBreakdown(breakdown) {
+            Object.entries(breakdown).forEach(([category, data]) => {
+                const element = document.getElementById(`${category}-category`);
+                if (element) {
+                    const countEl = element.querySelector('.category-count');
+                    const barEl = element.querySelector('.category-bar');
+                    
+                    if (countEl) countEl.textContent = `${data.final || 0} apps`;
+                    if (barEl) {
+                        const percentage = Math.min(100, (data.final || 0) * 5); // Scale for visibility
+                        barEl.style.width = `${percentage}%`;
+                    }
+                }
+            });
+        }
+
+        // Update results display
+        function updateResults(results) {
+            if (!results || !results.length) return;
+
+            // Update stats
+            document.getElementById('total-apps').textContent = results.length;
+            const avgScore = results.reduce((sum, app) => sum + (app.weighted_similarity || app.similarity_score || 0), 0) / results.length;
+            document.getElementById('avg-score').textContent = avgScore.toFixed(3);
+
+            // Update results list
+            resultsContainer.innerHTML = results.slice(0, 10).map((app, index) => `
+                <div class="flex items-center gap-4 p-3 rounded-lg hover:bg-gray-50 dark:hover:bg-white/5 border border-gray-200/50 dark:border-white/10">
+                    <div class="size-12 rounded-lg bg-gradient-to-br from-primary/20 to-primary/5 flex items-center justify-center flex-shrink-0">
+                        <span class="text-lg font-bold text-primary">${index + 1}</span>
+                    </div>
+                    <div class="flex-grow">
+                        <p class="font-semibold text-gray-800 dark:text-gray-100">${app.title}</p>
+                        <div class="flex items-center gap-2 mt-1">
+                            <span class="text-xs text-gray-500 dark:text-gray-400">Score: ${(app.weighted_similarity || app.similarity_score || 0).toFixed(4)}</span>
+                            ${app.source_category ? `<span class="text-xs px-2 py-1 rounded bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300">${app.source_category.toUpperCase()}</span>` : ''}
+                        </div>
+                    </div>
+                    <div class="text-yellow-500">
+                        ${'★'.repeat(Math.round((app.rating || 0) / 1))}
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Event listeners
+        startSearchBtn.addEventListener('click', startSearch);
+        newSearchBtn.addEventListener('click', startNewSearch);
+        searchInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') startSearch();
+        });
+
+        // Initialize
+        initializeTimeline();
+
+        // Auto-fill example query for testing
+        searchInput.value = "i cant sleep at night, too much coffee or phone usage";
+    </script>
+</body>
+</html>

@@ -86,3 +86,13 @@ Query Type: general
 <w> [webpack.cache.PackFileCacheStrategy] Caching failed for pack: Error: ENOENT: no such file or directory, rename '/Users/pddev/Desktop/app_dev_work/app4me/.next/cache/webpack/client-development/5.pack.gz_' -> '/Users/pddev/Desktop/app_dev_work/app4me/.next/cache/webpack/client-development/5.pack.gz'
  ✓ Compiled in 652ms (358 modules)
  ✓ Compiled in 619ms (358 modules)
+ ✓ Compiled in 224ms (358 modules)
+ ✓ Compiled in 137ms (358 modules)
+ ✓ Compiled in 164ms (358 modules)
+ ✓ Compiled in 132ms (358 modules)
+ ✓ Compiled in 206ms (358 modules)
+ ✓ Compiled in 125ms (358 modules)
+ ✓ Compiled in 128ms (358 modules)
+ ✓ Compiled in 131ms (358 modules)
+ ✓ Compiled in 227ms (358 modules)
+ ✓ Compiled in 136ms (358 modules)

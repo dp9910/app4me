@@ -4,7 +4,90 @@ const OpenAI = require('openai');
 const { GoogleGenerativeAI } = require('@google/generative-ai');
 const { createClient } = require('@supabase/supabase-js');
 const fs = require('fs');
+const EventEmitter = require('events');
 require('dotenv').config({ path: '.env.local' });
+
+// --- ProgressTracker Class for Real-time UI Updates ---
+class ProgressTracker extends EventEmitter {
+  constructor(sessionId) {
+    super();
+    this.sessionId = sessionId;
+    this.currentStep = 0;
+    this.totalSteps = 6;
+    this.steps = [
+      { id: 'query_analysis', name: 'Query Analysis & Classification', icon: 'psychology', status: 'pending' },
+      { id: 'keyword_processing', name: 'Weighted Keyword Processing', icon: 'label', status: 'pending' },
+      { id: 'diversified_search', name: 'Diversified Category Search', icon: 'hub', status: 'pending' },
+      { id: 'category_filtering', name: 'Category-Specific Filtering', icon: 'filter_alt', status: 'pending' },
+      { id: 'semantic_ranking', name: 'AI Semantic Ranking', icon: 'auto_awesome', status: 'pending' },
+      { id: 'final_selection', name: 'Weighted Final Selection', icon: 'verified', status: 'pending' }
+    ];
+    this.data = {
+      query: '',
+      query_type: null,
+      categories: {},
+      search_stats: {},
+      final_results: []
+    };
+    this.startTime = Date.now();
+  }
+
+  updateStep(stepId, status, data = {}) {
+    const step = this.steps.find(s => s.id === stepId);
+    if (step) {
+      step.status = status;
+      step.data = { ...step.data, ...data };
+      step.timestamp = Date.now();
+      
+      if (status === 'running') {
+        this.currentStep = this.steps.findIndex(s => s.id === stepId);
+      }
+
+      // Merge step-specific data into global data
+      Object.assign(this.data, data);
+      
+      const progress = {
+        sessionId: this.sessionId,
+        currentStep: this.currentStep,
+        totalSteps: this.totalSteps,
+        steps: this.steps,
+        data: this.data,
+        elapsed: Date.now() - this.startTime
+      };
+
+      // Emit for real-time updates (WebSocket/SSE)
+      this.emit('progress', progress);
+      
+      // Also save to temp file for polling fallback
+      fs.writeFileSync(`./temp-progress-${this.sessionId}.json`, JSON.stringify(progress, null, 2));
+      
+      console.log(`📡 Progress Update: ${stepId} → ${status}`);
+    }
+  }
+
+  complete(finalResults) {
+    this.data.final_results = finalResults;
+    this.updateStep('final_selection', 'completed', {
+      final_results: finalResults,
+      total_duration: Date.now() - this.startTime
+    });
+    
+    this.emit('completed', {
+      sessionId: this.sessionId,
+      results: finalResults,
+      duration: Date.now() - this.startTime
+    });
+  }
+
+  error(stepId, error) {
+    this.updateStep(stepId, 'error', { error: error.message });
+    this.emit('error', {
+      sessionId: this.sessionId,
+      step: stepId,
+      error: error.message
+    });
+  }
+}
 
 // --- LLMAnalyzer Class Definition (from step1-llm-analysis.js) ---
 class LLMAnalyzer {
@@ -1258,19 +1341,37 @@ class MasterPipeline {
     const {
       limit = 15,
       saveIntermediateFiles = true,
-      showDetailedLogs = true
+      showDetailedLogs = true,
+      sessionId = `session_${Date.now()}`,
+      progressCallback = null
     } = options;
+
+    // Initialize progress tracker
+    const progress = new ProgressTracker(sessionId);
+    if (progressCallback) {
+      progress.on('progress', progressCallback);
+      progress.on('completed', progressCallback);
+      progress.on('error', progressCallback);
+    }
 
     console.log('🚀 MASTER PIPELINE: Weighted Search System');
     console.log('=' .repeat(80));
     console.log(`Query: "${userQuery}"`);
     console.log(`Target Results: ${limit} apps\n`);
 
+    // Initialize progress tracking
+    progress.data.query = userQuery;
+    progress.updateStep('query_analysis', 'running', { 
+      query: userQuery, 
+      target_results: limit 
+    });
+
     const pipeline = {
       start_time: Date.now(),
       query: userQuery,
       steps: {},
-      final_results: null
+      final_results: null,
+      sessionId: sessionId
     };
 
     try {
@@ -1280,6 +1381,16 @@ class MasterPipeline {
       const step1Start = Date.now();
       
       const analysis = await this.llmAnalyzer.analyzeQuery(userQuery);
+      
+      // Update progress with analysis results
+      progress.updateStep('query_analysis', 'completed', {
+        query_type: analysis.query_type,
+        user_situation: analysis.user_situation,
+        root_cause: analysis.root_cause,
+        urgency: analysis.urgency,
+        categories: analysis.weighted_keywords,
+        search_strategy: analysis.search_strategy
+      });
       pipeline.steps.llm_analysis = {
         duration: Date.now() - step1Start,
         result: analysis,
@@ -1293,9 +1404,19 @@ class MasterPipeline {
       // STEP 2: Weighted Keyword Processing  
       console.log('\n🔍 STEP 2: Weighted Keyword Processing');
       console.log('-' .repeat(50));
+      progress.updateStep('keyword_processing', 'running');
       const step2Start = Date.now();
       
       const keywordData = this.keywordProcessor.processAnalysis(analysis);
+      
+      // Update progress with keyword processing results
+      progress.updateStep('keyword_processing', 'completed', {
+        processed_keywords: keywordData.processed_keywords,
+        search_terms: keywordData.search_terms,
+        high_priority_count: keywordData.search_terms.high_priority.length,
+        medium_priority_count: keywordData.search_terms.medium_priority.length,
+        low_priority_count: keywordData.search_terms.low_priority.length
+      });
       pipeline.steps.keyword_processing = {
         duration: Date.now() - step2Start,
         result: keywordData,
@@ -1309,9 +1430,18 @@ class MasterPipeline {
       // STEP 3: Weighted Database Filtering
       console.log('\n🗃️ STEP 3: Weighted Database Filtering');
       console.log('-' .repeat(50));
+      progress.updateStep('diversified_search', 'running');
       const step3Start = Date.now();
       
       const candidates = await this.databaseFilter.filterApps(keywordData);
+      
+      // Update progress with filtering results
+      progress.updateStep('category_filtering', 'completed', {
+        candidates_found: candidates.candidates?.length || 0,
+        category_breakdown: candidates.category_breakdown || {},
+        diversified_search: candidates.diversified_search || false,
+        search_stats: candidates.stats || {}
+      });
       pipeline.steps.database_filtering = {
         duration: Date.now() - step3Start,
         result: candidates,
@@ -1326,9 +1456,19 @@ class MasterPipeline {
       // STEP 4: Semantic Search on Filtered Candidates
       console.log('\n🎯 STEP 4: Semantic Search with Weighted Ranking');
       console.log('-' .repeat(50));
+      progress.updateStep('semantic_ranking', 'running');
       const step4Start = Date.now();
       
       const finalResults = await this.semanticSearch.searchCandidates(candidates, userQuery);
+      
+      // Update progress with semantic search results
+      progress.updateStep('semantic_ranking', 'completed', {
+        semantic_results: finalResults.results?.length || 0,
+        top_similarity_score: finalResults.results?.[0]?.similarity_score || 0,
+        average_similarity: finalResults.results?.length > 0 
+          ? (finalResults.results.reduce((sum, app) => sum + (app.similarity_score || 0), 0) / finalResults.results.length).toFixed(4)
+          : 0
+      });
       pipeline.steps.semantic_search = {
         duration: Date.now() - step4Start,
         result: finalResults,
@@ -1337,6 +1477,8 @@ class MasterPipeline {
       };
 
       if (finalResults.results) {
+        progress.updateStep('final_selection', 'running');
+        
         finalResults.results = this.applyWeightedRanking(
           finalResults.results, 
           keywordData.search_terms,
@@ -1346,6 +1488,14 @@ class MasterPipeline {
 
       pipeline.final_results = finalResults;
       pipeline.total_duration = Date.now() - pipeline.start_time;
+
+      // Complete progress tracking
+      progress.complete({
+        total_apps: finalResults.results?.length || 0,
+        top_apps: finalResults.results?.slice(0, 5) || [],
+        pipeline_duration: pipeline.total_duration,
+        category_diversity: candidates.category_breakdown || {}
+      });
 
       this.analyzePipelineResults(pipeline, showDetailedLogs);
 
@@ -1358,6 +1508,11 @@ class MasterPipeline {
 
     } catch (error) {
       console.error(`❌ Pipeline failed: ${error.message}`);
+      
+      // Update progress with error
+      const currentStepId = progress.steps[progress.currentStep]?.id || 'unknown';
+      progress.error(currentStepId, error);
+      
       pipeline.error = error.message;
       pipeline.total_duration = Date.now() - pipeline.start_time;
       
@@ -1498,7 +1653,10 @@ class MasterPipeline {
   }
 }
 
-module.exports = MasterPipeline;
+module.exports = {
+  MasterPipeline,
+  ProgressTracker
+};
 
 // Run test if called directly
 if (require.main === module) {
@@ -1513,11 +1671,20 @@ if (require.main === module) {
     
     const pipeline = new MasterPipeline();
     
+    // Optional progress callback for testing
+    const progressCallback = (update) => {
+      if (update.sessionId && update.steps && update.steps[update.currentStep]) {
+        console.log(`📡 Progress: ${update.currentStep + 1}/${update.totalSteps} - ${update.steps[update.currentStep].name}`);
+      }
+    };
+    
     try {
       const results = await pipeline.runPipeline(query, {
         limit: 15,
         saveIntermediateFiles: true,
-        showDetailedLogs: true
+        showDetailedLogs: true,
+        sessionId: `test_${Date.now()}`,
+        progressCallback: progressCallback
       });
       
       if (results.error) {

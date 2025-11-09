@@ -3,7 +3,7 @@
  * Protects the working weighted search system by capturing expected behavior
  */
 
-const MasterPipeline = require('./master-pipeline');
+const { MasterPipeline } = require('./master-pipeline');
 const fs = require('fs');
 
 class ProblemQueryTester {
