@@ -57,6 +57,7 @@ export default function SwipePage() {
   const [sessionId, setSessionId] = useState<string | null>(null);
   const [sessionStartTime, setSessionStartTime] = useState<number | null>(null);
   const [isCompleting, setIsCompleting] = useState(false);
+  const [isEndingSession, setIsEndingSession] = useState(false);
   const isRedirectingRef = useRef<boolean>(false); // Track if we're redirecting to contextual analysis
 
   useEffect(() => {
@@ -193,6 +194,58 @@ export default function SwipePage() {
         .eq('id', sessionId);
     } catch (error) {
       console.error('Error marking swipe session as incomplete:', error);
+    }
+  };
+
+  const endSession = async () => {
+    if (!sessionId || !user || isEndingSession) return;
+    
+    console.log('endSession - User ended session early, completing with current interactions only');
+    setIsEndingSession(true);
+    
+    try {
+      // Complete the session with only the apps the user has already interacted with
+      const totalDuration = Date.now() - (sessionStartTime || Date.now());
+      
+      const { error: sessionError } = await supabase
+        .from('swipe_sessions')
+        .update({
+          total_likes: swipedRightCards.length,
+          total_passes: swipedLeftCards.length,
+          session_duration_ms: totalDuration,
+          completed: true,
+          completion_reason: 'user_stopped',
+          completed_at: new Date().toISOString()
+        })
+        .eq('id', sessionId);
+
+      if (sessionError) {
+        console.error('❌ Error updating session:', sessionError);
+        console.error('Session update error details:', JSON.stringify(sessionError, null, 2));
+      } else {
+        console.log('✅ Session updated successfully');
+      }
+
+      console.log(`✅ Successfully ended session early. User interacted with ${swipedRightCards.length + swipedLeftCards.length} apps (${swipedRightCards.length} liked, ${swipedLeftCards.length} passed).`);
+
+      // Clean up session storage
+      sessionStorage.removeItem('contextualAnalysis');
+      sessionStorage.removeItem('searchResults');
+      sessionStorage.removeItem('useStoredResults');
+      sessionStorage.removeItem('skipContextualAnalysis');
+      sessionStorage.removeItem('swipeInitialSearchDone');
+      
+      console.log('🚀 Redirecting to my-apps dashboard...');
+      // Redirect to my-apps dashboard
+      router.replace('/my-apps');
+      
+    } catch (error) {
+      console.error('Error ending session:', error);
+      // Even if there's an error, try to redirect to my-apps dashboard
+      console.log('🚀 Attempting redirect despite error...');
+      router.replace('/my-apps');
+    } finally {
+      setIsEndingSession(false);
     }
   };
 
@@ -500,14 +553,40 @@ export default function SwipePage() {
       {/* Main Content */}
       <main className="flex-1 flex flex-col items-center justify-center p-4 sm:p-8 lg:p-12 bg-background-light overflow-hidden">
         
-        {/* Start Over Button - Top Right */}
+        {/* Action Buttons - Top Right */}
         {(currentApp || hasSearched) && (
-          <div className="absolute top-20 right-4 z-30">
+          <div className="absolute top-20 right-4 z-30 flex flex-col gap-3">
+            {/* End Session Button */}
+            {currentApp && (
+              <button
+                onClick={() => endSession()}
+                disabled={isEndingSession}
+                className={`flex items-center gap-2 px-4 py-2 text-white rounded-lg font-medium transition-all duration-200 shadow-lg ${
+                  isEndingSession 
+                    ? 'bg-gray-400 cursor-not-allowed' 
+                    : 'bg-green-500 hover:bg-green-600 hover:shadow-xl transform hover:scale-105'
+                }`}
+              >
+                {isEndingSession ? (
+                  <>
+                    <div className="animate-spin rounded-full h-4 w-4 border-2 border-white border-t-transparent"></div>
+                    <span>Finishing...</span>
+                  </>
+                ) : (
+                  <>
+                    <span className="text-sm">✓</span>
+                    <span>Done</span>
+                  </>
+                )}
+              </button>
+            )}
+            
+            {/* Start Over Button */}
             <button
               onClick={async () => {
                 await resetSearch();
               }}
-              className="flex items-center gap-2 px-4 py-2 bg-gray-500 hover:bg-gray-600 text-white rounded-lg font-medium transition-colors shadow-lg"
+              className="flex items-center gap-2 px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-lg font-medium transition-all duration-200 shadow-lg hover:shadow-xl transform hover:scale-105"
             >
               <span className="text-sm">🔄</span>
               <span>Start Over</span>

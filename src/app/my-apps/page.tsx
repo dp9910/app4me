@@ -23,7 +23,8 @@ interface SwipedApp {
   card_position?: number;
   rating?: number;
   description?: string;
-  interaction_type: 'like' | 'pass';
+  interaction_type: 'like' | 'pass' | 'skipped';
+  swipe_duration_ms?: number;
   
   // Rich data from apps_unified
   developer?: string;
@@ -62,6 +63,7 @@ interface QueryStats {
   search_query: string;
   liked_count: number;
   disliked_count: number;
+  skipped_count: number;
   total_count: number;
   last_searched: string;
 }
@@ -129,10 +131,11 @@ export default function MyAppsPage() {
           created_at,
           session_id,
           card_position,
-          interaction_type
+          interaction_type,
+          swipe_duration_ms
         `)
         .eq('user_id', user.id)
-        .in('interaction_type', ['like', 'pass'])
+        .in('interaction_type', ['like', 'pass', 'skipped'])
         .order('created_at', { ascending: false });
 
       if (allAppsError) {
@@ -288,6 +291,7 @@ export default function MyAppsPage() {
         search_query: string;
         liked_count: number;
         disliked_count: number;
+        skipped_count: number;
         total_count: number;
         last_searched: string;
       }>();
@@ -323,16 +327,25 @@ export default function MyAppsPage() {
           }
         });
         
+        // Get session data to find total_apps_shown
+        const sessionData = sessionStats?.find(s => s.id === mostRecentSessionId);
+        const totalAppsShown = sessionData?.total_apps_shown || 0;
+        
         // Count only apps from the most recent session
         const recentSessionApps = appsForQuery.filter(app => app.session_id === mostRecentSessionId);
         const liked = recentSessionApps.filter(app => app.interaction_type === 'like').length;
-        const disliked = recentSessionApps.filter(app => app.interaction_type === 'pass').length;
+        const passed = recentSessionApps.filter(app => app.interaction_type === 'pass').length;
+        
+        // Calculate skipped as: total apps shown - apps user actually interacted with
+        const actualInteractions = liked + passed;
+        const skipped = Math.max(0, totalAppsShown - actualInteractions);
         
         queriesMap.set(searchQuery, {
           search_query: searchQuery,
           liked_count: liked,
-          disliked_count: disliked,
-          total_count: liked + disliked,
+          disliked_count: passed,
+          skipped_count: skipped,
+          total_count: totalAppsShown, // Use total_apps_shown as the real total
           last_searched: mostRecentDate
         });
       });
@@ -373,6 +386,7 @@ export default function MyAppsPage() {
           session_id: app.session_id,
           card_position: app.card_position,
           interaction_type: app.interaction_type,
+          swipe_duration_ms: app.swipe_duration_ms,
           
           // Rich data from apps_unified
           developer: appDetails?.developer,
@@ -718,18 +732,22 @@ function QueryCard({ query, onSelect, analytics }: { query: QueryStats; onSelect
           {/* Removed View Apps Button */}
         </div>
         
-        <div className="grid grid-cols-3 gap-4 text-center border-t border-gray-200 dark:border-gray-700 pt-4">
+        <div className="grid grid-cols-4 gap-3 text-center border-t border-gray-200 dark:border-gray-700 pt-4">
           <div>
-            <div className="text-2xl font-bold text-green-500">{query.liked_count}</div>
-            <div className="text-sm text-gray-500 dark:text-gray-400">Liked</div>
+            <div className="text-xl font-bold text-green-500">{query.liked_count}</div>
+            <div className="text-xs text-gray-500 dark:text-gray-400">Liked</div>
           </div>
           <div>
-            <div className="text-2xl font-bold text-red-500">{query.disliked_count}</div>
-            <div className="text-sm text-gray-500 dark:text-gray-400">Passed</div>
+            <div className="text-xl font-bold text-red-500">{query.disliked_count}</div>
+            <div className="text-xs text-gray-500 dark:text-gray-400">Passed</div>
           </div>
           <div>
-            <div className="text-2xl font-bold text-gray-700 dark:text-gray-300">{query.total_count}</div>
-            <div className="text-sm text-gray-500 dark:text-gray-400">Total</div>
+            <div className="text-xl font-bold text-gray-500">{query.skipped_count}</div>
+            <div className="text-xs text-gray-500 dark:text-gray-400">Skipped</div>
+          </div>
+          <div>
+            <div className="text-xl font-bold text-gray-700 dark:text-gray-300">{query.total_count}</div>
+            <div className="text-xs text-gray-500 dark:text-gray-400">Total</div>
           </div>
         </div>
       </div>
@@ -740,6 +758,8 @@ function QueryCard({ query, onSelect, analytics }: { query: QueryStats; onSelect
 function AppCard({ app, onRemove }: { app: SwipedApp; onRemove: (sessionId: string, appId: string) => void }) {
   const router = useRouter();
   const isLiked = app.interaction_type === 'like';
+  // Check if it's skipped: interaction_type is 'pass' but swipe_duration_ms is 0 (indicating auto-skipped)
+  const isSkipped = app.interaction_type === 'pass' && app.swipe_duration_ms === 0;
   
   const formatFileSize = (bytes?: number) => {
     if (!bytes) return null;
@@ -747,15 +767,21 @@ function AppCard({ app, onRemove }: { app: SwipedApp; onRemove: (sessionId: stri
     const i = Math.floor(Math.log(bytes) / Math.log(1024));
     return Math.round(bytes / Math.pow(1024, i) * 10) / 10 + ' ' + sizes[i];
   };
+
+  // Different styling for skipped apps
+  const getCardClassName = () => {
+    if (isSkipped) {
+      return 'bg-gray-50 dark:bg-gray-900/20 border-gray-200 dark:border-gray-700';
+    }
+    return isLiked 
+      ? 'bg-green-50 dark:bg-green-900/20 border-green-200 dark:border-green-700' 
+      : 'bg-red-50 dark:bg-red-900/20 border-red-200 dark:border-red-700';
+  };
   
   return (
     <div 
       onClick={() => router.push(`/app/${app.app_id}?query=${encodeURIComponent(app.search_query)}`)} // Moved onClick to the main div
-      className={`flex h-full flex-col rounded-xl shadow-sm border group transition-transform duration-300 hover:scale-105 cursor-pointer ${
-        isLiked 
-          ? 'bg-green-50 dark:bg-green-900/20 border-green-200 dark:border-green-700' 
-          : 'bg-red-50 dark:bg-red-900/20 border-red-200 dark:border-red-700'
-      }`}>
+      className={`flex h-full flex-col rounded-xl shadow-sm border group transition-transform duration-300 hover:scale-105 cursor-pointer ${getCardClassName()}`}>
       <div 
         className="w-full bg-center bg-no-repeat aspect-video bg-cover rounded-t-xl flex items-center justify-center relative p-4"
         style={{ 
@@ -786,9 +812,18 @@ function AppCard({ app, onRemove }: { app: SwipedApp; onRemove: (sessionId: stri
         )}
         
         {/* Interaction Type */}
-        <div className="absolute top-2 left-2 text-2xl">
-          {isLiked ? '👍' : '👎'}
-        </div>
+        {!isSkipped && (
+          <div className="absolute top-2 left-2 text-2xl">
+            {isLiked ? '👍' : '👎'}
+          </div>
+        )}
+        
+        {/* Skipped Indicator */}
+        {isSkipped && (
+          <div className="absolute top-2 left-2 text-xl bg-gray-500 text-white px-2 py-1 rounded-md text-xs font-medium">
+            SKIPPED
+          </div>
+        )}
       </div>
       
       <div className="flex flex-col flex-1 justify-between p-4 pt-0 gap-3">
