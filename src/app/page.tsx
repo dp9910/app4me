@@ -41,20 +41,86 @@ export default function HomePage() {
       <section className="px-6 pt-20 pb-20">
         <div className="max-w-4xl mx-auto text-center">
           <h1 className="text-5xl md:text-7xl font-light tracking-tight text-gray-900 dark:text-white mb-6">
-            Stop searching.
+            Describe your problem.
             <br />
-            <span className="font-normal">Start discovering.</span>
+            <span className="text-4xl md:text-5xl font-light">We'll find the perfect iOS apps.</span>
           </h1>
-          
-          <p className="text-xl text-gray-600 dark:text-gray-400 mb-12 max-w-2xl mx-auto">
-            Tell us what you need in plain English. Our AI finds the perfect iOS apps for you.
-          </p>
 
-          {/* Search Example */}
-          <div className="max-w-xl mx-auto mb-16">
-            <div className="text-gray-400 text-sm mb-2 line-through">caffeine tracker app</div>
-            <div className="text-2xl font-medium text-gray-900 dark:text-white border-b border-gray-200 dark:border-gray-800 pb-2">
-              track my caffeine, I am drinking too much coffee :(
+          {/* AI Demo - Visual Flow */}
+          <div className="max-w-3xl mx-auto mb-16">
+            <div className="bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-700 p-8 shadow-lg">
+              
+              {/* User Input */}
+              <div className="mb-6">
+                <div className="bg-gray-50 dark:bg-gray-800 px-6 py-4 rounded-xl border border-gray-200 dark:border-gray-600">
+                  <div className="flex items-center gap-3">
+                    <p className="text-xl text-gray-900 dark:text-white font-medium italic">
+                      "I can't sleep, maybe too much coffee at night or phone usage?"
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              {/* Flow to Analysis */}
+              <div className="flex items-center gap-4 mb-6">
+                <div className="text-3xl text-gray-500">↓</div>
+                <div className="flex-1 bg-gray-50 dark:bg-gray-800 px-6 py-4 rounded-xl border border-gray-200 dark:border-gray-600">
+                  <div className="flex items-center gap-3 mb-3">
+                    <span className="text-lg font-semibold text-gray-900 dark:text-white">AI identifies 2 possible causes:</span>
+                  </div>
+                  <div className="flex flex-wrap gap-3">
+                    <div className="bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200 px-4 py-2 rounded-lg font-medium">
+                      Caffeine effects
+                    </div>
+                    <span className="text-xl text-gray-600 dark:text-gray-400 self-center">+</span>
+                    <div className="bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200 px-4 py-2 rounded-lg font-medium">
+                      Screen stimulation
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Flow to Results */}
+              <div className="flex items-center gap-4">
+                <div className="text-3xl text-gray-500">↓</div>
+                <div className="flex-1 bg-gray-50 dark:bg-gray-800 px-6 py-4 rounded-xl border border-gray-200 dark:border-gray-600">
+                  <div className="flex items-center gap-3 mb-4">
+                    <span className="text-lg font-semibold text-gray-900 dark:text-white">Smart, targeted solutions:</span>
+                  </div>
+                  <div className="grid grid-cols-2 gap-6 mb-4">
+                    <div className="bg-white dark:bg-gray-800 p-4 rounded-lg border border-gray-200 dark:border-gray-600">
+                      <p className="font-semibold text-gray-800 dark:text-gray-200 mb-2">For Caffeine:</p>
+                      <div className="text-gray-600 dark:text-gray-400 space-y-1">
+                        <p>• Sleep trackers</p>
+                        <p>• Caffeine timers</p>
+                      </div>
+                    </div>
+                    <div className="bg-white dark:bg-gray-800 p-4 rounded-lg border border-gray-200 dark:border-gray-600">
+                      <p className="font-semibold text-gray-800 dark:text-gray-200 mb-2">For Screen Time:</p>
+                      <div className="text-gray-600 dark:text-gray-400 space-y-1">
+                        <p>• Blue light filters</p>
+                        <p>• App blockers</p>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="bg-white dark:bg-gray-800 p-4 rounded-lg border border-gray-200 dark:border-gray-600">
+                    <p className="font-semibold text-gray-800 dark:text-gray-200 mb-2">Plus Sleep Aids:</p>
+                    <p className="text-gray-600 dark:text-gray-400">Meditation apps • Sleep sounds • Relaxation guides</p>
+                  </div>
+                </div>
+              </div>
+
+              {/* AI Strategy */}
+              <div className="mt-6 pt-4 border-t border-gray-200 dark:border-gray-600">
+                <div className="bg-blue-50 dark:bg-blue-900/20 rounded-lg p-4">
+                  <p className="text-sm font-semibold text-blue-800 dark:text-blue-200 mb-2">
+                    Search Strategy:
+                  </p>
+                  <p className="text-sm text-blue-700 dark:text-blue-300 leading-relaxed">
+                    Prioritize 'sleep' and 'insomnia' to find apps directly addressing the problem. Combine these with solution keywords like 'sleep tracker', 'sleep sounds', and 'meditation' to find apps with specific features. Use 'caffeine' and 'phone usage' to find apps that help manage these potential causes, like screen time trackers or apps that offer caffeine tracking features.
+                  </p>
+                </div>
+              </div>
             </div>
           </div>
         </div>
