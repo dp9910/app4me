@@ -966,7 +966,7 @@ class DatabaseFilter {
       
       let { data: titleMatches, error } = await this.supabase
         .from('apps_unified')
-        .select('id, title, developer, primary_category, description, rating, icon_url, price')
+        .select('id, title, developer, primary_category, description, rating, rating_count, icon_url, price')
         .or(titleConditions)
         .gte('rating', 2.0)
         .order('rating', { ascending: false })
@@ -985,7 +985,7 @@ class DatabaseFilter {
 
         let { data: wordMatches, error: wordError } = await this.supabase
           .from('apps_unified')
-          .select('id, title, developer, primary_category, description, rating, icon_url, price')
+          .select('id, title, developer, primary_category, description, rating, rating_count, icon_url, price')
           .or(individualWordConditions)
           .gte('rating', 2.0)
           .order('rating', { ascending: false })
@@ -1044,7 +1044,7 @@ class DatabaseFilter {
       const appIds = featureMatches.map(f => f.app_id);
       const { data: apps, error: appError } = await this.supabase
         .from('apps_unified')
-        .select('id, title, developer, primary_category, description, rating, icon_url, price')
+        .select('id, title, developer, primary_category, description, rating, rating_count, icon_url, price')
         .in('id', appIds)
         .gte('rating', 1.5)
         .order('rating', { ascending: false });
@@ -1074,7 +1074,7 @@ class DatabaseFilter {
       
       const { data: descMatches, error } = await this.supabase
         .from('apps_unified')
-        .select('id, title, developer, primary_category, description, rating, icon_url, price')
+        .select('id, title, developer, primary_category, description, rating, rating_count, icon_url, price')
         .or(descConditions)
         .gte('rating', 2.5)
         .order('rating', { ascending: false })

@@ -185,33 +185,84 @@ async function formatContextualResults(pipelineResult: any, limit: number) {
   const results = pipelineResult.final_results?.results || [];
   const queryType = pipelineResult.steps?.llm_analysis?.result?.query_type || 'unknown';
   
-  // Format apps from the weighted pipeline
-  allApps = results.map((app: any) => ({
-    app_id: app.id || app.app_id,
-    app_data: {
-      name: app.title,
-      category: app.primary_category || 'Apps',
-      rating: app.rating || 0,
-      icon_url: app.icon_url || '/default-app-icon.png',
-      description: app.description || 'No description available',
-      developer: app.developer || 'Unknown Developer',
-      price: app.price || 'Free',
-      url: null
-    },
-    relevance_score: Math.round((app.weighted_similarity || app.similarity_score || 0.5) * 10),
-    match_reason: app.weight_applied ? 
-      `Smart match with weighted keywords: ${app.boost_reasons?.[0] || 'Enhanced ranking'}` : 
-      'Semantic similarity match',
-    matched_keywords: app.boost_reasons || ['semantic'],
-    search_method: 'weighted_pipeline',
-    weighted_info: {
-      query_type: queryType,
-      weight_applied: app.weight_applied || false,
-      original_similarity: app.original_similarity || app.similarity_score,
-      weighted_similarity: app.weighted_similarity || app.similarity_score,
-      boost_reasons: app.boost_reasons || []
+  // Get app IDs to fetch features data
+  const appIds = results.map((app: any) => app.id || app.app_id).filter(Boolean);
+  console.log(`🔍 Looking for features for ${appIds.length} app IDs:`, appIds.slice(0, 3));
+  
+  // Fetch features data for these apps
+  let featuresMap = new Map();
+  if (appIds.length > 0) {
+    try {
+      const { createClient } = await import('@/lib/supabase/server');
+      const supabase = createClient();
+      
+      console.log('🗃️ Querying app_features table...');
+      const { data: featuresData, error: featuresError } = await supabase
+        .from('app_features')
+        .select('app_id, primary_use_case, key_benefit, target_user')
+        .in('app_id', appIds);
+      
+      console.log('🗃️ Features query result:', { 
+        error: featuresError, 
+        dataLength: featuresData?.length,
+        sampleData: featuresData?.[0]
+      });
+      
+      if (!featuresError && featuresData) {
+        featuresData.forEach(feature => {
+          featuresMap.set(feature.app_id, feature);
+        });
+        console.log(`✅ Loaded features for ${featuresData.length} apps out of ${appIds.length} requested`);
+        if (featuresData.length > 0) {
+          console.log('📋 Sample feature:', featuresData[0]);
+        }
+      } else {
+        console.log('⚠️ No features data found:', featuresError?.message || 'Unknown error');
+      }
+    } catch (error) {
+      console.error('❌ Error fetching features:', error);
     }
-  }));
+  } else {
+    console.log('⚠️ No app IDs to fetch features for');
+  }
+  
+  // Format apps from the weighted pipeline
+  allApps = results.map((app: any) => {
+    const appId = app.id || app.app_id;
+    const features = featuresMap.get(appId);
+    
+    return {
+      app_id: appId,
+      app_data: {
+        name: app.title,
+        category: app.primary_category || 'Apps',
+        rating: app.rating || 0,
+        rating_count: app.rating_count || 0,
+        icon_url: app.icon_url || '/default-app-icon.png',
+        description: app.description || 'No description available',
+        developer: app.developer || 'Unknown Developer',
+        price: app.price || 'Free',
+        url: null
+      },
+      relevance_score: Math.round((app.weighted_similarity || app.similarity_score || 0.5) * 10),
+      match_reason: app.weight_applied ? 
+        `Smart match with weighted keywords: ${app.boost_reasons?.[0] || 'Enhanced ranking'}` : 
+        'Semantic similarity match',
+      matched_keywords: app.boost_reasons || ['semantic'],
+      search_method: 'weighted_pipeline',
+      // Add features data here
+      primary_use_case: features?.primary_use_case,
+      target_user: features?.target_user,
+      key_benefit: features?.key_benefit,
+      weighted_info: {
+        query_type: queryType,
+        weight_applied: app.weight_applied || false,
+        original_similarity: app.original_similarity || app.similarity_score,
+        weighted_similarity: app.weighted_similarity || app.similarity_score,
+        boost_reasons: app.boost_reasons || []
+      }
+    };
+  });
   
   // Remove duplicates and return top results
   const uniqueApps = Array.from(new Map(allApps.map(app => [app.app_id, app])).values());

@@ -21,6 +21,7 @@ interface App {
   url?: string;
   rating: number;
   rating_average?: number;
+  rating_count?: number;
   description: string;
   short_description?: string;
   full_description?: string;
@@ -31,6 +32,11 @@ interface App {
   relevance_score?: number;
   personalized_one_liner?: string;
   match_reason?: string;
+  // Add fields for the back of the card
+  primary_use_case?: string;
+  target_user?: string;
+  key_benefit?: string;
+  matched_keywords?: string[];
 }
 
 export default function SwipePage() {
@@ -233,6 +239,7 @@ export default function SwipePage() {
             url: result.app_data.url,
             rating: result.app_data.rating || 0,
             rating_average: result.app_data.rating,
+            rating_count: result.app_data.rating_count || 0,
             description: result.app_data.description || 'No description available',
             short_description: result.app_data.description,
             full_description: result.app_data.description,
@@ -242,7 +249,11 @@ export default function SwipePage() {
             relevance_score: result.relevance_score,
             personalized_one_liner: result.match_reason,
             match_reason: result.match_reason,
-            matched_keywords: result.matched_keywords
+            matched_keywords: result.matched_keywords,
+            // Add the features data from the API response
+            primary_use_case: result.primary_use_case,
+            target_user: result.target_user,
+            key_benefit: result.key_benefit
           }));
 
           setSearchResults(normalizedResults);
@@ -356,6 +367,7 @@ export default function SwipePage() {
           url: result.app_data.url,
           rating: result.app_data.rating || 0,
           rating_average: result.app_data.rating,
+          rating_count: result.app_data.rating_count || 0,
           description: result.app_data.description || 'No description available',
           short_description: result.app_data.description,
           full_description: result.app_data.description,
@@ -365,7 +377,11 @@ export default function SwipePage() {
           relevance_score: result.relevance_score,
           personalized_one_liner: result.match_reason,
           match_reason: result.match_reason,
-          matched_keywords: result.matched_keywords
+          matched_keywords: result.matched_keywords,
+          // Add the features data from the API response
+          primary_use_case: result.primary_use_case,
+          target_user: result.target_user,
+          key_benefit: result.key_benefit
         }));
 
         setSearchResults(normalizedResults);
