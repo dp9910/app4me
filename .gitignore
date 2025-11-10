@@ -3,6 +3,7 @@
 /.pnp
 .pnp.js
 *.png
+!public/*.png
 *.json
 # Testing
 /coverage
