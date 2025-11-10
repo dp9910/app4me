@@ -283,7 +283,7 @@ export default function MyAppsPage() {
         ? sessionStats.reduce((sum, s) => sum + (s.session_duration_ms || 0), 0) / sessionStats.length 
         : 0;
 
-      // Group apps by search query and count likes/dislikes
+      // Group apps by search query and count likes/dislikes FROM MOST RECENT SESSION ONLY
       const queriesMap = new Map<string, {
         search_query: string;
         liked_count: number;
@@ -292,28 +292,49 @@ export default function MyAppsPage() {
         last_searched: string;
       }>();
 
+      // First, group apps by search query to find most recent session for each
+      const queryAppsMap = new Map<string, any[]>();
       allApps?.forEach(app => {
         const key = app.search_query;
-        if (queriesMap.has(key)) {
-          const existing = queriesMap.get(key)!;
-          if (app.interaction_type === 'like') {
-            existing.liked_count += 1;
-          } else {
-            existing.disliked_count += 1;
-          }
-          existing.total_count += 1;
-          if (new Date(app.created_at) > new Date(existing.last_searched)) {
-            existing.last_searched = app.created_at;
-          }
-        } else {
-          queriesMap.set(key, {
-            search_query: key,
-            liked_count: app.interaction_type === 'like' ? 1 : 0,
-            disliked_count: app.interaction_type === 'pass' ? 1 : 0,
-            total_count: 1,
-            last_searched: app.created_at
-          });
+        if (!queryAppsMap.has(key)) {
+          queryAppsMap.set(key, []);
         }
+        queryAppsMap.get(key)!.push(app);
+      });
+
+      // For each search query, find the most recent session and count only those apps
+      queryAppsMap.forEach((appsForQuery, searchQuery) => {
+        // Find the most recent session for this query
+        const sessionsByDate = new Map<string, string>();
+        appsForQuery.forEach(app => {
+          const currentDate = sessionsByDate.get(app.session_id);
+          if (!currentDate || app.swiped_at > currentDate) {
+            sessionsByDate.set(app.session_id, app.swiped_at);
+          }
+        });
+        
+        // Find the most recent session ID
+        let mostRecentSessionId = '';
+        let mostRecentDate = '';
+        sessionsByDate.forEach((date, sessionId) => {
+          if (!mostRecentDate || date > mostRecentDate) {
+            mostRecentDate = date;
+            mostRecentSessionId = sessionId;
+          }
+        });
+        
+        // Count only apps from the most recent session
+        const recentSessionApps = appsForQuery.filter(app => app.session_id === mostRecentSessionId);
+        const liked = recentSessionApps.filter(app => app.interaction_type === 'like').length;
+        const disliked = recentSessionApps.filter(app => app.interaction_type === 'pass').length;
+        
+        queriesMap.set(searchQuery, {
+          search_query: searchQuery,
+          liked_count: liked,
+          disliked_count: disliked,
+          total_count: liked + disliked,
+          last_searched: mostRecentDate
+        });
       });
 
       const queries = Array.from(queriesMap.values())
@@ -474,7 +495,32 @@ export default function MyAppsPage() {
   }
 
   const getAppsForQuery = (searchQuery: string) => {
-    return analytics?.allApps.filter(app => app.search_query === searchQuery) || [];
+    if (!analytics?.allApps) return [];
+    
+    // Get all apps for this search query
+    const appsForQuery = analytics.allApps.filter(app => app.search_query === searchQuery);
+    
+    // Find the most recent session for this query
+    const sessionsByDate = new Map<string, string>();
+    appsForQuery.forEach(app => {
+      const currentDate = sessionsByDate.get(app.session_id);
+      if (!currentDate || app.swiped_at > currentDate) {
+        sessionsByDate.set(app.session_id, app.swiped_at);
+      }
+    });
+    
+    // Find the most recent session ID
+    let mostRecentSessionId = '';
+    let mostRecentDate = '';
+    sessionsByDate.forEach((date, sessionId) => {
+      if (!mostRecentDate || date > mostRecentDate) {
+        mostRecentDate = date;
+        mostRecentSessionId = sessionId;
+      }
+    });
+    
+    // Return only apps from the most recent session for this query
+    return appsForQuery.filter(app => app.session_id === mostRecentSessionId);
   };
 
   return (
@@ -625,6 +671,7 @@ export default function MyAppsPage() {
 
 // Helper Components
 function QueryCard({ query, onSelect, analytics }: { query: QueryStats; onSelect: () => void; analytics: SwipeAnalytics | null }) {
+  // The query object now already contains data from the most recent session only
   const queryApps = analytics?.allApps.filter(app => app.search_query === query.search_query) || [];
   
   // Calculate insights from the apps in this query
