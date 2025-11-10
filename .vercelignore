@@ -1,0 +1,26 @@
+# Large data directories
+data-scraping/
+init_documents/
+old_search_algo/
+
+# Development files
+*.log
+dev-server.log
+*.sql
+
+# Test files
+test-*.js
+debug-*.js
+explore-*.js
+verify-*.js
+generate-*.js
+check-*.js
+1.txt
+
+# Documentation
+*.md
+!README.md
+
+# Keep essential files
+!package.json
+!package-lock.json

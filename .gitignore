@@ -4,7 +4,6 @@
 .pnp.js
 *.png
 !public/*.png
-*.json
 # Testing
 /coverage
 
@@ -34,8 +33,13 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
-*.json
 *.sql
+
+# JSON files except essential ones
+*.json
+!package.json
+!package-lock.json
+!tsconfig.json
 
 # Large data files
 data-scraping/merged_data/

@@ -145,7 +145,7 @@ export default function MyAppsPage() {
       }
 
       // Get unique app bundle IDs to fetch app details
-      const appBundleIds = [...new Set(allApps?.map(app => app.app_bundle_id) || [])];
+      const appBundleIds = Array.from(new Set(allApps?.map(app => app.app_bundle_id) || []));
       
       console.log('App bundle IDs from swipe_interactions:', appBundleIds);
       console.log('Sample bundle ID:', appBundleIds[0], 'type:', typeof appBundleIds[0]);
@@ -198,7 +198,7 @@ export default function MyAppsPage() {
 
         // If no matches by id, try title matching as fallback
         if (appDetailsMap.size === 0 && allApps) {
-          const appNames = [...new Set(allApps.map(app => app.app_name).filter(name => name))];
+          const appNames = Array.from(new Set(allApps.map(app => app.app_name).filter(name => name)));
           if (appNames.length > 0) {
             const titleConditions = appNames
               .map(name => `title.ilike.%${name}%`)
@@ -418,7 +418,6 @@ export default function MyAppsPage() {
         has_description: !!app.description,
         developer: app.developer,
         rating: app.rating,
-        primary_use_case: app.primary_use_case,
         interaction: app.interaction_type
       })));
 
@@ -696,7 +695,7 @@ function QueryCard({ query, onSelect, analytics }: { query: QueryStats; onSelect
   const topCategories = {};
   
   const topCategory = Object.entries(topCategories)
-    .sort(([,a], [,b]) => b - a)[0];
+    .sort(([,a], [,b]) => (b as number) - (a as number))[0];
   
   const getCategoryIcon = (category: string) => {
     const icons: Record<string, string> = {

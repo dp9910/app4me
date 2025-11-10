@@ -478,7 +478,7 @@ function fuseAndRankResults(
       const existing = resultMap.get(result.app_id);
       existing.search_methods.push(result.source);
       existing.relevance_score = Math.max(existing.relevance_score, result.relevance_score);
-      existing.matched_keywords = [...new Set([...existing.matched_keywords, ...(result.matched_keywords || [])])];
+      existing.matched_keywords = Array.from(new Set([...existing.matched_keywords, ...(result.matched_keywords || [])]));
     } else {
       resultMap.set(result.app_id, {
         ...result,
