@@ -135,7 +135,7 @@ export default function MyAppsPage() {
           swipe_duration_ms
         `)
         .eq('user_id', user.id)
-        .in('interaction_type', ['like', 'pass', 'skipped'])
+        .in('interaction_type', ['like', 'pass'])
         .order('created_at', { ascending: false });
 
       if (allAppsError) {
@@ -312,8 +312,8 @@ export default function MyAppsPage() {
         const sessionsByDate = new Map<string, string>();
         appsForQuery.forEach(app => {
           const currentDate = sessionsByDate.get(app.session_id);
-          if (!currentDate || app.swiped_at > currentDate) {
-            sessionsByDate.set(app.session_id, app.swiped_at);
+          if (!currentDate || app.created_at > currentDate) {
+            sessionsByDate.set(app.session_id, app.created_at);
           }
         });
         
