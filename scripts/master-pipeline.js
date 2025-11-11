@@ -1215,6 +1215,12 @@ class SemanticSearchFiltered {
           const indicator = sleepRelated ? '🛌' : '  ';
           console.log(`${indicator} ${i+1}. ${app.title}`);
           console.log(`     Similarity: ${app.similarity_score.toFixed(4)} | Source: ${app.source} | Rating: ${app.rating}`);
+          
+          // Show quality boosts if app has final_score (after weighted ranking)
+          if (app.final_score && app.quality_reasons && app.quality_reasons.length > 0) {
+            console.log(`     Quality Boost: ${app.quality_reasons.join(', ')}`);
+          }
+          
           console.log(`     Category: ${app.primary_category || 'Unknown'}`);
           console.log('');
         });
@@ -1531,6 +1537,7 @@ class MasterPipeline {
       const description = (app.description || '').toLowerCase();
       const appText = `${title} ${description}`;
       
+      // Apply category keyword weighting
       Object.entries(weightedKeywords).forEach(([category, data]) => {
         const categoryWeight = data.weight;
         const keywords = data.keywords || [];
@@ -1546,14 +1553,76 @@ class MasterPipeline {
         }
       });
       
+      // Apply rating and review count boost with credibility weighting
+      const rating = parseFloat(app.rating) || 0;
+      const reviewCount = parseInt(app.rating_count) || 0;
+      
+      let qualityScore = 1;
+      let qualityReasons = [];
+      
+      if (rating > 0 && reviewCount > 0) {
+        // Calculate credibility-weighted rating score
+        // More reviews = more credible rating, but diminishing returns
+        const credibilityFactor = Math.min(Math.log10(reviewCount + 1) / 4, 1); // Scale 0-1, log-based
+        const weightedRating = rating * credibilityFactor;
+        
+        // Tiered boosts based on weighted rating and review volume
+        if (reviewCount >= 50000 && rating >= 4.5) {
+          qualityScore *= 1.25;
+          qualityReasons.push(`excellent quality (${rating}⭐, ${reviewCount.toLocaleString()} reviews)`);
+        } else if (reviewCount >= 10000 && rating >= 4.3) {
+          qualityScore *= 1.20;
+          qualityReasons.push(`very high quality (${rating}⭐, ${reviewCount.toLocaleString()} reviews)`);
+        } else if (reviewCount >= 5000 && rating >= 4.0) {
+          qualityScore *= 1.15;
+          qualityReasons.push(`high quality (${rating}⭐, ${reviewCount.toLocaleString()} reviews)`);
+        } else if (reviewCount >= 1000 && rating >= 3.8) {
+          qualityScore *= 1.10;
+          qualityReasons.push(`good quality (${rating}⭐, ${reviewCount.toLocaleString()} reviews)`);
+        } else if (reviewCount >= 100 && rating >= 4.0) {
+          qualityScore *= 1.05;
+          qualityReasons.push(`decent quality (${rating}⭐, ${reviewCount.toLocaleString()} reviews)`);
+        }
+        
+        // Penalty for low review count with perfect rating (likely fake/unreliable)
+        if (reviewCount < 10 && rating === 5.0) {
+          qualityScore *= 0.95;
+          qualityReasons.push(`low review count (${reviewCount} reviews)`);
+        }
+        
+      } else if (rating > 0) {
+        // Only rating available, apply smaller boost
+        if (rating >= 4.5) {
+          qualityScore *= 1.02;
+          qualityReasons.push(`high rating but few reviews (${rating}⭐)`);
+        }
+      }
+      
+      // Apply quality boost to weighted score
+      const finalScore = weightedScore * qualityScore;
+      
       return {
         ...app,
         original_similarity: app.similarity_score,
         weighted_similarity: weightedScore,
+        quality_score: qualityScore,
+        final_score: finalScore,
         boost_reasons: boostReasons,
-        weight_applied: boostReasons.length > 0
+        quality_reasons: qualityReasons,
+        weight_applied: boostReasons.length > 0 || qualityReasons.length > 0
       };
-    }).sort((a, b) => b.weighted_similarity - a.weighted_similarity);
+    }).sort((a, b) => {
+      // Primary sort by final score (semantic + keyword + quality)
+      if (Math.abs(b.final_score - a.final_score) > 0.001) {
+        return b.final_score - a.final_score;
+      }
+      // Tie-breaker: rating
+      if (Math.abs((b.rating || 0) - (a.rating || 0)) > 0.01) {
+        return (b.rating || 0) - (a.rating || 0);
+      }
+      // Final tie-breaker: review count
+      return (b.rating_count || 0) - (a.rating_count || 0);
+    });
   }
 
   analyzePipelineResults(pipeline, showDetailedLogs) {
@@ -1579,13 +1648,15 @@ class MasterPipeline {
 
       console.log('\n🎯 Quality Analysis:');
       
-      const avgSimilarity = results.reduce((sum, app) => sum + (app.weighted_similarity || app.similarity_score), 0) / results.length;
-      const topScore = results[0]?.weighted_similarity || results[0]?.similarity_score || 0;
+      const avgSimilarity = results.reduce((sum, app) => sum + (app.final_score || app.weighted_similarity || app.similarity_score), 0) / results.length;
+      const topScore = results[0]?.final_score || results[0]?.weighted_similarity || results[0]?.similarity_score || 0;
       const withBoosts = results.filter(app => app.weight_applied).length;
+      const withQualityBoosts = results.filter(app => app.quality_reasons && app.quality_reasons.length > 0).length;
       
       console.log(`   Average Similarity: ${avgSimilarity.toFixed(4)}`);
       console.log(`   Top Score: ${topScore.toFixed(4)}`);
       console.log(`   Apps with Weight Boosts: ${withBoosts}/${results.length}`);
+      console.log(`   Apps with Quality Boosts: ${withQualityBoosts}/${results.length}`);
       
       if (showDetailedLogs && results.length > 0 && weightedKeywords) {
         console.log('\n🏆 DIVERSE APP RECOMMENDATIONS BY KEYWORD CATEGORY:');
@@ -1635,7 +1706,10 @@ class MasterPipeline {
           if (categorizedApps[category].length > 0) {
             console.log(`\n--- ${category} Apps (Top 5) ---`);
             categorizedApps[category].slice(0, 5).forEach((app, i) => {
-              console.log(`${i+1}. ${app.title} (Score: ${(app.weighted_similarity || app.similarity_score).toFixed(4)})`);
+              const score = app.final_score || app.weighted_similarity || app.similarity_score;
+              const rating = app.rating ? ` - ${app.rating}⭐` : '';
+              const reviews = app.rating_count ? ` (${parseInt(app.rating_count).toLocaleString()} reviews)` : '';
+              console.log(`${i+1}. ${app.title} (Score: ${score.toFixed(4)}${rating}${reviews})`);
             });
           }
         });
