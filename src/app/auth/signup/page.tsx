@@ -114,10 +114,10 @@ export default function SignUpPage() {
           <div className="flex items-center justify-center gap-3 mb-4">
             <img 
               src="/logo.png" 
-              alt="App4Me Logo" 
+              alt="app4me Logo" 
               className="h-16 w-auto"
             />
-            <h2 className="text-3xl font-bold text-gray-900">App4Me</h2>
+            <h2 className="text-3xl font-bold text-gray-900">app4me</h2>
           </div>
           <h3 className="text-xl text-gray-700">Create your account</h3>
           <p className="text-gray-500 mt-2">Join us to get personalized app recommendations</p>

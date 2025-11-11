@@ -14,7 +14,7 @@ export default function HomePage() {
           <div className="flex items-center">
             <img 
               src="/logo.png" 
-              alt="App4Me Logo" 
+              alt="app4me Logo" 
               className="h-10 w-auto"
             />
           </div>

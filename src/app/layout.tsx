@@ -11,7 +11,7 @@ const inter = Inter({
 })
 
 export const metadata: Metadata = {
-  title: 'App4Me - Discover Apps Made For You',
+  title: 'app4me - Discover Apps Made For You',
   description: 'Tell us about your lifestyle, and we\'ll show you the perfect apps. No more endless scrolling through categories. Just personalized app discoveries.',
   keywords: 'app discovery, find apps, app recommendations, personalized apps, ios apps, app store',
 }
