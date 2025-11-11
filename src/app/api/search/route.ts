@@ -16,7 +16,7 @@ if (supabaseUrl && supabaseServiceKey && supabaseUrl !== 'your-project-url-here'
 }
 
 // Import the enhanced weighted search pipeline
-const { MasterPipeline } = require('../../../../scripts/master-pipeline.js');
+import { MasterPipeline } from '@/lib/search';
 
 interface SearchRequest {
   lifestyle?: string[];

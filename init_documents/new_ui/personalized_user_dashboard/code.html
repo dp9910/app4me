@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+
+<html class="" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>AppDiscovery AI - My Dashboard</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings:
+            'FILL' 0,
+            'wght' 400,
+            'GRAD' 0,
+            'opsz' 24
+        }
+    </style>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "primary": "#3b19e6",
+              "background-light": "#f6f6f8",
+              "background-dark": "#141121",
+            },
+            fontFamily: {
+              "display": ["Inter", "sans-serif"]
+            },
+            borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+          },
+        },
+      }
+    </script>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display">
+<div class="relative flex h-auto min-h-screen w-full flex-col group/design-root overflow-x-hidden">
+<div class="layout-container flex h-full grow flex-col">
+<header class="flex items-center justify-between whitespace-nowrap border-b border-solid border-slate-200 dark:border-b-[#2b2938] px-4 sm:px-6 lg:px-10 py-3 bg-background-light dark:bg-background-dark sticky top-0 z-10">
+<div class="flex items-center gap-8">
+<div class="flex items-center gap-4">
+<div class="size-6 text-primary">
+<svg fill="none" viewbox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+<path clip-rule="evenodd" d="M12.0799 24L4 19.2479L9.95537 8.75216L18.04 13.4961L18.0446 4H29.9554L29.96 13.4961L38.0446 8.75216L44 19.2479L35.92 24L44 28.7521L38.0446 39.2479L29.96 34.5039L29.9554 44H18.0446L18.04 34.5039L9.95537 39.2479L4 28.7521L12.0799 24Z" fill="currentColor" fill-rule="evenodd"></path>
+</svg>
+</div>
+<h2 class="text-slate-900 dark:text-white text-lg font-bold leading-tight tracking-[-0.015em]">AppDiscovery AI</h2>
+</div>
+<nav class="hidden md:flex items-center gap-9">
+<a class="text-slate-600 dark:text-slate-300 text-sm font-medium leading-normal hover:text-primary dark:hover:text-white transition-colors" href="#">Discover</a>
+<a class="text-slate-600 dark:text-slate-300 text-sm font-medium leading-normal hover:text-primary dark:hover:text-white transition-colors" href="#">Categories</a>
+<a class="text-slate-900 dark:text-white text-sm font-medium leading-normal" href="#">My Dashboard</a>
+</nav>
+</div>
+<div class="flex flex-1 justify-end items-center gap-4">
+<label class="hidden sm:flex flex-col min-w-40 !h-10 max-w-64">
+<div class="flex w-full flex-1 items-stretch rounded-lg h-full">
+<div class="text-slate-400 dark:text-[#a29db8] flex border border-r-0 border-slate-300 dark:border-none bg-white dark:bg-[#2b2938] items-center justify-center pl-3 rounded-l-lg">
+<span class="material-symbols-outlined text-xl">search</span>
+</div>
+<input class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-r-lg text-slate-900 dark:text-white focus:outline-0 focus:ring-2 focus:ring-primary border border-l-0 border-slate-300 dark:border-none bg-white dark:bg-[#2b2938] focus:border-none h-full placeholder:text-slate-400 dark:placeholder:text-[#a29db8] px-3 text-base font-normal leading-normal" placeholder="Search apps..." value=""/>
+</div>
+</label>
+<div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-10" data-alt="User avatar" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuCLlF-kJXlGw7YJemaoUsa3qIsycSULDHPinW5X1LAl5r2MFHdsUpt07dp9xJ9rySC6Qhj5Q8v9dmWtcWpHBvEvole7qVyT5sXfrDZWr67eXJO-wH2BiyAKpu73Prfw0oCPspjqvv6EZ4eknQuDWm4jaqTbAIe5DqjzOO8n-CXAt9TLht9Dik4GsHHuDzHjh6BbQ6Hxpx8yd79AvlmIBxRrzD-KV9oPOhZOEWRH0ygFjSE34CPBvrqbhUAohgHUuEo5io9HT8COU79r");'></div>
+</div>
+</header>
+<main class="px-4 sm:px-6 lg:px-10 flex flex-1 justify-center py-8">
+<div class="layout-content-container flex flex-col w-full max-w-7xl flex-1">
+<div class="flex flex-wrap justify-between gap-4 pb-8">
+<p class="text-slate-900 dark:text-white text-4xl font-black leading-tight tracking-[-0.033em] min-w-72">My Dashboard</p>
+</div>
+<div class="grid grid-cols-1 lg:grid-cols-5 gap-8">
+<!-- Left Column: Your Activity -->
+<div class="lg:col-span-3 flex flex-col gap-6">
+<div class="bg-white dark:bg-slate-900/40 rounded-xl border border-slate-200 dark:border-slate-800 p-6">
+<h2 class="text-slate-900 dark:text-white text-[22px] font-bold leading-tight tracking-[-0.015em] mb-4">Search History</h2>
+<div class="border-b border-slate-200 dark:border-[#403c53]">
+<div class="flex gap-8">
+<a class="flex flex-col items-center justify-center border-b-[3px] border-b-primary text-primary pb-[13px] pt-2" href="#">
+<p class="text-sm font-bold leading-normal tracking-[0.015em]">Recent Searches</p>
+</a>
+<a class="flex flex-col items-center justify-center border-b-[3px] border-b-transparent text-slate-500 dark:text-[#a29db8] pb-[13px] pt-2 hover:text-primary dark:hover:text-white transition-colors" href="#">
+<p class="text-sm font-bold leading-normal tracking-[0.015em]">Saved Searches</p>
+</a>
+</div>
+</div>
+<div class="py-4">
+<label class="flex flex-col min-w-40 h-12 w-full">
+<div class="flex w-full flex-1 items-stretch rounded-lg h-full">
+<div class="text-slate-400 dark:text-[#a29db8] flex border border-r-0 border-slate-300 dark:border-none bg-background-light dark:bg-[#2b2938] items-center justify-center pl-4 rounded-l-lg">
+<span class="material-symbols-outlined">filter_list</span>
+</div>
+<input class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-r-lg text-slate-900 dark:text-white focus:outline-0 focus:ring-2 focus:ring-primary border border-l-0 border-slate-300 dark:border-none bg-background-light dark:bg-[#2b2938] h-full placeholder:text-slate-400 dark:placeholder:text-[#a29db8] px-4 text-base font-normal leading-normal" placeholder="Filter search history..." value=""/>
+</div>
+</label>
+</div>
+<ul class="space-y-3">
+<li class="flex items-center justify-between p-4 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800/60 transition-colors">
+<div class="flex flex-col">
+<p class="font-semibold text-slate-800 dark:text-slate-200">"AI photo editors"</p>
+<p class="text-sm text-slate-500 dark:text-slate-400">Searched 2 days ago</p>
+</div>
+<div class="flex items-center gap-2">
+<button aria-label="Re-run search" class="flex items-center justify-center size-9 rounded-lg hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300 transition-colors">
+<span class="material-symbols-outlined text-xl">replay</span>
+</button>
+<button aria-label="Delete search" class="flex items-center justify-center size-9 rounded-lg hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300 transition-colors">
+<span class="material-symbols-outlined text-xl">delete</span>
+</button>
+</div>
+</li>
+<li class="flex items-center justify-between p-4 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800/60 transition-colors">
+<div class="flex flex-col">
+<p class="font-semibold text-slate-800 dark:text-slate-200">"Project management tools for teams"</p>
+<p class="text-sm text-slate-500 dark:text-slate-400">Searched 5 days ago</p>
+</div>
+<div class="flex items-center gap-2">
+<button aria-label="Re-run search" class="flex items-center justify-center size-9 rounded-lg hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300 transition-colors">
+<span class="material-symbols-outlined text-xl">replay</span>
+</button>
+<button aria-label="Delete search" class="flex items-center justify-center size-9 rounded-lg hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300 transition-colors">
+<span class="material-symbols-outlined text-xl">delete</span>
+</button>
+</div>
+</li>
+<li class="flex items-center justify-between p-4 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800/60 transition-colors">
+<div class="flex flex-col">
+<p class="font-semibold text-slate-800 dark:text-slate-200">"Language learning apps"</p>
+<p class="text-sm text-slate-500 dark:text-slate-400">Searched 1 week ago</p>
+</div>
+<div class="flex items-center gap-2">
+<button aria-label="Re-run search" class="flex items-center justify-center size-9 rounded-lg hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300 transition-colors">
+<span class="material-symbols-outlined text-xl">replay</span>
+</button>
+<button aria-label="Delete search" class="flex items-center justify-center size-9 rounded-lg hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300 transition-colors">
+<span class="material-symbols-outlined text-xl">delete</span>
+</button>
+</div>
+</li>
+<li class="flex items-center justify-between p-4 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800/60 transition-colors">
+<div class="flex flex-col">
+<p class="font-semibold text-slate-800 dark:text-slate-200">"Free note-taking apps"</p>
+<p class="text-sm text-slate-500 dark:text-slate-400">Searched 2 weeks ago</p>
+</div>
+<div class="flex items-center gap-2">
+<button aria-label="Re-run search" class="flex items-center justify-center size-9 rounded-lg hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300 transition-colors">
+<span class="material-symbols-outlined text-xl">replay</span>
+</button>
+<button aria-label="Delete search" class="flex items-center justify-center size-9 rounded-lg hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300 transition-colors">
+<span class="material-symbols-outlined text-xl">delete</span>
+</button>
+</div>
+</li>
+</ul>
+</div>
+</div>
+<!-- Right Column: Your Insights -->
+<div class="lg:col-span-2 flex flex-col gap-6">
+<h2 class="text-slate-900 dark:text-white text-[22px] font-bold leading-tight tracking-[-0.015em] mt-1">Discovery Analytics</h2>
+<div class="grid grid-cols-2 gap-4">
+<div class="bg-white dark:bg-slate-900/40 rounded-xl border border-slate-200 dark:border-slate-800 p-4 flex flex-col items-start gap-2">
+<div class="flex items-center justify-center size-10 bg-primary/20 text-primary rounded-lg">
+<span class="material-symbols-outlined">thumb_up</span>
+</div>
+<p class="text-3xl font-bold text-slate-900 dark:text-white">28</p>
+<p class="text-sm text-slate-500 dark:text-slate-400">Apps Liked</p>
+</div>
+<div class="bg-white dark:bg-slate-900/40 rounded-xl border border-slate-200 dark:border-slate-800 p-4 flex flex-col items-start gap-2">
+<div class="flex items-center justify-center size-10 bg-red-500/20 text-red-500 rounded-lg">
+<span class="material-symbols-outlined">thumb_down</span>
+</div>
+<p class="text-3xl font-bold text-slate-900 dark:text-white">5</p>
+<p class="text-sm text-slate-500 dark:text-slate-400">Apps Disliked</p>
+</div>
+<div class="bg-white dark:bg-slate-900/40 rounded-xl border border-slate-200 dark:border-slate-800 p-4 flex flex-col items-start gap-2">
+<div class="flex items-center justify-center size-10 bg-green-500/20 text-green-500 rounded-lg">
+<span class="material-symbols-outlined">download</span>
+</div>
+<p class="text-3xl font-bold text-slate-900 dark:text-white">12</p>
+<p class="text-sm text-slate-500 dark:text-slate-400">Apps Downloaded</p>
+</div>
+<div class="bg-white dark:bg-slate-900/40 rounded-xl border border-slate-200 dark:border-slate-800 p-4 flex flex-col items-start gap-2">
+<div class="flex items-center justify-center size-10 bg-indigo-500/20 text-indigo-500 rounded-lg">
+<span class="material-symbols-outlined">category</span>
+</div>
+<p class="text-3xl font-bold text-slate-900 dark:text-white">7</p>
+<p class="text-sm text-slate-500 dark:text-slate-400">Categories Explored</p>
+</div>
+</div>
+<div class="bg-white dark:bg-slate-900/40 rounded-xl border border-slate-200 dark:border-slate-800 p-6">
+<h3 class="text-lg font-bold text-slate-900 dark:text-white mb-4">Top Categories</h3>
+<div class="space-y-4">
+<div class="flex flex-col gap-1">
+<div class="flex justify-between text-sm">
+<span class="font-medium text-slate-700 dark:text-slate-300">Productivity</span>
+<span class="text-slate-500 dark:text-slate-400">45%</span>
+</div>
+<div class="w-full bg-slate-200 dark:bg-slate-700 rounded-full h-2.5">
+<div class="bg-primary h-2.5 rounded-full" style="width: 45%"></div>
+</div>
+</div>
+<div class="flex flex-col gap-1">
+<div class="flex justify-between text-sm">
+<span class="font-medium text-slate-700 dark:text-slate-300">Photography</span>
+<span class="text-slate-500 dark:text-slate-400">25%</span>
+</div>
+<div class="w-full bg-slate-200 dark:bg-slate-700 rounded-full h-2.5">
+<div class="bg-primary h-2.5 rounded-full" style="width: 25%"></div>
+</div>
+</div>
+<div class="flex flex-col gap-1">
+<div class="flex justify-between text-sm">
+<span class="font-medium text-slate-700 dark:text-slate-300">Education</span>
+<span class="text-slate-500 dark:text-slate-400">15%</span>
+</div>
+<div class="w-full bg-slate-200 dark:bg-slate-700 rounded-full h-2.5">
+<div class="bg-primary h-2.5 rounded-full" style="width: 15%"></div>
+</div>
+</div>
+<div class="flex flex-col gap-1">
+<div class="flex justify-between text-sm">
+<span class="font-medium text-slate-700 dark:text-slate-300">Entertainment</span>
+<span class="text-slate-500 dark:text-slate-400">15%</span>
+</div>
+<div class="w-full bg-slate-200 dark:bg-slate-700 rounded-full h-2.5">
+<div class="bg-primary h-2.5 rounded-full" style="width: 15%"></div>
+</div>
+</div>
+</div>
+</div>
+<div class="bg-primary/20 dark:bg-primary/30 rounded-xl border border-primary/30 dark:border-primary/50 p-6 flex flex-col items-start gap-3">
+<div class="flex items-center justify-center size-10 bg-primary text-white rounded-lg">
+<span class="material-symbols-outlined">auto_awesome</span>
+</div>
+<h3 class="text-lg font-bold text-slate-900 dark:text-white">Based on Your Activity</h3>
+<p class="text-sm text-slate-700 dark:text-slate-200">You seem to prefer productivity apps. Why not explore some new <a class="font-bold underline text-primary dark:text-indigo-300" href="#">task management tools</a>?</p>
+</div>
+</div>
+</div>
+</div>
+</main>
+</div>
+</div>
+</body></html>

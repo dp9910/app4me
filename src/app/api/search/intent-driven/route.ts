@@ -1,7 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-
-// Import the enhanced weighted search pipeline
-const { MasterPipeline } = require('../../../../../scripts/master-pipeline.js');
+import { MasterPipeline } from '@/lib/search';
 
 export async function POST(request: NextRequest) {
   try {
