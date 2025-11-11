@@ -87,25 +87,58 @@ export default function HomePage() {
                   <div className="flex items-center gap-3 mb-4">
                     <span className="text-lg font-semibold text-gray-900 dark:text-white">Smart, targeted solutions:</span>
                   </div>
-                  <div className="grid grid-cols-2 gap-6 mb-4">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
                     <div className="bg-white dark:bg-gray-800 p-4 rounded-lg border border-gray-200 dark:border-gray-600">
-                      <p className="font-semibold text-gray-800 dark:text-gray-200 mb-2">For Caffeine:</p>
-                      <div className="text-gray-600 dark:text-gray-400 space-y-1">
-                        <p>• Sleep trackers</p>
-                        <p>• Caffeine timers</p>
+                      <p className="font-semibold text-gray-800 dark:text-gray-200 mb-3">💊 For Caffeine Management:</p>
+                      <div className="text-sm text-gray-600 dark:text-gray-400 space-y-2">
+                        <div className="flex items-center gap-2">
+                          <span className="w-2 h-2 bg-green-500 rounded-full"></span>
+                          <span>Caffeine Clock: Track Caffeine</span>
+                        </div>
+                        <div className="flex items-center gap-2">
+                          <span className="w-2 h-2 bg-green-500 rounded-full"></span>
+                          <span>Caffeine Dose</span>
+                        </div>
+                        <div className="flex items-center gap-2">
+                          <span className="w-2 h-2 bg-green-500 rounded-full"></span>
+                          <span>Decaf AI: Caffeine Tracker</span>
+                        </div>
                       </div>
                     </div>
                     <div className="bg-white dark:bg-gray-800 p-4 rounded-lg border border-gray-200 dark:border-gray-600">
-                      <p className="font-semibold text-gray-800 dark:text-gray-200 mb-2">For Screen Time:</p>
-                      <div className="text-gray-600 dark:text-gray-400 space-y-1">
-                        <p>• Blue light filters</p>
-                        <p>• App blockers</p>
+                      <p className="font-semibold text-gray-800 dark:text-gray-200 mb-3">📱 For Screen Time Control:</p>
+                      <div className="text-sm text-gray-600 dark:text-gray-400 space-y-2">
+                        <div className="flex items-center gap-2">
+                          <span className="w-2 h-2 bg-blue-500 rounded-full"></span>
+                          <span>Free Time: Mindful Screen Time</span>
+                        </div>
+                        <div className="flex items-center gap-2">
+                          <span className="w-2 h-2 bg-blue-500 rounded-full"></span>
+                          <span>FlowIn - Screen Time Control</span>
+                        </div>
+                        <div className="flex items-center gap-2">
+                          <span className="w-2 h-2 bg-blue-500 rounded-full"></span>
+                          <span>Steptime - Screen Time Control</span>
+                        </div>
                       </div>
                     </div>
                   </div>
                   <div className="bg-white dark:bg-gray-800 p-4 rounded-lg border border-gray-200 dark:border-gray-600">
-                    <p className="font-semibold text-gray-800 dark:text-gray-200 mb-2">Plus Sleep Aids:</p>
-                    <p className="text-gray-600 dark:text-gray-400">Meditation apps • Sleep sounds • Relaxation guides</p>
+                    <p className="font-semibold text-gray-800 dark:text-gray-200 mb-3">😴 Direct Sleep Solutions:</p>
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-3 text-sm text-gray-600 dark:text-gray-400">
+                      <div className="flex items-center gap-2">
+                        <span className="w-2 h-2 bg-purple-500 rounded-full"></span>
+                        <span>Yoga Nidra: Sleep Soundly</span>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <span className="w-2 h-2 bg-purple-500 rounded-full"></span>
+                        <span>Sleep Sounds by Sleep Pillow</span>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <span className="w-2 h-2 bg-purple-500 rounded-full"></span>
+                        <span>Simple Habit Sleep, Meditation</span>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
