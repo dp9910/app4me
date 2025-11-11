@@ -11,12 +11,13 @@ export default function HomePage() {
       <header className="fixed top-0 left-0 right-0 z-40 bg-white/80 dark:bg-gray-950/80 backdrop-blur-sm border-b border-gray-200/20 dark:border-gray-800/20 px-6 py-4">
         <div className="flex items-center justify-between">
           {/* Logo */}
-          <div className="flex items-center">
+          <div className="flex items-center gap-3">
             <img 
               src="/logo.png" 
               alt="app4me Logo" 
               className="h-10 w-auto"
             />
+            <span className="text-xl font-semibold text-gray-900 dark:text-white">app4me</span>
           </div>
           
           {/* Navigation */}
@@ -87,56 +88,56 @@ export default function HomePage() {
                   <div className="flex items-center gap-3 mb-4">
                     <span className="text-lg font-semibold text-gray-900 dark:text-white">Smart, targeted solutions:</span>
                   </div>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-                    <div className="bg-white dark:bg-gray-800 p-4 rounded-lg border border-gray-200 dark:border-gray-600">
-                      <p className="font-semibold text-gray-800 dark:text-gray-200 mb-3">💊 For Caffeine Management:</p>
-                      <div className="text-sm text-gray-600 dark:text-gray-400 space-y-2">
-                        <div className="flex items-center gap-2">
-                          <span className="w-2 h-2 bg-green-500 rounded-full"></span>
-                          <span>Caffeine Clock: Track Caffeine</span>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                    <div className="bg-gradient-to-br from-emerald-50 to-emerald-100 dark:from-emerald-950 dark:to-emerald-900 p-6 rounded-2xl border border-emerald-200 dark:border-emerald-800 shadow-sm">
+                      <div className="flex items-center gap-3 mb-4">
+                        <div className="w-3 h-3 bg-emerald-500 rounded-full"></div>
+                        <p className="font-semibold text-emerald-900 dark:text-emerald-100">Caffeine Management</p>
+                      </div>
+                      <div className="space-y-3">
+                        <div className="bg-white/80 dark:bg-emerald-800/30 px-4 py-3 rounded-xl border border-emerald-200/50 dark:border-emerald-700/50">
+                          <span className="text-emerald-800 dark:text-emerald-200 font-medium">Caffeine Clock: Track Caffeine</span>
                         </div>
-                        <div className="flex items-center gap-2">
-                          <span className="w-2 h-2 bg-green-500 rounded-full"></span>
-                          <span>Caffeine Dose</span>
+                        <div className="bg-white/80 dark:bg-emerald-800/30 px-4 py-3 rounded-xl border border-emerald-200/50 dark:border-emerald-700/50">
+                          <span className="text-emerald-800 dark:text-emerald-200 font-medium">Caffeine Dose</span>
                         </div>
-                        <div className="flex items-center gap-2">
-                          <span className="w-2 h-2 bg-green-500 rounded-full"></span>
-                          <span>Decaf AI: Caffeine Tracker</span>
+                        <div className="bg-white/80 dark:bg-emerald-800/30 px-4 py-3 rounded-xl border border-emerald-200/50 dark:border-emerald-700/50">
+                          <span className="text-emerald-800 dark:text-emerald-200 font-medium">Decaf AI: Caffeine Tracker</span>
                         </div>
                       </div>
                     </div>
-                    <div className="bg-white dark:bg-gray-800 p-4 rounded-lg border border-gray-200 dark:border-gray-600">
-                      <p className="font-semibold text-gray-800 dark:text-gray-200 mb-3">📱 For Screen Time Control:</p>
-                      <div className="text-sm text-gray-600 dark:text-gray-400 space-y-2">
-                        <div className="flex items-center gap-2">
-                          <span className="w-2 h-2 bg-blue-500 rounded-full"></span>
-                          <span>Free Time: Mindful Screen Time</span>
+                    <div className="bg-gradient-to-br from-blue-50 to-blue-100 dark:from-blue-950 dark:to-blue-900 p-6 rounded-2xl border border-blue-200 dark:border-blue-800 shadow-sm">
+                      <div className="flex items-center gap-3 mb-4">
+                        <div className="w-3 h-3 bg-blue-500 rounded-full"></div>
+                        <p className="font-semibold text-blue-900 dark:text-blue-100">Screen Time Control</p>
+                      </div>
+                      <div className="space-y-3">
+                        <div className="bg-white/80 dark:bg-blue-800/30 px-4 py-3 rounded-xl border border-blue-200/50 dark:border-blue-700/50">
+                          <span className="text-blue-800 dark:text-blue-200 font-medium">Free Time: Mindful Screen Time</span>
                         </div>
-                        <div className="flex items-center gap-2">
-                          <span className="w-2 h-2 bg-blue-500 rounded-full"></span>
-                          <span>FlowIn - Screen Time Control</span>
+                        <div className="bg-white/80 dark:bg-blue-800/30 px-4 py-3 rounded-xl border border-blue-200/50 dark:border-blue-700/50">
+                          <span className="text-blue-800 dark:text-blue-200 font-medium">FlowIn - Screen Time Control</span>
                         </div>
-                        <div className="flex items-center gap-2">
-                          <span className="w-2 h-2 bg-blue-500 rounded-full"></span>
-                          <span>Steptime - Screen Time Control</span>
+                        <div className="bg-white/80 dark:bg-blue-800/30 px-4 py-3 rounded-xl border border-blue-200/50 dark:border-blue-700/50">
+                          <span className="text-blue-800 dark:text-blue-200 font-medium">Steptime - Screen Time Control</span>
                         </div>
                       </div>
                     </div>
                   </div>
-                  <div className="bg-white dark:bg-gray-800 p-4 rounded-lg border border-gray-200 dark:border-gray-600">
-                    <p className="font-semibold text-gray-800 dark:text-gray-200 mb-3">😴 Direct Sleep Solutions:</p>
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-3 text-sm text-gray-600 dark:text-gray-400">
-                      <div className="flex items-center gap-2">
-                        <span className="w-2 h-2 bg-purple-500 rounded-full"></span>
-                        <span>Yoga Nidra: Sleep Soundly</span>
+                  <div className="bg-gradient-to-br from-violet-50 to-violet-100 dark:from-violet-950 dark:to-violet-900 p-6 rounded-2xl border border-violet-200 dark:border-violet-800 shadow-sm">
+                    <div className="flex items-center gap-3 mb-4">
+                      <div className="w-3 h-3 bg-violet-500 rounded-full"></div>
+                      <p className="font-semibold text-violet-900 dark:text-violet-100">Direct Sleep Solutions</p>
+                    </div>
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+                      <div className="bg-white/80 dark:bg-violet-800/30 px-4 py-3 rounded-xl border border-violet-200/50 dark:border-violet-700/50">
+                        <span className="text-violet-800 dark:text-violet-200 font-medium">Yoga Nidra: Sleep Soundly</span>
                       </div>
-                      <div className="flex items-center gap-2">
-                        <span className="w-2 h-2 bg-purple-500 rounded-full"></span>
-                        <span>Sleep Sounds by Sleep Pillow</span>
+                      <div className="bg-white/80 dark:bg-violet-800/30 px-4 py-3 rounded-xl border border-violet-200/50 dark:border-violet-700/50">
+                        <span className="text-violet-800 dark:text-violet-200 font-medium">Sleep Sounds by Sleep Pillow</span>
                       </div>
-                      <div className="flex items-center gap-2">
-                        <span className="w-2 h-2 bg-purple-500 rounded-full"></span>
-                        <span>Simple Habit Sleep, Meditation</span>
+                      <div className="bg-white/80 dark:bg-violet-800/30 px-4 py-3 rounded-xl border border-violet-200/50 dark:border-violet-700/50">
+                        <span className="text-violet-800 dark:text-violet-200 font-medium">Simple Habit Sleep, Meditation</span>
                       </div>
                     </div>
                   </div>
@@ -144,13 +145,16 @@ export default function HomePage() {
               </div>
 
               {/* AI Strategy */}
-              <div className="mt-6 pt-4 border-t border-gray-200 dark:border-gray-600">
-                <div className="bg-blue-50 dark:bg-blue-900/20 rounded-lg p-4">
-                  <p className="text-sm font-semibold text-blue-800 dark:text-blue-200 mb-2">
-                    Search Strategy:
-                  </p>
-                  <p className="text-sm text-blue-700 dark:text-blue-300 leading-relaxed">
-                    Prioritize 'sleep' and 'insomnia' to find apps directly addressing the problem. Combine these with solution keywords like 'sleep tracker', 'sleep sounds', and 'meditation' to find apps with specific features. Use 'caffeine' and 'phone usage' to find apps that help manage these potential causes, like screen time trackers or apps that offer caffeine tracking features.
+              <div className="mt-8 pt-6 border-t border-gray-200/30 dark:border-gray-600/30">
+                <div className="bg-gradient-to-r from-slate-50 to-gray-50 dark:from-slate-900 dark:to-gray-900 rounded-2xl p-6 border border-slate-200 dark:border-slate-700 shadow-sm">
+                  <div className="flex items-center gap-3 mb-3">
+                    <div className="w-2 h-2 bg-slate-400 rounded-full"></div>
+                    <p className="font-semibold text-slate-800 dark:text-slate-200">
+                      Search Strategy
+                    </p>
+                  </div>
+                  <p className="text-slate-600 dark:text-slate-300 leading-relaxed">
+                    Prioritize 'sleep' and 'insomnia' to find apps directly addressing the problem. Combine these with solution keywords like 'sleep tracker', 'sleep sounds', and 'meditation' to find apps with specific features. Use 'caffeine' and 'phone usage' to find apps that help manage these potential causes.
                   </p>
                 </div>
               </div>
