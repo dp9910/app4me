@@ -194,7 +194,13 @@ Return: {"query_type": "problem"} or {"query_type": "general"}`;
         throw new Error('Could not extract JSON from classification');
       }
     } catch (error) {
-      console.error('⚠️ Classification failed, defaulting to general');
+      console.error('⚠️ Classification failed, using fallback:', error.message);
+      // Fallback to keyword-based classification
+      const problemKeywords = ['problem', 'issue', 'struggle', 'can\'t', 'stressed', 'anxious', 'mess', 'focus', 'help','trouble','lonely'];
+      const queryLower = userQuery.toLowerCase();
+      if (problemKeywords.some(keyword => queryLower.includes(keyword))) {
+        return { query_type: 'problem' };
+      }
       return { query_type: 'general' };
     }
   }
