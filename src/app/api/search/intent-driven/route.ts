@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { MasterPipeline } from '@/lib/search';
+// Use the original master pipeline
+const { MasterPipeline } = require('../../../../../scripts/master-pipeline.js');
 
 export async function POST(request: NextRequest) {
   try {

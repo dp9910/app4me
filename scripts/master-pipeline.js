@@ -58,8 +58,10 @@ class ProgressTracker extends EventEmitter {
       // Emit for real-time updates (WebSocket/SSE)
       this.emit('progress', progress);
       
-      // Also save to temp file for polling fallback
-      fs.writeFileSync(`./temp-progress-${this.sessionId}.json`, JSON.stringify(progress, null, 2));
+      // Also save to temp file for polling fallback (only in development)
+      if (process.env.NODE_ENV !== 'production') {
+        fs.writeFileSync(`./temp-progress-${this.sessionId}.json`, JSON.stringify(progress, null, 2));
+      }
       
       console.log(`📡 Progress Update: ${stepId} → ${status}`);
     }
