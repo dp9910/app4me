@@ -82,6 +82,7 @@ export default function ContextualAnalysisPage() {
             contextual_analysis: result.contextual_analysis
         }));
         
+        const isGeneralQuery = result.contextual_analysis.query_type === 'general';
         const mockProgress: ProgressData = {
           sessionId: 'completed_' + Date.now(),
           currentStep: 5,
@@ -90,10 +91,12 @@ export default function ContextualAnalysisPage() {
           steps: [
             { 
               id: 'query_analysis', 
-              name: 'Query Interpretation', 
+              name: isGeneralQuery ? 'Intent Recognition' : 'Query Interpretation', 
               icon: stepIcons['query_analysis'], 
               status: 'completed', 
-              description: 'Understanding your request as a problem or general query, identifying key themes and context.',
+              description: isGeneralQuery 
+                ? 'Analyzing your request to identify desired app categories, features, and user preferences.'
+                : 'Understanding your request as a problem or general query, identifying key themes and context.',
               data: { 
                 query_type: result.contextual_analysis.query_type,
                 user_situation: result.contextual_analysis.user_situation,
@@ -104,38 +107,48 @@ export default function ContextualAnalysisPage() {
             },
             { 
               id: 'keyword_processing', 
-              name: 'Keyword Extraction', 
+              name: isGeneralQuery ? 'Category Mapping' : 'Keyword Extraction', 
               icon: stepIcons['keyword_processing'], 
               status: 'completed',
-              description: 'Organizing search terms by importance and creating targeted search strategies for each category.'
+              description: isGeneralQuery
+                ? 'Mapping your interests to relevant app categories and identifying key search terms.'
+                : 'Organizing search terms by importance and creating targeted search strategies for each category.'
             },
             { 
               id: 'diversified_search', 
-              name: 'Database Query', 
+              name: isGeneralQuery ? 'Multi-Category Discovery' : 'Database Query', 
               icon: stepIcons['diversified_search'], 
               status: 'completed',
-              description: 'Searching across multiple app categories simultaneously to ensure comprehensive coverage.'
+              description: isGeneralQuery
+                ? 'Exploring multiple app categories to discover diverse options that match your interests.'
+                : 'Searching across multiple app categories simultaneously to ensure comprehensive coverage.'
             },
             { 
               id: 'category_filtering', 
-              name: 'Initial Filtering', 
+              name: isGeneralQuery ? 'Quality Filtering' : 'Initial Filtering', 
               icon: stepIcons['category_filtering'], 
               status: 'completed',
-              description: 'Removing duplicates and organizing results by relevance across different solution types.'
+              description: isGeneralQuery
+                ? 'Filtering apps by ratings, reviews, and relevance to ensure quality recommendations.'
+                : 'Removing duplicates and organizing results by relevance across different solution types.'
             },
             { 
               id: 'semantic_ranking', 
-              name: 'AI Re-ranking', 
+              name: isGeneralQuery ? 'Semantic Matching' : 'AI Re-ranking', 
               icon: stepIcons['semantic_ranking'], 
               status: 'completed',
-              description: 'Using AI to understand the meaning behind your query and rank apps by true relevance.'
+              description: isGeneralQuery
+                ? 'Using AI to understand the deeper meaning of your request and find semantically similar apps.'
+                : 'Using AI to understand the meaning behind your query and rank apps by true relevance.'
             },
             { 
               id: 'final_selection', 
-              name: 'Final Selection', 
+              name: 'Final Ranking', 
               icon: stepIcons['final_selection'], 
               status: 'completed',
-              description: 'Combining all signals to deliver the most helpful app recommendations for your specific need.'
+              description: isGeneralQuery
+                ? 'Ranking apps by combining semantic relevance, user ratings, and category fit for optimal discovery.'
+                : 'Combining all signals to deliver the most helpful app recommendations for your specific need.'
             }
           ],
           data: {
@@ -177,6 +190,7 @@ export default function ContextualAnalysisPage() {
       try {
         const parsed = JSON.parse(storedData);
         if (parsed.query === query && parsed.contextual_analysis) {
+          const isGeneralQueryStored = parsed.contextual_analysis.query_type === 'general';
           const mockProgress: ProgressData = {
             sessionId: 'stored_' + Date.now(),
             currentStep: 5,
@@ -185,10 +199,12 @@ export default function ContextualAnalysisPage() {
             steps: [
               { 
                 id: 'query_analysis', 
-                name: 'Query Interpretation', 
+                name: isGeneralQueryStored ? 'Intent Recognition' : 'Query Interpretation', 
                 icon: stepIcons['query_analysis'], 
                 status: 'completed', 
-                description: 'Understanding your request as a problem or general query, identifying key themes and context.',
+                description: isGeneralQueryStored 
+                  ? 'Analyzing your request to identify desired app categories, features, and user preferences.'
+                  : 'Understanding your request as a problem or general query, identifying key themes and context.',
                 data: { 
                   query_type: parsed.contextual_analysis.query_type,
                   user_situation: parsed.contextual_analysis.user_situation,
@@ -199,38 +215,48 @@ export default function ContextualAnalysisPage() {
               },
               { 
                 id: 'keyword_processing', 
-                name: 'Keyword Extraction', 
+                name: isGeneralQueryStored ? 'Category Mapping' : 'Keyword Extraction', 
                 icon: stepIcons['keyword_processing'], 
                 status: 'completed',
-                description: 'Organizing search terms by importance and creating targeted search strategies for each category.'
+                description: isGeneralQueryStored
+                  ? 'Mapping your interests to relevant app categories and identifying key search terms.'
+                  : 'Organizing search terms by importance and creating targeted search strategies for each category.'
               },
               { 
                 id: 'diversified_search', 
-                name: 'Database Query', 
+                name: isGeneralQueryStored ? 'Multi-Category Discovery' : 'Database Query', 
                 icon: stepIcons['diversified_search'], 
                 status: 'completed',
-                description: 'Searching across multiple app categories simultaneously to ensure comprehensive coverage.'
+                description: isGeneralQueryStored
+                  ? 'Exploring multiple app categories to discover diverse options that match your interests.'
+                  : 'Searching across multiple app categories simultaneously to ensure comprehensive coverage.'
               },
               { 
                 id: 'category_filtering', 
-                name: 'Initial Filtering', 
+                name: isGeneralQueryStored ? 'Quality Filtering' : 'Initial Filtering', 
                 icon: stepIcons['category_filtering'], 
                 status: 'completed',
-                description: 'Removing duplicates and organizing results by relevance across different solution types.'
+                description: isGeneralQueryStored
+                  ? 'Filtering apps by ratings, reviews, and relevance to ensure quality recommendations.'
+                  : 'Removing duplicates and organizing results by relevance across different solution types.'
               },
               { 
                 id: 'semantic_ranking', 
-                name: 'AI Re-ranking', 
+                name: isGeneralQueryStored ? 'Semantic Matching' : 'AI Re-ranking', 
                 icon: stepIcons['semantic_ranking'], 
                 status: 'completed',
-                description: 'Using AI to understand the meaning behind your query and rank apps by true relevance.'
+                description: isGeneralQueryStored
+                  ? 'Using AI to understand the deeper meaning of your request and find semantically similar apps.'
+                  : 'Using AI to understand the meaning behind your query and rank apps by true relevance.'
               },
               { 
                 id: 'final_selection', 
-                name: 'Final Selection', 
+                name: 'Final Ranking', 
                 icon: stepIcons['final_selection'], 
                 status: 'completed',
-                description: 'Combining all signals to deliver the most helpful app recommendations for your specific need.'
+                description: isGeneralQueryStored
+                  ? 'Ranking apps by combining semantic relevance, user ratings, and category fit for optimal discovery.'
+                  : 'Combining all signals to deliver the most helpful app recommendations for your specific need.'
               }
             ],
             data: {
@@ -439,14 +465,16 @@ export default function ContextualAnalysisPage() {
                   <div className="space-y-5 mb-6 pb-6 border-b border-gray-200 dark:border-gray-700">
                     <div>
                       <h4 className="font-semibold text-gray-900 dark:text-white mb-2 flex items-center">
-                        <span className="text-xl mr-2">💡</span> Your Situation
+                        <span className="text-xl mr-2">{analysisData.query_type === 'general' ? '🎯' : '💡'}</span> 
+                        {analysisData.query_type === 'general' ? 'Your Intent' : 'Your Situation'}
                       </h4>
                       <p className="text-sm text-gray-600 dark:text-gray-400 leading-relaxed">{analysisData.user_situation}</p>
                     </div>
                     {analysisData.root_cause && (
                       <div>
                         <h4 className="font-semibold text-gray-900 dark:text-white mb-2 flex items-center">
-                          <span className="text-xl mr-2">🌿</span> Root Cause
+                          <span className="text-xl mr-2">{analysisData.query_type === 'general' ? '🔍' : '🌿'}</span> 
+                          {analysisData.query_type === 'general' ? 'Search Focus' : 'Root Cause'}
                         </h4>
                         <p className="text-sm text-gray-600 dark:text-gray-400 leading-relaxed">{analysisData.root_cause}</p>
                       </div>
@@ -458,7 +486,8 @@ export default function ContextualAnalysisPage() {
                 {analysisData.categories && (
                   <div className="space-y-4 mb-6 pb-6 border-b border-gray-200 dark:border-gray-700">
                     <h4 className="font-semibold text-gray-900 dark:text-white flex items-center">
-                      <span className="text-xl mr-2">🏷️</span> Search Keywords
+                      <span className="text-xl mr-2">{analysisData.query_type === 'general' ? '📂' : '🏷️'}</span> 
+                      {analysisData.query_type === 'general' ? 'Discovery Categories' : 'Search Keywords'}
                     </h4>
                     <div className="flex flex-wrap gap-2">
                       {Object.entries(analysisData.categories).map(([category, data]) => (

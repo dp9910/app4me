@@ -355,12 +355,16 @@ export default function SwipePage() {
         throw new Error(data.error || 'Search failed');
       }
 
-      // Check if this is a problem query that should show contextual analysis
+      // Check if this query should show contextual analysis (both problem and general queries)
       // BUT skip if user already went through contextual analysis for this session
       const skipContextual = sessionStorage.getItem('skipContextualAnalysis');
-      console.log('handleSearchWithQuery - API call result. skipContextual:', skipContextual, 'contextual_analysis:', data.contextual_analysis);
+      const queryType = data.contextual_analysis?.query_type;
+      const shouldShowContextual = queryType === 'problem' || queryType === 'problem-based' || 
+        (queryType === 'general' && data.results?.length >= 5); // Show for general queries with sufficient results
       
-      if (data.success && data.contextual_analysis && data.contextual_analysis.query_type === 'problem' && !skipContextual) {
+      console.log('handleSearchWithQuery - API call result. skipContextual:', skipContextual, 'queryType:', queryType, 'shouldShowContextual:', shouldShowContextual);
+      
+      if (data.success && data.contextual_analysis && shouldShowContextual && !skipContextual) {
         console.log('handleSearchWithQuery - Redirecting to contextual analysis page.');
         // Mark that we're redirecting to prevent useEffect from re-triggering
         isRedirectingRef.current = true;
