@@ -61,12 +61,35 @@ export default function SwipePage() {
   const [appsCount, setAppsCount] = useState<string>('9020'); // Default fallback count
   const isRedirectingRef = useRef<boolean>(false); // Track if we're redirecting to contextual analysis
 
-  // Load apps count from session storage
+  // Load apps count from session storage and fetch fresh count
   useEffect(() => {
     const cachedCount = sessionStorage.getItem('appsCount');
     if (cachedCount) {
       setAppsCount(cachedCount);
     }
+
+    // Fetch fresh app count from API
+    const fetchAppsCount = async () => {
+      try {
+        const response = await fetch('/api/apps-count');
+        if (response.ok) {
+          const data = await response.json();
+          if (data.success && data.count) {
+            const countStr = data.count.toString();
+            setAppsCount(countStr);
+            sessionStorage.setItem('appsCount', countStr);
+          }
+        } else {
+          // API failed, use fallback
+          console.warn('Apps count API failed, using fallback count');
+        }
+      } catch (error) {
+        console.error('Error fetching apps count:', error);
+        // Keep existing fallback value
+      }
+    };
+
+    fetchAppsCount();
   }, []);
 
   useEffect(() => {
@@ -259,13 +282,20 @@ export default function SwipePage() {
   };
 
   const handleSearchWithQuery = async (query: string) => {
-    console.log('handleSearchWithQuery - Called with query:', query);
+    // Count how many times this function is called
+    const callCount = parseInt(sessionStorage.getItem('searchCallCount') || '0') + 1;
+    sessionStorage.setItem('searchCallCount', callCount.toString());
+    console.log(`🔢 handleSearchWithQuery - CALL #${callCount} with query:`, query);
+    
     if (!query.trim()) {
       console.log('handleSearchWithQuery - Query is empty, returning.');
       return;
     }
     
     const trimmedQuery = query.trim();
+    
+    // Clear skip flag for any new search to ensure contextual analysis can trigger
+    sessionStorage.removeItem('skipContextualAnalysis');
     
     // Update the search query state to match the actual query being used
     setSearchQuery(trimmedQuery);
@@ -377,9 +407,10 @@ export default function SwipePage() {
       console.log('- data.success:', data.success);
       console.log('- data.contextual_analysis:', data.contextual_analysis);
       console.log('- results length:', data.results?.length);
-      console.log('- Full API response:', JSON.stringify(data, null, 2));
       
       if (data.success && data.contextual_analysis && shouldShowContextual && !skipContextual) {
+        const currentCallCount = sessionStorage.getItem('searchCallCount') || '0';
+        console.log(`✅ REDIRECTING TO CONTEXTUAL ANALYSIS after ${currentCallCount} calls`);
         console.log('handleSearchWithQuery - Redirecting to contextual analysis page.');
         // Mark that we're redirecting to prevent useEffect from re-triggering
         isRedirectingRef.current = true;
@@ -483,6 +514,9 @@ export default function SwipePage() {
 
   const handleSearch = async () => {
     if (!searchQuery.trim()) return;
+    // Reset call counter for new user-initiated search
+    sessionStorage.removeItem('searchCallCount');
+    console.log('🆕 Starting new user search - reset call counter');
     sessionStorage.removeItem('skipContextualAnalysis'); // Clear before new search
     await handleSearchWithQuery(searchQuery);
   };

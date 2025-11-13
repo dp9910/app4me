@@ -168,13 +168,14 @@ class LLMAnalyzer {
   }
 
   async classifyQuery(userQuery) {
-    const quickPrompt = `Is this query a PROBLEM (personal issue) or GENERAL (app category)?
+    const quickPrompt = `Classify this query as either a PROBLEM (specific personal need, goal, or challenge) or GENERAL (broad app category request).
+
 Query: "${userQuery}"
 
-PROBLEM = "can't sleep", "stressed", "budget mess", "can't focus"
-GENERAL = "fitness apps", "photo apps", "music apps"
+PROBLEM: User has a specific personal situation, need, goal, or challenge they want to solve
+GENERAL: User is asking for a broad category of apps without specific context
 
-Return: {"query_type": "problem"} or {"query_type": "general"}`;
+Return only: {"query_type": "problem"} or {"query_type": "general"}`;
 
     try {
       const response = await Promise.race([
