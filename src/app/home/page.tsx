@@ -25,6 +25,7 @@ export default function HomePage() {
   const [userName, setUserName] = useState('');
   const [userNickname, setUserNickname] = useState('');
   const [userInterests, setUserInterests] = useState('');
+  const [profileLoading, setProfileLoading] = useState(true);
   const [apps, setApps] = useState<{ [key: string]: App[] }>({});
   const [topWeeklyApps, setTopWeeklyApps] = useState<App[]>([]);
   const [appsLoading, setAppsLoading] = useState(true);
@@ -118,11 +119,18 @@ export default function HomePage() {
   // Fetch user profile data
   useEffect(() => {
     const fetchUserProfile = async () => {
-      if (!user) return;
+      if (!user) {
+        setProfileLoading(false);
+        return;
+      }
 
+      setProfileLoading(true);
       try {
         const { data: { session } } = await (await import('@/lib/supabase/client')).supabase.auth.getSession();
-        if (!session?.access_token) return;
+        if (!session?.access_token) {
+          setProfileLoading(false);
+          return;
+        }
 
         const response = await fetch('/api/personalization', {
           headers: {
@@ -137,6 +145,8 @@ export default function HomePage() {
         }
       } catch (error) {
         console.error('Error fetching user profile:', error);
+      } finally {
+        setProfileLoading(false);
       }
     };
 
@@ -363,7 +373,11 @@ export default function HomePage() {
                 <div className="flex flex-wrap justify-between gap-3">
                   <div className="flex min-w-72 flex-col gap-2">
                     <p className="text-gray-900 dark:text-white text-4xl font-black leading-tight tracking-[-0.033em]">
-                      Welcome back, {userNickname || userName}!
+                      {profileLoading ? (
+                        "Welcome back!"
+                      ) : (
+                        `Welcome back, ${userNickname || userName}!`
+                      )}
                     </p>
                     <p className="text-gray-500 dark:text-gray-400 text-base font-normal leading-normal">
                       {userInterests 

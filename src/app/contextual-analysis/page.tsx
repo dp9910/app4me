@@ -349,7 +349,7 @@ export default function ContextualAnalysisPage() {
   const { data: analysisData } = progressData;
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 font-sans text-gray-800 dark:text-gray-200">
+    <div className="relative flex h-auto min-h-screen w-full flex-col bg-background-light dark:bg-background-dark font-display text-gray-800 dark:text-gray-200">
       <Navigation />
       
       <main className="w-full grow px-4 sm:px-6 lg:px-8 py-8 md:py-12 pt-20">
@@ -358,96 +358,73 @@ export default function ContextualAnalysisPage() {
             
             {/* Main Content: AI Process Timeline */}
             <div className="lg:col-span-2">
-              <div className="flex flex-col gap-8">
+              <div className="flex flex-col gap-10">
                 
                 {/* Page Heading */}
-                <div className="flex flex-wrap justify-between gap-3 px-4">
-                  <div className="flex min-w-72 flex-col gap-2">
-                    <p className="text-gray-900 dark:text-white text-4xl font-extrabold leading-tight tracking-[-0.033em]">AI Reasoning Trace</p>
+                <div className="flex flex-wrap justify-between gap-3 px-2">
+                  <div className="flex min-w-72 flex-col gap-1.5">
+                    <h1 className="text-gray-900 dark:text-white text-4xl font-bold tracking-[-0.03em]">AI Reasoning Trace</h1>
                     <p className="text-gray-600 dark:text-gray-400 text-base font-normal leading-normal">
                       Showing thought process for query: '<span className="font-medium text-gray-800 dark:text-gray-300">{analysisData.query}</span>'
                     </p>
                   </div>
                 </div>
 
-                
-
-                {/* Timeline - Modern Card Layout */}
-                <div className="space-y-4 px-4">
+                {/* Timeline Steps */}
+                <div className="space-y-2">
                   {progressData.steps.map((step, index) => (
                     <div 
                       key={step.id}
-                      className={`relative overflow-hidden rounded-2xl border transition-all duration-300 hover:shadow-lg ${
-                        step.status === 'completed' 
-                          ? 'bg-gradient-to-r from-gray-50 to-green-50 dark:from-gray-800/30 dark:to-green-950/30 border-gray-200 dark:border-gray-700 shadow-sm' 
-                          : step.status === 'running'
-                          ? 'bg-gradient-to-r from-orange-50 to-yellow-50 dark:from-orange-950/40 dark:to-yellow-950/40 border-orange-300 dark:border-orange-700 shadow-lg ring-2 ring-orange-500 ring-opacity-50 animate-pulse' // Enhanced running state
-                          : 'bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 shadow-sm'
-                      }`}
+                      className="group grid grid-cols-[auto_1fr] gap-x-4 p-3 rounded-lg hover:bg-gray-50 dark:hover:bg-white/5 transition-colors cursor-pointer"
                     >
-                      {/* Completion indicator */}
-                      {step.status === 'completed' && (
-                        <div className="absolute top-0 left-0 h-1 w-full bg-gradient-to-r from-green-500 to-teal-500"></div>
-                      )}
-                      
-                      <div className="flex items-start gap-4 p-6">
-                        {/* Icon */}
-                        <div className={`flex items-center justify-center w-12 h-12 rounded-full flex-shrink-0 text-2xl ${
-                          step.status === 'completed' 
-                            ? 'bg-green-500 text-white shadow-lg' 
-                            : step.status === 'running'
-                            ? 'bg-orange-500 text-white shadow-lg animate-bounce' // Added bounce animation
-                            : 'bg-gray-100 dark:bg-gray-700 text-gray-400 dark:text-gray-500'
-                        }`}>
-                          {step.icon}
-                        </div>
-
-                        {/* Content */}
-                        <div className="flex-grow min-w-0">
-                          {/* Step Header */}
-                          <div className="flex items-center justify-between mb-3">
-                            <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
-                              {step.name}
-                            </h3>
-                            <div className={`px-3 py-1 rounded-full text-xs font-medium ${
-                              step.status === 'completed' 
-                                ? 'bg-green-100 dark:bg-green-900/50 text-green-700 dark:text-green-300'
-                                : step.status === 'running'
-                                ? 'bg-orange-100 dark:bg-orange-900/50 text-orange-700 dark:text-orange-300'
-                                : 'bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-400'
-                            }`}>
-                              {step.status === 'completed' ? '✓ Complete' : 
-                               step.status === 'running' ? '⏳ Running' : '⭕ Pending'}
-                            </div>
+                      <div className="flex flex-col items-center gap-2">
+                        {index === 0 ? (
+                          <div className="flex items-center justify-center size-10 rounded-full bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-400 group-hover:bg-primary group-hover:text-white transition-colors">
+                            <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                              <path fillRule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clipRule="evenodd" />
+                            </svg>
                           </div>
-
-                          {/* Step Description */}
-                          <p className="text-gray-600 dark:text-gray-300 text-sm leading-relaxed mb-4">
-                            {step.description}
-                          </p>
-
-                          {/* Step Details for Query Analysis */}
-                          {step.data && step.id === 'query_analysis' && (
-                            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mt-4">
-                              <div className="bg-white dark:bg-gray-700 rounded-lg p-3 border border-gray-200 dark:border-gray-600 shadow-sm">
-                                <span className="text-xs text-gray-500 dark:text-gray-400 uppercase tracking-wider">Type</span>
-                                <p className="text-sm font-medium text-gray-900 dark:text-white capitalize mt-1">{step.data.query_type}</p>
-                              </div>
-                              <div className="bg-white dark:bg-gray-700 rounded-lg p-3 border border-gray-200 dark:border-gray-600 shadow-sm">
-                                <span className="text-xs text-gray-500 dark:text-gray-400 uppercase tracking-wider">Priority</span>
-                                <p className="text-sm font-medium text-gray-900 dark:text-white capitalize mt-1">{step.data.urgency}</p>
-                              </div>
-                              {step.data.categories && (
-                                <div className="bg-white dark:bg-gray-700 rounded-lg p-3 border border-gray-200 dark:border-gray-600 shadow-sm">
-                                  <span className="text-xs text-gray-500 dark:text-gray-400 uppercase tracking-wider">Categories</span>
-                                  <p className="text-sm font-medium text-gray-900 dark:text-white mt-1">
-                                    {Object.keys(step.data.categories).length} groups
-                                  </p>
-                                </div>
+                        ) : index === progressData.steps.length - 1 ? (
+                          <>
+                            <div className="w-px bg-gray-300 dark:bg-gray-600 h-full grow"></div>
+                            <div className="flex items-center justify-center size-10 rounded-full bg-primary text-white">
+                              <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                                <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                              </svg>
+                            </div>
+                          </>
+                        ) : (
+                          <>
+                            {index > 0 && <div className="w-px bg-gray-300 dark:bg-gray-600 h-full grow"></div>}
+                            <div className="flex items-center justify-center size-10 rounded-full bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-400 group-hover:bg-primary group-hover:text-white transition-colors">
+                              {step.id === 'keyword_processing' && (
+                                <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                                  <path fillRule="evenodd" d="M17.707 9.293a1 1 0 010 1.414l-7 7a1 1 0 01-1.414 0l-7-7A.997.997 0 012 10V5a3 3 0 013-3h5c.256 0 .512.098.707.293l7 7zM5 6a1 1 0 100-2 1 1 0 000 2z" clipRule="evenodd" />
+                                </svg>
+                              )}
+                              {step.id === 'diversified_search' && (
+                                <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                                  <path fillRule="evenodd" d="M3 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" clipRule="evenodd" />
+                                </svg>
+                              )}
+                              {step.id === 'category_filtering' && (
+                                <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                                  <path fillRule="evenodd" d="M3 3a1 1 0 011-1h12a1 1 0 011 1v3a1 1 0 01-.293.707L12 11.414V15a1 1 0 01-.293.707l-2 2A1 1 0 018 17v-5.586L3.293 6.707A1 1 0 013 6V3z" clipRule="evenodd" />
+                                </svg>
+                              )}
+                              {step.id === 'semantic_ranking' && (
+                                <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                                  <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                                </svg>
                               )}
                             </div>
-                          )}
-                        </div>
+                            {index < progressData.steps.length - 1 && <div className="w-px bg-gray-300 dark:bg-gray-600 h-full grow"></div>}
+                          </>
+                        )}
+                      </div>
+                      <div className="flex flex-1 flex-col pt-1.5 pb-6">
+                        <p className="text-gray-900 dark:text-white text-base font-semibold leading-normal">{step.name}</p>
+                        <p className="text-gray-600 dark:text-gray-400 text-base font-normal leading-normal">{step.description}</p>
                       </div>
                     </div>
                   ))}
@@ -455,76 +432,125 @@ export default function ContextualAnalysisPage() {
               </div>
             </div>
 
-            {/* Side Panel: Results */}
-            <aside className="lg:col-span-1 lg:sticky top-24 self-start">
+            {/* Side Panel: Analysis Results */}
+            <aside className="lg:col-span-1 lg:sticky top-28 self-start">
               <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl p-6 shadow-lg">
-                <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-6">Search Analysis</h3>
-                
-                {/* AI Understanding */}
-                {analysisData.user_situation && (
-                  <div className="space-y-5 mb-6 pb-6 border-b border-gray-200 dark:border-gray-700">
-                    <div>
-                      <h4 className="font-semibold text-gray-900 dark:text-white mb-2 flex items-center">
-                        <span className="text-xl mr-2">{analysisData.query_type === 'general' ? '🎯' : '💡'}</span> 
-                        {analysisData.query_type === 'general' ? 'Your Intent' : 'Your Situation'}
+                <div className="space-y-6">
+                  <h3 className="text-xl font-bold text-gray-900 dark:text-white">Search Analysis</h3>
+                  
+                  {/* Your Intent/Situation */}
+                  <div className="space-y-4">
+                    <h4 className="text-base font-semibold text-gray-800 dark:text-gray-100">
+                      {analysisData.query_type === 'general' ? 'Your Intent' : 'Your Situation'}
+                    </h4>
+                    <p className="text-sm text-gray-600 dark:text-gray-400">
+                      {analysisData.user_situation || 'Analyzing your request to understand what you need.'}
+                    </p>
+                  </div>
+
+                  {/* Root Cause/Search Focus */}
+                  {analysisData.root_cause && (
+                    <div className="space-y-4">
+                      <h4 className="text-base font-semibold text-gray-800 dark:text-gray-100">
+                        {analysisData.query_type === 'general' ? 'Search Focus' : 'Root Cause'}
                       </h4>
-                      <p className="text-sm text-gray-600 dark:text-gray-400 leading-relaxed">{analysisData.user_situation}</p>
+                      <p className="text-sm text-gray-600 dark:text-gray-400">{analysisData.root_cause}</p>
                     </div>
-                    {analysisData.root_cause && (
-                      <div>
-                        <h4 className="font-semibold text-gray-900 dark:text-white mb-2 flex items-center">
-                          <span className="text-xl mr-2">{analysisData.query_type === 'general' ? '🔍' : '🌿'}</span> 
-                          {analysisData.query_type === 'general' ? 'Search Focus' : 'Root Cause'}
-                        </h4>
-                        <p className="text-sm text-gray-600 dark:text-gray-400 leading-relaxed">{analysisData.root_cause}</p>
+                  )}
+                </div>
+
+                <div className="w-full h-px bg-gray-200 dark:bg-gray-700 my-6"></div>
+
+                {/* Keywords Section */}
+                {analysisData.categories && (
+                  <div className="space-y-6">
+                    {/* Render keyword categories based on query type */}
+                    {analysisData.query_type === 'problem' ? (
+                      <>
+                        {/* Problem Keywords */}
+                        <div className="space-y-4">
+                          <h4 className="text-base font-semibold text-gray-800 dark:text-gray-100">Problem Keywords</h4>
+                          <div className="flex flex-wrap gap-2">
+                            {analysisData.categories.problem?.keywords.map((keyword, index) => (
+                              <span key={index} className="px-2.5 py-1 text-sm font-medium rounded-full bg-red-100 text-red-800 dark:bg-red-900/40 dark:text-red-200">
+                                {keyword}
+                              </span>
+                            )) || []}
+                          </div>
+                        </div>
+
+                        {/* Solution Keywords */}
+                        <div className="space-y-4">
+                          <h4 className="text-base font-semibold text-gray-800 dark:text-gray-100">Solution Keywords</h4>
+                          <div className="flex flex-wrap gap-2">
+                            {analysisData.categories.solution?.keywords.map((keyword, index) => (
+                              <span key={index} className="px-2.5 py-1 text-sm font-medium rounded-full bg-green-100 text-green-800 dark:bg-green-900/40 dark:text-green-200">
+                                {keyword}
+                              </span>
+                            )) || []}
+                          </div>
+                        </div>
+
+                        {/* Cause Keywords */}
+                        {analysisData.categories.cause?.keywords.length > 0 && (
+                          <div className="space-y-4">
+                            <h4 className="text-base font-semibold text-gray-800 dark:text-gray-100">Cause Keywords</h4>
+                            <div className="flex flex-wrap gap-2">
+                              {analysisData.categories.cause.keywords.map((keyword, index) => (
+                                <span key={index} className="px-2.5 py-1 text-sm font-medium rounded-full bg-amber-100 text-amber-800 dark:bg-amber-900/40 dark:text-amber-200">
+                                  {keyword}
+                                </span>
+                              ))}
+                            </div>
+                          </div>
+                        )}
+
+                        {/* Context Keywords */}
+                        {analysisData.categories.context?.keywords.length > 0 && (
+                          <div className="space-y-4">
+                            <h4 className="text-base font-semibold text-gray-800 dark:text-gray-100">Context Keywords</h4>
+                            <div className="flex flex-wrap gap-2">
+                              {analysisData.categories.context.keywords.map((keyword, index) => (
+                                <span key={index} className="px-2.5 py-1 text-sm font-medium rounded-full bg-blue-100 text-blue-800 dark:bg-blue-900/40 dark:text-blue-200">
+                                  {keyword}
+                                </span>
+                              ))}
+                            </div>
+                          </div>
+                        )}
+                      </>
+                    ) : (
+                      /* General query - show all categories */
+                      <div className="space-y-4">
+                        <h4 className="text-base font-semibold text-gray-800 dark:text-gray-100">Discovery Categories</h4>
+                        <div className="flex flex-wrap gap-2">
+                          {Object.entries(analysisData.categories).map(([category, data]) => (
+                            <span key={category} className="px-2.5 py-1 text-sm font-medium rounded-full bg-blue-100 text-blue-800 dark:bg-blue-900/40 dark:text-blue-200">
+                              {category}
+                            </span>
+                          ))}
+                        </div>
                       </div>
                     )}
-                  </div>
-                )}
 
-                {/* Keyword Categories */}
-                {analysisData.categories && (
-                  <div className="space-y-4 mb-6 pb-6 border-b border-gray-200 dark:border-gray-700">
-                    <h4 className="font-semibold text-gray-900 dark:text-white flex items-center">
-                      <span className="text-xl mr-2">{analysisData.query_type === 'general' ? '📂' : '🏷️'}</span> 
-                      {analysisData.query_type === 'general' ? 'Discovery Categories' : 'Search Keywords'}
-                    </h4>
-                    <div className="flex flex-wrap gap-2">
-                      {Object.entries(analysisData.categories).map(([category, data]) => (
-                        <span key={category} className="bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-300 text-xs font-medium px-3 py-1 rounded-full">
-                          {category} ({data.keywords.length})
-                        </span>
-                      ))}
-                    </div>
-                    <div className="mt-4 text-sm text-gray-600 dark:text-gray-400">
-                      <p className="font-medium mb-2">Detailed Keywords:</p>
-                      <ul className="list-disc list-inside space-y-1">
-                        {Object.entries(analysisData.categories).map(([category, data]) => (
-                          <li key={category}>
-                            <span className="font-semibold capitalize">{category}:</span> {data.keywords.join(', ')}
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                  </div>
-                )}
-
-                {/* Results Summary */}
-                {analysisData.final_results && (
-                  <div className="text-center py-4">
-                    <div className="text-5xl font-extrabold text-gray-700 dark:text-gray-300 mb-2 animate-fade-in">
-                      {analysisData.final_results.length}
-                    </div>
-                    <p className="text-md text-gray-600 dark:text-gray-400 mb-6">
-                      Relevant apps found for your query
-                    </p>
-                    <button
-                      onClick={proceedToRecommendations}
-                      className="w-full px-6 py-3 bg-gray-700 text-white rounded-lg font-semibold text-lg hover:bg-gray-800 transition-all duration-300 transform hover:scale-105 shadow-lg"
-                      disabled={isSearching}
-                    >
-                      View Recommendations
-                    </button>
+                    {/* Results Summary and CTA */}
+                    {analysisData.final_results && (
+                      <div className="text-center py-4">
+                        <div className="text-3xl font-bold text-gray-700 dark:text-gray-300 mb-2">
+                          {analysisData.final_results.length}
+                        </div>
+                        <p className="text-sm text-gray-600 dark:text-gray-400 mb-6">
+                          Apps found for your query
+                        </p>
+                        <button
+                          onClick={proceedToRecommendations}
+                          className="w-full px-4 py-2 bg-primary text-white rounded-lg font-medium text-sm hover:bg-primary/90 transition-colors"
+                          disabled={isSearching}
+                        >
+                          View Recommendations
+                        </button>
+                      </div>
+                    )}
                   </div>
                 )}
               </div>

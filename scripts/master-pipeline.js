@@ -119,8 +119,12 @@ class LLMAnalyzer {
         analysis = await this.getDetailedGeneralAnalysis(userQuery);
       }
       
+      // IMPORTANT: Preserve the original classification result
+      analysis.query_type = classification.query_type;
+      
       console.log('\n📊 Analysis Results:');
       console.log('=' .repeat(40));
+      console.log(`Query Type: ${analysis.query_type}`);
       console.log(`User Situation: ${analysis.user_situation}`);
       console.log(`Root Cause: ${analysis.root_cause || 'N/A'}`);
       console.log(`Urgency: ${analysis.urgency || 'N/A'}`);

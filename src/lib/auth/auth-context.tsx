@@ -40,9 +40,12 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
           if ((event === 'SIGNED_IN' || event === 'INITIAL_SESSION') && session?.user) {
             await checkPersonalizationStatusInternal(session)
+            await fetchAppsCountForSession(session) // Fetch and cache apps count for this session
           } else if (event === 'SIGNED_OUT') {
             setUserProfileData(null)
             setHasCompletedPersonalization(null)
+            // Clear session storage on sign out
+            sessionStorage.removeItem('appsCount')
           }
 
           setLoading(false)
@@ -82,6 +85,33 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       }
     } catch (error) {
       setHasCompletedPersonalization(false)
+    }
+  }
+
+  const fetchAppsCountForSession = async (session: Session) => {
+    try {
+      // Check if we already have the count in session storage
+      const cachedCount = sessionStorage.getItem('appsCount')
+      if (cachedCount) {
+        return // Already cached for this session
+      }
+
+      const response = await fetch('/api/apps-count', {
+        headers: {
+          'Authorization': `Bearer ${session.access_token}`
+        }
+      })
+      
+      if (response.ok) {
+        const result = await response.json()
+        if (result.success && typeof result.count === 'number') {
+          sessionStorage.setItem('appsCount', result.count.toString())
+        }
+      }
+    } catch (error) {
+      console.error('Error fetching apps count:', error)
+      // Fallback to default count if API fails
+      sessionStorage.setItem('appsCount', '9020')
     }
   }
 
@@ -131,6 +161,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       setSession(null)
       setUserProfileData(null)
       setHasCompletedPersonalization(null)
+      // Clear session storage
+      sessionStorage.removeItem('appsCount')
       return result
     } finally {
       setLoading(false)
