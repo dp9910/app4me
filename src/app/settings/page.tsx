@@ -27,9 +27,12 @@ export default function SettingsPage() {
   const handleSignOut = async () => {
     try {
       await signOut();
-      router.push('/');
+      // Force redirect to landing page
+      window.location.href = '/';
     } catch (error) {
       console.error('Error signing out:', error);
+      // Even on error, redirect to landing page
+      window.location.href = '/';
     }
   };
 
