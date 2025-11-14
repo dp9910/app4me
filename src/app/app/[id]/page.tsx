@@ -333,36 +333,18 @@ export default function AppSpotlightPage() {
                 </div>
                 
                 <button
-                  onClick={async () => { // Made onClick async
-                    if (appDetails.bundle_id) { // Use bundle_id for lookup
-                      try {
-                        const lookupUrl = `http://itunes.apple.com/lookup?bundleId=${appDetails.bundle_id}`;
-                        const response = await fetch(lookupUrl);
-                        const data = await response.json();
-
-                        if (data.results && data.results.length > 0) {
-                          const appLink = data.results[0].trackViewUrl;
-                          if (appLink) {
-                            window.open(appLink, '_blank');
-                          } else {
-                            console.error('App link not found in iTunes lookup response.');
-                            // Fallback to a generic search or show an error to the user
-                            window.open(`https://apps.apple.com/us/search?term=${encodeURIComponent(appDetails.title)}`, '_blank');
-                          }
-                        } else {
-                          console.error('No results found for bundleId in iTunes lookup.');
-                          // Fallback to a generic search or show an error to the user
-                          window.open(`https://apps.apple.com/us/search?term=${encodeURIComponent(appDetails.title)}`, '_blank');
-                        }
-                      } catch (error) {
-                        console.error('Error fetching iTunes lookup data:', error);
-                        // Fallback to a generic search or show an error to the user
-                        window.open(`https://apps.apple.com/us/search?term=${encodeURIComponent(appDetails.title)}`, '_blank');
-                      }
+                  onClick={() => {
+                    if (appDetails.id) {
+                      // Create direct App Store URL using track ID
+                      const appStoreUrl = `https://apps.apple.com/us/app/${appDetails.title.toLowerCase().replace(/[^a-z0-9]/g, '-')}/id${appDetails.id}`;
+                      window.open(appStoreUrl, '_blank');
+                    } else {
+                      // Fallback to search if no ID available
+                      window.open(`https://apps.apple.com/us/search?term=${encodeURIComponent(appDetails.title)}`, '_blank');
                     }
                   }}
                   className="flex w-full min-w-[84px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-12 px-4 bg-primary text-white text-base font-bold leading-normal tracking-[0.015em] hover:bg-primary/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-                  disabled={!appDetails.bundle_id} // Disable if bundle_id is not available
+                  disabled={!appDetails.id} // Disable if ID is not available
                 >
                   <span className="truncate">
                     {appDetails.formatted_price || appDetails.price ? 
