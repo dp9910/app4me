@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { supabase, supabaseAdmin } from '@/lib/supabase/client';
+import { supabase } from '@/lib/supabase/client';
+import { supabaseAdmin } from '@/lib/supabase/admin';
 
 // Default fallback interests if user has none set
 const DEFAULT_INTERESTS = ['productivity', 'entertainment', 'education', 'fitness', 'games'];
@@ -8,26 +9,26 @@ const DEFAULT_INTERESTS = ['productivity', 'entertainment', 'education', 'fitnes
 async function getAuthenticatedUser(request: NextRequest) {
   const authorization = request.headers.get('authorization');
   console.log('Authorization header:', authorization ? 'Present' : 'Missing');
-  
+
   if (!authorization) {
     return { user: null, error: 'No authorization header' };
   }
 
   const token = authorization.replace('Bearer ', '');
   console.log('Token length:', token.length);
-  
+
   const { data: { user }, error: authError } = await supabase.auth.getUser(token);
-  
+
   if (authError) {
     console.error('Auth error:', authError);
     return { user: null, error: `Auth error: ${authError.message}` };
   }
-  
+
   if (!user) {
     console.error('No user found');
     return { user: null, error: 'No user found' };
   }
-  
+
   console.log('Authenticated user:', user.id, user.email);
   return { user, error: null };
 }
@@ -39,7 +40,7 @@ function processUserInterests(appInterests: string[]): string[] {
     const shuffled = DEFAULT_INTERESTS.sort(() => Math.random() - 0.5);
     return shuffled.slice(0, 3); // Return 3 random interests
   }
-  
+
   // Use user interests directly, clean them up
   return appInterests
     .map(interest => interest.trim().toLowerCase())
@@ -51,11 +52,11 @@ function processUserInterests(appInterests: string[]): string[] {
 async function fetchItunesAppsForInterest(interest: string, limit: number = 10): Promise<any[]> {
   try {
     const searchTerm = interest; // Use the interest directly as search term
-    
+
     const url = `https://itunes.apple.com/search?term=${encodeURIComponent(searchTerm)}&country=US&entity=software&limit=${limit * 2}`; // Get more to filter
-    
+
     console.log(`Fetching iTunes apps for interest "${interest}" with search term "${searchTerm}"`);
-    
+
     const response = await fetch(url, {
       headers: {
         'User-Agent': 'AppDiscovery/1.0',
@@ -70,7 +71,7 @@ async function fetchItunesAppsForInterest(interest: string, limit: number = 10):
 
     const data = await response.json();
     const apps = data.results || [];
-    
+
     // Transform and filter the apps
     const transformedApps = apps
       .filter((app: any) => app.trackName && app.artistName) // Filter out incomplete data
@@ -98,7 +99,7 @@ async function fetchItunesAppsForInterest(interest: string, limit: number = 10):
 
     console.log(`Found ${transformedApps.length} apps for interest "${interest}"`);
     return transformedApps;
-    
+
   } catch (error: any) {
     console.error(`Error fetching iTunes apps for interest "${interest}":`, error.message);
     return [];
@@ -109,7 +110,7 @@ export async function GET(request: NextRequest) {
   try {
     // Get the authenticated user
     const { user, error: authError } = await getAuthenticatedUser(request);
-    
+
     if (authError || !user) {
       return NextResponse.json({ error: authError || 'Unauthorized' }, { status: 401 });
     }
@@ -178,7 +179,7 @@ export async function GET(request: NextRequest) {
 
   } catch (error: any) {
     console.error('Error in GET /api/personalized-apps:', error);
-    
+
     return NextResponse.json({
       success: false,
       error: error.message || 'Failed to fetch personalized apps',

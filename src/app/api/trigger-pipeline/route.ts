@@ -1,20 +1,18 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { createClient } from '@supabase/supabase-js';
+import { supabaseAdmin as supabase } from '@/lib/supabase/admin';
 
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.SUPABASE_SERVICE_KEY!
-);
+// Secure endpoint with CRON_SECRET
+const CRON_SECRET = process.env.CRON_SECRET;
 
 // Individual scraper functions
 async function fetchItunesData(query: string = 'productivity') {
   console.log(`🍎 Fetching iTunes data for: ${query}`);
-  
+
   try {
     const url = `https://itunes.apple.com/search?term=${encodeURIComponent(query)}&country=US&entity=software&limit=20`;
     const response = await fetch(url);
     const data = await response.json();
-    
+
     if (!data.results || data.results.length === 0) {
       return { success: false, error: 'No iTunes results found', count: 0 };
     }
@@ -46,9 +44,9 @@ async function fetchItunesData(query: string = 'productivity') {
     // Store in iTunes table with UPSERT
     const { data: insertedData, error } = await supabase
       .from('itunes_apps')
-      .upsert(processedApps, { 
+      .upsert(processedApps, {
         onConflict: 'bundle_id,source,query_term',
-        ignoreDuplicates: false 
+        ignoreDuplicates: false
       })
       .select('bundle_id');
 
@@ -57,36 +55,36 @@ async function fetchItunesData(query: string = 'productivity') {
       return { success: false, error: error.message, count: 0 };
     }
 
-    return { 
-      success: true, 
+    return {
+      success: true,
       count: insertedData?.length || 0,
       message: `Stored ${insertedData?.length || 0} iTunes apps`
     };
 
   } catch (error) {
     console.error('iTunes fetch error:', error);
-    return { 
-      success: false, 
+    return {
+      success: false,
       error: error instanceof Error ? error.message : 'iTunes fetch failed',
-      count: 0 
+      count: 0
     };
   }
 }
 
 async function fetchAppleRssData() {
   console.log('🍎 Fetching Apple RSS data...');
-  
+
   try {
     // Use the first RSS feed (Top Free iPhone Apps) for the trigger
     const rssUrl = 'https://itunes.apple.com/us/rss/topfreeapplications/limit=25/json';
-    
+
     const response = await fetch(rssUrl);
     if (!response.ok) {
       throw new Error(`Apple RSS returned ${response.status}: ${response.statusText}`);
     }
-    
+
     const data = await response.json();
-    
+
     // Extract entries from RSS feed
     let entries = [];
     if (data.feed && data.feed.entry) {
@@ -116,9 +114,9 @@ async function fetchAppleRssData() {
     // Store in Apple RSS table with UPSERT
     const { data: insertedData, error } = await supabase
       .from('apple_rss_apps')
-      .upsert(processedApps, { 
+      .upsert(processedApps, {
         onConflict: 'bundle_id,source,feed_type',
-        ignoreDuplicates: false 
+        ignoreDuplicates: false
       })
       .select('bundle_id');
 
@@ -127,25 +125,25 @@ async function fetchAppleRssData() {
       return { success: false, error: error.message, count: 0 };
     }
 
-    return { 
-      success: true, 
+    return {
+      success: true,
       count: insertedData?.length || 0,
       message: `Stored ${insertedData?.length || 0} Apple RSS apps (Top Free)`
     };
 
   } catch (error) {
     console.error('Apple RSS fetch error:', error);
-    return { 
-      success: false, 
+    return {
+      success: false,
       error: error instanceof Error ? error.message : 'Apple RSS fetch failed',
-      count: 0 
+      count: 0
     };
   }
 }
 
 async function fetchSerpData(query: string = 'social media') {
   console.log(`🔍 Fetching SERP data for: ${query}`);
-  
+
   try {
     const serpApiKey = process.env.SERPAPI_KEY;
     if (!serpApiKey) {
@@ -155,7 +153,7 @@ async function fetchSerpData(query: string = 'social media') {
     const url = `https://serpapi.com/search.json?engine=apple_app_store&term=${encodeURIComponent(query)}&api_key=${serpApiKey}`;
     const response = await fetch(url);
     const data = await response.json();
-    
+
     if (!data.organic_results || data.organic_results.length === 0) {
       return { success: false, error: 'No SERP results found', count: 0 };
     }
@@ -186,9 +184,9 @@ async function fetchSerpData(query: string = 'social media') {
     // Store in SERP table with UPSERT
     const { data: insertedData, error } = await supabase
       .from('serp_apps')
-      .upsert(processedApps, { 
+      .upsert(processedApps, {
         onConflict: 'bundle_id,source,query_term',
-        ignoreDuplicates: false 
+        ignoreDuplicates: false
       })
       .select('bundle_id');
 
@@ -197,25 +195,25 @@ async function fetchSerpData(query: string = 'social media') {
       return { success: false, error: error.message, count: 0 };
     }
 
-    return { 
-      success: true, 
+    return {
+      success: true,
       count: insertedData?.length || 0,
       message: `Stored ${insertedData?.length || 0} SERP apps`
     };
 
   } catch (error) {
     console.error('SERP fetch error:', error);
-    return { 
-      success: false, 
+    return {
+      success: false,
       error: error instanceof Error ? error.message : 'SERP fetch failed',
-      count: 0 
+      count: 0
     };
   }
 }
 
 async function runReconciliation() {
   console.log('🔄 Running data reconciliation...');
-  
+
   try {
     // Get all apps from source tables for reconciliation
     const { data: itunesApps } = await supabase
@@ -234,12 +232,12 @@ async function runReconciliation() {
       .limit(50);
 
     const allApps = [...(itunesApps || []), ...(serpApps || []), ...(rssApps || [])];
-    
+
     if (allApps.length === 0) {
-      return { 
-        success: false, 
+      return {
+        success: false,
         error: 'No source data found for reconciliation',
-        reconciledCount: 0 
+        reconciledCount: 0
       };
     }
 
@@ -259,10 +257,10 @@ async function runReconciliation() {
       // Simple reconciliation logic - pick best data from available sources
       const bestTitle = sources.find(s => s.title)?.title || bundleId;
       const bestDeveloper = sources.find(s => s.developer)?.developer || '';
-      const bestRating = sources.reduce((best, s) => 
+      const bestRating = sources.reduce((best, s) =>
         (s.rating_count || 0) > (best.rating_count || 0) ? s : best, sources[0]);
       const bestIcon = sources.find(s => s.icon_url)?.icon_url || '';
-      const bestDescription = sources.reduce((best, s) => 
+      const bestDescription = sources.reduce((best, s) =>
         (s.description?.length || 0) > (best.description?.length || 0) ? s : best, sources[0]);
 
       // Calculate quality score manually
@@ -307,23 +305,23 @@ async function runReconciliation() {
 
     if (error) {
       console.error('Reconciliation storage error:', error);
-      return { 
-        success: false, 
+      return {
+        success: false,
         error: error.message,
-        reconciledCount: 0 
+        reconciledCount: 0
       };
     }
 
     // Calculate stats
     const avgQuality = insertedData?.reduce((sum, app) => sum + (app.data_quality_score || 0), 0) / (insertedData?.length || 1);
     const multiSourceCount = insertedData?.filter(app => {
-      const sources = Array.isArray(app.available_in_sources) ? 
+      const sources = Array.isArray(app.available_in_sources) ?
         app.available_in_sources : JSON.parse(app.available_in_sources || '[]');
       return sources.length > 1;
     }).length || 0;
 
-    return { 
-      success: true, 
+    return {
+      success: true,
       reconciledCount: insertedData?.length || 0,
       avgQuality: Math.round(avgQuality),
       multiSourceCount,
@@ -332,16 +330,21 @@ async function runReconciliation() {
 
   } catch (error) {
     console.error('Reconciliation error:', error);
-    return { 
-      success: false, 
+    return {
+      success: false,
       error: error instanceof Error ? error.message : 'Reconciliation failed',
-      reconciledCount: 0 
+      reconciledCount: 0
     };
   }
 }
 
 export async function POST(request: NextRequest) {
   try {
+    const authHeader = request.headers.get('authorization');
+    if (authHeader !== `Bearer ${CRON_SECRET}`) {
+      return NextResponse.json({ success: false, error: 'Unauthorized' }, { status: 401 });
+    }
+
     const { step, query } = await request.json();
 
     console.log(`📡 Pipeline step: ${step}`);
@@ -349,28 +352,28 @@ export async function POST(request: NextRequest) {
     switch (step) {
       case 'itunes':
         return NextResponse.json(await fetchItunesData(query));
-        
+
       case 'rss':
         return NextResponse.json(await fetchAppleRssData());
-        
+
       case 'serp':
         return NextResponse.json(await fetchSerpData(query));
-        
+
       case 'reconcile':
         return NextResponse.json(await runReconciliation());
-        
+
       default:
-        return NextResponse.json({ 
-          success: false, 
-          error: `Unknown pipeline step: ${step}` 
+        return NextResponse.json({
+          success: false,
+          error: `Unknown pipeline step: ${step}`
         });
     }
 
   } catch (error) {
     console.error('Pipeline API error:', error);
-    return NextResponse.json({ 
-      success: false, 
-      error: error instanceof Error ? error.message : 'Pipeline execution failed' 
+    return NextResponse.json({
+      success: false,
+      error: error instanceof Error ? error.message : 'Pipeline execution failed'
     });
   }
 }

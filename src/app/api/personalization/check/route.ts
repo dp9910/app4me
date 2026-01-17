@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { supabase, supabaseAdmin } from '@/lib/supabase/client';
+import { supabase } from '@/lib/supabase/client';
+import { supabaseAdmin } from '@/lib/supabase/admin';
 
 export async function GET(request: NextRequest) {
   console.log('--- Personalization Check API Start ---');
@@ -13,12 +14,12 @@ export async function GET(request: NextRequest) {
 
     // Extract token from Bearer header
     const token = authorization.replace('Bearer ', '');
-    
+
     console.log('Getting user from token...');
     // Get the authenticated user using the token
     const { data: { user }, error: authError } = await supabase.auth.getUser(token);
     console.log('Got user from token.');
-    
+
     if (authError || !user) {
       console.log('Auth error or no user.');
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });

@@ -1,30 +1,31 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { supabase, supabaseAdmin } from '@/lib/supabase/client';
+import { supabase } from '@/lib/supabase/client';
+import { supabaseAdmin } from '@/lib/supabase/admin';
 
 // Helper function to get authenticated user from request
 async function getAuthenticatedUser(request: NextRequest) {
   const authorization = request.headers.get('authorization');
   console.log('Authorization header:', authorization ? 'Present' : 'Missing');
-  
+
   if (!authorization) {
     return { user: null, error: 'No authorization header' };
   }
 
   const token = authorization.replace('Bearer ', '');
   console.log('Token length:', token.length);
-  
+
   const { data: { user }, error: authError } = await supabase.auth.getUser(token);
-  
+
   if (authError) {
     console.error('Auth error:', authError);
     return { user: null, error: `Auth error: ${authError.message}` };
   }
-  
+
   if (!user) {
     console.error('No user found');
     return { user: null, error: 'No user found' };
   }
-  
+
   console.log('Authenticated user:', user.id, user.email);
   return { user, error: null };
 }
@@ -33,7 +34,7 @@ export async function GET(request: NextRequest) {
   try {
     // Get the authenticated user
     const { user, error: authError } = await getAuthenticatedUser(request);
-    
+
     if (authError || !user) {
       return NextResponse.json({ error: authError }, { status: 401 });
     }
@@ -65,10 +66,10 @@ export async function GET(request: NextRequest) {
 export async function POST(request: NextRequest) {
   try {
     console.log('POST /api/personalization - Starting...');
-    
+
     // Get the authenticated user
     const { user, error: authError } = await getAuthenticatedUser(request);
-    
+
     if (authError || !user) {
       console.error('Authentication failed:', authError);
       return NextResponse.json({ error: authError }, { status: 401 });
@@ -128,15 +129,15 @@ export async function POST(request: NextRequest) {
     if (error) {
       console.error('Error saving personalization:', error);
       console.error('Error details:', JSON.stringify(error, null, 2));
-      return NextResponse.json({ 
-        error: 'Failed to save personalization data', 
+      return NextResponse.json({
+        error: 'Failed to save personalization data',
         details: error.message || 'Unknown error',
-        code: error.code 
+        code: error.code
       }, { status: 500 });
     }
 
     console.log('Personalization saved successfully, returning response with completed_at:', data?.completed_at);
-    
+
     return NextResponse.json({
       success: true,
       data,
@@ -154,7 +155,7 @@ export async function PUT(request: NextRequest) {
   try {
     // Get the authenticated user
     const { user, error: authError } = await getAuthenticatedUser(request);
-    
+
     if (authError || !user) {
       return NextResponse.json({ error: authError }, { status: 401 });
     }

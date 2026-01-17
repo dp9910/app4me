@@ -1,26 +1,24 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { createClient } from '@supabase/supabase-js'
+import { supabaseAdmin as supabase } from '@/lib/supabase/admin'
 import { appFetcher, AppData } from '@/lib/services/app-fetcher'
-
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!
-const supabaseServiceKey = process.env.SUPABASE_SERVICE_KEY!
 
 export async function POST(request: NextRequest) {
   try {
-    // Check for admin authorization (simple security)
+    // Check for admin authorization (strict security)
     const authHeader = request.headers.get('authorization')
-    if (authHeader !== `Bearer ${process.env.ADMIN_SECRET || 'admin123'}`) {
+    if (!process.env.ADMIN_SECRET || authHeader !== `Bearer ${process.env.ADMIN_SECRET}`) {
+      console.warn('Unauthorized attempt to populate apps');
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     }
 
-    const supabase = createClient(supabaseUrl, supabaseServiceKey)
-    
+    // Client is already initialized as supabase imported from admin code
+
     console.log('🚀 Starting app data population...')
-    
+
     // Fetch apps from different categories
     const categories = [
       'productivity',
-      'health fitness', 
+      'health fitness',
       'entertainment',
       'social networking',
       'finance',
@@ -35,20 +33,20 @@ export async function POST(request: NextRequest) {
     for (const category of categories) {
       try {
         console.log(`📱 Fetching ${category} apps...`)
-        
+
         const apps = await appFetcher.searchApps(category, {
           limit: 25,
           minRating: 3.0,
           country: 'us'
         })
-        
+
         console.log(`  ✅ Found ${apps.length} apps for ${category}`)
         allApps.push(...apps)
         totalFetched += apps.length
-        
+
         // Add delay to avoid rate limiting
         await new Promise(resolve => setTimeout(resolve, 1000))
-        
+
       } catch (error) {
         console.error(`  ❌ Error fetching ${category}:`, error)
       }
@@ -68,7 +66,7 @@ export async function POST(request: NextRequest) {
 
     for (let i = 0; i < uniqueApps.length; i += batchSize) {
       const batch = uniqueApps.slice(i, i + batchSize)
-      
+
       try {
         const appRecords = batch.map(app => ({
           track_id: app.trackId,
@@ -125,7 +123,7 @@ export async function POST(request: NextRequest) {
       .select('*', { count: 'exact', head: true })
 
     console.log('🎉 Population complete!')
-    
+
     return NextResponse.json({
       success: true,
       stats: {
@@ -150,7 +148,7 @@ export async function POST(request: NextRequest) {
 // Get current app statistics
 export async function GET() {
   try {
-    const supabase = createClient(supabaseUrl, supabaseServiceKey)
+    // supabase is already imported from @/lib/supabase/admin
 
     // Get total counts
     const { count: totalApps } = await supabase
